@@ -19,7 +19,7 @@ function Dashboard() {
     },
     {
       path: 'first',
-      breadcrumbName: 'Demo 1',
+      breadcrumbName: 'Dashboard view',
     },
   ];
   return (
