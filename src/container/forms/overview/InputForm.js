@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
-import { Row, Col, Form, Input, DatePicker, TimePicker } from 'antd';
-import moment from 'moment';
+import { Row, Col, Form, Input, DatePicker, Select } from 'antd';
+
 import { HorizontalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
@@ -10,107 +10,55 @@ function InputForm() {
   return (
     <BasicFormWrapper>
       <HorizontalFormStyleWrap className="sDash_input-form">
-        <Cards title="Basic Inputs">
+        <Cards title="Ledger Report Form">
           <Form name="input-form" layout="horizontal">
             <Row align="middle">
               <Col md={6} xs={24}>
-                <label htmlFor="input-text">Text</label>
+                <label htmlFor="fromdate">From Date</label>
               </Col>
               <Col md={18} xs={24}>
-                <Form.Item name="input-text">
-                  <Input placeholder="Duran Clayton" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="email">Email Address</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="input-email">
-                  <Input placeholder="username@email.com" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="input-url">URL</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="input-url">
-                  <Input placeholder="https://strikingdash-react-admin-dashboard-template" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="input-phone">Phone</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="input-phone">
-                  <Input placeholder="017123456789" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="pass">Password</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="input-pass">
-                  <Input.Password placeholder="Enter Password" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="input-number">Number</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="input-number">
-                  <Input placeholder="123" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="input-date">Date</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="input-date">
+                <Form.Item name="fromdate">
                   <DatePicker />
                 </Form.Item>
               </Col>
             </Row>
             <Row align="middle">
               <Col md={6} xs={24}>
-                <label htmlFor="input-month">Month</label>
+                <label htmlFor="todate">To Date</label>
               </Col>
               <Col md={18} xs={24}>
-                <Form.Item name="input-month">
-                  <DatePicker picker="month" />
+                <Form.Item name="todate">
+                  <DatePicker />
                 </Form.Item>
               </Col>
             </Row>
             <Row align="middle">
               <Col md={6} xs={24}>
-                <label htmlFor="input-time">Time</label>
+                <label htmlFor="report-type">Report Type</label>
               </Col>
               <Col md={18} xs={24}>
-                <Form.Item name="input-time" initialValue={moment('00:00:00', 'HH:mm:ss')}>
-                  <TimePicker />
+                <Form.Item name="report-type">
+                  <Select placeholder="Select Report type" />
                 </Form.Item>
               </Col>
             </Row>
             <Row align="middle">
               <Col md={6} xs={24}>
-                <label htmlFor="input-color">Color</label>
+                <label htmlFor="party">Party</label>
               </Col>
               <Col md={18} xs={24}>
-                <Form.Item name="input-color">
-                  <div className="sDash_color-picker">
-                    <Input type="color" value="#5F63F2" />
-                  </div>
+                <Form.Item name="party">
+                  <Input placeholder="Select your party" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row align="middle">
+              <Col md={6} xs={24}>
+                <label htmlFor="account-group">Account Group</label>
+              </Col>
+              <Col md={18} xs={24}>
+                <Form.Item name="account-group">
+                  <Input placeholder="Select your account group " />
                 </Form.Item>
               </Col>
             </Row>

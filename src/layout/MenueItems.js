@@ -1086,7 +1086,7 @@ function MenuItems({ toggleCollapsed }) {
 
       // Form Component Navlink
       getItem(
-        <NavLink onClick={toggleCollapsed} to={`${path}/features/form-elements`}>
+        <NavLink onClick={toggleCollapsed} to={`${path}/features/ledger-report`}>
           {t('Ledger')} {t('Report')}
         </NavLink>,
         'form-elements',
