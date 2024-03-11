@@ -1,9 +1,15 @@
 import React, { lazy, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import AuthLayout from '../container/profile/authentication/Index';
+// import ClientMpin from '../components/Authentication/ClientMpin';
 
 const ForgotPass = lazy(() => import('../container/profile/authentication/overview/ForgotPassword'));
-const Login = lazy(() => import('../container/profile/authentication/overview/SignIn'));
+// const MpinAuth = lazy(() => import('../container/profile/authentication/overview/ClientMpin'));
+
+const ClientMpin = lazy(() => import('../components/Authentication/ClientMpin'));
+
+const ClientLogin = lazy(() => import('../components/Authentication/ClientLogin'));
+
 const SignUp = lazy(() => import('../container/profile/authentication/overview/Signup'));
 const FbLogin = lazy(() => import('../container/profile/authentication/overview/FbSignIn'));
 const FbSignUp = lazy(() => import('../container/profile/authentication/overview/FbSignup'));
@@ -18,7 +24,10 @@ const AuthRoot = () => {
 const FrontendRoutes = React.memo(() => {
   return (
     <Routes>
-      <Route index element={<Login />} />
+      {/* <Route index element={<MpinAuth />} /> */}
+      <Route index element={<ClientMpin />} />
+      <Route path="login" element={<ClientLogin />} />
+
       <Route path="forgotPassword" element={<ForgotPass />} />
       <Route path="register" element={<SignUp />} />
       <Route path="fbRegister" element={<FbSignUp />} />
