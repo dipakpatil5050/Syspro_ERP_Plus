@@ -1,6 +1,5 @@
 import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import ClientMpin from '../../container/pages/ClientMpin/ClientMpin';
 
 const NotFound = lazy(() => import('../../container/pages/404'));
 const Pricing = lazy(() => import('../../container/pages/PricingTable'));
@@ -23,7 +22,6 @@ const Testimonials = lazy(() => import('../../container/pages/Testimonials'));
 function PagesRoute() {
   return (
     <Routes>
-      <Route path="clientmpin" element={<ClientMpin />} />
       <Route path="changelog" element={<ChangeLog />} />
       <Route path="settings/*" element={<Settings />} />
       <Route path="Pricing" element={<Pricing />} />

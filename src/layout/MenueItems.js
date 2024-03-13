@@ -47,7 +47,7 @@ import { Menu } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 // import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import UilEllipsisV from '@iconscout/react-unicons/icons/uil-ellipsis-v';
@@ -69,11 +69,12 @@ function MenuItems({ toggleCollapsed }) {
     };
   }
 
-  const { topMenu } = useSelector((state) => {
-    return {
-      topMenu: state.ChangeLayoutMode.topMenu,
-    };
-  });
+  const topMenu = false;
+  // const { topMenu } = useSelector((state) => {
+  //   return {
+  //     topMenu: state.ChangeLayoutMode.topMenu,
+  //   };
+  // });
 
   // const dispatch = useDispatch();
 

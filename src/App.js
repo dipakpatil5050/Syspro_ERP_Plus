@@ -12,17 +12,17 @@ import store from './redux/store';
 import Admin from './routes/admin';
 import Auth from './routes/auth';
 import './static/css/style.css';
-// import Store from './redux/Store.jsx';
 
 const NotFound = lazy(() => import('./container/pages/404'));
 
 const { themeColor } = config;
 
 function ProviderConfig() {
-  const { rtl, isLoggedIn, topMenu, mainContent } = useSelector((state) => {
+  const rtl = false;
+  const topMenu = false;
+
+  const { isLoggedIn, mainContent } = useSelector((state) => {
     return {
-      rtl: state.ChangeLayoutMode.rtlData,
-      topMenu: state.ChangeLayoutMode.topMenu,
       mainContent: state.ChangeLayoutMode.mode,
       isLoggedIn: state.auth.login,
     };

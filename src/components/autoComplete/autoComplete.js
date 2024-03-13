@@ -2,7 +2,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { AutoCompleteStyled } from './style';
 
 const onSelect = () => {
@@ -27,11 +27,12 @@ const renderItem = (title, count) => {
 };
 
 const AutoComplete = React.memo((props) => {
-  const { rtl } = useSelector((state) => {
-    return {
-      rtl: state.ChangeLayoutMode.rtlData,
-    };
-  });
+  const rtl = true;
+  // const { rtl } = useSelector((state) => {
+  //   return {
+  //     rtl: state.ChangeLayoutMode.rtlData,
+  //   };
+  // });
   const { customComponent, patterns, patternButtons, width, onSearch, options, placeholder } = props;
 
   const content =

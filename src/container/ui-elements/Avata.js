@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Row, Col, Avatar, Badge } from 'antd';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { UserOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { AvatarWraperStyle } from './ui-elements-styled';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main } from '../styled';
@@ -23,7 +23,7 @@ function Avatars() {
       breadcrumbName: 'Avatar',
     },
   ];
-  const rtl = useSelector((state) => state.ChangeLayoutMode.rtlData);
+  // const rtl = useSelector((state) => state.ChangeLayoutMode.rtlData);
   const [user, setUser] = useState(UserList[0]);
   const [color, setColor] = useState(ColorList[0]);
   const changeUser = () => {

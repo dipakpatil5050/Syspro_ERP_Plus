@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
-import { Row, Col, Form, Input, DatePicker, Select } from 'antd';
+import { Row, Col, Form, Input, DatePicker } from 'antd';
 
 import { HorizontalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
@@ -38,7 +38,7 @@ function InputForm() {
               </Col>
               <Col md={18} xs={24}>
                 <Form.Item name="report-type">
-                  <Select placeholder="Select Report type" />
+                  <Input placeholder="Select report type" />
                 </Form.Item>
               </Col>
             </Row>

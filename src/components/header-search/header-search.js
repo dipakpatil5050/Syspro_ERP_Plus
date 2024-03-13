@@ -1,38 +1,38 @@
 import UilSearch from '@iconscout/react-unicons/icons/uil-search';
 import { Col, Input, Row } from 'antd';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { NavLink } from 'react-router-dom';
 import { Div } from './header-search-style';
-import { headerSearchAction } from '../../redux/headerSearch/actionCreator';
+// import { headerSearchAction } from '../../redux/headerSearch/actionCreator';
 import { Popover } from '../popup/popup';
 
 function HeaderSearch() {
-  const dispatch = useDispatch();
-  const searchData = useSelector((state) => state.headerSearchData);
-  const rtl = useSelector((state) => state.ChangeLayoutMode.rtlData);
+  // const dispatch = useDispatch();
+  // const searchData = useSelector((state) => state.headerSearchData);
+  // const rtl = useSelector((state) => state.ChangeLayoutMode.rtlData);
 
-  const search = (e) => {
-    dispatch(headerSearchAction(e.target.value));
-  };
+  // const search = (e) => {
+  //   dispatch(headerSearchAction(e.target.value));
+  // };
 
-  const content = (
-    <div>
-      {searchData.length ? (
-        searchData.map((group) => {
-          const { title, count, id } = group;
-          return (
-            <NavLink key={id} to="#">
-              {title}
-              <span className="certain-search-item-count">{count} people</span>
-            </NavLink>
-          );
-        })
-      ) : (
-        <NavLink to="#">Data Not found....</NavLink>
-      )}
-    </div>
-  );
+  // const content = (
+  //   <div>
+  //     {searchData.length ? (
+  //       searchData.map((group) => {
+  //         const { title, count, id } = group;
+  //         return (
+  //           <NavLink key={id} to="#">
+  //             {title}
+  //             <span className="certain-search-item-count">{count} people</span>
+  //           </NavLink>
+  //         );
+  //       })
+  //     ) : (
+  //       <NavLink to="#">Data Not found....</NavLink>
+  //     )}
+  //   </div>
+  // );
 
   return (
     <>
@@ -46,7 +46,7 @@ function HeaderSearch() {
           <Col md={22} xs={23}>
             <Popover
               placement={!rtl ? 'bottomLeft' : 'bottomRight'}
-              content={content}
+              // content={content}
               title="Search List"
               action="focus"
             >

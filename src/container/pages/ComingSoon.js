@@ -4,7 +4,7 @@ import { Col, Form, Input, Row } from 'antd';
 import PropTypes from 'prop-types';
 import Countdown from 'react-countdown';
 import FontAwesome from 'react-fontawesome';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ComingsoonStyleWrapper } from './style';
 import { Button } from '../../components/buttons/buttons';
@@ -23,11 +23,11 @@ function ComingSoon() {
       breadcrumbName: 'Coming Soon',
     },
   ];
-  const { mainContent } = useSelector((state) => {
-    return {
-      mainContent: state.ChangeLayoutMode.mode,
-    };
-  });
+  // const { mainContent } = useSelector((state) => {
+  //   return {
+  //     mainContent: state.ChangeLayoutMode.mode,
+  //   };
+  // });
   function Completionist() {
     return <span>You are good to go!</span>;
   }
@@ -72,11 +72,7 @@ function ComingSoon() {
             <ComingsoonStyleWrapper>
               <Cards headless>
                 <div className="ninjaDash-logo">
-                  {mainContent === 'lightMode' ? (
-                    <img src={require('../../static/img/logo_dark.svg').default} alt="" />
-                  ) : (
-                    <img src={require('../../static/img/logo_white.svg').default} alt="" />
-                  )}
+                  <img src={require('../../static/img/logo_white.svg').default} alt="" />
                 </div>
                 <div className="coming-soon-content">
                   <h1>We are coming soon</h1>

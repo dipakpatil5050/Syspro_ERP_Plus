@@ -1,6 +1,5 @@
 import React, { lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ClientAuth from '../components/Client mpin auth/ClientAuth';
 import NotFound from '../container/pages/404';
 
 const Login = lazy(() => import('../container/profile/authentication/overview/ClientMpin'));
@@ -14,7 +13,7 @@ function RouteFile() {
       <Router>
         <Routes>
           <Route index element={<Login />} />
-          <Route path="/" exact element={<ClientAuth />} />
+          {/* <Route path="/" exact element={<ClientAuth />} /> */}
           {/* <Route path="/login" element={<ClientLogin />} />
           <Route path="/home" element={<Home />} />
           <Route path="/*" element={<NoPage />} /> */}

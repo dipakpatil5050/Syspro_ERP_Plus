@@ -3,7 +3,7 @@ import { Badge } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 import { UserActionDropDown } from './auth-info-style';
@@ -11,11 +11,12 @@ import Heading from '../../heading/heading';
 import { Popover } from '../../popup/popup';
 
 const MessageBox = React.memo(() => {
-  const { rtl } = useSelector((state) => {
-    return {
-      rtl: state.ChangeLayoutMode.rtlData,
-    };
-  });
+  const rtl = false;
+  // const { rtl } = useSelector((state) => {
+  //   return {
+  //     rtl: state.ChangeLayoutMode.rtlData,
+  //   };
+  // });
 
   function renderThumb({ style }) {
     const thumbStyle = {
