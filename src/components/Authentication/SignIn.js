@@ -15,7 +15,7 @@ import { auth0options } from '../../config/auth0';
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
-function ClientLogin() {
+function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.loading);
@@ -104,4 +104,4 @@ function ClientLogin() {
   );
 }
 
-export default ClientLogin;
+export default SignIn;

@@ -20,10 +20,11 @@ const { themeColor } = config;
 function ProviderConfig() {
   const rtl = false;
   const topMenu = false;
+  const mainContent = 'lightMode';
 
-  const { isLoggedIn, mainContent } = useSelector((state) => {
+  const { isLoggedIn } = useSelector((state) => {
     return {
-      mainContent: state.ChangeLayoutMode.mode,
+      // mainContent: state.ChangeLayoutMode.mode,
       isLoggedIn: state.auth.login,
     };
   });

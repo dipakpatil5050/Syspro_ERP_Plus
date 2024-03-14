@@ -1,18 +1,16 @@
 import { Button, Col, Form, Input, Row } from 'antd';
 import React, { useState } from 'react';
-// import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { AuthFormWrap } from '../../container/profile/authentication/overview/style';
-
-// const domain = process.env.REACT_APP_AUTH0_DOMAIN;
-// const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+import { setuserMpinData } from '../../redux/reducers/authReducer';
 
 function ClientMpin() {
   const [mPin, setMPin] = useState('');
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const isLoading = useSelector((state) => state.auth.loading);
   // const [form] = Form.useForm();
 
@@ -30,10 +28,10 @@ function ClientMpin() {
 
     try {
       const response = await axios.post(mpinapi, { mPin }, { headers });
-      // dispatch(setuserMpinData(response.data));
 
       const apidata = response.data?.Data;
       const apiMpin = apidata?.mPin;
+      dispatch(setuserMpinData(response.data));
 
       if (apiMpin === mPin) {
         navigate('/login');
@@ -57,36 +55,6 @@ function ClientMpin() {
     }
   };
 
-  // const lock = new Auth0Lock(clientId, domain, auth0options);
-
-  // const handleSubmit = useCallback(
-  //   (values) => {
-  //     dispatch(login(values, () => navigate('/admin')));
-  //   },
-  //   [navigate, dispatch],
-  // );
-
-  // const handleAuthOSubmit = useCallback(
-  //   (values) => {
-  //     dispatch(authOLogin(values, () => navigate('/admin')));
-  //   },
-  //   [navigate, dispatch],
-  // );
-
-  // const onChange = (checked) => {
-  //   setState({ ...state, checked });
-  // };
-
-  // lock.on('authenticated', (authResult) => {
-  //   lock.getUserInfo(authResult.accessToken, (error) => {
-  //     if (error) {
-  //       return;
-  //     }
-  //     handleAuthOSubmit(authResult);
-  //     lock.hide();
-  //   });
-  // });
-
   return (
     <Row justify="center">
       <Col xxl={6} xl={8} md={12} sm={18} xs={24}>
@@ -102,7 +70,13 @@ function ClientMpin() {
                 // initialValue="SYSPRO04"
                 label="Enter Mpin to connect"
               >
-                <Input placeholder="******" value={mPin} onChange={handleInputChange} name="mPin" />
+                <Input
+                  placeholder="******"
+                  value={mPin}
+                  onChange={handleInputChange}
+                  name="mPin"
+                  autoComplete="current-password"
+                />
               </Form.Item>
 
               <Form.Item>
