@@ -241,11 +241,11 @@ const ThemeLayout = (WrappedComponent) => {
     }
   }
 
-  const mapStateToProps = (state) => {
+  const mapStateToProps = () => {
     return {
-      layoutMode: state.ChangeLayoutMode.mode,
-      rtl: state.ChangeLayoutMode.rtlData,
-      topMenu: state.ChangeLayoutMode.topMenu,
+      layoutMode: 'lightMode',
+      rtl: false,
+      topMenu: false,
     };
   };
 

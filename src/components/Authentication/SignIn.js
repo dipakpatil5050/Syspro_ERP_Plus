@@ -1,14 +1,10 @@
 import { Button, Col, Form, Input, Row } from 'antd';
 import { Auth0Lock } from 'auth0-lock';
 import React, { useCallback, useState } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-
 import { AuthFormWrap } from '../../container/profile/authentication/overview/style';
-
-import { login, authOLogin } from '../../redux/authentication/actionCreator';
-
+import { login } from '../../redux/reducers/authReducer';
 import { Checkbox } from '../checkbox/checkbox';
 import { auth0options } from '../../config/auth0';
 
@@ -20,25 +16,18 @@ function SignIn() {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.loading);
   const [form] = Form.useForm();
-
-  const [state, setState] = useState({
-    checked: null,
-  });
-
+  const [state, setState] = useState({ checked: null });
   const lock = new Auth0Lock(clientId, domain, auth0options);
 
   const handleSubmit = useCallback(
     (values) => {
-      dispatch(login(values, () => navigate('/admin')));
+      dispatch(login(values)).then((result) => {
+        if (result.payload === true) {
+          navigate('/admin');
+        }
+      });
     },
-    [navigate, dispatch],
-  );
-
-  const handleAuthOSubmit = useCallback(
-    (values) => {
-      dispatch(authOLogin(values, () => navigate('/admin')));
-    },
-    [navigate, dispatch],
+    [dispatch, navigate],
   );
 
   const onChange = (checked) => {
@@ -50,7 +39,11 @@ function SignIn() {
       if (error) {
         return;
       }
-      handleAuthOSubmit(authResult);
+      dispatch(login(authResult)).then((result) => {
+        if (result.payload === true) {
+          navigate('/admin');
+        }
+      });
       lock.hide();
     });
   });
@@ -60,7 +53,7 @@ function SignIn() {
       <Col xxl={6} xl={8} md={12} sm={18} xs={24}>
         <AuthFormWrap>
           <div className="ninjadash-authentication-top">
-            <h2 className="ninjadash-authentication-top__title">Login to Galaxy Infotech</h2>
+            <h2 className="ninjadash-authentication-top__title">Sign in to Galaxy Infotech</h2>
           </div>
           <div className="ninjadash-authentication-content">
             <Form name="login" form={form} onFinish={handleSubmit} layout="vertical">
@@ -95,7 +88,7 @@ function SignIn() {
           </div>
           <div className="ninjadash-authentication-bottom">
             <p>
-              Don`t passed mpin?<Link to="/">mPin Page</Link>
+              Dont have an account? <Link to="/signup">Sign Up</Link>
             </p>
           </div>
         </AuthFormWrap>

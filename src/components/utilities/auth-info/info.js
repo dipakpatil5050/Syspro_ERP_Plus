@@ -9,7 +9,7 @@ import { Avatar } from 'antd';
 import React from 'react';
 // import { useState } from 'react';
 // import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { InfoWraper, UserDropDwon } from './auth-info-style';
@@ -17,7 +17,7 @@ import Message from './Message';
 import Notification from './Notification';
 import Search from './Search';
 import Settings from './settings';
-import { logOut } from '../../../redux/authentication/actionCreator';
+import { logOut, setUserData, setuserMpinData } from '../../../redux/reducers/authReducer';
 
 // import { Dropdown } from '../../dropdown/dropdown';
 import Heading from '../../heading/heading';
@@ -25,6 +25,8 @@ import { Popover } from '../../popup/popup';
 
 const AuthInfo = React.memo(() => {
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.userData);
+  const CompanyName = userData?.Data?.CompanyName;
 
   // const [state, setState] = useState({
   //   flag: 'en',
@@ -37,6 +39,8 @@ const AuthInfo = React.memo(() => {
     e.preventDefault();
 
     dispatch(logOut(() => navigate('/')));
+    dispatch(setUserData(null));
+    dispatch(setuserMpinData(null));
   };
 
   const userContent = (
@@ -45,8 +49,8 @@ const AuthInfo = React.memo(() => {
         <figure className="user-dropdwon__info">
           <img src={require('../../../static/img/avatar/chat-auth.png')} alt="" />
           <figcaption>
-            <Heading as="h5">Mr. Dipak Patil</Heading>
-            <p>Developer</p>
+            <Heading as="h5">{CompanyName}</Heading>
+            <p>Client</p>
           </figcaption>
         </figure>
         <ul className="user-dropdwon__links">
@@ -126,7 +130,7 @@ const AuthInfo = React.memo(() => {
         <Popover placement="bottomRight" content={userContent} action="click">
           <Link to="#" className="ninjadash-nav-action-link">
             <Avatar src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/matureman1-512.png" />
-            <span className="ninjadash-nav-actions__author--name">Mr. Dipak</span>
+            <span className="ninjadash-nav-actions__author--name">{CompanyName}</span>
             <UilAngleDown />
           </Link>
         </Popover>
