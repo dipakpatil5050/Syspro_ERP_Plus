@@ -24,7 +24,6 @@ function ProviderConfig() {
 
   const { isLoggedIn } = useSelector((state) => {
     return {
-      // mainContent: state.ChangeLayoutMode.mode,
       isLoggedIn: state.auth.login,
     };
   });
@@ -56,6 +55,7 @@ function ProviderConfig() {
                 <Route path="*" element={<NotFound />} />
               </Routes>
             )}
+
             {isLoggedIn && (path === process.env.PUBLIC_URL || path === `${process.env.PUBLIC_URL}/`) && (
               <Routes>
                 <Route path="/" element={<Navigate to="/admin" />} />

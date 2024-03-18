@@ -92,7 +92,7 @@ function ClientMpin() {
           </div>
           <div className="ninjadash-authentication-bottom">
             <p>
-              Don`t have Mpin?<Link to="/login">login page</Link>
+              Don`t have Mpin?<Link to="/admin">Dashboard</Link>
             </p>
           </div>
         </AuthFormWrap>

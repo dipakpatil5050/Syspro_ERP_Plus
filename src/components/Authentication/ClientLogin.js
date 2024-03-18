@@ -1,16 +1,10 @@
-import { Button, Col, Form, Input, Row } from 'antd';
-// import { Auth0Lock } from 'auth0-lock';
-// import React, { useCallback, useState } from 'react';
 import React, { useState } from 'react';
-import Cookies from 'js-cookie';
+import { Button, Col, Form, Input, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 import { AuthFormWrap } from '../../container/profile/authentication/overview/style';
-// import { setUserData } from '../../redux/authlogin/actions';
-import { setUserData } from '../../redux/reducers/authReducer';
-
+import { login, setUserData } from '../../redux/reducers/authReducer';
 import { Checkbox } from '../checkbox/checkbox';
 
 function ClientLogin() {
@@ -19,57 +13,19 @@ function ClientLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // const isLoading = useSelector((state) => state.auth.loading);
-  // const [form] = Form.useForm();
 
   const userMpinData = useSelector((state) => state.auth.userMpinData);
-
   const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
   const mPin = userMpinData?.Data?.mPin;
-  // const userData = useSelector((state) => state.auth.userData);
 
-  const fetchLoginData = async () => {
-    const loginUrl = `${ServerBaseUrl}api/Static/UserLogin`;
-
-    const body = {
-      UserName: username,
-      Password: password,
-      IsRemeber: true,
-      DeviceId: '',
-    };
-
-    const headers = {
-      'Content-Type': 'application/json',
-      'x-api-key': mPin,
-    };
-
+  const handleLogin = async () => {
+    // e.preventDefault();
+    setIsLoading(true);
     try {
-      const response = await axios.post(loginUrl, body, { headers });
-      const userData = response.data;
-      const Token = userData?.Data?.Token;
-      // const CompanyName = userData.CompanyName;
-
-      // Cookies.set('token', Token, { expires: 7 });
-      Cookies.set('access_token', Token);
-      Cookies.set('logedIn', true);
-      dispatch(setUserData(userData));
-      navigate('/signin');
-      toast.success('Login successful!');
-    } catch (error) {
-      console.error('Error logging in:', error);
-      toast.error('Login failed. Please check your login credentials and try again.');
-    }
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      setIsLoading(true);
-      await fetchLoginData();
+      await dispatch(login({ username, password, mPin, ServerBaseUrl, dispatch, navigate, setUserData }));
       setIsLoading(false);
-      // navigate("/Home");
-      // toast.success("Login successful!");
     } catch (error) {
+      setIsLoading(false);
       console.error('Error logging in:', error);
       toast.error('Login failed. Please check your login credentials and try again.');
     }
@@ -79,35 +35,9 @@ function ClientLogin() {
     checked: null,
   });
 
-  // const lock = new Auth0Lock(clientId, domain, auth0options);
-
-  // const handleSubmit = useCallback(
-  //   (values) => {
-  //     dispatch(login(values, () => navigate('/admin')));
-  //   },
-  //   [navigate, dispatch],
-  // );
-
-  // const handleAuthOSubmit = useCallback(
-  //   (values) => {
-  //     dispatch(authOLogin(values, () => navigate('/admin')));
-  //   },
-  //   [navigate, dispatch],
-  // );
-
   const onChange = (checked) => {
     setState({ ...state, checked });
   };
-
-  // lock.on('authenticated', (authResult) => {
-  //   lock.getUserInfo(authResult.accessToken, (error) => {
-  //     if (error) {
-  //       return;
-  //     }
-  //     handleAuthOSubmit(authResult);
-  //     lock.hide();
-  //   });
-  // });
 
   return (
     <Row justify="center">
@@ -121,7 +51,6 @@ function ClientLogin() {
               <Form.Item
                 name="email"
                 rules={[{ message: 'Please input your username or Email!', required: true }]}
-                // initialValue="ninjadash@dm.com"
                 label="Username or Email Address"
               >
                 <Input
@@ -148,7 +77,7 @@ function ClientLogin() {
                 </NavLink>
               </div>
               <Form.Item>
-                <Button className="btn-signin" htmlType="submit" type="primary" size="large" onClick={handleLogin}>
+                <Button className="btn-signin" htmlType="submit" type="primary" size="large">
                   {isLoading ? 'Loading...' : 'Sign In'}
                 </Button>
               </Form.Item>
@@ -159,9 +88,7 @@ function ClientLogin() {
           </div>
           <div className="ninjadash-authentication-bottom">
             <p>
-              Don`t passed mpin?<Link to="/">mPin page </Link>
-              or
-              <Link to="/signin">SignIn page</Link>
+              Dont have an account? <Link to="/signup">Sign Up</Link>
             </p>
           </div>
         </AuthFormWrap>

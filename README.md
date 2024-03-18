@@ -68,3 +68,34 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Notes
+
+```javascript
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { getItem } from '../../utility/localStorageControl';
+
+// const dispatch = useDispatch();
+
+const userMpinData = useSelector((state) => state.auth.userMpinData);
+const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
+const mPin = userMpinData?.Data?.mPin;
+
+// const API_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}/api`;
+
+const API_ENDPOINT = `${ServerBaseUrl}api/Static/UserLogin`;
+
+const authHeader = () => ({
+  Authorization: `Bearer ${getItem('access_token')}`,
+  'Content-Type': 'application/json',
+  'x-api-key': mPin,
+});
+
+const authBody = () => ({
+  UserName: 'admin',
+  Password: '123456',
+  IsRemeber: true,
+  DeviceId: '',
+});
+```
