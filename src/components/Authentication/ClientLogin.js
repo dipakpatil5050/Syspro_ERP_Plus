@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Col, Form, Input, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { AuthFormWrap } from '../../container/profile/authentication/overview/style';
 import { login, setUserData } from '../../redux/reducers/authReducer';
@@ -19,7 +19,6 @@ function ClientLogin() {
   const mPin = userMpinData?.Data?.mPin;
 
   const handleLogin = async () => {
-    // e.preventDefault();
     setIsLoading(true);
     try {
       await dispatch(login({ username, password, mPin, ServerBaseUrl, dispatch, navigate, setUserData }));
@@ -81,16 +80,16 @@ function ClientLogin() {
                   {isLoading ? 'Loading...' : 'Sign In'}
                 </Button>
               </Form.Item>
-              <p className="ninjadash-form-divider">
+              {/* <p className="ninjadash-form-divider">
                 <span>Or</span>
-              </p>
+              </p> */}
             </Form>
           </div>
-          <div className="ninjadash-authentication-bottom">
+          {/* <div className="ninjadash-authentication-bottom">
             <p>
               Dont have an account? <Link to="/signup">Sign Up</Link>
             </p>
-          </div>
+          </div> */}
         </AuthFormWrap>
       </Col>
     </Row>

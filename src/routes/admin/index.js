@@ -26,10 +26,8 @@ const Admin = React.memo(() => {
       <Routes>
         <Route index path="/*" element={<Dashboard />} />
         <Route path="pages/*" element={<Pages />} />
-
         <Route path="components/*" element={<Components />} />
         <Route path="features/*" element={<Features />} />
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>

@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
+// import { ReactSVG } from 'react-svg';
 import { SettingDropdwon } from './auth-info-style';
 import Heading from '../../heading/heading';
 import { Popover } from '../../popup/popup';
@@ -74,7 +74,7 @@ const Settings = React.memo(() => {
     <div className="ninjadash-nav-actions__settings">
       <Popover placement="bottomRight" content={content} action="click">
         <Link to="#" className="ninjadash-nav-action-link">
-          <ReactSVG src={require('../../../static/img/icon/setting.svg').default} />
+          {/* <ReactSVG src={require('../../../static/img/icon/setting.svg').default} /> */}
         </Link>
       </Popover>
     </div>

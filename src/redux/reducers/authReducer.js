@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-// import { setUserData } from '../reducers/authReducer'; // Assuming this is the path to your setUserData action creator
-import { toast } from 'react-hot-toast'; // Assuming you have imported toast from 'react-hot-toast'
+import { toast } from 'react-hot-toast';
 
 // login action
 export const login = createAsyncThunk(
@@ -29,14 +28,14 @@ export const login = createAsyncThunk(
       Cookies.set('access_token', Token);
       Cookies.set('logedIn', true);
       dispatch(setUserData(userData));
-      navigate('/admin');
+      navigate('/admin/features/ledger-report');
       toast.success('Login successful!');
 
       return true;
     } catch (error) {
       console.error('Error logging in:', error);
       toast.error('Login failed. Please check your login credentials and try again.');
-      throw error; // Re-throw the error to handle it in the component
+      throw error;
     }
   },
 );

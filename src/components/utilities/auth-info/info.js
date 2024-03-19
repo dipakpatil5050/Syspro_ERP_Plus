@@ -27,13 +27,9 @@ const AuthInfo = React.memo(() => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
   const CompanyName = userData?.Data?.CompanyName;
+  const profile = userData?.Data?.ProfileImg;
 
-  // const [state, setState] = useState({
-  //   flag: 'en',
-  // });
   const navigate = useNavigate();
-  // const { i18n } = useTranslation();
-  // const { flag } = state;
 
   const SignOut = (e) => {
     e.preventDefault();
@@ -47,7 +43,7 @@ const AuthInfo = React.memo(() => {
     <UserDropDwon>
       <div className="user-dropdwon">
         <figure className="user-dropdwon__info">
-          <img src={require('../../../static/img/avatar/chat-auth.png')} alt="" />
+          <img src={profile} width={50} alt="" />
           <figcaption>
             <Heading as="h5">{CompanyName}</Heading>
             <p>Client</p>

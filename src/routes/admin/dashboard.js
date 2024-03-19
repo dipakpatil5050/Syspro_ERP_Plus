@@ -9,7 +9,6 @@ function DashboardRoutes() {
   return (
     <Routes>
       <Route index element={<Dashboard />} />
-
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

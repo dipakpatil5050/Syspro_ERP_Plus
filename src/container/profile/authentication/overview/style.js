@@ -16,6 +16,8 @@ const AuthenticationWrap = Styled.div`
   }
   .ninjadash-authentication-brand{
     text-align: center;
+    width="139.467";
+    height="31.797"    
   }
 `;
 

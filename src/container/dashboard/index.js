@@ -14,7 +14,7 @@ const BrowserState = lazy(() => import('./overview/index/BrowserState'));
 function Dashboard() {
   const PageRoutes = [
     {
-      path: 'index',
+      // path: 'index',
       breadcrumbName: 'Dashboard',
     },
     {

@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, Row } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { AuthFormWrap } from '../../container/profile/authentication/overview/style';
@@ -9,13 +9,14 @@ import { setuserMpinData } from '../../redux/reducers/authReducer';
 
 function ClientMpin() {
   const [mPin, setMPin] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // const isLoading = useSelector((state) => state.auth.loading);
   // const [form] = Form.useForm();
 
   const handleInputChange = (e) => {
-    setMPin(e.target.value);
+    setMPin(e.target.value.toUpperCase());
   };
 
   const fetchData = async () => {
@@ -27,12 +28,13 @@ function ClientMpin() {
     };
 
     try {
+      setIsLoading(true);
       const response = await axios.post(mpinapi, { mPin }, { headers });
 
       const apidata = response.data?.Data;
       const apiMpin = apidata?.mPin;
       dispatch(setuserMpinData(response.data));
-
+      setIsLoading(false);
       if (apiMpin === mPin) {
         navigate('/login');
         toast.success('Mpin Verified !');
@@ -43,6 +45,7 @@ function ClientMpin() {
     } catch (error) {
       toast.error('Invalid MPIN');
       console.error('Error fetching data:', error);
+      setIsLoading(false);
     }
   };
 
@@ -60,7 +63,7 @@ function ClientMpin() {
       <Col xxl={6} xl={8} md={12} sm={18} xs={24}>
         <AuthFormWrap>
           <div className="ninjadash-authentication-top">
-            <h2 className="ninjadash-authentication-top__title">Mpin to Galaxy Infotech</h2>
+            <h2 className="ninjadash-authentication-top__title">mPin to Galaxy Infotech</h2>
           </div>
           <div className="ninjadash-authentication-content">
             <Form name="login" onFinish={handlempinSubmit} layout="vertical">
@@ -68,10 +71,10 @@ function ClientMpin() {
                 name="mPin"
                 rules={[{ message: 'Please input your mpin !', required: true }]}
                 // initialValue="SYSPRO04"
-                label="Enter Mpin to connect"
+                label="Connect to your Business"
               >
                 <Input
-                  placeholder="******"
+                  placeholder="Enter your mPin"
                   value={mPin}
                   onChange={handleInputChange}
                   name="mPin"
@@ -81,20 +84,19 @@ function ClientMpin() {
 
               <Form.Item>
                 <Button className="btn-signin" htmlType="submit" type="primary" size="large" onClick={handlempinSubmit}>
-                  {/* {isLoading ? 'Loading...' : 'Connect Now'} */}
-                  Connect
+                  {isLoading ? 'Connecting...' : 'Connect Now'}
                 </Button>
               </Form.Item>
-              <p className="ninjadash-form-divider">
+              {/* <p className="ninjadash-form-divider">
                 <span>Or</span>
-              </p>
+              </p> */}
             </Form>
           </div>
-          <div className="ninjadash-authentication-bottom">
+          {/* <div className="ninjadash-authentication-bottom">
             <p>
               Don`t have Mpin?<Link to="/admin">Dashboard</Link>
             </p>
-          </div>
+          </div> */}
         </AuthFormWrap>
       </Col>
     </Row>
