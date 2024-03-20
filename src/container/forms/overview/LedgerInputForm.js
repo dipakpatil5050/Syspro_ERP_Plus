@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Form, DatePicker, Select, Button, Spin, Card } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Row, Col, Form, DatePicker, Button, Spin } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import Select from 'react-select';
 import { HorizontalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
@@ -36,20 +37,30 @@ function LedgerInputForm() {
 
   const currentDate = new Date();
   const defaultFromDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
-  const defaultToDate = new Date();
+  const defaultToDate = new Date(); // This should be the current date
 
-  //   const formatDate = (date) => {
-  //     const day = date.getDate();
-  //     const month = date.getMonth() + 1;
-  //     const year = date.getFullYear();
-  //     return `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
-  //   };
+  const formatDate = (date) => {
+    if (!(date instanceof Date)) {
+      date = new Date(date);
+    }
+
+    // Extract day, month, and year from the date object
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    // Pad day and month with leading zeros if needed
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
+
+    // Format the date as DD-MM-YYYY
+    return `${formattedDay}-${formattedMonth}-${year}`;
+  };
 
   const [fromDate, setFromDate] = useState(defaultFromDate);
   const [toDate, setToDate] = useState(defaultToDate);
   const [viewPdf, setViewPdf] = useState('');
-
-  const [selectedOption, setSelectedOption] = useState(null);
+  const selectedOptionRef = useRef(null);
 
   const fetchLedgerReport = async () => {
     const LedgerReportAPI = `${ServerBaseUrl}api/CommonFas/LedgerReport`;
@@ -87,10 +98,12 @@ function LedgerInputForm() {
 
   //    PDF API
   const fetchPDF = async () => {
-    const PDFAPI = `${ServerBaseUrl}/api/CommonFas/LedgerReportPost`;
+    const formattedFromDate = formatDate(fromDate);
+    const formattedToDate = formatDate(toDate);
+    const PDFAPI = `${ServerBaseUrl}api/CommonFas/LedgerReportPost`;
     const body = {
-      FromDate: formatDate(fromDate),
-      ToDate: formatDate(toDate),
+      FromDate: formattedFromDate,
+      ToDate: formattedToDate,
       AmountGtEq: 0,
       CustomFilter: '',
       IntReportId: 0,
@@ -102,8 +115,8 @@ function LedgerInputForm() {
       CompanyAddress1: Companyaddress1,
       CompanyAddress2: Companyaddress2,
       type: 'pdf',
-      ReportID: selectedOption.value,
-      ReportName: selectedOption.label,
+      ReportID: selectedOptionRef.current.value,
+      ReportName: selectedOptionRef.current.label,
       SysKey: '1',
       CompanyID: Companyid,
       YearMasterID: YearMasterid,
@@ -122,16 +135,17 @@ function LedgerInputForm() {
       client: SlugUrl,
       'x-api-key': mPin,
     };
-    const response = await axios.post(PDFAPI, body, { headers });
     try {
+      const response = await axios.post(PDFAPI, body, { headers });
       const ledgerReportPDF = response?.data?.Data;
       const pdfurl = ledgerReportPDF?.ReportPath;
-      setViewPdf(pdfurl);
       console.log(pdfurl);
-      dispatch(setLedgerReport(ledgerReportData));
+      setViewPdf(pdfurl);
+      // dispatch(setLedgerReport(ledgerReportData));
     } catch (error) {
       console.error('Error in Ledger report data fetching:', error);
-      //   toast.error('Error in fetching Ledger report data from API Server.');
+      toast.error('Error in fetching Ledger report data from API Server.');
+      throw error;
     }
   };
 
@@ -152,8 +166,10 @@ function LedgerInputForm() {
     fetchLedgerReport();
   }, []);
 
-  const handleSelectChange = (value) => {
-    setSelectedOption(value);
+  const handleSelectChange = (selectedOption) => {
+    console.log('Selected value:', selectedOption.value);
+    console.log('Selected label:', selectedOption.label);
+    selectedOptionRef.current = selectedOption;
   };
 
   return (
@@ -169,7 +185,12 @@ function LedgerInputForm() {
                 <Form.Item name="fromdate">
                   <DatePicker
                     selected={fromDate}
-                    onChange={(date) => setFromDate(date)}
+                    value={fromDate}
+                    onChange={(date) => {
+                      console.log('Selected fromDate:', date);
+                      console.log('fromDate variable is:', fromDate);
+                      setFromDate(date);
+                    }}
                     id="from-date"
                     format="DD-MM-YYYY"
                     name="from-date"
@@ -185,7 +206,12 @@ function LedgerInputForm() {
                 <Form.Item name="todate">
                   <DatePicker
                     selected={toDate}
-                    onChange={(date) => setToDate(date)}
+                    value={toDate}
+                    onChange={(date) => {
+                      console.log('Selected fromDate:', date);
+                      console.log('Todate from variable is:', toDate);
+                      setToDate(date);
+                    }}
                     id="to-date"
                     name="to-date"
                     format="DD-MM-YYYY"
@@ -233,7 +259,6 @@ function LedgerInputForm() {
                     placeholder="Select Party"
                     allowClear
                     showSearch
-                    optionFilterProp="children"
                   />
                 </Form.Item>
               </Col>
@@ -260,26 +285,23 @@ function LedgerInputForm() {
                 </Form.Item>
               </Col>
             </Row>
-            {/* onClick={handleLedgerReportPDF} */}
+
             <Button type="primary" loading={loading} onClick={handleLedgerReportPDF}>
               Apply
             </Button>
           </Form>
-          <Card>
-            {viewPdf && (
-              <div className="pdf-container border-2 z-50 absolute">
-                {/* <button className="flex items-center justify-end w-full pr-14" onClick={() => setViewPdf(null)}>
+        </Cards>
+        <Cards title="Ledger Report PDF Document">
+          {viewPdf && (
+            <div className="pdf-container border-2 z-50 absolute">
+              <Button type="primary" onClick={() => setViewPdf(null)}>
                 Close
-            </button> */}
-                <Button type="primary" onClick={() => setViewPdf(null)}>
-                  Close
-                </Button>
-                <iframe className="w-screen h-screen" src={viewPdf} title="Ledger Reports">
-                  Presss me: <a href={viewPdf}>Download PDF</a>
-                </iframe>
-              </div>
-            )}
-          </Card>
+              </Button>
+              <iframe src={viewPdf} title="Ledger Reports">
+                Presss me: <a href={viewPdf}>Download PDF</a>
+              </iframe>
+            </div>
+          )}
         </Cards>
       </HorizontalFormStyleWrap>
     </BasicFormWrapper>

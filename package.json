@@ -65,6 +65,7 @@
     "react-router-dom": "^6.3.0",
     "react-rte": "git+https://github.com/gieoon/react-rte.git",
     "react-scripts": "5.0.1",
+    "react-select": "^5.8.0",
     "react-simple-maps": "^3.0.0",
     "react-svg": "^14.1.9",
     "react-tagsinput": "^3.19.0",
