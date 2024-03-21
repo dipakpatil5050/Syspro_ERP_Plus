@@ -134,9 +134,7 @@ function LedgerInputForm() {
       const response = await axios.post(PDFAPI, body, { headers });
       const ledgerReportPDF = response?.data?.Data;
       const pdfurl = ledgerReportPDF?.ReportPath;
-      console.log('Ledger Report PDF Link :', pdfurl);
       setViewPdf(pdfurl);
-      // dispatch(setLedgerReport(ledgerReportData));
     } catch (error) {
       console.error('Error in Ledger report data fetching:', error);
       toast.error('Error in fetching Ledger report data from API Server.');
@@ -179,7 +177,7 @@ function LedgerInputForm() {
                 <Col md={6} xs={24}>
                   <label htmlFor="fromdate">From Date</label>
                 </Col>
-                <Col md={18} xs={24}>
+                <Col md={8} xs={24}>
                   <Form.Item name="fromdate">
                     <DatePicker
                       selected={fromDate}
@@ -198,7 +196,7 @@ function LedgerInputForm() {
                 <Col md={6} xs={24}>
                   <label htmlFor="todate">To Date</label>
                 </Col>
-                <Col md={18} xs={24}>
+                <Col md={8} xs={24}>
                   <Form.Item name="todate">
                     <DatePicker
                       selected={toDate}
@@ -219,9 +217,8 @@ function LedgerInputForm() {
                 <Col md={6} xs={24}>
                   <label htmlFor="report-type">Report Type</label>
                 </Col>
-                <Col md={18} xs={24}>
+                <Col md={8} xs={24}>
                   <Form.Item name="report-type">
-                    {/* <Input placeholder="Select report type" /> */}
                     <Select
                       id="party"
                       name="party"
@@ -242,7 +239,7 @@ function LedgerInputForm() {
                 <Col md={6} xs={24}>
                   <label htmlFor="party">Party</label>
                 </Col>
-                <Col md={18} xs={24}>
+                <Col md={8} xs={24}>
                   <Form.Item name="party">
                     <Select
                       id="party"
@@ -263,7 +260,7 @@ function LedgerInputForm() {
                 <Col md={6} xs={24}>
                   <label htmlFor="account-group">Account Group</label>
                 </Col>
-                <Col md={18} xs={24}>
+                <Col md={8} xs={24}>
                   <Form.Item name="account-group">
                     <Select
                       id="account-group"
@@ -290,11 +287,15 @@ function LedgerInputForm() {
         )}
         {viewPdf && (
           <Main title="Ledger Report PDF Document">
-            <Button onClick={togglePdfViewer}>{viewPdf ? '❌' : 'View PDF'}</Button>
+            <Row justify="end">
+              <Col>
+                <Button onClick={togglePdfViewer}>{viewPdf ? '❌' : 'View PDF'}</Button>
+              </Col>
+            </Row>
             {viewPdf && (
               <div className="pdf-container">
                 <iframe src={viewPdf} title="Ledger Report" width="100%" height="500px">
-                  view PDF to choose Data
+                  view PDF
                 </iframe>
               </div>
             )}
