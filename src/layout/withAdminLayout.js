@@ -20,6 +20,7 @@ const { theme } = require('../config/theme/themeVariables');
 const { Header, Sider, Content } = Layout;
 
 const ThemeLayout = (WrappedComponent) => {
+  const currentYear = new Date().getFullYear();
   class LayoutComponent extends Component {
     constructor(props) {
       super(props);
@@ -215,7 +216,7 @@ const ThemeLayout = (WrappedComponent) => {
                     <Row>
                       <Col md={12} xs={24}>
                         <span className="admin-footer__copyright">
-                          © 2024<Link to="#">Galaxy Infotech</Link>
+                          © {currentYear} <Link to="#">Galaxy Infotech</Link>
                         </span>
                       </Col>
                       <Col md={12} xs={24}>
