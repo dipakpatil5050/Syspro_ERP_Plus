@@ -33,11 +33,15 @@ function ClientMpin() {
 
       const apidata = response.data?.Data;
       const apiMpin = apidata?.mPin;
+      // const Message = response.data?.Message;
       dispatch(setuserMpinData(response.data));
       setIsLoading(false);
       if (apiMpin === mPin) {
         navigate('/login');
         toast.success('Mpin Verified !');
+        // toast.success(Message, {
+        //   position: 'bottom-center',
+        // });
       } else {
         toast.error('Invalid MPIN');
         setMPin('');

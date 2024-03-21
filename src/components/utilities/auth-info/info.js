@@ -27,6 +27,7 @@ const AuthInfo = React.memo(() => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
   const CompanyName = userData?.Data?.CompanyName;
+  const PremiseName = userData?.Data?.PremiseName;
   const profile = userData?.Data?.ProfileImg;
 
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const AuthInfo = React.memo(() => {
           <img src={profile} width={50} alt="" />
           <figcaption>
             <Heading as="h5">{CompanyName}</Heading>
-            <p>Client</p>
+            <p>{PremiseName}</p>
           </figcaption>
         </figure>
         <ul className="user-dropdwon__links">

@@ -7,7 +7,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import { HorizontalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
-import { BasicFormWrapper } from '../../styled';
+import { BasicFormWrapper, Main } from '../../styled';
 import { setLedgerReport } from '../../../redux/reducers/authReducer';
 
 function LedgerInputForm() {
@@ -37,23 +37,18 @@ function LedgerInputForm() {
 
   const currentDate = new Date();
   const defaultFromDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
-  const defaultToDate = new Date(); // This should be the current date
+  const defaultToDate = new Date();
 
   const formatDate = (date) => {
     if (!(date instanceof Date)) {
       date = new Date(date);
     }
 
-    // Extract day, month, and year from the date object
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-
-    // Pad day and month with leading zeros if needed
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
-
-    // Format the date as DD-MM-YYYY
     return `${formattedDay}-${formattedMonth}-${year}`;
   };
 
@@ -139,7 +134,7 @@ function LedgerInputForm() {
       const response = await axios.post(PDFAPI, body, { headers });
       const ledgerReportPDF = response?.data?.Data;
       const pdfurl = ledgerReportPDF?.ReportPath;
-      console.log(pdfurl);
+      console.log('Ledger Report PDF Link :', pdfurl);
       setViewPdf(pdfurl);
       // dispatch(setLedgerReport(ledgerReportData));
     } catch (error) {
@@ -167,142 +162,144 @@ function LedgerInputForm() {
   }, []);
 
   const handleSelectChange = (selectedOption) => {
-    console.log('Selected value:', selectedOption.value);
-    console.log('Selected label:', selectedOption.label);
     selectedOptionRef.current = selectedOption;
+  };
+
+  const togglePdfViewer = () => {
+    setViewPdf(!viewPdf);
   };
 
   return (
     <BasicFormWrapper>
       <HorizontalFormStyleWrap className="sDash_input-form">
-        <Cards title="Ledger Report Form">
-          <Form name="input-form" layout="horizontal">
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="fromdate">From Date</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="fromdate">
-                  <DatePicker
-                    selected={fromDate}
-                    value={fromDate}
-                    onChange={(date) => {
-                      console.log('Selected fromDate:', date);
-                      console.log('fromDate variable is:', fromDate);
-                      setFromDate(date);
-                    }}
-                    id="from-date"
-                    format="DD-MM-YYYY"
-                    name="from-date"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="todate">To Date</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="todate">
-                  <DatePicker
-                    selected={toDate}
-                    value={toDate}
-                    onChange={(date) => {
-                      console.log('Selected fromDate:', date);
-                      console.log('Todate from variable is:', toDate);
-                      setToDate(date);
-                    }}
-                    id="to-date"
-                    name="to-date"
-                    format="DD-MM-YYYY"
-                    minDate={fromDate}
-                    maxDate={new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate())}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="report-type">Report Type</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="report-type">
-                  {/* <Input placeholder="Select report type" /> */}
-                  <Select
-                    id="party"
-                    name="party"
-                    options={ledgerReportData?.Table.map((report) => ({
-                      value: report.Rep_Rpt,
-                      label: report.Rep_Name,
-                    }))}
-                    placeholder="Select Report Type"
-                    onChange={handleSelectChange}
-                    allowClear
-                    showSearch
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="party">Party</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="party">
-                  <Select
-                    id="party"
-                    name="party"
-                    options={ledgerReportData?.Table3.map((report) => ({
-                      value: report.Account_ID,
-                      label: report.Account_Name,
-                    }))}
-                    placeholder="Select Party"
-                    allowClear
-                    showSearch
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col md={6} xs={24}>
-                <label htmlFor="account-group">Account Group</label>
-              </Col>
-              <Col md={18} xs={24}>
-                <Form.Item name="account-group">
-                  {/* <Input placeholder="Select your account group " /> */}
-                  <Select
-                    id="account-group"
-                    name="account-group"
-                    options={ledgerReportData?.Table2.map((report) => ({
-                      value: report.AccountGroup_id,
-                      label: report.AccountGroup_Name,
-                    }))}
-                    placeholder="Select Account Group"
-                    allowClear
-                    showSearch
-                    notFoundContent={loading ? <Spin size="small" /> : null}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
+        {!viewPdf && (
+          <Cards title="Ledger Report Form">
+            <Form name="input-form" layout="horizontal">
+              <Row align="middle">
+                <Col md={6} xs={24}>
+                  <label htmlFor="fromdate">From Date</label>
+                </Col>
+                <Col md={18} xs={24}>
+                  <Form.Item name="fromdate">
+                    <DatePicker
+                      selected={fromDate}
+                      value={fromDate}
+                      onChange={(date) => {
+                        setFromDate(date);
+                      }}
+                      id="from-date"
+                      format="DD-MM-YYYY"
+                      name="from-date"
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col md={6} xs={24}>
+                  <label htmlFor="todate">To Date</label>
+                </Col>
+                <Col md={18} xs={24}>
+                  <Form.Item name="todate">
+                    <DatePicker
+                      selected={toDate}
+                      value={toDate}
+                      onChange={(date) => {
+                        setToDate(date);
+                      }}
+                      id="to-date"
+                      name="to-date"
+                      format="DD-MM-YYYY"
+                      minDate={fromDate}
+                      maxDate={new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate())}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col md={6} xs={24}>
+                  <label htmlFor="report-type">Report Type</label>
+                </Col>
+                <Col md={18} xs={24}>
+                  <Form.Item name="report-type">
+                    {/* <Input placeholder="Select report type" /> */}
+                    <Select
+                      id="party"
+                      name="party"
+                      options={ledgerReportData?.Table.map((report) => ({
+                        value: report.Rep_Rpt,
+                        label: report.Rep_Name,
+                      }))}
+                      placeholder="Select Report Type"
+                      onChange={handleSelectChange}
+                      allowClear
+                      showSearch
+                      isClearable
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col md={6} xs={24}>
+                  <label htmlFor="party">Party</label>
+                </Col>
+                <Col md={18} xs={24}>
+                  <Form.Item name="party">
+                    <Select
+                      id="party"
+                      name="party"
+                      options={ledgerReportData?.Table3.map((report) => ({
+                        value: report.Account_ID,
+                        label: report.Account_Name,
+                      }))}
+                      placeholder="Select Party"
+                      allowClear
+                      showSearch
+                      isClearable
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col md={6} xs={24}>
+                  <label htmlFor="account-group">Account Group</label>
+                </Col>
+                <Col md={18} xs={24}>
+                  <Form.Item name="account-group">
+                    <Select
+                      id="account-group"
+                      name="account-group"
+                      options={ledgerReportData?.Table2.map((report) => ({
+                        value: report.AccountGroup_id,
+                        label: report.AccountGroup_Name,
+                      }))}
+                      placeholder="Select Account Group"
+                      allowClear
+                      showSearch
+                      isClearable
+                      notFoundContent={loading ? <Spin size="small" /> : null}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
 
-            <Button type="primary" loading={loading} onClick={handleLedgerReportPDF}>
-              Apply
-            </Button>
-          </Form>
-        </Cards>
-        <Cards title="Ledger Report PDF Document">
-          {viewPdf && (
-            <div className="pdf-container border-2 z-50 absolute">
-              <Button type="primary" onClick={() => setViewPdf(null)}>
-                Close
+              <Button type="primary" loading={loading} onClick={handleLedgerReportPDF}>
+                Apply
               </Button>
-              <iframe src={viewPdf} title="Ledger Reports">
-                Presss me: <a href={viewPdf}>Download PDF</a>
-              </iframe>
-            </div>
-          )}
-        </Cards>
+            </Form>
+          </Cards>
+        )}
+        {viewPdf && (
+          <Main title="Ledger Report PDF Document">
+            <Button onClick={togglePdfViewer}>{viewPdf ? '❌' : 'View PDF'}</Button>
+            {viewPdf && (
+              <div className="pdf-container">
+                <iframe src={viewPdf} title="Ledger Report" width="100%" height="500px">
+                  view PDF to choose Data
+                </iframe>
+              </div>
+            )}
+          </Main>
+        )}
       </HorizontalFormStyleWrap>
     </BasicFormWrapper>
   );

@@ -12,7 +12,11 @@ import { Main } from '../../container/styled';
 // import { Cards } from '../../components/cards/frame/cards-frame';
 import { PageHeader } from '../page-headers/page-headers';
 
+import useDocumentTitle from '../dynamic-Page-Title/useDocumentTitle';
+
 function LedgerReport() {
+  useDocumentTitle('Ledger Report');
+
   const PageRoutes = [
     {
       // path: 'index',
@@ -29,8 +33,8 @@ function LedgerReport() {
       <PageHeader className="ninjadash-page-header-main" title="Ledger Report" routes={PageRoutes} />
       <div className="">
         <Main>
-          <Row gutter={25}>
-            <Col lg={12} xs={24}>
+          <Row gutter={30}>
+            <Col lg={24} xs={50}>
               <LedgerInputForm />
             </Col>
           </Row>

@@ -3,6 +3,7 @@ import { Row, Col, Skeleton } from 'antd';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Cards } from '../../components/cards/frame/cards-frame';
 import { Main } from '../styled';
+import useDocumentTitle from '../../components/dynamic-Page-Title/useDocumentTitle';
 
 const OverviewDataList = lazy(() => import('./overview/index/OverviewDataList'));
 const SalesReport = lazy(() => import('./overview/index/SalesReport'));
@@ -12,6 +13,7 @@ const TopSellingProduct = lazy(() => import('./overview/index/TopSellingProducts
 const BrowserState = lazy(() => import('./overview/index/BrowserState'));
 
 function Dashboard() {
+  useDocumentTitle('Dashboard');
   const PageRoutes = [
     {
       // path: 'index',
