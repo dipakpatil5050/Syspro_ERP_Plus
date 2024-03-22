@@ -126,14 +126,8 @@ const ThemeLayout = (WrappedComponent) => {
                       className={topMenu && window.innerWidth > 991 ? 'ninjadash-logo top-menu' : 'ninjadash-logo'}
                       to="/admin"
                     >
-                      <img
-                        src={
-                          layoutMode === 'lightMode'
-                            ? require(`../static/img/logo_dark.svg`).default
-                            : require(`../static/img/logo_white.svg`).default
-                        }
-                        alt=""
-                      />
+                      {/* main admin after login homepage logo */}
+                      <img src="https://i.imgur.com/3uXwgSZ.png" alt="" />
                     </Link>
                     {!topMenu || window.innerWidth <= 991 ? (
                       <Button type="link" onClick={toggleCollapsed}>

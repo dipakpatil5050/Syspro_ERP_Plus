@@ -126,7 +126,7 @@ const AuthInfo = React.memo(() => {
       <div className="ninjadash-nav-actions__item ninjadash-nav-actions__author">
         <Popover placement="bottomRight" content={userContent} action="click">
           <Link to="#" className="ninjadash-nav-action-link">
-            <Avatar src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/matureman1-512.png" />
+            <Avatar src={profile} />
             <span className="ninjadash-nav-actions__author--name">{CompanyName}</span>
             <UilAngleDown />
           </Link>

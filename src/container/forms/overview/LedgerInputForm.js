@@ -5,6 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import Select from 'react-select';
+import './ledgerreport.css';
+
+import { IoMdClose } from 'react-icons/io';
 import { HorizontalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper, Main } from '../../styled';
@@ -169,9 +172,17 @@ function LedgerInputForm() {
 
   return (
     <BasicFormWrapper>
+      {loading && (
+        <div>
+          <div className="overlay" />
+          <div className="loader-container">
+            <Spin />
+          </div>
+        </div>
+      )}
       <HorizontalFormStyleWrap className="sDash_input-form">
         {!viewPdf && (
-          <Cards title="Ledger Report Form">
+          <Cards title="Ledger Report Form ">
             <Form name="input-form" layout="horizontal">
               <Row align="middle">
                 <Col md={6} xs={24}>
@@ -279,22 +290,28 @@ function LedgerInputForm() {
                 </Col>
               </Row>
 
-              <Button type="primary" loading={loading} onClick={handleLedgerReportPDF}>
+              <Button type="primary" onClick={handleLedgerReportPDF}>
                 Apply
               </Button>
             </Form>
           </Cards>
         )}
+
         {viewPdf && (
-          <Main title="Ledger Report PDF Document">
+          <Main
+            style={{ backgroundColor: 'white', borderRadius: '5px', padding: '10px', border: '1px solid #d9d9d9' }}
+            title="Ledger Report PDF Document"
+          >
             <Row justify="end">
               <Col>
-                <Button onClick={togglePdfViewer}>{viewPdf ? '❌' : 'View PDF'}</Button>
+                <Button type="dashed" onClick={togglePdfViewer}>
+                  {viewPdf ? <IoMdClose size={22} /> : 'View PDF'}
+                </Button>
               </Col>
             </Row>
             {viewPdf && (
               <div className="pdf-container">
-                <iframe src={viewPdf} title="Ledger Report" width="100%" height="500px">
+                <iframe src={viewPdf} title="Ledger Report" width="100%" height="700px">
                   view PDF
                 </iframe>
               </div>
