@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import Select from 'react-select';
+import moment from 'moment';
 import './ledgerreport.css';
 
 import { IoMdClose } from 'react-icons/io';
@@ -39,8 +40,10 @@ function LedgerInputForm() {
   const Companyaddress2 = userheaderdata?.CompanyAddress2;
 
   const currentDate = new Date();
-  const defaultFromDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
-  const defaultToDate = new Date();
+  const defaultFromDate = moment(
+    new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate()),
+  );
+  const defaultToDate = moment(new Date());
 
   const formatDate = (date) => {
     if (!(date instanceof Date)) {
@@ -58,7 +61,8 @@ function LedgerInputForm() {
   const [fromDate, setFromDate] = useState(defaultFromDate);
   const [toDate, setToDate] = useState(defaultToDate);
   const [viewPdf, setViewPdf] = useState('');
-  const selectedOptionRef = useRef(null);
+  const selectedReportTypeOptionRef = useRef(null);
+  const selectedPartyOptionRef = useRef(null);
 
   const fetchLedgerReport = async () => {
     const LedgerReportAPI = `${ServerBaseUrl}api/CommonFas/LedgerReport`;
@@ -103,7 +107,6 @@ function LedgerInputForm() {
       FromDate: formattedFromDate,
       ToDate: formattedToDate,
       AmountGtEq: 0,
-      CustomFilter: '',
       IntReportId: 0,
       ExcludeNoTransaction: 1,
       CompanyName: Companyname,
@@ -113,8 +116,10 @@ function LedgerInputForm() {
       CompanyAddress1: Companyaddress1,
       CompanyAddress2: Companyaddress2,
       type: 'pdf',
-      ReportID: selectedOptionRef.current.value,
-      ReportName: selectedOptionRef.current.label,
+      CustomFilter: `AND A.Account_ID IN (${selectedPartyOptionRef.current.value})`,
+      AccountGroupList: null,
+      ReportID: selectedReportTypeOptionRef.current.value,
+      ReportName: selectedReportTypeOptionRef.current.label,
       SysKey: '1',
       CompanyID: Companyid,
       YearMasterID: YearMasterid,
@@ -162,10 +167,13 @@ function LedgerInputForm() {
     fetchLedgerReport();
   }, []);
 
-  const handleSelectChange = (selectedOption) => {
-    selectedOptionRef.current = selectedOption;
+  const handleSelectReportTypeChange = (selectedOption) => {
+    selectedReportTypeOptionRef.current = selectedOption;
   };
 
+  const handleSelectPartyChange = (selectedOption) => {
+    selectedPartyOptionRef.current = selectedOption;
+  };
   const togglePdfViewer = () => {
     setViewPdf(!viewPdf);
   };
@@ -191,8 +199,7 @@ function LedgerInputForm() {
                 <Col md={8} xs={24}>
                   <Form.Item name="fromdate">
                     <DatePicker
-                      selected={fromDate}
-                      value={fromDate}
+                      defaultValue={defaultFromDate}
                       onChange={(date) => {
                         setFromDate(date);
                       }}
@@ -210,8 +217,7 @@ function LedgerInputForm() {
                 <Col md={8} xs={24}>
                   <Form.Item name="todate">
                     <DatePicker
-                      selected={toDate}
-                      value={toDate}
+                      defaultValue={defaultToDate}
                       onChange={(date) => {
                         setToDate(date);
                       }}
@@ -238,7 +244,7 @@ function LedgerInputForm() {
                         label: report.Rep_Name,
                       }))}
                       placeholder="Select Report Type"
-                      onChange={handleSelectChange}
+                      onChange={handleSelectReportTypeChange}
                       allowClear
                       showSearch
                       isClearable
@@ -260,7 +266,9 @@ function LedgerInputForm() {
                         label: report.Account_Name,
                       }))}
                       placeholder="Select Party"
+                      onChange={handleSelectPartyChange}
                       allowClear
+                      // isMulti
                       showSearch
                       isClearable
                     />
@@ -289,10 +297,13 @@ function LedgerInputForm() {
                   </Form.Item>
                 </Col>
               </Row>
-
-              <Button type="primary" onClick={handleLedgerReportPDF}>
-                Apply
-              </Button>
+              <Row justify="end">
+                <Col>
+                  <Button type="primary" onClick={handleLedgerReportPDF}>
+                    Apply
+                  </Button>
+                </Col>
+              </Row>
             </Form>
           </Cards>
         )}

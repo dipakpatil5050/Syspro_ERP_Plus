@@ -1,5 +1,5 @@
 {
-  "name": "HexaDash",
+  "name": "Galaxy Infotech",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -35,7 +35,7 @@
     "js-cookie": "^2.2.1",
     "leaflet": "1.9.3",
     "leaflet.markercluster": "1.5.3",
-    "moment": "^2.29.1",
+    "moment": "^2.30.1",
     "peity-react": "0.0.7",
     "prop-types": "^15.8.1",
     "react": "^18.1.0",
