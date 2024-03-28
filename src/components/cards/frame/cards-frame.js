@@ -22,13 +22,15 @@ function Cards(props) {
     bodypadding,
     className,
   } = props;
+
+  const shadowStyle = border ? { boxShadow: '0 10px 16px rgba(0, 0, 0, 0.2)' } : {};
   return (
     <>
       {!headless ? (
         <CardFrame
           size={size}
           title={title}
-          bodyStyle={bodyStyle && bodyStyle}
+          bodyStyle={{ ...bodyStyle, ...shadowStyle }}
           headStyle={headStyle && headStyle}
           bordered={border}
           className={className}
@@ -53,7 +55,7 @@ function Cards(props) {
       ) : (
         <CardFrame
           bodypadding={bodypadding && bodypadding}
-          bodyStyle={bodyStyle && bodyStyle}
+          bodyStyle={{ ...bodyStyle, ...shadowStyle }}
           size={size}
           style={{ width: '100%' }}
           bordered={border}

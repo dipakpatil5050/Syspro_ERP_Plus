@@ -37,7 +37,7 @@ import {
   // UilSetting,
   // UilShoppingCart,
   // UilSquareFull,
-  // UilTable,
+  UilTable,
   // UilUsdCircle,
   // UilUsersAlt,
   // UilWindowSection,
@@ -299,6 +299,7 @@ function MenuItems({ toggleCollapsed }) {
       null,
       'group',
     ),
+
     // getItem(t('email'), 'email', !topMenu && <UilEnvelope />, [
     //   getItem(
     //     <NavLink onClick={toggleCollapsed} to={`${path}/email/inbox`}>
@@ -1076,6 +1077,9 @@ function MenuItems({ toggleCollapsed }) {
     //     null,
     //   ),
     // ]),
+
+    // Account Reports
+
     getItem(t('Account Reports'), 'forms', !topMenu && <UilCompactDisc />, [
       // getItem(
       //   <NavLink onClick={toggleCollapsed} to={`${path}/features/form-layout`}>
@@ -1108,22 +1112,25 @@ function MenuItems({ toggleCollapsed }) {
       //   null,
       // ),
     ]),
-    // getItem(t('table'), 'table', !topMenu && <UilTable />, [
-    //   getItem(
-    //     <NavLink onClick={toggleCollapsed} to={`${path}/tables/basic`}>
-    //       {t('basic')} {t('table')}
-    //     </NavLink>,
-    //     'basicTable',
-    //     null,
-    //   ),
-    //   getItem(
-    //     <NavLink onClick={toggleCollapsed} to={`${path}/tables/dataTable`}>
-    //       {t('data')} {t('table')}
-    //     </NavLink>,
-    //     'dataTable',
-    //     null,
-    //   ),
-    // ]),
+
+    // Sale Module
+
+    getItem(t('Sale Module'), 'Sale', !topMenu && <UilTable />, [
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/features/sale-report`}>
+          {t('Sale')} {t('Report')}
+        </NavLink>,
+        'basicTable',
+        null,
+      ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/tables/dataTable`}>
+      //     {t('data')} {t('table')}
+      //   </NavLink>,
+      //   'dataTable',
+      //   null,
+      // ),
+    ]),
     // getItem(t('widgets'), 'widgets', !topMenu && <UilServer />, [
     //   getItem(
     //     <NavLink onClick={toggleCollapsed} to={`${path}/widgets/chart`}>

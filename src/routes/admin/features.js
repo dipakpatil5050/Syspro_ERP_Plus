@@ -6,6 +6,7 @@ const FormLayouts = lazy(() => import('../../container/forms/FormLayout'));
 const FormComponents = lazy(() => import('../../container/forms/FormComponents'));
 const FormValidation = lazy(() => import('../../container/forms/FormValidation'));
 const LegderReport = lazy(() => import('../../components/Reports/LedgerReport'));
+const SaleReport = lazy(() => import('../../components/sale-module/SaleReport'));
 const NotFound = lazy(() => import('../../container/pages/404'));
 
 function FeaturesRoute() {
@@ -13,6 +14,8 @@ function FeaturesRoute() {
     <Routes>
       <Route path="form-layout" element={<FormLayouts />} />
       <Route path="ledger-report" element={<LegderReport />} />
+      <Route path="sale-report" element={<SaleReport />} />
+
       <Route path="form-components" element={<FormComponents />} />
       <Route path="form-validation" element={<FormValidation />} />
       <Route path="*" element={<NotFound />} />
