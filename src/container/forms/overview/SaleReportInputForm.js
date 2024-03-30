@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect, useRef } from 'react';
-import { Row, Col, Form, DatePicker, Button, Spin, Input } from 'antd';
+import { Row, Col, Form, DatePicker, Button, Spin } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -31,6 +31,8 @@ function SaleReportInputForm() {
   const Premiseid = userheaderdata?.PremiseID;
   const Departmentid = userheaderdata?.DepartmentID;
   const Userid = userheaderdata?.UserID;
+  const AccessType = userheaderdata?.Access_Type;
+  const AccessKey = userheaderdata?.Access_Key;
 
   const Companyname = userheaderdata?.CompanyName;
   const CompanyGSTcst = userheaderdata?.CompanyGSTCST;
@@ -40,10 +42,8 @@ function SaleReportInputForm() {
   const Companyaddress2 = userheaderdata?.CompanyAddress2;
 
   const currentDate = new Date();
-  const defaultFromDate = moment(
-    new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate()),
-  );
-  const defaultToDate = moment(new Date());
+  const defaultFromDate = moment(`${currentDate.getFullYear() - 1}-04-01`, 'YYYY-MM-DD');
+  const defaultToDate = moment(`${currentDate.getFullYear()}-03-31`, 'YYYY-MM-DD');
 
   const formatDate = (date) => {
     if (!(date instanceof Date)) {
@@ -58,12 +58,19 @@ function SaleReportInputForm() {
     return `${formattedDay}-${formattedMonth}-${year}`;
   };
 
+  // all variables
   const [fromDate, setFromDate] = useState(defaultFromDate);
   const [toDate, setToDate] = useState(defaultToDate);
+  const [isCompany, setIsCompany] = useState(false);
+  // const [partyFiltervar, setPartyFiltervar] = useState(null);
+  // const [isSupplier, setIsSupplier] = useState(false);
   const [viewPdf, setViewPdf] = useState('');
   const selectedReportTypeOptionRef = useRef(null);
   const selectedPartyOptionRef = useRef(null);
-  const selectedAccountGroupOptionRef = useRef(null);
+  // const [defaultReportType, setDefaultReportType] = useState(null);
+  // const [selectedReportType, setSelectedReportType] = useState(null);
+  const [defaultValue, setDefaultValue] = useState(null);
+  // const selectedAccountGroupOptionRef = useRef(null);
 
   const fetchLedgerReport = async () => {
     const LedgerReportAPI = `${ServerBaseUrl}api/CommonFas/LedgerReport`;
@@ -98,24 +105,22 @@ function SaleReportInputForm() {
       setLoading(false);
     }
   };
-
   //    PDF API
   const fetchPDF = async () => {
     const formattedFromDate = formatDate(fromDate);
     const formattedToDate = formatDate(toDate);
+
     const PDFAPI = `${ServerBaseUrl}api/CommonFas/LedgerReportPost`;
 
-    const partyFilter = selectedPartyOptionRef.current?.value
-      ? `AND A.Account_ID IN (${selectedPartyOptionRef.current.value})`
-      : '';
-
-    // const accountGroupList = selectedAccountGroupOptionRef.current.value
-    //   ? selectedAccountGroupOptionRef.current.value
-    //   : '';
-
-    // const accountGroupFilter = accountGroupList ? `AND A.Account_Type IN (${accountGroupList})` : '';
-
-    // const customFilter = `${partyFilter} ${accountGroupFilter}`;
+    let partyFilter = '';
+    if (AccessType === 'Company') {
+      partyFilter = selectedPartyOptionRef.current?.value
+        ? `AND A.Account_ID IN (${selectedPartyOptionRef.current.value})`
+        : '';
+    } else {
+      const accountId = AccessKey.match(/\((\d+)\)/)[1];
+      partyFilter = `AND A.Account_ID IN (${accountId})`;
+    }
 
     const body = {
       FromDate: formattedFromDate,
@@ -179,6 +184,11 @@ function SaleReportInputForm() {
 
   useEffect(() => {
     fetchLedgerReport();
+    if (AccessType === 'Company') {
+      setIsCompany(true);
+    } else {
+      setIsCompany(false);
+    }
   }, []);
 
   const handleSelectReportTypeChange = (selectedOption) => {
@@ -189,13 +199,26 @@ function SaleReportInputForm() {
     selectedPartyOptionRef.current = selectedOption;
   };
 
-  const handleSelectAccountGroupChange = (selectedOption) => {
-    selectedAccountGroupOptionRef.current = selectedOption;
-  };
+  // const handleSelectAccountGroupChange = (selectedOption) => {
+  //   selectedAccountGroupOptionRef.current = selectedOption;
+  // };
 
   const togglePdfViewer = () => {
     setViewPdf(!viewPdf);
   };
+
+  useEffect(() => {
+    if (ledgerReportData?.Table && ledgerReportData.Table.length > 0) {
+      const defaultOption = {
+        value: ledgerReportData.Table[0].Rep_Rpt,
+        label: ledgerReportData.Table[0].Rep_Name,
+      };
+      // setSelectedReportType(defaultOption);
+      // selectedReportTypeOptionRef.current = defaultOption.label;
+      setDefaultValue(defaultOption);
+      // console.log(selectedReportType);
+    }
+  }, [ledgerReportData]);
 
   return (
     <BasicFormWrapper>
@@ -211,7 +234,7 @@ function SaleReportInputForm() {
         {!viewPdf && (
           <Cards title="Sale Report" border>
             <Form name="input-form" layout="horizontal">
-              <Row gutter={30}>
+              {/* <Row gutter={30}>
                 <Col md={8} xs={24}>
                   <Form.Item name="f-name" label="From Date">
                     <Input placeholder="From Date" />
@@ -222,15 +245,17 @@ function SaleReportInputForm() {
                     <Input placeholder="To Name" />
                   </Form.Item>
                 </Col>
-              </Row>
-              <Row align="middle">
-                <Col md={6} xs={24}>
-                  <label htmlFor="fromdate">From Date</label>
+              </Row> */}
+              <Row align="middle" gutter={40}>
+                {/* From Date */}
+                <Col md={4} xs={24}>
+                  <label htmlFor="fromdate">From Date : </label>
                 </Col>
                 <Col md={8} xs={24}>
-                  <Form.Item name="fromdate">
+                  <Form.Item name="fromdate" rules={[{ required: true, message: 'Please select From Date' }]}>
                     <DatePicker
                       defaultValue={defaultFromDate}
+                      // defaultValue={moment('01-04-2023', 'DD-MM-YYYY')}
                       onChange={(date) => {
                         setFromDate(date);
                       }}
@@ -240,15 +265,15 @@ function SaleReportInputForm() {
                     />
                   </Form.Item>
                 </Col>
-              </Row>
-              <Row align="middle">
-                <Col md={6} xs={24}>
-                  <label htmlFor="todate">To Date</label>
+                {/* To Date */}
+                <Col md={4} xs={24}>
+                  <label htmlFor="todate">To Date : </label>
                 </Col>
                 <Col md={8} xs={24}>
-                  <Form.Item name="todate">
+                  <Form.Item name="todate" rules={[{ required: true, message: 'Please select To Date' }]}>
                     <DatePicker
                       defaultValue={defaultToDate}
+                      // defaultValue={moment('31-03-2024', 'DD-MM-YYYY')}
                       onChange={(date) => {
                         setToDate(date);
                       }}
@@ -257,15 +282,17 @@ function SaleReportInputForm() {
                       format="DD-MM-YYYY"
                       minDate={fromDate}
                       maxDate={new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate())}
+                      // style={{ width: '70%' }}
                     />
                   </Form.Item>
                 </Col>
               </Row>
-              <Row align="middle">
-                <Col md={6} xs={24}>
-                  <label htmlFor="report-type">Report Type</label>
+              <Row align="middle" gutter={40}>
+                <Col md={4} xs={24}>
+                  <label htmlFor="report-type">Report Type :</label>
                 </Col>
                 <Col md={8} xs={24}>
+                  {/* {console.log('defaultReportType in report type form field: ', defaultReportType)} */}
                   <Form.Item name="report-type">
                     <Select
                       id="party"
@@ -274,39 +301,45 @@ function SaleReportInputForm() {
                         value: report.Rep_Rpt,
                         label: report.Rep_Name,
                       }))}
+                      // defaultValue={selectedReportType}
+                      defaultValue={defaultValue}
+                      // value={selectedReportType}
                       placeholder="Select Report Type"
                       onChange={handleSelectReportTypeChange}
-                      allowClear
+                      // allowClear
                       showSearch
-                      isClearable
+                      // isClearable
                     />
                   </Form.Item>
                 </Col>
+
+                {isCompany && (
+                  <>
+                    <Col md={4} xs={24}>
+                      <label htmlFor="party">Party :</label>
+                    </Col>
+                    <Col md={8} xs={24}>
+                      <Form.Item name="party">
+                        <Select
+                          id="party"
+                          name="party"
+                          options={ledgerReportData?.Table3.map((report) => ({
+                            value: report.Account_ID,
+                            label: report.Account_Name,
+                          }))}
+                          placeholder="Select Party"
+                          onChange={handleSelectPartyChange}
+                          allowClear
+                          // isMulti
+                          showSearch
+                          isClearable
+                        />
+                      </Form.Item>
+                    </Col>
+                  </>
+                )}
               </Row>
-              <Row align="middle">
-                <Col md={6} xs={24}>
-                  <label htmlFor="party">Party</label>
-                </Col>
-                <Col md={8} xs={24}>
-                  <Form.Item name="party">
-                    <Select
-                      id="party"
-                      name="party"
-                      options={ledgerReportData?.Table3.map((report) => ({
-                        value: report.Account_ID,
-                        label: report.Account_Name,
-                      }))}
-                      placeholder="Select Party"
-                      onChange={handleSelectPartyChange}
-                      allowClear
-                      // isMulti
-                      showSearch
-                      isClearable
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row align="middle">
+              {/* <Row align="middle">
                 <Col md={6} xs={24}>
                   <label htmlFor="account-group">Book</label>
                 </Col>
@@ -320,7 +353,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Book"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -342,7 +375,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Brand"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -364,7 +397,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Category"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -386,7 +419,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Group"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -408,7 +441,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Sub-Group"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -430,7 +463,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Sub-Group"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -452,7 +485,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Sub-Group"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -474,7 +507,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Sub-Group"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -496,7 +529,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Sub-Group"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -518,7 +551,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Sub-Group"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -540,7 +573,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Sub-Group"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -562,7 +595,7 @@ function SaleReportInputForm() {
                         label: report.AccountGroup_Name,
                       }))}
                       placeholder="Select Sub-Group"
-                      onChange={handleSelectAccountGroupChange}
+                      // onChange={handleSelectAccountGroupChange}
                       allowClear
                       showSearch
                       isClearable
@@ -570,6 +603,7 @@ function SaleReportInputForm() {
                   </Form.Item>
                 </Col>
               </Row>
+              */}
               <Row justify="end">
                 <Col>
                   <Button type="primary" onClick={handleLedgerReportPDF}>

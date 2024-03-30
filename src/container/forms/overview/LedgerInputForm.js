@@ -31,6 +31,8 @@ function LedgerInputForm() {
   const Premiseid = userheaderdata?.PremiseID;
   const Departmentid = userheaderdata?.DepartmentID;
   const Userid = userheaderdata?.UserID;
+  const AccessType = userheaderdata?.Access_Type;
+  const AccessKey = userheaderdata?.Access_Key;
 
   const Companyname = userheaderdata?.CompanyName;
   const CompanyGSTcst = userheaderdata?.CompanyGSTCST;
@@ -40,10 +42,8 @@ function LedgerInputForm() {
   const Companyaddress2 = userheaderdata?.CompanyAddress2;
 
   const currentDate = new Date();
-  const defaultFromDate = moment(
-    new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate()),
-  );
-  const defaultToDate = moment(new Date());
+  const defaultFromDate = moment(`${currentDate.getFullYear() - 1}-04-01`, 'YYYY-MM-DD');
+  const defaultToDate = moment(`${currentDate.getFullYear()}-03-31`, 'YYYY-MM-DD');
 
   const formatDate = (date) => {
     if (!(date instanceof Date)) {
@@ -58,12 +58,19 @@ function LedgerInputForm() {
     return `${formattedDay}-${formattedMonth}-${year}`;
   };
 
+  // all variables
   const [fromDate, setFromDate] = useState(defaultFromDate);
   const [toDate, setToDate] = useState(defaultToDate);
+  const [isCompany, setIsCompany] = useState(false);
+  // const [partyFiltervar, setPartyFiltervar] = useState(null);
+  // const [isSupplier, setIsSupplier] = useState(false);
   const [viewPdf, setViewPdf] = useState('');
   const selectedReportTypeOptionRef = useRef(null);
   const selectedPartyOptionRef = useRef(null);
-  const selectedAccountGroupOptionRef = useRef(null);
+  // const [defaultReportType, setDefaultReportType] = useState(null);
+  // const [selectedReportType, setSelectedReportType] = useState(null);
+  const [defaultValue, setDefaultValue] = useState(null);
+  // const selectedAccountGroupOptionRef = useRef(null);
 
   const fetchLedgerReport = async () => {
     const LedgerReportAPI = `${ServerBaseUrl}api/CommonFas/LedgerReport`;
@@ -98,24 +105,22 @@ function LedgerInputForm() {
       setLoading(false);
     }
   };
-
   //    PDF API
   const fetchPDF = async () => {
     const formattedFromDate = formatDate(fromDate);
     const formattedToDate = formatDate(toDate);
+
     const PDFAPI = `${ServerBaseUrl}api/CommonFas/LedgerReportPost`;
 
-    const partyFilter = selectedPartyOptionRef.current?.value
-      ? `AND A.Account_ID IN (${selectedPartyOptionRef.current.value})`
-      : '';
-
-    // const accountGroupList = selectedAccountGroupOptionRef.current.value
-    //   ? selectedAccountGroupOptionRef.current.value
-    //   : '';
-
-    // const accountGroupFilter = accountGroupList ? `AND A.Account_Type IN (${accountGroupList})` : '';
-
-    // const customFilter = `${partyFilter} ${accountGroupFilter}`;
+    let partyFilter = '';
+    if (AccessType === 'Company') {
+      partyFilter = selectedPartyOptionRef.current?.value
+        ? `AND A.Account_ID IN (${selectedPartyOptionRef.current.value})`
+        : '';
+    } else {
+      const accountId = AccessKey.match(/\((\d+)\)/)[1];
+      partyFilter = `AND A.Account_ID IN (${accountId})`;
+    }
 
     const body = {
       FromDate: formattedFromDate,
@@ -159,7 +164,7 @@ function LedgerInputForm() {
       setViewPdf(pdfurl);
     } catch (error) {
       console.error('Error in Ledger report data fetching:', error);
-      toast.error('Error in fetching Ledger report data from API Server.');
+      // toast.error('Error in fetching Ledger report data from API Server.');
       throw error;
     }
   };
@@ -179,6 +184,11 @@ function LedgerInputForm() {
 
   useEffect(() => {
     fetchLedgerReport();
+    if (AccessType === 'Company') {
+      setIsCompany(true);
+    } else {
+      setIsCompany(false);
+    }
   }, []);
 
   const handleSelectReportTypeChange = (selectedOption) => {
@@ -189,13 +199,35 @@ function LedgerInputForm() {
     selectedPartyOptionRef.current = selectedOption;
   };
 
-  const handleSelectAccountGroupChange = (selectedOption) => {
-    selectedAccountGroupOptionRef.current = selectedOption;
-  };
+  // const handleSelectAccountGroupChange = (selectedOption) => {
+  //   selectedAccountGroupOptionRef.current = selectedOption;
+  // };
 
   const togglePdfViewer = () => {
     setViewPdf(!viewPdf);
   };
+
+  // const reporttypeoptions = ledgerReportData?.Table.map((report) => ({
+  //   value: report.Rep_Rpt,
+  //   label: report.Rep_Name,
+  // }));
+
+  // const reporttypedefaultValue = {
+  //   value: ledgerReportData?.Table[0].Rep_Rpt,
+  //   label: ledgerReportData?.Table[0].Rep_Name,
+  // };
+  useEffect(() => {
+    if (ledgerReportData?.Table && ledgerReportData.Table.length > 0) {
+      const defaultOption = {
+        value: ledgerReportData.Table[0].Rep_Rpt,
+        label: ledgerReportData.Table[0].Rep_Name,
+      };
+      // setSelectedReportType(defaultOption);
+      // selectedReportTypeOptionRef.current = defaultOption.label;
+      setDefaultValue(defaultOption);
+      // console.log(selectedReportType);
+    }
+  }, [ledgerReportData]);
 
   return (
     <BasicFormWrapper>
@@ -203,7 +235,7 @@ function LedgerInputForm() {
         <div>
           <div className="overlay" />
           <div className="loader-container">
-            <Spin />
+            <Spin size="large" />
           </div>
         </div>
       )}
@@ -217,16 +249,16 @@ function LedgerInputForm() {
                   <label htmlFor="fromdate">From Date : </label>
                 </Col>
                 <Col md={8} xs={24}>
-                  <Form.Item name="fromdate">
+                  <Form.Item name="fromdate" rules={[{ required: true, message: 'Please select From Date' }]}>
                     <DatePicker
                       defaultValue={defaultFromDate}
+                      // defaultValue={moment('01-04-2023', 'DD-MM-YYYY')}
                       onChange={(date) => {
                         setFromDate(date);
                       }}
                       id="from-date"
                       format="DD-MM-YYYY"
                       name="from-date"
-                      isClearable
                     />
                   </Form.Item>
                 </Col>
@@ -235,9 +267,10 @@ function LedgerInputForm() {
                   <label htmlFor="todate">To Date : </label>
                 </Col>
                 <Col md={8} xs={24}>
-                  <Form.Item name="todate">
+                  <Form.Item name="todate" rules={[{ required: true, message: 'Please select To Date' }]}>
                     <DatePicker
                       defaultValue={defaultToDate}
+                      // defaultValue={moment('31-03-2024', 'DD-MM-YYYY')}
                       onChange={(date) => {
                         setToDate(date);
                       }}
@@ -257,6 +290,7 @@ function LedgerInputForm() {
                   <label htmlFor="report-type">Report Type :</label>
                 </Col>
                 <Col md={8} xs={24}>
+                  {/* {console.log('defaultReportType in report type form field: ', defaultReportType)} */}
                   <Form.Item name="report-type">
                     <Select
                       id="party"
@@ -265,40 +299,48 @@ function LedgerInputForm() {
                         value: report.Rep_Rpt,
                         label: report.Rep_Name,
                       }))}
-                      placeholder="Select Report Type"
+                      // defaultValue={selectedReportType}
+                      defaultValue={defaultValue}
+                      // value={selectedReportType}
+                      placeholder="Select Ledger Report Type"
                       onChange={handleSelectReportTypeChange}
-                      allowClear
+                      // allowClear
                       showSearch
-                      isClearable
+                      // isClearable
                     />
                   </Form.Item>
                 </Col>
-                <Col md={4} xs={24}>
-                  <label htmlFor="party">Party :</label>
-                </Col>
-                <Col md={8} xs={24}>
-                  <Form.Item name="party">
-                    <Select
-                      id="party"
-                      name="party"
-                      options={ledgerReportData?.Table3.map((report) => ({
-                        value: report.Account_ID,
-                        label: report.Account_Name,
-                      }))}
-                      placeholder="Select Party"
-                      onChange={handleSelectPartyChange}
-                      allowClear
-                      // isMulti
-                      showSearch
-                      isClearable
-                    />
-                  </Form.Item>
-                </Col>
+
+                {isCompany && (
+                  <>
+                    <Col md={4} xs={24}>
+                      <label htmlFor="party">Party :</label>
+                    </Col>
+                    <Col md={8} xs={24}>
+                      <Form.Item name="party">
+                        <Select
+                          id="party"
+                          name="party"
+                          options={ledgerReportData?.Table3.map((report) => ({
+                            value: report.Account_ID,
+                            label: report.Account_Name,
+                          }))}
+                          placeholder="Select Party"
+                          onChange={handleSelectPartyChange}
+                          allowClear
+                          // isMulti
+                          showSearch
+                          isClearable
+                        />
+                      </Form.Item>
+                    </Col>
+                  </>
+                )}
               </Row>
               {/* <Row align="middle">
                 
               </Row> */}
-              <Row align="middle" gutter={30}>
+              {/* <Row align="middle" gutter={30}>
                 <Col md={4} xs={24}>
                   <label htmlFor="account-group">Account Group :</label>
                 </Col>
@@ -319,7 +361,7 @@ function LedgerInputForm() {
                     />
                   </Form.Item>
                 </Col>
-              </Row>
+              </Row> */}
               <Row justify="end">
                 <Col>
                   <Button type="primary" onClick={handleLedgerReportPDF}>

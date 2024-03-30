@@ -27,7 +27,9 @@ const AuthInfo = React.memo(() => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
   const CompanyName = userData?.Data?.CompanyName;
-  const PremiseName = userData?.Data?.PremiseName;
+  const UserName = userData?.Data?.UserName;
+  // const PremiseName = userData?.Data?.PremiseName; // surat
+  const AccessType = userData?.Data?.Access_Type;
   const profile = userData?.Data?.ProfileImg;
 
   const navigate = useNavigate();
@@ -46,8 +48,9 @@ const AuthInfo = React.memo(() => {
         <figure className="user-dropdwon__info">
           <img src={profile} width={50} alt="" />
           <figcaption>
-            <Heading as="h5">{CompanyName}</Heading>
-            <p>{PremiseName}</p>
+            {/* <Heading as="h5"> {CompanyName}</Heading> */}
+            <Heading as="h5"> Welcome {UserName}</Heading>
+            <p> Access Type : {AccessType}</p>
           </figcaption>
         </figure>
         <ul className="user-dropdwon__links">
