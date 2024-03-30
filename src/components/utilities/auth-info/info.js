@@ -49,7 +49,7 @@ const AuthInfo = React.memo(() => {
           <img src={profile} width={50} alt="" />
           <figcaption>
             {/* <Heading as="h5"> {CompanyName}</Heading> */}
-            <Heading as="h5"> Welcome {UserName}</Heading>
+            <Heading as="h5"> Welcome, {UserName}</Heading>
             <p> Access Type : {AccessType}</p>
           </figcaption>
         </figure>
