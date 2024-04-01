@@ -126,22 +126,30 @@ function SaleReportInputForm() {
       const accountId = AccessKey.match(/\((\d+)\)/)[1];
       partyFilter = `AND A.Account_ID IN (${accountId})`;
     }
+    console.log(partyFilter);
 
+    // CustomFilter: partyFilter,
     const body = {
       FromDate: formattedFromDate,
       ToDate: formattedToDate,
       AmountGtEq: 0,
-      IntReportId: 0,
+      CustomFilter: "And Bill_Dt Between '20240301' And '20240401' And Account_Id in  (346)",
+      FilterString: null,
+      ddlGroupByList: '01-Category',
+      AccountGroupList: null,
+      BalanceTypeList: null,
+      IntReportId: 255098690,
       ExcludeNoTransaction: 0,
       CompanyName: Companyname,
       CompanyGSTCST: CompanyGSTcst,
       PremiseName: Premisename,
+      AccountID: null,
+      ValueFilterType: null,
+      AccountGroup: null,
       CompanyContactNo: CompanyContactno,
       CompanyAddress1: Companyaddress1,
       CompanyAddress2: Companyaddress2,
       type: 'pdf',
-      CustomFilter: partyFilter,
-      AccountGroupList: '',
       ReportID: selectedReportTypeOptionRef.current.value,
       ReportName: selectedReportTypeOptionRef.current.label,
       SysKey: '0',
@@ -150,13 +158,6 @@ function SaleReportInputForm() {
       PremiseID: Premiseid,
       DepartmentID: Departmentid,
       UserID: Userid,
-
-      FilterString: null,
-      ddlGroupByList: '01-Category',
-      BalanceTypeList: null,
-      AccountID: null,
-      ValueFilterType: null,
-      AccountGroup: null,
       OrderID: null,
       CompanyPremise: null,
       CompanyContact: null,
