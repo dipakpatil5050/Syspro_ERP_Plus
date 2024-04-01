@@ -24,17 +24,18 @@ export const login = createAsyncThunk(
       const response = await axios.post(loginUrl, body, { headers });
       const userData = response.data;
       const Token = userData?.Data?.Token;
-
+      const Errormsg = userData?.Message;
+      console.log(Errormsg);
       Cookies.set('access_token', Token);
       Cookies.set('logedIn', true);
       dispatch(setUserData(userData));
       navigate('/admin/features/ledger-report');
       toast.success('Login successful!');
-
       return true;
     } catch (error) {
+      const errorMessage = error.response?.data?.Message || 'An error occurred while logging in.';
       console.error('Error logging in:', error);
-      toast.error('Login failed. Please check your login credentials and try again.');
+      toast.error(errorMessage);
       throw error;
     }
   },
@@ -59,6 +60,7 @@ export const authSlice = createSlice({
     userData: JSON.parse(localStorage.getItem('userData')) || null,
     userMpinData: JSON.parse(localStorage.getItem('userMpinData')) || null,
     LedgerReport: null,
+    SaleReport: null,
     login: Cookies.get('logedIn'),
     loading: false,
     error: null,
@@ -75,6 +77,9 @@ export const authSlice = createSlice({
     },
     setLedgerReport: (state, action) => {
       state.LedgerReport = action.payload;
+    },
+    setSaleReport: (state, action) => {
+      state.SaleReport = action.payload;
     },
     loginBegin: (state) => {
       state.loading = true;
@@ -136,6 +141,7 @@ export const {
   setuserMpinData,
   setUserData,
   setLedgerReport,
+  setSaleReport,
   loginBegin,
   loginSuccess,
   loginErr,

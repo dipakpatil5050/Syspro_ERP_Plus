@@ -12,12 +12,12 @@ import { IoMdClose } from 'react-icons/io';
 import { HorizontalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper, Main } from '../../styled';
-import { setLedgerReport } from '../../../redux/reducers/authReducer';
+import { setSaleReport } from '../../../redux/reducers/authReducer';
 
 function SaleReportInputForm() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const ledgerReportData = useSelector((state) => state.auth.LedgerReport);
+  const saleReportData = useSelector((state) => state.auth.SaleReport);
   const userMpinData = useSelector((state) => state.auth.userMpinData);
   const userData = useSelector((state) => state.auth.userData);
 
@@ -70,9 +70,14 @@ function SaleReportInputForm() {
   const [defaultValue, setDefaultValue] = useState(null);
   // const selectedAccountGroupOptionRef = useRef(null);
 
-  const fetchLedgerReport = async () => {
-    const LedgerReportAPI = `${ServerBaseUrl}api/CommonFas/LedgerReport`;
+  const fetchSaleReport = async () => {
+    const SaleReportAPI = `${ServerBaseUrl}api/ReportCommon/SaleReport`;
     const body = {
+      CompanyID: 1,
+      YearMasterID: 5,
+      PremiseID: 1,
+      DepartmentID: 1,
+      UserID: 1,
       SYSKey: 0,
       Access_Type: '',
       Access_Key: '',
@@ -93,22 +98,24 @@ function SaleReportInputForm() {
 
     setLoading(true);
     try {
-      const response = await axios.post(LedgerReportAPI, body, { headers });
-      const ledgerReportDatafromAPI = response?.data?.Data;
-      dispatch(setLedgerReport(ledgerReportDatafromAPI));
+      const response = await axios.post(SaleReportAPI, body, { headers });
+      const saleReportDatafromAPI = response?.data?.Data;
+      dispatch(setSaleReport(saleReportDatafromAPI));
     } catch (error) {
-      console.error('Error in Ledger report data fetching:', error);
-      toast.error('Error in fetching Ledger report data from API Server.');
+      console.error('Error in Sale report data fetching:', error);
+      toast.error('Error in fetching Sale report data from API Server.');
     } finally {
       setLoading(false);
     }
   };
+
   //    PDF API
   const fetchPDF = async () => {
     const formattedFromDate = formatDate(fromDate);
     const formattedToDate = formatDate(toDate);
 
-    const PDFAPI = `${ServerBaseUrl}api/CommonFas/LedgerReportPost`;
+    const PDFAPI = `${ServerBaseUrl}api/ReportCommon/SaleReportPost`;
+    console.log(PDFAPI);
 
     let partyFilter = '';
     if (AccessType === 'Company') {
@@ -125,7 +132,7 @@ function SaleReportInputForm() {
       ToDate: formattedToDate,
       AmountGtEq: 0,
       IntReportId: 0,
-      ExcludeNoTransaction: 1,
+      ExcludeNoTransaction: 0,
       CompanyName: Companyname,
       CompanyGSTCST: CompanyGSTcst,
       PremiseName: Premisename,
@@ -137,12 +144,23 @@ function SaleReportInputForm() {
       AccountGroupList: '',
       ReportID: selectedReportTypeOptionRef.current.value,
       ReportName: selectedReportTypeOptionRef.current.label,
-      SysKey: '1',
+      SysKey: '0',
       CompanyID: Companyid,
       YearMasterID: YearMasterid,
       PremiseID: Premiseid,
       DepartmentID: Departmentid,
       UserID: Userid,
+
+      FilterString: null,
+      ddlGroupByList: '01-Category',
+      BalanceTypeList: null,
+      AccountID: null,
+      ValueFilterType: null,
+      AccountGroup: null,
+      OrderID: null,
+      CompanyPremise: null,
+      CompanyContact: null,
+      RepName: null,
     };
 
     const headers = {
@@ -157,31 +175,31 @@ function SaleReportInputForm() {
     };
     try {
       const response = await axios.post(PDFAPI, body, { headers });
-      const ledgerReportPDF = response?.data?.Data;
-      const pdfurl = ledgerReportPDF?.ReportPath;
+      const saleReportPDF = response?.data?.Data;
+      const pdfurl = saleReportPDF?.ReportPath;
       setViewPdf(pdfurl);
     } catch (error) {
-      console.error('Error in Ledger report data fetching:', error);
-      toast.error('Error in fetching Ledger report data from API Server.');
+      console.error('Error in Sale report data fetching:', error);
+      toast.error('Error in fetching Sale report data from API Server.');
       throw error;
     }
   };
 
-  const handleLedgerReportPDF = async (e) => {
+  const handleSaleReportPDF = async (e) => {
     setLoading(true);
     e.preventDefault();
     try {
       await fetchPDF();
     } catch (error) {
-      console.error('Error in Ledger report data fetching:', error);
-      toast.error('Error in fetching Ledger report data from API Server.');
+      console.error('Error in Sale report data fetching:', error);
+      toast.error('Error in fetching Sale report data from API Server.');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchLedgerReport();
+    fetchSaleReport();
     if (AccessType === 'Company') {
       setIsCompany(true);
     } else {
@@ -206,17 +224,17 @@ function SaleReportInputForm() {
   };
 
   useEffect(() => {
-    if (ledgerReportData?.Table && ledgerReportData.Table.length > 0) {
+    if (saleReportData?.Table && saleReportData.Table.length > 0) {
       const defaultOption = {
-        value: ledgerReportData.Table[0].Rep_Rpt,
-        label: ledgerReportData.Table[0].Rep_Name,
+        value: saleReportData.Table[0].Rep_Rpt,
+        label: saleReportData.Table[0].Rep_Name,
       };
       // setSelectedReportType(defaultOption);
       // selectedReportTypeOptionRef.current = defaultOption.label;
       setDefaultValue(defaultOption);
       // console.log(selectedReportType);
     }
-  }, [ledgerReportData]);
+  }, [saleReportData]);
 
   return (
     <BasicFormWrapper>
@@ -224,7 +242,7 @@ function SaleReportInputForm() {
         <div>
           <div className="overlay" />
           <div className="loader-container">
-            <Spin />
+            <Spin size="large" />
           </div>
         </div>
       )}
@@ -232,18 +250,6 @@ function SaleReportInputForm() {
         {!viewPdf && (
           <Cards title="Sale Report" border>
             <Form name="input-form" layout="horizontal">
-              {/* <Row gutter={30}>
-                <Col md={8} xs={24}>
-                  <Form.Item name="f-name" label="From Date">
-                    <Input placeholder="From Date" />
-                  </Form.Item>
-                </Col>
-                <Col md={8} xs={24}>
-                  <Form.Item name="l-name" label="To Date">
-                    <Input placeholder="To Name" />
-                  </Form.Item>
-                </Col>
-              </Row> */}
               <Row align="middle" gutter={40}>
                 {/* From Date */}
                 <Col md={4} xs={24}>
@@ -271,7 +277,6 @@ function SaleReportInputForm() {
                   <Form.Item name="todate" rules={[{ required: true, message: 'Please select To Date' }]}>
                     <DatePicker
                       defaultValue={defaultToDate}
-                      // defaultValue={moment('31-03-2024', 'DD-MM-YYYY')}
                       onChange={(date) => {
                         setToDate(date);
                       }}
@@ -280,7 +285,6 @@ function SaleReportInputForm() {
                       format="DD-MM-YYYY"
                       minDate={fromDate}
                       maxDate={new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate())}
-                      // style={{ width: '70%' }}
                     />
                   </Form.Item>
                 </Col>
@@ -290,12 +294,11 @@ function SaleReportInputForm() {
                   <label htmlFor="report-type">Report Type :</label>
                 </Col>
                 <Col md={8} xs={24}>
-                  {/* {console.log('defaultReportType in report type form field: ', defaultReportType)} */}
                   <Form.Item name="report-type">
                     <Select
                       id="party"
                       name="party"
-                      options={ledgerReportData?.Table.map((report) => ({
+                      options={saleReportData?.Table.map((report) => ({
                         value: report.Rep_Rpt,
                         label: report.Rep_Name,
                       }))}
@@ -321,7 +324,7 @@ function SaleReportInputForm() {
                         <Select
                           id="party"
                           name="party"
-                          options={ledgerReportData?.Table3.map((report) => ({
+                          options={saleReportData?.Table1.map((report) => ({
                             value: report.Account_ID,
                             label: report.Account_Name,
                           }))}
@@ -608,7 +611,7 @@ function SaleReportInputForm() {
 
               <Row justify="end">
                 <Col>
-                  <Button type="primary" onClick={handleLedgerReportPDF}>
+                  <Button type="primary" onClick={handleSaleReportPDF}>
                     Generate
                   </Button>
                 </Col>
@@ -620,7 +623,7 @@ function SaleReportInputForm() {
         {viewPdf && (
           <Main
             style={{ backgroundColor: 'white', borderRadius: '5px', padding: '10px', border: '1px solid #d9d9d9' }}
-            title="Ledger Report PDF Document"
+            title="Sale Report PDF Document"
           >
             <Row justify="end">
               <Col>
@@ -631,7 +634,7 @@ function SaleReportInputForm() {
             </Row>
             {viewPdf && (
               <div className="pdf-container">
-                <iframe src={viewPdf} title="Ledger Report" width="100%" height="700px">
+                <iframe src={viewPdf} title="Sale Report" width="100%" height="700px">
                   view PDF
                 </iframe>
               </div>
