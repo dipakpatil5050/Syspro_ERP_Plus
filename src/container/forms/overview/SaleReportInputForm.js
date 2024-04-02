@@ -102,6 +102,7 @@ function SaleReportInputForm() {
       const saleReportDatafromAPI = response?.data?.Data;
       dispatch(setSaleReport(saleReportDatafromAPI));
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error in Sale report data fetching:', error);
       toast.error('Error in fetching Sale report data from API Server.');
     } finally {
@@ -115,7 +116,6 @@ function SaleReportInputForm() {
     const formattedToDate = formatDate(toDate);
 
     const PDFAPI = `${ServerBaseUrl}api/ReportCommon/SaleReportPost`;
-    console.log(PDFAPI);
 
     let partyFilter = '';
     if (AccessType === 'Company') {
@@ -126,9 +126,13 @@ function SaleReportInputForm() {
       const accountId = AccessKey.match(/\((\d+)\)/)[1];
       partyFilter = `AND A.Account_ID IN (${accountId})`;
     }
+    // eslint-disable-next-line
     console.log(partyFilter);
 
-    // CustomFilter: partyFilter,
+    // CustomFilter: partyFilter,.
+
+    // Party Filter are remain
+
     const body = {
       FromDate: formattedFromDate,
       ToDate: formattedToDate,
@@ -180,6 +184,7 @@ function SaleReportInputForm() {
       const pdfurl = saleReportPDF?.ReportPath;
       setViewPdf(pdfurl);
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error in Sale report data fetching:', error);
       toast.error('Error in fetching Sale report data from API Server.');
       throw error;
@@ -192,6 +197,7 @@ function SaleReportInputForm() {
     try {
       await fetchPDF();
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error in Sale report data fetching:', error);
       toast.error('Error in fetching Sale report data from API Server.');
     } finally {

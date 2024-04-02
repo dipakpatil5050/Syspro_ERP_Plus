@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Row, Col, Form, DatePicker, Button, Spin } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +8,8 @@ import axios from 'axios';
 import Select from 'react-select';
 import moment from 'moment';
 import './ledgerreport.css';
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
 
 import { IoMdClose } from 'react-icons/io';
 import { HorizontalFormStyleWrap } from './Style';
@@ -99,6 +102,7 @@ function LedgerInputForm() {
       const ledgerReportDatafromAPI = response?.data?.Data;
       dispatch(setLedgerReport(ledgerReportDatafromAPI));
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error in Ledger report data fetching:', error);
       toast.error('Error in fetching Ledger report data from API Server.');
     } finally {
@@ -163,6 +167,7 @@ function LedgerInputForm() {
       const pdfurl = ledgerReportPDF?.ReportPath;
       setViewPdf(pdfurl);
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error in Ledger report data fetching:', error);
       // toast.error('Error in fetching Ledger report data from API Server.');
       throw error;
@@ -175,6 +180,7 @@ function LedgerInputForm() {
     try {
       await fetchPDF();
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error in Ledger report data fetching:', error);
       toast.error('Error in fetching Ledger report data from API Server.');
     } finally {
@@ -386,11 +392,16 @@ function LedgerInputForm() {
               </Col>
             </Row>
             {viewPdf && (
-              <div className="pdf-container">
-                <iframe src={viewPdf} title="Ledger Report" width="100%" height="700px">
-                  view PDF
-                </iframe>
-              </div>
+              <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                <div
+                  style={{
+                    border: '1px solid rgba(0, 0, 0, 0.3)',
+                    height: '100%',
+                  }}
+                >
+                  <Viewer fileUrl={viewPdf} />
+                </div>
+              </Worker>
             )}
           </Main>
         )}
