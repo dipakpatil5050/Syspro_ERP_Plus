@@ -73,11 +73,11 @@ function SaleReportInputForm() {
   const fetchSaleReport = async () => {
     const SaleReportAPI = `${ServerBaseUrl}api/ReportCommon/SaleReport`;
     const body = {
-      CompanyID: 1,
-      YearMasterID: 5,
-      PremiseID: 1,
-      DepartmentID: 1,
-      UserID: 1,
+      CompanyID: Companyid,
+      YearMasterID: YearMasterid,
+      PremiseID: Premiseid,
+      DepartmentID: Departmentid,
+      UserID: Userid,
       SYSKey: 0,
       Access_Type: '',
       Access_Key: '',
@@ -112,44 +112,39 @@ function SaleReportInputForm() {
 
   //    PDF API
   const fetchPDF = async () => {
-    const formattedFromDate = formatDate(fromDate);
-    const formattedToDate = formatDate(toDate);
+    const formatedFromDate = formatDate(fromDate);
+    const formatedToDate = formatDate(toDate);
+
+    function convertBillDateFormat(dateString) {
+      const parts = dateString.split('-');
+      return parts[2] + parts[1] + parts[0];
+    }
+    const billFromDate = convertBillDateFormat(formatedFromDate);
+    const billToDate = convertBillDateFormat(formatedToDate);
 
     const PDFAPI = `${ServerBaseUrl}api/ReportCommon/SaleReportPost`;
 
     let partyFilter = '';
     if (AccessType === 'Company') {
       partyFilter = selectedPartyOptionRef.current?.value
-        ? `AND A.Account_ID IN (${selectedPartyOptionRef.current.value})`
+        ? ` And Bill_Dt Between '${billFromDate}' And '${billToDate}' AND Account_Id IN  (${selectedPartyOptionRef.current.value})`
         : '';
     } else {
       const accountId = AccessKey.match(/\((\d+)\)/)[1];
       partyFilter = `AND A.Account_ID IN (${accountId})`;
     }
-    // eslint-disable-next-line
-    console.log(partyFilter);
-
-    // CustomFilter: partyFilter,.
-
-    // Party Filter are remain
 
     const body = {
-      FromDate: formattedFromDate,
-      ToDate: formattedToDate,
+      FromDate: formatedFromDate,
+      ToDate: formatedToDate,
       AmountGtEq: 0,
-      CustomFilter: "And Bill_Dt Between '20240301' And '20240401' And Account_Id in  (346)",
-      FilterString: null,
+      CustomFilter: partyFilter,
       ddlGroupByList: '01-Category',
-      AccountGroupList: null,
-      BalanceTypeList: null,
-      IntReportId: 255098690,
+      IntReportId: 0,
       ExcludeNoTransaction: 0,
       CompanyName: Companyname,
       CompanyGSTCST: CompanyGSTcst,
       PremiseName: Premisename,
-      AccountID: null,
-      ValueFilterType: null,
-      AccountGroup: null,
       CompanyContactNo: CompanyContactno,
       CompanyAddress1: Companyaddress1,
       CompanyAddress2: Companyaddress2,
@@ -157,15 +152,7 @@ function SaleReportInputForm() {
       ReportID: selectedReportTypeOptionRef.current.value,
       ReportName: selectedReportTypeOptionRef.current.label,
       SysKey: '0',
-      CompanyID: Companyid,
-      YearMasterID: YearMasterid,
-      PremiseID: Premiseid,
-      DepartmentID: Departmentid,
-      UserID: Userid,
-      OrderID: null,
-      CompanyPremise: null,
-      CompanyContact: null,
-      RepName: null,
+      DepartmentID: '1',
     };
 
     const headers = {

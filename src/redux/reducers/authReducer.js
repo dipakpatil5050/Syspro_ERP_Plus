@@ -25,6 +25,7 @@ export const login = createAsyncThunk(
       const userData = response.data;
       const Token = userData?.Data?.Token;
       const Errormsg = userData?.Message;
+
       console.log(Errormsg);
       Cookies.set('access_token', Token);
       Cookies.set('logedIn', true);
@@ -34,6 +35,7 @@ export const login = createAsyncThunk(
       return true;
     } catch (error) {
       const errorMessage = error.response?.data?.Message || 'An error occurred while logging in.';
+      // eslint-disable-next-line
       console.error('Error logging in:', error);
       toast.error(errorMessage);
       throw error;
