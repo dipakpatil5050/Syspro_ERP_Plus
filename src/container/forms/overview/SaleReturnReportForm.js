@@ -14,7 +14,7 @@ import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper, Main } from '../../styled';
 import { setSaleReport } from '../../../redux/reducers/authReducer';
 
-function SaleReportInputForm() {
+function SaleReturnReportForm() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const saleReportData = useSelector((state) => state.auth.SaleReport);
@@ -243,7 +243,7 @@ function SaleReportInputForm() {
       )}
       <HorizontalFormStyleWrap className="sDash_input-form">
         {!viewPdf && (
-          <Cards title="Sale Report" border>
+          <Cards title="Sale Return Report" border>
             <Form name="input-form" layout="horizontal">
               <Row align="middle" gutter={40}>
                 {/* From Date */}
@@ -641,4 +641,4 @@ function SaleReportInputForm() {
   );
 }
 
-export { SaleReportInputForm };
+export { SaleReturnReportForm };

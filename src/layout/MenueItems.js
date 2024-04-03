@@ -23,7 +23,7 @@ import {
   // UilExchange,
   // UilExclamationOctagon,
   // UilExpandArrowsAlt,
-  // UilFile,
+  UilFile,
   // UilFileShieldAlt,
   // UilHeadphones,
   // UilIcons,
@@ -37,7 +37,7 @@ import {
   // UilSetting,
   // UilShoppingCart,
   // UilSquareFull,
-  UilTable,
+  // UilTable,
   // UilUsdCircle,
   // UilUsersAlt,
   // UilWindowSection,
@@ -1115,7 +1115,7 @@ function MenuItems({ toggleCollapsed }) {
 
     // Sale Module
 
-    getItem(t('Sale Module'), 'Sale', !topMenu && <UilTable />, [
+    getItem(t('Sale Module'), 'Sale', !topMenu && <UilFile />, [
       getItem(
         <NavLink onClick={toggleCollapsed} to={`${path}/features/sale-report`}>
           {t('Sale')} {t('Report')}
@@ -1123,14 +1123,16 @@ function MenuItems({ toggleCollapsed }) {
         'basicTable',
         null,
       ),
-      // getItem(
-      //   <NavLink onClick={toggleCollapsed} to={`${path}/tables/dataTable`}>
-      //     {t('data')} {t('table')}
-      //   </NavLink>,
-      //   'dataTable',
-      //   null,
-      // ),
+
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/features/sale-return-report`}>
+          {t('Sale Return')} {t('Report')}
+        </NavLink>,
+        'dataTable',
+        null,
+      ),
     ]),
+
     // getItem(t('widgets'), 'widgets', !topMenu && <UilServer />, [
     //   getItem(
     //     <NavLink onClick={toggleCollapsed} to={`${path}/widgets/chart`}>

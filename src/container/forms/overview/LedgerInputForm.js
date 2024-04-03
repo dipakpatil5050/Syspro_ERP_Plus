@@ -8,8 +8,6 @@ import axios from 'axios';
 import Select from 'react-select';
 import moment from 'moment';
 import './ledgerreport.css';
-import { Worker, Viewer } from '@react-pdf-viewer/core';
-import '@react-pdf-viewer/core/lib/styles/index.css';
 
 import { IoMdClose } from 'react-icons/io';
 import { HorizontalFormStyleWrap } from './Style';
@@ -382,26 +380,21 @@ function LedgerInputForm() {
         {viewPdf && (
           <Main
             style={{ backgroundColor: 'white', borderRadius: '5px', padding: '10px', border: '1px solid #d9d9d9' }}
-            title="Ledger Report PDF Document"
+            title="Sale Report PDF Document"
           >
             <Row justify="end">
               <Col>
-                <Button type="dashed" onClick={togglePdfViewer}>
+                <Button type="danger" onClick={togglePdfViewer}>
                   {viewPdf ? <IoMdClose size={22} /> : 'View PDF'}
                 </Button>
               </Col>
             </Row>
             {viewPdf && (
-              <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                <div
-                  style={{
-                    border: '1px solid rgba(0, 0, 0, 0.3)',
-                    height: '100%',
-                  }}
-                >
-                  <Viewer fileUrl={viewPdf} />
-                </div>
-              </Worker>
+              <div className="pdf-container">
+                <iframe src={viewPdf} title="Sale Report" width="100%" height="700px">
+                  view PDF
+                </iframe>
+              </div>
             )}
           </Main>
         )}
