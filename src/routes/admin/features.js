@@ -8,6 +8,8 @@ const FormValidation = lazy(() => import('../../container/forms/FormValidation')
 const LegderReport = lazy(() => import('../../components/Reports/LedgerReport'));
 const SaleReport = lazy(() => import('../../components/sale-module/SaleReport'));
 const SaleReturnReport = lazy(() => import('../../components/sale-module/SaleReturnReport'));
+const PurchaseOutstandingReport = lazy(() => import('../../components/Purchase-Module/PurchaseOutstandingReport'));
+const StockReport = lazy(() => import('../../components/Purchase-Module/StockReport'));
 const NotFound = lazy(() => import('../../container/pages/404'));
 
 function FeaturesRoute() {
@@ -17,6 +19,8 @@ function FeaturesRoute() {
       <Route path="ledger-report" element={<LegderReport />} />
       <Route path="sale-report" element={<SaleReport />} />
       <Route path="sale-return-report" element={<SaleReturnReport />} />
+      <Route path="purchase-outstanding-report" element={<PurchaseOutstandingReport />} />
+      <Route path="stock-report" element={<StockReport />} />
 
       <Route path="form-components" element={<FormComponents />} />
       <Route path="form-validation" element={<FormValidation />} />

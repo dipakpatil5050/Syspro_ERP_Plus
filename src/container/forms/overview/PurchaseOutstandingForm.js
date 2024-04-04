@@ -14,7 +14,7 @@ import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper, Main } from '../../styled';
 import { setSaleReport } from '../../../redux/reducers/authReducer';
 
-function SaleReturnReportForm() {
+function PurchaseOutstandingForm() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const saleReportData = useSelector((state) => state.auth.SaleReport);
@@ -76,7 +76,7 @@ function SaleReturnReportForm() {
   // const selectedAccountGroupOptionRef = useRef(null);
 
   const fetchSaleReport = async () => {
-    const SaleReportAPI = `${ServerBaseUrl}api/ReportCommon/SaleReturnReport`;
+    const SaleReportAPI = `${ServerBaseUrl}api/ReportCommon/SaleReport`;
     const body = {
       CompanyID: Companyid,
       YearMasterID: YearMasterid,
@@ -243,7 +243,7 @@ function SaleReturnReportForm() {
       )}
       <HorizontalFormStyleWrap className="sDash_input-form">
         {!viewPdf && (
-          <Cards title="Sale Return Report" border>
+          <Cards title="Purchase Outstanding Report" border>
             <Form name="input-form" layout="horizontal">
               <Row align="middle" gutter={40}>
                 {/* From Date */}
@@ -300,7 +300,7 @@ function SaleReturnReportForm() {
                       // defaultValue={selectedReportType}
                       defaultValue={defaultValue}
                       // value={selectedReportType}
-                      placeholder="Select Sale Return Report Type"
+                      placeholder="Select report type"
                       onChange={handleSelectReportTypeChange}
                       allowClear
                       showSearch
@@ -335,274 +335,6 @@ function SaleReturnReportForm() {
                   </>
                 )}
               </Row>
-
-              {/* All extra input options */}
-              {/* <div>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Book</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Book"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Brand</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Brand"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Category</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Category"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Group</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Group"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Sub-Group</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Sub-Group"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Design No.</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Sub-Group"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Product</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Sub-Group"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Broker</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Sub-Group"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Location</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Sub-Group"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">City</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Sub-Group"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Transaction Filter</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Sub-Group"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row align="middle">
-                  <Col md={6} xs={24}>
-                    <label htmlFor="account-group">Group by</label>
-                  </Col>
-                  <Col md={8} xs={24}>
-                    <Form.Item name="account-group">
-                      <Select
-                        id="account-group"
-                        name="account-group"
-                        options={ledgerReportData?.Table2.map((report) => ({
-                          value: report.AccountGroup_id,
-                          label: report.AccountGroup_Name,
-                        }))}
-                        placeholder="Select Sub-Group"
-                        // onChange={handleSelectAccountGroupChange}
-                        allowClear
-                        showSearch
-                        isClearable
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </div> */}
 
               <Row justify="end">
                 <Col>
@@ -641,4 +373,4 @@ function SaleReturnReportForm() {
   );
 }
 
-export { SaleReturnReportForm };
+export { PurchaseOutstandingForm };
