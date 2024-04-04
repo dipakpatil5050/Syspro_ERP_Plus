@@ -24,7 +24,7 @@ import {
   // UilExclamationOctagon,
   // UilExpandArrowsAlt,
   UilFile,
-  UilFileCheckAlt,
+  // UilFileCheckAlt,
   // UilFileShieldAlt,
   // UilHeadphones,
   // UilIcons,
@@ -1132,26 +1132,33 @@ function MenuItems({ toggleCollapsed }) {
         'dataTable',
         null,
       ),
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/features/sale-outstanding-report`}>
+          {t('Sale Outstanding')} {t('Report')}
+        </NavLink>,
+        'saleoutstandingreport',
+        null,
+      ),
     ]),
 
     // Purchase Module
 
-    getItem(t('Purchase Module'), 'Purchase', !topMenu && <UilFileCheckAlt />, [
-      getItem(
-        <NavLink onClick={toggleCollapsed} to={`${path}/features/purchase-outstanding-report`}>
-          {t('Purchase Outstanding')} {t('Report')}
-        </NavLink>,
-        'basicTable',
-        null,
-      ),
-      getItem(
-        <NavLink onClick={toggleCollapsed} to={`${path}/features/stock-report`}>
-          {t('Stock')} {t('Report')}
-        </NavLink>,
-        'stockreport',
-        null,
-      ),
-    ]),
+    // getItem(t('Purchase Module'), 'Purchase', !topMenu && <UilFileCheckAlt />, [
+    //   getItem(
+    //     <NavLink onClick={toggleCollapsed} to={`${path}/features/purchase-outstanding-report`}>
+    //       {t('Purchase Outstanding')} {t('Report')}
+    //     </NavLink>,
+    //     'basicTable',
+    //     null,
+    //   ),
+    //   getItem(
+    //     <NavLink onClick={toggleCollapsed} to={`${path}/features/stock-report`}>
+    //       {t('Stock')} {t('Report')}
+    //     </NavLink>,
+    //     'stockreport',
+    //     null,
+    //   ),
+    // ]),
 
     // getItem(t('widgets'), 'widgets', !topMenu && <UilServer />, [
     //   getItem(

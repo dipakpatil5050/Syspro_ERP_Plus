@@ -14,7 +14,7 @@ import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper, Main } from '../../styled';
 import { setSaleReport } from '../../../redux/reducers/authReducer';
 
-function SaleReturnReportForm() {
+function SaleOutstandingForm() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const saleReportData = useSelector((state) => state.auth.SaleReport);
@@ -58,11 +58,6 @@ function SaleReturnReportForm() {
     return `${formattedDay}-${formattedMonth}-${year}`;
   };
 
-  function convertBillDateFormat(dateString) {
-    const parts = dateString.split('-');
-    return parts[2] + parts[1] + parts[0];
-  }
-
   // all variables
   const [fromDate, setFromDate] = useState(defaultFromDate);
   const [toDate, setToDate] = useState(defaultToDate);
@@ -76,7 +71,7 @@ function SaleReturnReportForm() {
   // const selectedAccountGroupOptionRef = useRef(null);
 
   const fetchSaleReport = async () => {
-    const SaleReportAPI = `${ServerBaseUrl}api/ReportCommon/SaleReturnReport`;
+    const SaleReportAPI = `${ServerBaseUrl}api/CommonFas/SalesOSReport`;
     const body = {
       CompanyID: Companyid,
       YearMasterID: YearMasterid,
@@ -120,28 +115,33 @@ function SaleReturnReportForm() {
     const formatedFromDate = formatDate(fromDate);
     const formatedToDate = formatDate(toDate);
 
-    const billFromDate = convertBillDateFormat(formatedFromDate);
-    const billToDate = convertBillDateFormat(formatedToDate);
-
-    const PDFAPI = `${ServerBaseUrl}api/ReportCommon/SaleReturnReportData`;
+    const PDFAPI = `${ServerBaseUrl}api/CommonFas/SalesOSReportPost`;
 
     let partyFilter = '';
     if (AccessType === 'Company') {
       partyFilter = selectedPartyOptionRef.current?.value
-        ? ` And Bill_Dt Between '${billFromDate}' And '${billToDate}' AND Account_Id IN  (${selectedPartyOptionRef.current.value})`
+        ? `And A.Account_ID IN (${selectedPartyOptionRef.current.value}) AND S.Dept_ID IN (${Departmentid}) AND S.Company_ID IN (${Companyid})`
         : '';
     } else {
       const accountId = AccessKey.match(/\((\d+)\)/)[1];
       partyFilter = `AND A.Account_ID IN (${accountId})`;
     }
+    console.log(partyFilter);
 
     const body = {
       FromDate: formatedFromDate,
       ToDate: formatedToDate,
       AmountGtEq: 0,
-      CustomFilter: partyFilter,
+      AmountLtEq: 0,
+      CustomFilter: `And A.Account_ID IN (${selectedPartyOptionRef.current.value}) AND S.Dept_ID IN (${Departmentid}) AND S.Company_ID IN (${Companyid})`,
+      DueDaysGtEq: '0',
+      DueDaysLtEq: '0',
+      SALE_OS_TYPE: 'ASON',
+      UptoReceiptDate: formatedToDate,
       ddlGroupByList: '01-Category',
       IntReportId: 0,
+      IsIncludeAdvanceReceiptPayment: 0,
+      IsAsOnDateOutstanding: 0,
       ExcludeNoTransaction: 0,
       CompanyName: Companyname,
       CompanyGSTCST: CompanyGSTcst,
@@ -151,10 +151,11 @@ function SaleReturnReportForm() {
       CompanyAddress2: Companyaddress2,
       type: 'pdf',
       ReportID: selectedReportTypeOptionRef.current.value,
-      ReportName: selectedReportTypeOptionRef.current.label,
-      SysKey: '1',
-      DepartmentID: '1',
+      RptName: selectedReportTypeOptionRef.current.label,
+      SysKey: '0',
+      DepartmentID: Departmentid,
     };
+    // ReportName: selectedReportTypeOptionRef.current.label,
 
     const headers = {
       'Content-Type': 'application/json',
@@ -243,7 +244,7 @@ function SaleReturnReportForm() {
       )}
       <HorizontalFormStyleWrap className="sDash_input-form">
         {!viewPdf && (
-          <Cards title="Sale Return Report" border>
+          <Cards title="Sale Report" border>
             <Form name="input-form" layout="horizontal">
               <Row align="middle" gutter={40}>
                 {/* From Date */}
@@ -300,7 +301,7 @@ function SaleReturnReportForm() {
                       // defaultValue={selectedReportType}
                       defaultValue={defaultValue}
                       // value={selectedReportType}
-                      placeholder="Select Sale Return Report Type"
+                      placeholder="Select Outstanding Report Type"
                       onChange={handleSelectReportTypeChange}
                       allowClear
                       showSearch
@@ -373,4 +374,4 @@ function SaleReturnReportForm() {
   );
 }
 
-export { SaleReturnReportForm };
+export { SaleOutstandingForm };

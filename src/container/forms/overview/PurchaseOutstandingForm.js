@@ -76,7 +76,7 @@ function PurchaseOutstandingForm() {
   // const selectedAccountGroupOptionRef = useRef(null);
 
   const fetchSaleReport = async () => {
-    const SaleReportAPI = `${ServerBaseUrl}api/ReportCommon/SaleReport`;
+    const SaleReportAPI = `${ServerBaseUrl}api/CommonFas/PurchaseOSReport`;
     const body = {
       CompanyID: Companyid,
       YearMasterID: YearMasterid,
