@@ -24,6 +24,7 @@ import {
   // UilExclamationOctagon,
   // UilExpandArrowsAlt,
   UilFile,
+  UilFileCheckAlt,
   // UilFileShieldAlt,
   // UilHeadphones,
   // UilIcons,
@@ -1129,6 +1130,25 @@ function MenuItems({ toggleCollapsed }) {
           {t('Sale Return')} {t('Report')}
         </NavLink>,
         'dataTable',
+        null,
+      ),
+    ]),
+
+    // Purchase Module
+
+    getItem(t('Purchase Module'), 'Purchase', !topMenu && <UilFileCheckAlt />, [
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/features/purchase-outstanding-report`}>
+          {t('Purchase Outstanding')} {t('Report')}
+        </NavLink>,
+        'basicTable',
+        null,
+      ),
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/features/stock-report`}>
+          {t('Stock')} {t('Report')}
+        </NavLink>,
+        'stockreport',
         null,
       ),
     ]),

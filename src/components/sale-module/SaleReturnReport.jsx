@@ -15,7 +15,7 @@ import useDocumentTitle from '../dynamic-Page-Title/useDocumentTitle';
 import { SaleReturnReportForm } from '../../container/forms/overview/SaleReturnReportForm';
 
 function SaleReturnReport() {
-  useDocumentTitle('Sale Report');
+  useDocumentTitle('Sale Return Report');
 
   const PageRoutes = [
     {
