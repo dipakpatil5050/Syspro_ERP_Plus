@@ -1,36 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Row, Col, Spin, Pagination } from 'antd';
+import { Row, Col, Spin, Button } from 'antd';
+// import UilTopArrowFromTop from '@iconscout/react-unicons/icons/uil-apps';
+import { UilTopArrowFromTop } from '@iconscout/react-unicons';
 import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
-import { PaginationWrapper, NotFoundWrapper } from '../../Style';
+import { NotFoundWrapper } from '../../Style';
 
 function Grid() {
   const { catalogueData, loading } = useSelector((state) => state.auth);
 
-  const [state, setState] = useState({
-    products: catalogueData,
-    current: 0,
-    pageSize: 0,
-  });
+  // const [state, setState] = useState({
+  //   products: catalogueData,
+  //   current: 0,
+  //   pageSize: 0,
+  // });
 
-  const { products } = state;
+  const [visible, setVisible] = useState(10);
 
-  useEffect(() => {
-    if (catalogueData) {
-      setState({
-        products: catalogueData,
-      });
-    }
-  }, [catalogueData]);
-
-  const onShowSizeChange = (current, pageSize) => {
-    setState({ ...state, current, pageSize });
+  const showMoreItems = () => {
+    setVisible((prevValue) => prevValue + 10);
   };
 
-  const onHandleChange = (current, pageSize) => {
-    setState({ ...state, current, pageSize });
+  const onTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
+
+  const areMoreItemsAvailable = visible < catalogueData.length;
+
+  // const { products } = state;
+
+  // useEffect(() => {
+  //   if (catalogueData) {
+  //     setState({
+  //       products: catalogueData,
+  //     });
+  //   }
+  // }, [catalogueData]);
+
+  // const onShowSizeChange = (current, pageSize) => {
+  //   setState({ ...state, current, pageSize });
+  // };
+
+  // const onHandleChange = (current, pageSize) => {
+  //   setState({ ...state, current, pageSize });
+  // };
 
   if (loading) {
     return (
@@ -46,7 +63,7 @@ function Grid() {
   return (
     <Row gutter={30}>
       {catalogueData && catalogueData.length ? (
-        catalogueData.map((product) => (
+        catalogueData.slice(0, visible).map((product) => (
           <Col xxl={6} lg={12} xs={24} key={product.Item_Id}>
             <ProductCards product={product} />
           </Col>
@@ -59,19 +76,23 @@ function Grid() {
         </Col>
       )}
       {/* Pagination */}
-      <Col xs={24} className="pb-30">
-        <PaginationWrapper style={{ marginTop: 10 }}>
-          {products && products.length ? (
-            <Pagination
-              onChange={onHandleChange}
-              showSizeChanger
-              onShowSizeChange={onShowSizeChange}
-              pageSize={5}
-              defaultCurrent={1}
-              total={40}
-            />
-          ) : null}
-        </PaginationWrapper>
+
+      {/* Show More Button */}
+
+      {areMoreItemsAvailable && (
+        <Col xs={24} className="pb-30" align="end">
+          <Button onClick={showMoreItems} type="primary">
+            Show More ...
+          </Button>
+        </Col>
+      )}
+
+      {/* Top Button  */}
+      <Col xs={24} className="pb-30" align="end">
+        <Button xs={24} type="dashed" onClick={onTop} shape="circle">
+          <UilTopArrowFromTop />
+          <span style={{ fontSize: '12px', display: 'flex' }}>Back to Top</span>
+        </Button>
       </Col>
     </Row>
   );

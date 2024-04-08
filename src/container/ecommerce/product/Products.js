@@ -3,7 +3,7 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { Row, Col, Radio, Spin, Skeleton } from 'antd';
 import { Route, Routes, NavLink } from 'react-router-dom';
 import UilApps from '@iconscout/react-unicons/icons/uil-apps';
-// import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
+import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,7 +18,7 @@ import { PageHeader } from '../../../components/page-headers/page-headers';
 
 const Filters = lazy(() => import('./overview/Filters'));
 const Grid = lazy(() => import('./overview/Grid'));
-// const List = lazy(() => import('./overview/List'));
+const List = lazy(() => import('./overview/List'));
 
 function Product() {
   const PageRoutes = [
@@ -58,6 +58,7 @@ function Product() {
   const dispatch = useDispatch();
   const userMpinData = useSelector((state) => state.auth.userMpinData);
   const userData = useSelector((state) => state.auth.userData);
+  const catalogueData = useSelector((state) => state.auth.catalogueData);
   // const loading = useSelector((state) => state.auth.loading);
 
   const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
@@ -81,7 +82,7 @@ function Product() {
       UptoDate: '',
       FilterString: '',
       OffsetValue: 0,
-      PageSize: 10,
+      PageSize: 1000,
       OrderByColumn: 'i.Item_id Desc',
       LinkId: 0,
     };
@@ -143,12 +144,12 @@ function Product() {
                     placeholder="Search"
                     width="100%"
                     patterns
-                  /> 
-                  
+                  />                   
                   */}
                 </Col>
                 <Col xxl={7} lg={12} xs={24}>
-                  <p className="search-result">Showing 1–8 of 86 results</p>
+                  {/* 1–8 of */}
+                  <p className="search-result">Showing {catalogueData?.length} results</p>
                 </Col>
                 <Col xxl={10} xs={24}>
                   <div className="product-list-action d-flex justify-content-between align-items-center">
@@ -168,9 +169,9 @@ function Product() {
                           <NavLink to={`${path}/grid`}>
                             <UilApps />
                           </NavLink>
-                          {/* <NavLink to={`${path}/list`}>
+                          <NavLink to={`${path}/list`}>
                             <UilListUl />
-                          </NavLink> */}
+                          </NavLink>
                         </div>
                       ))}
                   </div>
@@ -188,7 +189,7 @@ function Product() {
               <Routes>
                 <Route index element={<Grid />} />
                 <Route path="grid" element={<Grid />} />
-                {/* <Route path="list" element={<List />} /> */}
+                <Route path="list" element={<List />} />
               </Routes>
             </Suspense>
           </Col>
