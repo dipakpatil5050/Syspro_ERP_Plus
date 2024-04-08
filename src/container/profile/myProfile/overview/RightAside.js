@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import UilPlay from '@iconscout/react-unicons/icons/uil-play';
-import UilCheck from '@iconscout/react-unicons/icons/uil-check';
-import { useSelector, useDispatch } from 'react-redux';
+// import UilPlay from '@iconscout/react-unicons/icons/uil-play';
+// import UilCheck from '@iconscout/react-unicons/icons/uil-check';
+// import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Col, Row } from 'antd';
+import { Row } from 'antd';
 import ModalVideo from 'react-modal-video';
 import { RightAsideWrapper } from './Style';
-import { Button } from '../../../../components/buttons/buttons';
+// import { Button } from '../../../../components/buttons/buttons';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
-import { profileFriendsChangeStatus } from '../../../../redux/profile/actionCreator';
+// import { profileFriendsChangeStatus } from '../../../../redux/profile/actionCreator';
 import './video-modal.css';
 
 function RightAside() {
-  const dispatch = useDispatch();
-  const { friends, gallery } = useSelector((state) => {
-    return {
-      friends: state.Profile.friends,
-      gallery: state.gallery.data,
-    };
-  });
+  // const dispatch = useDispatch();
+  // const { friends, gallery } = useSelector((state) => {
+  //   return {
+  //     friends: state.Profile.friends,
+  //     gallery: state.gallery.data,
+  //   };
+  // });
 
   const [isOpen, setOpen] = useState(false);
 
@@ -26,7 +26,7 @@ function RightAside() {
     <RightAsideWrapper>
       <ModalVideo channel="youtube" autoplay isOpen={isOpen} videoId="L61p2uyiMSo" onClose={() => setOpen(false)} />
       <Cards title="Friends">
-        <ul className="ff-widget">
+        {/* <ul className="ff-widget">
           {friends.map(({ name, key, designation, status, img }) => {
             return (
               <li key={key}>
@@ -58,7 +58,7 @@ function RightAside() {
           <Link to="#" className="btn-loadMore">
             Load more friends
           </Link>
-        </ul>
+        </ul> */}
       </Cards>
       <Cards
         isbutton={
@@ -68,7 +68,7 @@ function RightAside() {
         }
         title="Photos"
       >
-        <div className="widget-photo-list">
+        {/* <div className="widget-photo-list">
           <Row gutter={10}>
             {gallery.map(({ img, id }) => {
               return (
@@ -80,7 +80,7 @@ function RightAside() {
               );
             })}
           </Row>
-        </div>
+        </div> */}
       </Cards>
       <Cards
         isbutton={
@@ -92,7 +92,7 @@ function RightAside() {
       >
         <div className="widget-video-list">
           <Row gutter={10}>
-            {gallery.map(({ img, id }) => {
+            {/* {gallery.map(({ img, id }) => {
               return (
                 id <= 6 && (
                   <Col key={id} xxl={8} lg={12} md={8} sm={6} xs={8}>
@@ -105,7 +105,7 @@ function RightAside() {
                   </Col>
                 )
               );
-            })}
+            })} */}
           </Row>
         </div>
       </Cards>

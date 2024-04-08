@@ -244,7 +244,7 @@ function SaleOutstandingForm() {
       )}
       <HorizontalFormStyleWrap className="sDash_input-form">
         {!viewPdf && (
-          <Cards title="Sale Report" border>
+          <Cards title="Sale Outstanding Report" border>
             <Form name="input-form" layout="horizontal">
               <Row align="middle" gutter={40}>
                 {/* From Date */}

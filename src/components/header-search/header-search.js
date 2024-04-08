@@ -38,19 +38,20 @@ function HeaderSearch() {
     <>
       <Div className="certain-category-search-wrapper" style={{ width: '100%' }}>
         <Row className="ant-row-middle">
-          <Col md={2} xs={1} className={rtl ? 'text-left' : 'text-right'}>
+          <Col md={2} xs={1} className="text-right">
             <span className="certain-category-icon">
               <UilSearch />
             </span>
           </Col>
           <Col md={22} xs={23}>
             <Popover
-              placement={!rtl ? 'bottomLeft' : 'bottomRight'}
+              placement="bottomLeft"
               // content={content}
               title="Search List"
               action="focus"
             >
-              <Input placeholder="Search..." onInput={search} />
+              {/* onInput={search} */}
+              <Input placeholder="Search..." />
             </Popover>
           </Col>
         </Row>

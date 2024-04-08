@@ -15,9 +15,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { InfoWraper, UserDropDwon } from './auth-info-style';
 import Message from './Message';
 import Notification from './Notification';
-import Search from './Search';
+// import Search from './Search';
 import Settings from './settings';
-import { logOut, setUserData, setuserMpinData } from '../../../redux/reducers/authReducer';
+import { logOut, setUserData, setuserMpinData, setCatalogueData } from '../../../redux/reducers/authReducer';
 
 // import { Dropdown } from '../../dropdown/dropdown';
 import Heading from '../../heading/heading';
@@ -40,6 +40,7 @@ const AuthInfo = React.memo(() => {
     dispatch(logOut(() => navigate('/')));
     dispatch(setUserData(null));
     dispatch(setuserMpinData(null));
+    dispatch(setCatalogueData(null));
   };
 
   const userContent = (
@@ -115,7 +116,7 @@ const AuthInfo = React.memo(() => {
 
   return (
     <InfoWraper>
-      <Search />
+      {/* <Search /> */}
       <Message />
       <Notification />
       <Settings />

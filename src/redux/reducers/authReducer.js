@@ -24,13 +24,13 @@ export const login = createAsyncThunk(
       const response = await axios.post(loginUrl, body, { headers });
       const userData = response.data;
       const Token = userData?.Data?.Token;
-      const Errormsg = userData?.Message;
+      const msg = userData?.Message;
 
-      console.log(Errormsg);
+      console.log(msg);
       Cookies.set('access_token', Token);
       Cookies.set('logedIn', true);
       dispatch(setUserData(userData));
-      navigate('/admin/features/ledger-report');
+      navigate('/admin');
       toast.success('Login successful!');
       return true;
     } catch (error) {
@@ -61,11 +61,13 @@ export const authSlice = createSlice({
   initialState: {
     userData: JSON.parse(localStorage.getItem('userData')) || null,
     userMpinData: JSON.parse(localStorage.getItem('userMpinData')) || null,
+    catalogueData: JSON.parse(localStorage.getItem('catalogueData')) || null,
     LedgerReport: null,
     SaleReport: null,
     login: Cookies.get('logedIn'),
     loading: false,
     error: null,
+
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
   },
   reducers: {
@@ -77,11 +79,18 @@ export const authSlice = createSlice({
       state.userMpinData = action.payload;
       localStorage.setItem('userMpinData', JSON.stringify(action.payload));
     },
+    setCatalogueData: (state, action) => {
+      state.catalogueData = action.payload;
+      localStorage.setItem('catalogueData', JSON.stringify(action.payload));
+    },
     setLedgerReport: (state, action) => {
       state.LedgerReport = action.payload;
     },
     setSaleReport: (state, action) => {
       state.SaleReport = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
     },
     loginBegin: (state) => {
       state.loading = true;
@@ -142,8 +151,10 @@ export const authSlice = createSlice({
 export const {
   setuserMpinData,
   setUserData,
+  setCatalogueData,
   setLedgerReport,
   setSaleReport,
+  setLoading,
   loginBegin,
   loginSuccess,
   loginErr,

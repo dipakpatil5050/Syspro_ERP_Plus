@@ -8,9 +8,9 @@ import useDocumentTitle from '../../components/dynamic-Page-Title/useDocumentTit
 const OverviewDataList = lazy(() => import('./overview/index/OverviewDataList'));
 const SalesReport = lazy(() => import('./overview/index/SalesReport'));
 const SalesGrowth = lazy(() => import('./overview/index/SalesGrowth'));
-const SalesByLocation = lazy(() => import('./overview/index/SalesByLocation'));
-const TopSellingProduct = lazy(() => import('./overview/index/TopSellingProducts'));
-const BrowserState = lazy(() => import('./overview/index/BrowserState'));
+// const SalesByLocation = lazy(() => import('./overview/index/SalesByLocation'));
+// const TopSellingProduct = lazy(() => import('./overview/index/TopSellingProducts'));
+// const BrowserState = lazy(() => import('./overview/index/BrowserState'));
 
 function Dashboard() {
   useDocumentTitle('Dashboard');
@@ -26,7 +26,7 @@ function Dashboard() {
   ];
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main" title="Dashboard" routes={PageRoutes} />
+      <PageHeader className="ninjadash-page-header-main" routes={PageRoutes} />
 
       <Main>
         <Row gutter={25}>
@@ -71,7 +71,7 @@ function Dashboard() {
                 </Cards>
               }
             >
-              <SalesByLocation />
+              {/* <SalesByLocation /> */}
             </Suspense>
           </Col>
         </Row>
@@ -84,7 +84,7 @@ function Dashboard() {
                 </Cards>
               }
             >
-              <TopSellingProduct />
+              {/* <TopSellingProduct /> */}
             </Suspense>
           </Col>
           <Col xl={12} xs={24}>
@@ -95,7 +95,7 @@ function Dashboard() {
                 </Cards>
               }
             >
-              <BrowserState />
+              {/* <BrowserState /> */}
             </Suspense>
           </Col>
         </Row>

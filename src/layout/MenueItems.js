@@ -36,7 +36,7 @@ import {
   // UilSearch,
   // UilServer,
   // UilSetting,
-  // UilShoppingCart,
+  UilShoppingCart,
   // UilSquareFull,
   // UilTable,
   // UilUsdCircle,
@@ -1159,6 +1159,76 @@ function MenuItems({ toggleCollapsed }) {
     //     null,
     //   ),
     // ]),
+
+    // E-Commerce section : Catalogue
+    getItem(
+      !topMenu && <NavTitle className="ninjadash-sidebar-nav-title">{t('E-Commerce')}</NavTitle>,
+      'app-title',
+      null,
+      null,
+      'group',
+    ),
+
+    getItem(t('Catalogue'), 'ecommerce', !topMenu && <UilShoppingCart />, [
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/products/grid`}>
+          {t('Catalogue')}
+        </NavLink>,
+        'products',
+        null,
+      ),
+
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/add-product`}>
+          {t('Catalogue')} {t('Upload')}
+        </NavLink>,
+        'add-product',
+        null,
+      ),
+    ]),
+
+    // getItem(
+    //   <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/productDetails/1`}>
+    //     {t('product')} {t('details')}
+    //   </NavLink>,
+    //   'productDetails',
+    //   null,
+    // ),
+    // getItem(
+    //   <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/edit-product`}>
+    //     {t('product')} {t('edit')}
+    //   </NavLink>,
+    //   'edit-product',
+    //   null,
+    // ),
+    // getItem(
+    //   <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/cart`}>
+    //     {t('cart')}
+    //   </NavLink>,
+    //   'cart',
+    //   null,
+    // ),
+    // getItem(
+    //   <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/orders`}>
+    //     {t('orders')}
+    //   </NavLink>,
+    //   'orsers',
+    //   null,
+    // ),
+    // getItem(
+    //   <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/sellers`}>
+    //     {t('sellers')}
+    //   </NavLink>,
+    //   'sellers',
+    //   null,
+    // ),
+    // getItem(
+    //   <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/Invoice`}>
+    //     {t('invoices')}
+    //   </NavLink>,
+    //   'Invoice',
+    //   null,
+    // ),
 
     // getItem(t('widgets'), 'widgets', !topMenu && <UilServer />, [
     //   getItem(

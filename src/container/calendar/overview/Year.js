@@ -4,23 +4,23 @@ import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
 import { Calendar, Select } from 'antd';
 import moment from 'moment';
 import React, { useLayoutEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import AddNewEvent from './EventForm';
 import { Button } from '../../../components/buttons/buttons';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { Modal } from '../../../components/modals/antd-modals';
-import { addNewEvents, eventVisible } from '../../../redux/calendar/actionCreator';
+// import { addNewEvents, eventVisible } from '../../../redux/calendar/actionCreator';
 import { BlockViewCalendarWrapper } from '../Style';
 
 function YearCalendar() {
   const dispatch = useDispatch();
-  const { events, isVisible } = useSelector((state) => {
-    return {
-      events: state.Calender.events,
-      isVisible: state.Calender.eventVisible,
-    };
-  });
+  // const { events, isVisible } = useSelector((state) => {
+  //   return {
+  //     events: state.Calender.events,
+  //     isVisible: state.Calender.eventVisible,
+  //   };
+  // });
   const [state, setState] = useState({
     currentYear: new Date().getFullYear(),
     maxYear: 2025,
@@ -33,7 +33,8 @@ function YearCalendar() {
     const calenderDom = document.querySelectorAll('.ant-picker-calendar-date-content');
     calenderDom.forEach((element) => {
       element.addEventListener('click', () => {
-        dispatch(eventVisible(true));
+        // dispatch(eventVisible(true));
+        console.log('first');
       });
     });
   }, [defaultValue, dispatch]);

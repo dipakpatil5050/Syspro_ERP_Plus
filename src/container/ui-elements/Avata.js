@@ -24,6 +24,7 @@ function Avatars() {
     },
   ];
   // const rtl = useSelector((state) => state.ChangeLayoutMode.rtlData);
+  const rtl = false;
   const [user, setUser] = useState(UserList[0]);
   const [color, setColor] = useState(ColorList[0]);
   const changeUser = () => {

@@ -3,6 +3,7 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Dashboard from './dashboard';
 import Features from './features';
+import Ecommerce from './ecommerce';
 import Pages from './pages';
 import withAdminLayout from '../../layout/withAdminLayout';
 
@@ -28,6 +29,8 @@ const Admin = React.memo(() => {
         <Route path="pages/*" element={<Pages />} />
         <Route path="components/*" element={<Components />} />
         <Route path="features/*" element={<Features />} />
+        <Route path="ecommerce/*" element={<Ecommerce />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
