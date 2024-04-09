@@ -29,25 +29,7 @@ function Grid() {
     });
   };
 
-  const areMoreItemsAvailable = visible < catalogueData.length;
-
-  // const { products } = state;
-
-  // useEffect(() => {
-  //   if (catalogueData) {
-  //     setState({
-  //       products: catalogueData,
-  //     });
-  //   }
-  // }, [catalogueData]);
-
-  // const onShowSizeChange = (current, pageSize) => {
-  //   setState({ ...state, current, pageSize });
-  // };
-
-  // const onHandleChange = (current, pageSize) => {
-  //   setState({ ...state, current, pageSize });
-  // };
+  // const areMoreItemsAvailable = visible < catalogueData.length;
 
   if (loading) {
     return (
@@ -62,7 +44,7 @@ function Grid() {
   }
   return (
     <Row gutter={30}>
-      {catalogueData && catalogueData.length ? (
+      {catalogueData ? (
         catalogueData.slice(0, visible).map((product) => (
           <Col xxl={6} lg={12} xs={24} key={product.Item_Id}>
             <ProductCards product={product} />
@@ -75,17 +57,12 @@ function Grid() {
           </NotFoundWrapper>
         </Col>
       )}
-      {/* Pagination */}
 
-      {/* Show More Button */}
-
-      {areMoreItemsAvailable && (
-        <Col xs={24} className="pb-30" align="end">
-          <Button onClick={showMoreItems} type="primary">
-            Show More ...
-          </Button>
-        </Col>
-      )}
+      <Col xs={24} className="pb-30" align="end">
+        <Button onClick={showMoreItems} type="primary">
+          Show More ...
+        </Button>
+      </Col>
 
       {/* Top Button  */}
       <Col xs={24} className="pb-30" align="end">

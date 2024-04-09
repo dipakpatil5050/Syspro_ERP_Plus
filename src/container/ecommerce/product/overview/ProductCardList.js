@@ -13,7 +13,16 @@ import { ProductCard } from '../../Style';
 
 const ProductCardsList = React.memo(({ product }) => {
   const filepathpreffix = 'http://103.67.238.230:1386/';
-  const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery } = product;
+  const {
+    Item_Id: id,
+    Item_Name: name,
+    SalePrice1: price,
+    Gallary: gallery,
+    Group_Name: group,
+    DesignNo: design,
+    SubGroup_Name: subgroup,
+    View: view,
+  } = product;
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
   const productImage = filepathpreffix + gallery[0]?.Filepath;
@@ -33,34 +42,35 @@ const ProductCardsList = React.memo(({ product }) => {
                 {/* <NavLink to={`/admin/ecommerce/productDetails/${id}`}>{name}</NavLink> */}
                 {name} {id}
               </Heading>
-              <p>description</p>
+              {/* <p>description</p> */}
+              <ul>
+                <li>
+                  <b>Group</b> : {group}
+                </li>
+                <li>
+                  <b>Design No </b> : {design}
+                </li>
+                <li>
+                  <b>SubGroup </b> : {subgroup}
+                </li>
+                <li>
+                  <b>Stock </b>: {view.Stock}
+                </li>
+                <li>
+                  <b>WIP </b>: {view.WIP}
+                </li>
+                <li>
+                  <b>Order </b>: {view.Order}
+                </li>
+              </ul>
             </div>
           </Col>
           <Col md={6} xs={24}>
             <div className="product-single-info">
-              {/* <Link
-                // onClick={() => dispatch(updateWishList(id))}
-                className={popular ? 'btn-heart favourite' : 'btn-heart'}
-                to="#"
-              >
-                {popular ? (
-                  <ReactSVG src={require(`../../../../static/img/icon/heart-fill.svg`).default} />
-                ) : (
-                  <UilHeart />
-                )}
-              </Link> */}
               <p className="product-single-price">
-                <span className="product-single-price__new">₹{price} </span>
-                {price && (
-                  <>
-                    <del> ${price} </del>
-                    <span className="product-single-price__offer"> 60% Off</span>
-                  </>
-                )}
+                <span className="product-single-price__new">₹ {price} </span>
               </p>
-              <div className="product-single-rating">
-                <span className="total-reviews"> 778 Reviews</span>
-              </div>
+
               <div className="product-single-action">
                 <Button className="btn-cart" size="small" type="white" outlined>
                   <UilShoppingBag />

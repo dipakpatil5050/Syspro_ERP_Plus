@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Spin, Button } from 'antd';
 import { useSelector } from 'react-redux';
+import { UilTopArrowFromTop } from '@iconscout/react-unicons';
 import ProductCardsList from './ProductCardList';
 import Heading from '../../../../components/heading/heading';
 
@@ -13,12 +14,12 @@ function List() {
     setVisible((prevValue) => prevValue + 10);
   };
 
-  //   const onTop = () => {
-  //     window.scrollTo({
-  //       top: 0,
-  //       behavior: 'smooth',
-  //     });
-  //   };
+  const onTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
   const areMoreItemsAvailable = visible < catalogueData.length;
 
@@ -56,6 +57,13 @@ function List() {
             </Button>
           </Col>
         )}
+        {/* Top Button  */}
+        <Col xs={24} className="pb-30" align="end">
+          <Button xs={24} type="dashed" onClick={onTop} shape="circle">
+            <UilTopArrowFromTop />
+            <span style={{ fontSize: '12px', display: 'flex' }}>Back to Top</span>
+          </Button>
+        </Col>
       </Col>
     </Row>
   );
