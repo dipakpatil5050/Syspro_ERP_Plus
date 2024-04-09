@@ -21,7 +21,7 @@ function List() {
     });
   };
 
-  const areMoreItemsAvailable = visible < catalogueData.length;
+  // const areMoreItemsAvailable = visible < catalogueData.length;
 
   if (loading) {
     return (
@@ -50,13 +50,12 @@ function List() {
         </Col>
       )}
       <Col xs={24} className="pb-30">
-        {areMoreItemsAvailable && (
-          <Col xs={24} className="pb-30" align="end">
-            <Button onClick={showMoreItems} type="primary">
-              Show More ...
-            </Button>
-          </Col>
-        )}
+        <Col xs={24} className="pb-30" align="end">
+          <Button onClick={showMoreItems} type="primary">
+            Show More ...
+          </Button>
+        </Col>
+
         {/* Top Button  */}
         <Col xs={24} className="pb-30" align="end">
           <Button xs={24} type="dashed" onClick={onTop} shape="circle">

@@ -10,12 +10,6 @@ import { NotFoundWrapper } from '../../Style';
 function Grid() {
   const { catalogueData, loading } = useSelector((state) => state.auth);
 
-  // const [state, setState] = useState({
-  //   products: catalogueData,
-  //   current: 0,
-  //   pageSize: 0,
-  // });
-
   const [visible, setVisible] = useState(10);
 
   const showMoreItems = () => {
@@ -66,7 +60,7 @@ function Grid() {
 
       {/* Top Button  */}
       <Col xs={24} className="pb-30" align="end">
-        <Button xs={24} type="dashed" onClick={onTop} shape="circle">
+        <Button xs={24} type="white" onClick={onTop} shape="circle">
           <UilTopArrowFromTop />
           <span style={{ fontSize: '12px', display: 'flex' }}>Back to Top</span>
         </Button>

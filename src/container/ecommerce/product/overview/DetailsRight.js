@@ -18,6 +18,17 @@ const DetailsRight = React.memo(({ product }) => {
     quantity: 1,
   });
 
+  // const {
+  //   Item_Id: id,
+  //   Item_Name: name,
+  //   salePrice1: price,
+  //   Gallary: gallery,
+  //   Group_Name: group,
+  //   DesignNo: design,
+  //   SubGroup_Name: subgroup,
+  //   View: view,
+  // } = product;
+
   const { name, rate, price, oldPrice, description, category, brand, popular, id } = product;
   const { quantity } = state;
   console.log(id);

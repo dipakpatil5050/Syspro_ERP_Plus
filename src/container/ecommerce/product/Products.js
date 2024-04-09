@@ -82,7 +82,7 @@ function Product() {
       UptoDate: '',
       FilterString: '',
       OffsetValue: 0,
-      PageSize: 1000,
+      PageSize: 100,
       OrderByColumn: 'i.Item_id Desc',
       LinkId: 0,
     };

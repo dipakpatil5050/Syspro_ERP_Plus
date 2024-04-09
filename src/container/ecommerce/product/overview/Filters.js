@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import UilSlidersV from '@iconscout/react-unicons/icons/uil-sliders-v';
 import { Link } from 'react-router-dom';
-import { Rate } from 'antd';
 // import { useDispatch } from 'react-redux';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
-import { Slider } from '../../../../components/slider/slider';
+// import { Slider } from '../../../../components/slider/slider';
 import { CheckboxGroup } from '../../../../components/checkbox/checkbox';
 import { Sidebar, SidebarSingle } from '../../Style';
 // import {
@@ -20,92 +19,34 @@ const Filters = React.memo(() => {
     min: 0,
     max: 1500,
   });
+
+  console.log(state);
+  console.log(setState);
   //   const dispatch = useDispatch();
 
-  const { min, max } = state;
-  const onChange = (value) => {
-    setState({
-      ...state,
-      min: value[0],
-      max: value[1],
-    });
-    // dispatch(filterByPriceRange(value));
-  };
-  const onChangeRating = (checkValue) => {
-    // dispatch(filterByRating([checkValue]));
-    console.log(checkValue);
-  };
+  // const { min, max } = state;
+  // const onChange = (value) => {
+  //   setState({
+  //     ...state,
+  //     min: value[0],
+  //     max: value[1],
+  //   });
+  // dispatch(filterByPriceRange(value));
+  // };
+  // const onChangeRating = (checkValue) => {
+  //   // dispatch(filterByRating([checkValue]));
+  //   console.log(checkValue);
+  // };
   const onChangeBrand = (checkValue) => {
     // dispatch(filterByBrand([checkValue]));
     console.log(checkValue);
   };
-  const options = [
-    {
-      label: (
-        <>
-          <span className="rating-left">
-            <Rate allowHalf defaultValue={5} disabled />
-          </span>
-          <span className="rating-right">25</span>
-        </>
-      ),
-      value: 5,
-    },
-    {
-      label: (
-        <>
-          <span className="rating-left">
-            <Rate allowHalf defaultValue={4} disabled />
-            and up
-          </span>
-          <span className="rating-right">25</span>
-        </>
-      ),
-      value: 4,
-    },
-    {
-      label: (
-        <>
-          <span className="rating-left">
-            <Rate allowHalf defaultValue={3} disabled />
-            and up
-          </span>
-          <span className="rating-right">25</span>
-        </>
-      ),
-      value: 3,
-    },
-    {
-      label: (
-        <>
-          <span className="rating-left">
-            <Rate allowHalf defaultValue={2} disabled />
-            and up
-          </span>
-          <span className="rating-right">25</span>
-        </>
-      ),
-      value: 2,
-    },
-    {
-      label: (
-        <>
-          <span className="rating-left">
-            <Rate allowHalf defaultValue={1} disabled />
-            and up
-          </span>
-          <span className="rating-right">25</span>
-        </>
-      ),
-      value: 1,
-    },
-  ];
 
   const optionsBrand = [
     {
       label: (
         <>
-          Cup <span className="brand-count">25</span>
+          Product 1 <span className="brand-count">25</span>
         </>
       ),
       value: 'cup',
@@ -113,32 +54,16 @@ const Filters = React.memo(() => {
     {
       label: (
         <>
-          Plate <span className="brand-count">25</span>
+          Product 2 <span className="brand-count">25</span>
         </>
       ),
       value: 'plate',
     },
-    {
-      label: (
-        <>
-          Chair <span className="brand-count">25</span>
-        </>
-      ),
-      value: 'chair',
-    },
-    {
-      label: (
-        <>
-          Juice <span className="brand-count">25</span>
-        </>
-      ),
-      value: 'juice',
-    },
   ];
 
-  const onChangeCategory = (value) => {
-    dispatch(filterByCategory(value));
-  };
+  // const onChangeCategory = (value) => {
+  //   dispatch(filterByCategory(value));
+  // };
 
   return (
     <Sidebar>
@@ -150,63 +75,28 @@ const Filters = React.memo(() => {
           </span>
         }
       >
-        <SidebarSingle style={{ marginBottom: 32 }}>
+        {/* <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Price Range</Heading>
           <Slider max={1500} onChange={onChange} range defaultValues={[min, max]} />
           <p className="ninjadash-price-text">
             ${min} - ${max}
           </p>
-        </SidebarSingle>
+        </SidebarSingle> */}
         <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Category</Heading>
 
           <nav>
             <ul className="ninjadash-category-list">
               <li>
-                <Link onClick={() => onChangeCategory('all')} to="#">
+                {/* onClick={() => onChangeCategory('all')} */}
+                <Link to="#">
                   <span>All</span>
                   <span className="ninjadash-category-count">25</span>
                 </Link>
               </li>
               <li>
-                <Link onClick={() => onChangeCategory('accessories')} to="#">
-                  <span>Accessories</span>
-                  <span className="ninjadash-category-count">25</span>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={() => onChangeCategory('appliance')} to="#">
-                  <span>Appliances</span>
-                  <span className="ninjadash-category-count">25</span>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={() => onChangeCategory('bags')} to="#">
-                  <span>Bags</span>
-                  <span className="ninjadash-category-count">25</span>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={() => onChangeCategory('electronic')} to="#">
-                  <span>Electronic</span>
-                  <span className="ninjadash-category-count">25</span>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={() => onChangeCategory('entertainment')} to="#">
-                  <span>Entertainment</span>
-                  <span className="ninjadash-category-count">25</span>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={() => onChangeCategory('induction')} to="#">
-                  <span>Induction</span>
-                  <span className="ninjadash-category-count">25</span>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={() => onChangeCategory('mobile')} to="#">
-                  <span>Mobile Phone</span>
+                <Link to="#">
+                  <span>Unstich Lehanga</span>
                   <span className="ninjadash-category-count">25</span>
                 </Link>
               </li>
@@ -225,14 +115,9 @@ const Filters = React.memo(() => {
 
           <div className="sidebar-single__action">
             <Link className="btn-seeMore" to="#">
-              See more
+              See more ...
             </Link>
           </div>
-        </SidebarSingle>
-
-        <SidebarSingle>
-          <Heading as="h5">Ratings</Heading>
-          <CheckboxGroup options={options} onChange={onChangeRating} />
         </SidebarSingle>
       </Cards>
     </Sidebar>

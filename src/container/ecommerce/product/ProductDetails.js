@@ -13,6 +13,8 @@ import { Cards } from '../../../components/cards/frame/cards-frame';
 const DetailsRight = lazy(() => import('./overview/DetailsRight'));
 
 function ProductDetails() {
+  // const catalogueData = useSelector((state) => state.auth.catalogueData);
+
   const PageRoutes = [
     {
       path: '/admin',

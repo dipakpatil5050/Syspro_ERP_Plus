@@ -20,6 +20,7 @@ function ProductCards({ product }) {
 
       <figcaption>
         <Heading className="product-single-title" as="h5">
+          {/* <NavLink to={`/admin/ecommerce/productDetails/${id}`}>{name}</NavLink> */}
           {name} {id}
         </Heading>
 
