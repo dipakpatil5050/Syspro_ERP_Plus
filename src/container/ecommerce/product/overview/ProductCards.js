@@ -13,17 +13,16 @@ function ProductCards({ product }) {
   const productImage = filepathpreffix + gallery[0]?.Filepath;
 
   return (
-    <ProductCard style={{ marginBottom: 30 }}>
+    <ProductCard style={{ marginBottom: 30, width: 280 }}>
       <figure>
-        <img src={productImage} alt={name} width={290} height={200} />
+        <img src={productImage} alt={name} height={200} />
       </figure>
-
+      {/* width={290} height={200} */}
       <figcaption>
         <Heading className="product-single-title" as="h5">
           {/* <NavLink to={`/admin/ecommerce/productDetails/${id}`}>{name}</NavLink> */}
           {name} {id}
         </Heading>
-
         <p className="product-single-price">
           <span className="product-single-price__new">₹ {price} </span>
         </p>

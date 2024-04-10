@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Radio, Spin, Skeleton } from 'antd';
+import { Row, Col, Spin } from 'antd';
 import { Route, Routes, NavLink } from 'react-router-dom';
 import UilApps from '@iconscout/react-unicons/icons/uil-apps';
 import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
@@ -13,10 +13,10 @@ import { Main } from '../../styled';
 // import { AutoComplete } from '../../../components/autoComplete/autoComplete';
 import { TopToolBox } from '../Style';
 // import { sorting } from '../../../redux/product/actionCreator';
-import { Cards } from '../../../components/cards/frame/cards-frame';
+// import { Cards } from '../../../components/cards/frame/cards-frame';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 
-const Filters = lazy(() => import('./overview/Filters'));
+// const Filters = lazy(() => import('./overview/Filters'));
 const Grid = lazy(() => import('./overview/Grid'));
 const List = lazy(() => import('./overview/List'));
 
@@ -58,7 +58,6 @@ function Product() {
   const dispatch = useDispatch();
   const userMpinData = useSelector((state) => state.auth.userMpinData);
   const userData = useSelector((state) => state.auth.userData);
-  const catalogueData = useSelector((state) => state.auth.catalogueData);
   // const loading = useSelector((state) => state.auth.loading);
 
   const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
@@ -82,7 +81,7 @@ function Product() {
       UptoDate: '',
       FilterString: '',
       OffsetValue: 0,
-      PageSize: 100,
+      PageSize: 1000000000,
       OrderByColumn: 'i.Item_id Desc',
       LinkId: 0,
     };
@@ -121,7 +120,8 @@ function Product() {
       <PageHeader className="ninjadash-page-header-main" routes={PageRoutes} />
       <Main>
         <Row gutter={30}>
-          <Col className="product-sidebar-col" xxl={5} xl={7} lg={7} md={10} xs={24}>
+          {/* filter side bars */}
+          {/* <Col className="product-sidebar-col" xxl={5} xl={7} lg={7} md={10} xs={24}>
             <Suspense
               fallback={
                 <Cards headless>
@@ -131,7 +131,7 @@ function Product() {
             >
               <Filters />
             </Suspense>
-          </Col>
+          </Col> */}
           <Col className="product-content-col" xxl={19} lg={17} md={14} xs={24}>
             <TopToolBox>
               <Row gutter={0}>
@@ -147,22 +147,8 @@ function Product() {
                   />                   
                   */}
                 </Col>
-                <Col xxl={7} lg={12} xs={24}>
-                  {/* 1–8 of */}
-                  <p className="search-result">Showing {catalogueData?.length} results</p>
-                </Col>
-                <Col xxl={10} xs={24}>
+                <Col xxl={10} xs={24} align="end">
                   <div className="product-list-action d-flex justify-content-between align-items-center">
-                    <div className="product-list-action__tab">
-                      <span className="toolbox-menu-title">Sort by:</span>
-                      {/* onChange={onSorting} */}
-                      <Radio.Group defaultValue="rate">
-                        <Radio.Button value="rate">Top Rated</Radio.Button>
-                        <Radio.Button value="popular">Popular</Radio.Button>
-                        <Radio.Button value="time">Newest</Radio.Button>
-                        <Radio.Button value="price">Price</Radio.Button>
-                      </Radio.Group>
-                    </div>
                     {(window.innerWidth <= 991 && window.innerWidth >= 768) ||
                       (window.innerWidth > 575 && (
                         <div className="product-list-action__viewmode">

@@ -1,5 +1,5 @@
 import { Button, Col, Form, Input, Row } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -10,8 +10,11 @@ import { setuserMpinData } from '../../redux/reducers/authReducer';
 function ClientMpin() {
   const [mPin, setMPin] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const mPinInputRef = useRef(null);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   // const isLoading = useSelector((state) => state.auth.loading);
   // const [form] = Form.useForm();
 
@@ -62,6 +65,10 @@ function ClientMpin() {
     }
   };
 
+  useEffect(() => {
+    mPinInputRef.current.focus();
+  }, []);
+
   return (
     <Row justify="center">
       <Col xxl={6} xl={8} md={12} sm={18} xs={24}>
@@ -80,6 +87,7 @@ function ClientMpin() {
                 <Input
                   placeholder="Enter your mPin"
                   value={mPin}
+                  ref={mPinInputRef}
                   onChange={handleInputChange}
                   name="mPin"
                   autoComplete="current-password"

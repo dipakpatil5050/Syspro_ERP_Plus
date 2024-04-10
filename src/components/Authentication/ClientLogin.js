@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Col, Form, Input, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { Checkbox } from '../checkbox/checkbox';
 function ClientLogin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const loginInputRef = useRef(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +39,10 @@ function ClientLogin() {
     setState({ ...state, checked });
   };
 
+  useEffect(() => {
+    loginInputRef.current.focus();
+  }, []);
+
   return (
     <Row justify="center">
       <Col xxl={6} xl={8} md={12} sm={18} xs={24}>
@@ -55,6 +60,7 @@ function ClientLogin() {
                 <Input
                   placeholder="name@example.com"
                   autoComplete="username"
+                  ref={loginInputRef}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
