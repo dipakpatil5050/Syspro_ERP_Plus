@@ -1,91 +1,55 @@
 import React, { lazy, Suspense } from 'react';
-import { useSelector } from 'react-redux';
-// useDispatch
+import { useParams } from 'react-router-dom';
 import { Row, Col, Skeleton } from 'antd';
-import { Link } from 'react-router-dom';
-// params
+import { useSelector } from 'react-redux';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 import { Main } from '../../styled';
-// import { filterSinglePage } from '../../../redux/product/actionCreator';
 import { ProductDetailsWrapper } from '../Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 
 const DetailsRight = lazy(() => import('./overview/DetailsRight'));
 
 function ProductDetails() {
-  // const catalogueData = useSelector((state) => state.auth.catalogueData);
+  // Get the product ID from the URL params
+  const { id } = useParams();
+
+  // const { catalogueData } = useSelector((state) => state.auth);
+
+  const products = useSelector((state) => {
+    return state.auth.catalogueData.find((product) => product.Item_Id === parseInt(id));
+  });
 
   const PageRoutes = [
     {
-      path: '/admin',
-      breadcrumbName: 'Dashboard',
+      path: '/admin/ecommerce/products/grid',
+      breadcrumbName: 'Catalogue',
     },
     {
       path: '',
       breadcrumbName: 'Product Details',
     },
   ];
-  //   const dispatch = useDispatch();
-  //   const params = useParams();
-
-  const { products, product } = useSelector((state) => {
-    return {
-      product: state.product.data,
-      products: state.products.data,
-    };
-  });
-
-  //   useEffect(() => {
-  //     if (filterSinglePage) {
-  //       dispatch(filterSinglePage(parseInt(params.id, 10), products));
-  //     }
-  //   }, [params.id, dispatch, products]);
-
-  const { img, category } = product[0];
-
   return (
     <>
       <PageHeader className="ninjadash-page-header-main" title="Product Details" routes={PageRoutes} />
       <Main>
         <Cards headless>
+          {/* Close Button  */}
+          {/* <Col align="right">
+            <Button>Close</Button>
+          </Col> */}
+
           <ProductDetailsWrapper>
             <div className="product-details-box">
               <Row gutter={30}>
                 <Col xs={24} lg={10}>
-                  <div className="product-details-box__left pdbl">
-                    <figure>
-                      <img style={{ width: '100%' }} src={require(`../../../${img}`)} alt="" />
-                    </figure>
-                    <div className="pdbl__slider pdbs">
-                      <Row gutter={5}>
-                        {products.length
-                          ? products
-                              .filter((value) => {
-                                return value.category === category;
-                              })
-                              .map((value, index) => {
-                                return (
-                                  index <= 3 && (
-                                    <Col md={4} key={value.id}>
-                                      <div className="pdbl__image">
-                                        <figure>
-                                          <Link to={`/admin/ecommerce/productDetails/${value.id}`}>
-                                            <img
-                                              style={{ width: '100%' }}
-                                              src={require(`../../../${value.img}`)}
-                                              alt=""
-                                            />
-                                          </Link>
-                                        </figure>
-                                      </div>
-                                    </Col>
-                                  )
-                                );
-                              })
-                          : null}
-                      </Row>
-                    </div>
-                  </div>
+                  <figure>
+                    <img
+                      src={`http://103.67.238.230:1386/${products.Gallary[0]?.Filepath}`}
+                      alt={products.Item_Name}
+                      style={{ width: '100%' }}
+                    />
+                  </figure>
                 </Col>
                 <Col xs={24} lg={14}>
                   <Suspense
@@ -95,7 +59,8 @@ function ProductDetails() {
                       </Cards>
                     }
                   >
-                    <DetailsRight product={product[0]} />
+                    {/* Pass product data as prop to DetailsRight component */}
+                    <DetailsRight product={products} />
                   </Suspense>
                 </Col>
               </Row>

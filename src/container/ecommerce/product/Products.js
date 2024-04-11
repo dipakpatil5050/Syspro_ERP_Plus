@@ -15,12 +15,15 @@ import { TopToolBox } from '../Style';
 // import { sorting } from '../../../redux/product/actionCreator';
 // import { Cards } from '../../../components/cards/frame/cards-frame';
 import { PageHeader } from '../../../components/page-headers/page-headers';
+import useDocumentTitle from '../../../components/dynamic-Page-Title/useDocumentTitle';
 
 // const Filters = lazy(() => import('./overview/Filters'));
 const Grid = lazy(() => import('./overview/Grid'));
 const List = lazy(() => import('./overview/List'));
 
 function Product() {
+  useDocumentTitle('Catalogue');
+
   const PageRoutes = [
     {
       //   path: '/admin',
@@ -98,11 +101,12 @@ function Product() {
     };
 
     // setLoading(true);
-    dispatch(setLoading(true));
     try {
+      dispatch(setLoading(true));
       const response = await axios.post(CatalogueAPI, body, { headers });
       const CatalogueDatafromAPI = response?.data?.Data;
       dispatch(setCatalogueData(CatalogueDatafromAPI));
+      dispatch(setLoading(false));
     } catch (error) {
       console.error('Error in Catalogue data fetching:', error);
       toast.error('Error in fetching catalogue report data from API Server.');
@@ -149,7 +153,7 @@ function Product() {
                 </Col>
                 <Col xxl={10} xs={24} align="end">
                   <div className="product-list-action d-flex justify-content-between align-items-center">
-                    {(window.innerWidth <= 991 && window.innerWidth >= 768) ||
+                    {/* {(window.innerWidth <= 991 && window.innerWidth >= 768) ||
                       (window.innerWidth > 575 && (
                         <div className="product-list-action__viewmode">
                           <NavLink to={`${path}/grid`}>
@@ -159,7 +163,15 @@ function Product() {
                             <UilListUl />
                           </NavLink>
                         </div>
-                      ))}
+                      ))} */}
+                    <div className="product-list-action__viewmode">
+                      <NavLink to={`${path}/grid`}>
+                        <UilApps />
+                      </NavLink>
+                      <NavLink to={`${path}/list`}>
+                        <UilListUl />
+                      </NavLink>
+                    </div>
                   </div>
                 </Col>
               </Row>

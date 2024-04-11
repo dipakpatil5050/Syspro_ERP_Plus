@@ -1,6 +1,7 @@
 import React from 'react';
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
@@ -12,6 +13,10 @@ function ProductCards({ product }) {
   /* eslint-disable-next-line no-unsafe-optional-chaining */
   const productImage = filepathpreffix + gallery[0]?.Filepath;
 
+  const multipleImages = gallery.map((image) => filepathpreffix + image.Filepath).join(',');
+
+  console.log('Multiple images : ', multipleImages);
+
   return (
     <ProductCard style={{ marginBottom: 30, width: 280 }}>
       <figure>
@@ -20,8 +25,9 @@ function ProductCards({ product }) {
       {/* width={290} height={200} */}
       <figcaption>
         <Heading className="product-single-title" as="h5">
-          {/* <NavLink to={`/admin/ecommerce/productDetails/${id}`}>{name}</NavLink> */}
-          {name} {id}
+          <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
+            {name}
+          </NavLink>
         </Heading>
         <p className="product-single-price">
           <span className="product-single-price__new">₹ {price} </span>

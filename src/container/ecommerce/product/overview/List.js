@@ -10,7 +10,7 @@ import { NotFoundWrapper } from '../../Style';
 function List() {
   const { catalogueData, loading } = useSelector((state) => state.auth);
 
-  const [visible, setVisible] = useState(10);
+  const [visible, setVisible] = useState(50);
   const [showTopButton, setShowTopButton] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function List() {
   }, []);
 
   const showMoreItems = () => {
-    setVisible((prevValue) => prevValue + 10);
+    setVisible((prevValue) => prevValue + 50);
   };
 
   const fetchMoreData = () => {

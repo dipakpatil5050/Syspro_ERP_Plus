@@ -8,9 +8,10 @@ import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
 
 function Grid() {
-  const { catalogueData, loading } = useSelector((state) => state.auth);
+  const { catalogueData } = useSelector((state) => state.auth);
+  // loading
 
-  const [visible, setVisible] = useState(10);
+  const [visible, setVisible] = useState(50);
   const [showTopButton, setShowTopButton] = useState(false);
 
   useEffect(() => {
@@ -46,17 +47,17 @@ function Grid() {
     });
   };
 
-  if (loading && visible === 10) {
-    return (
-      <Row gutter={30}>
-        <Col xs={24}>
-          <div className="spin">
-            <Spin />
-          </div>
-        </Col>
-      </Row>
-    );
-  }
+  // if (loading && visible === 50) {
+  //   return (
+  //     <Row gutter={30}>
+  //       <Col xs={24}>
+  //         <div className="spin">
+  //           <Spin />
+  //         </div>
+  //       </Col>
+  //     </Row>
+  //   );
+  // }
 
   return (
     <div>

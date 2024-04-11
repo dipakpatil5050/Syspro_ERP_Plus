@@ -1,8 +1,8 @@
 import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Product from '../../container/ecommerce/product/Products';
+// import Product from '../../container/ecommerce/product/Products';
 
-// const Product = lazy(() => import('../../container/ecommerce/product/Products'));
+const Product = lazy(() => import('../../container/ecommerce/product/Products'));
 const ProductAdd = lazy(() => import('../../container/ecommerce/product/AddProduct'));
 const ProductDetails = lazy(() => import('../../container/ecommerce/product/ProductDetails'));
 const Cart = lazy(() => import('../../container/ecommerce/Cart'));

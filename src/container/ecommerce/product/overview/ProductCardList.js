@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
+import { NavLink } from 'react-router-dom';
 // import UilHeart from '@iconscout/react-unicons/icons/uil-heart';
 // import { useDispatch } from 'react-redux';
 // import { Link, NavLink } from 'react-router-dom';
@@ -39,20 +40,19 @@ const ProductCardsList = React.memo(({ product }) => {
           <Col md={12} xs={24}>
             <div className="product-single-description">
               <Heading className="product-single-title" as="h5">
-                {/* <NavLink to={`/admin/ecommerce/productDetails/${id}`}>{name}</NavLink> */}
-                {name} {id}
+                <NavLink to={`/admin/ecommerce/productDetails/${id}`}>{name}</NavLink>
               </Heading>
-              {/* <p>description</p> */}
               <ul>
                 <li>
                   <b>Group</b> : {group}
                 </li>
                 <li>
-                  <b>Design No </b> : {design}
-                </li>
-                <li>
                   <b>SubGroup </b> : {subgroup}
                 </li>
+                <li>
+                  <b>Design No </b> : {design}
+                </li>
+
                 <li>
                   <b>Stock </b>: {view.Stock}
                 </li>
