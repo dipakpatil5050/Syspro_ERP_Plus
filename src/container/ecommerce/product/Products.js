@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Spin } from 'antd';
+import { Row, Col, Spin, Skeleton } from 'antd';
 import { Route, Routes, NavLink } from 'react-router-dom';
 import UilApps from '@iconscout/react-unicons/icons/uil-apps';
 import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
@@ -13,11 +13,11 @@ import { Main } from '../../styled';
 // import { AutoComplete } from '../../../components/autoComplete/autoComplete';
 import { TopToolBox } from '../Style';
 // import { sorting } from '../../../redux/product/actionCreator';
-// import { Cards } from '../../../components/cards/frame/cards-frame';
+import { Cards } from '../../../components/cards/frame/cards-frame';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 import useDocumentTitle from '../../../components/dynamic-Page-Title/useDocumentTitle';
 
-// const Filters = lazy(() => import('./overview/Filters'));
+const Filters = lazy(() => import('./overview/Filters'));
 const Grid = lazy(() => import('./overview/Grid'));
 const List = lazy(() => import('./overview/List'));
 
@@ -125,7 +125,7 @@ function Product() {
       <Main>
         <Row gutter={30}>
           {/* filter side bars */}
-          {/* <Col className="product-sidebar-col" xxl={5} xl={7} lg={7} md={10} xs={24}>
+          <Col className="product-sidebar-col" xxl={5} xl={7} lg={7} md={10} xs={24}>
             <Suspense
               fallback={
                 <Cards headless>
@@ -135,7 +135,7 @@ function Product() {
             >
               <Filters />
             </Suspense>
-          </Col> */}
+          </Col>
           <Col className="product-content-col" xxl={19} lg={17} md={14} xs={24}>
             <TopToolBox>
               <Row gutter={0}>

@@ -8,7 +8,7 @@ import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
 
 function Grid() {
-  const { catalogueData } = useSelector((state) => state.auth);
+  const { catalogueData, loading } = useSelector((state) => state.auth);
   // loading
 
   const [visible, setVisible] = useState(50);
@@ -47,17 +47,17 @@ function Grid() {
     });
   };
 
-  // if (loading && visible === 50) {
-  //   return (
-  //     <Row gutter={30}>
-  //       <Col xs={24}>
-  //         <div className="spin">
-  //           <Spin />
-  //         </div>
-  //       </Col>
-  //     </Row>
-  //   );
-  // }
+  if (loading && visible === 50) {
+    return (
+      <Row gutter={30}>
+        <Col xs={24}>
+          <div className="spin">
+            <Spin />
+          </div>
+        </Col>
+      </Row>
+    );
+  }
 
   return (
     <div>

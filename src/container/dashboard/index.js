@@ -21,7 +21,7 @@ function Dashboard() {
     },
     {
       path: 'first',
-      breadcrumbName: 'Dashboard view',
+      breadcrumbName: 'Dashboard Overview',
     },
   ];
   return (

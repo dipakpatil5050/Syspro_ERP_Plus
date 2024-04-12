@@ -50,22 +50,16 @@ const DetailsRight = React.memo(({ product }) => {
           {Item_Name}
         </Heading>
         <Rate allowHalf defaultValue={SalePrice1} disabled />
-        {/* <span className="pdbr__rating">{SalePrice1}</span> */}
-        {/* <span className="pdbr__review-count"> 778 Reviews</span> */}
-        {/* <p>
-        <span className="pdbr__brand-text">Brand :</span>
-        <span className="pdbr__brand-name">{name}</span>
-      </p> */}
+
         <Heading className="pdbr__new-price" as="h3">
           {/* <span className="pdbr__currency">₹ </span> */}
           <span className="pdbr__price">₹ {SalePrice1}</span>
         </Heading>
-        {/* <p className="pdbr__desc">{}</p> */}
         <div className="pdbr__current-status">
-          <p>
+          {/* <p>
             <span className="current-status-title">Available :</span>
             <span className="stock-status in-stock"> In Stock</span>
-          </p>
+          </p> */}
           <p>
             <span className="current-status-title"> Item Name : </span>
             <span className="shipping-cost">{Item_Name}</span>
@@ -90,6 +84,8 @@ const DetailsRight = React.memo(({ product }) => {
             <span className="current-status-title"> Sale Order (Pending) : </span>
             <span className="shipping-cost">{SaleOrder}</span>
           </p>
+
+          {/* Quantity page :  */}
           {/* <p className="pdbr__quantity">
           <span className="current-status-title">Quantity :</span>
 
@@ -119,17 +115,17 @@ const DetailsRight = React.memo(({ product }) => {
             </Button>
           </div>
         </div>
-        <ul className="pdbr__list">
+        {/* <ul className="pdbr__list">
           <li>
             <span>Category:</span>
-            {/* <span>{category}</span> */}
+            <span>{Cat_Name}</span>
           </li>
         </ul>
         <ul className="pdbr__list">
           <li>
             <span>Tags:</span>
           </li>
-        </ul>
+        </ul> */}
       </div>
     </>
   );
@@ -139,7 +135,7 @@ DetailsRight.propTypes = {
     Item_Name: PropTypes.string.isRequired,
     SalePrice1: PropTypes.number.isRequired,
     Item_Code: PropTypes.string.isRequired,
-    Stock_qty: PropTypes.number.isRequired,
+    Stock_qty: PropTypes.number,
     SaleOrder: PropTypes.number.isRequired,
     WIP_stock: PropTypes.number.isRequired,
     DesignNo: PropTypes.string.isRequired,
