@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col } from 'antd';
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
 import { NavLink } from 'react-router-dom';
@@ -13,7 +13,8 @@ import { ProductCard } from '../../Style';
 // import { updateWishList } from '../../../../redux/product/actionCreator';
 
 const ProductCardsList = React.memo(({ product }) => {
-  const filepathpreffix = 'http://103.67.238.230:1386/';
+  const filepathprefix = 'http://103.67.238.230:1386/';
+  const [imageError, setImageError] = useState(false);
   const {
     Item_Id: id,
     Item_Name: name,
@@ -25,8 +26,13 @@ const ProductCardsList = React.memo(({ product }) => {
     View: view,
   } = product;
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   /* eslint-disable-next-line no-unsafe-optional-chaining */
-  const productImage = filepathpreffix + gallery[0]?.Filepath;
+  const productImage = !imageError && gallery.length > 0 ? filepathprefix + gallery[0].Filepath : null;
+  const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
 
   return (
     <ProductCard className="list-view" style={{ marginBottom: 20 }}>
@@ -34,7 +40,7 @@ const ProductCardsList = React.memo(({ product }) => {
         <Row gutter={15}>
           <Col md={6} xs={24}>
             <figure>
-              <img src={productImage} alt={name} />
+              <img src={productImage || defaultImage} alt={name} onError={handleImageError} />
             </figure>
           </Col>
           <Col md={12} xs={24}>

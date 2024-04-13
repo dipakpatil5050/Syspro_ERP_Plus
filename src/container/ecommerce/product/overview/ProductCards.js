@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import UilShareAlt from '@iconscout/react-unicons/icons/uil-share-alt';
 // import { IoShareSocialOutline } from 'react-icons/io5';
 import { Share2 } from 'lucide-react';
@@ -11,24 +11,22 @@ import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
 
 function ProductCards({ product }) {
-  const filepathpreffix = 'http://103.67.238.230:1386/';
+  const filepathprefix = 'http://103.67.238.230:1386/';
+  const [imageError, setImageError] = useState(false);
   const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery } = product;
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   /* eslint-disable-next-line no-unsafe-optional-chaining */
-  const productImage = filepathpreffix + gallery[0]?.Filepath;
-
-  // const multipleImages = gallery.map((image) => filepathpreffix + image.Filepath).join(',');
-
-  // console.log('Multiple images : ', multipleImages);
-
-  // const noPreview = "https://dummyimage.com/600x400/ffffff/000000.png&text=No+Previwe"
-
-  // <img src="https://dummyimage.com/600x400/ffffff/000000.png&text=No+Previwe" alt={name} height={200} /> no preview imagwe
+  const productImage = !imageError && gallery.length > 0 ? filepathprefix + gallery[0].Filepath : null;
+  const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
 
   return (
     <ProductCard style={{ marginBottom: 30 }}>
       <figure>
-        <img src={productImage} alt={name} height={200} />
+        <img src={productImage || defaultImage} alt={name} height={200} onError={handleImageError} />
       </figure>
       <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
         {/* <Button className="btn-icon"> */}
