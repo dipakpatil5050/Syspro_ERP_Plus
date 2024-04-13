@@ -730,6 +730,7 @@ const ProductDetailsWrapper = Styled.div`
     }
     .pdbl__image{
         ${({ theme }) => (theme.rtl ? 'margin-left' : 'margin-right')}: 6px;
+        
         img{
             border-radius: 10px;
             max-width: 90px;

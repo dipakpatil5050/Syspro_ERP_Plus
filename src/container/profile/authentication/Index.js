@@ -16,10 +16,9 @@ const AuthLayout = (WraperContent) => {
           <div className="ninjadash-authentication-wrap">
             <div className="ninjadash-authentication-brand">
               {/* galaxy infotech logo */}
-
               {/* purple Color logo Link : https://i.imgur.com/loUfK6S.png */}
               {/* Original logo Link : https://i.imgur.com/ciq27SF.png */}
-              <img width={230} src="https://i.imgur.com/ciq27SF.png" alt="" />
+              <img width={230} src="./mpinCompnayLogo.png" alt="Company Logo" />
             </div>
             <WraperContent />
           </div>

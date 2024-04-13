@@ -43,13 +43,41 @@ function ProductDetails() {
             <div className="product-details-box">
               <Row gutter={30}>
                 <Col xs={24} lg={10}>
-                  <figure>
-                    <img
-                      src={`http://103.67.238.230:1386/${products.Gallary[0]?.Filepath}`}
-                      alt={products.Item_Name}
-                      style={{ width: '100%' }}
-                    />
-                  </figure>
+                  <div className="product-details-box__left pdbl">
+                    <figure>
+                      <img
+                        src={`http://103.67.238.230:1386/${products.Gallary[0]?.Filepath}`}
+                        alt={products.Item_Name}
+                        style={{ width: '100%' }}
+                      />
+                    </figure>
+                    <div className="pdbl__slider pdbs">
+                      <Row gutter={5}>
+                        <Col md={4}>
+                          <div className="pdbl__image pdbs" style={{ display: 'flex' }}>
+                            {products.Gallary?.map((value, index) => {
+                              return (
+                                <figure key={index} style={{ cursor: 'pointer', margin: '5px' }}>
+                                  <img
+                                    src={`http://103.67.238.230:1386/${value.Filepath}`}
+                                    alt={products.Item_Name}
+                                    style={{ width: '100px', height: '100%' }}
+                                  />
+                                </figure>
+                              );
+                            })}
+                            {/* <figure>
+                              <img
+                                src={`http://103.67.238.230:1386/${products.Gallary[1]?.Filepath}`}
+                                alt={products.Item_Name}
+                                style={{ width: '100%' }}
+                              />
+                            </figure> */}
+                          </div>
+                        </Col>
+                      </Row>
+                    </div>
+                  </div>
                 </Col>
                 <Col xs={24} lg={14}>
                   <Suspense
@@ -59,7 +87,6 @@ function ProductDetails() {
                       </Cards>
                     }
                   >
-                    {/* Pass product data as prop to DetailsRight component */}
                     <DetailsRight product={products} />
                   </Suspense>
                 </Col>

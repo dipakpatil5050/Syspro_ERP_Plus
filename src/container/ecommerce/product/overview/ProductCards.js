@@ -28,18 +28,14 @@ function ProductCards({ product }) {
       <figure>
         <img src={productImage || defaultImage} alt={name} height={200} onError={handleImageError} />
       </figure>
-      <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
-        {/* <Button className="btn-icon"> */}
-        {/* <Link>
-          <Share2 size={25} />
-        </Link> */}
+      {/* width={290} height={200} */}
 
+      <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
         <Button className="btn-icon" shape="circle" type="primary" size="large">
           <Share2 style={{ color: 'white' }} />
         </Button>
       </Col>
 
-      {/* width={290} height={200} */}
       <figcaption>
         <Heading className="product-single-title" as="h5">
           <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
