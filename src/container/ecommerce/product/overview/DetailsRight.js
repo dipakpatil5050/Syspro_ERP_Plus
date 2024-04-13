@@ -2,7 +2,6 @@ import React from 'react';
 import { Rate } from 'antd';
 // import UilHeart from '@iconscout/react-unicons/icons/uil-heart';
 import UilShareAlt from '@iconscout/react-unicons/icons/uil-share-alt';
-import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
 import PropTypes from 'prop-types';
 // import FontAwesome from 'react-fontawesome';
 import Heading from '../../../../components/heading/heading';
@@ -17,8 +16,21 @@ const DetailsRight = React.memo(({ product }) => {
   // });
 
   /* eslint-disable camelcase */
-  const { Item_Name, Item_Code, SalePrice1, Stock_qty, WIP_stock, SaleOrder, DesignNo } = product;
+  const { Item_Name, Item_Code, SalePrice1, Stock_qty, DesignNo } = product;
 
+  const availabilityText = Stock_qty > 0 ? 'In Stock' : 'Out of Stock'; //
+
+  let stockStyle;
+  if (availabilityText === 'Out of Stock') {
+    stockStyle = {
+      color: 'red',
+      weight: 500,
+    };
+  } else {
+    stockStyle = {
+      color: 'green',
+    };
+  }
   // const { name, rate, price, oldPrice, description, category, brand, popular, id } = product;
 
   // const { quantity } = state;
@@ -56,33 +68,29 @@ const DetailsRight = React.memo(({ product }) => {
           <span className="pdbr__price">₹ {SalePrice1}</span>
         </Heading>
         <div className="pdbr__current-status">
-          {/* <p>
-            <span className="current-status-title">Available :</span>
-            <span className="stock-status in-stock"> In Stock</span>
-          </p> */}
+          <p>
+            <span className="current-status-title">Availability :</span>
+
+            <span className="stock-status in-stock" style={stockStyle}>
+              {availabilityText}
+            </span>
+          </p>
           <p>
             <span className="current-status-title"> Item Name : </span>
             <span className="shipping-cost">{Item_Name}</span>
           </p>
           <p>
             <span className="current-status-title"> Item Code : </span>
-            <span className="shipping-cost">{Item_Code}</span>
+            <span className="shipping-cost">&nbsp;{Item_Code}</span>
           </p>
-          <p>
-            <span className="current-status-title"> WIP Stock : </span>
-            <span className="shipping-cost">{WIP_stock}</span>
-          </p>
+
           <p>
             <span className="current-status-title"> Design No : </span>
             <span className="shipping-cost">{DesignNo}</span>
           </p>
           <p>
             <span className="current-status-title"> Stock : </span>
-            <span className="shipping-cost">{Stock_qty}</span>
-          </p>
-          <p>
-            <span className="current-status-title"> Sale Order (Pending) : </span>
-            <span className="shipping-cost">{SaleOrder}</span>
+            <span className="shipping-cost">&emsp; &ensp; {Stock_qty}</span>
           </p>
 
           {/* Quantity page :  */}
@@ -104,26 +112,14 @@ const DetailsRight = React.memo(({ product }) => {
         <div className="pdbr__Actions d-flex align-items-center">
           <div className="pdbr__product-action">
             <Button className="btn-buy" size="default" type="primary">
-              Buy Now
-            </Button>
-            <Button className="btn-cart" size="default" type="secondary">
-              <UilShoppingBag /> Add To Cart
-            </Button>
-
-            <Button className="btn-icon" size="default" raised type="white" shape="circle">
-              <UilShareAlt />
+              <UilShareAlt /> Share
             </Button>
           </div>
         </div>
         {/* <ul className="pdbr__list">
           <li>
             <span>Category:</span>
-            <span>{Cat_Name}</span>
-          </li>
-        </ul>
-        <ul className="pdbr__list">
-          <li>
-            <span>Tags:</span>
+            <span>category</span>
           </li>
         </ul> */}
       </div>
@@ -136,8 +132,6 @@ DetailsRight.propTypes = {
     SalePrice1: PropTypes.number.isRequired,
     Item_Code: PropTypes.string.isRequired,
     Stock_qty: PropTypes.number,
-    SaleOrder: PropTypes.number.isRequired,
-    WIP_stock: PropTypes.number.isRequired,
     DesignNo: PropTypes.string.isRequired,
   }).isRequired,
 };

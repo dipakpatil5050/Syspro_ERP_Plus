@@ -20,14 +20,16 @@ function ProductCards({ product }) {
   };
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
-  const productImage = !imageError && gallery.length > 0 ? filepathprefix + gallery[0].Filepath : null;
+  const productImage = !imageError && gallery?.length > 0 ? filepathprefix + gallery[0]?.Filepath : null;
   const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
 
   return (
     <ProductCard style={{ marginBottom: 30 }}>
-      <figure>
-        <img src={productImage || defaultImage} alt={name} height={200} onError={handleImageError} />
-      </figure>
+      <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
+        <figure>
+          <img src={productImage || defaultImage} alt={name} height={200} onError={handleImageError} />
+        </figure>
+      </NavLink>
       {/* width={290} height={200} */}
 
       <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>

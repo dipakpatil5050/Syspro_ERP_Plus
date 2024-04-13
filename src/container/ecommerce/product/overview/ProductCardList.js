@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'antd';
-import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
+import UilShareAlt from '@iconscout/react-unicons/icons/uil-share-alt';
 import { NavLink } from 'react-router-dom';
-// import UilHeart from '@iconscout/react-unicons/icons/uil-heart';
-// import { useDispatch } from 'react-redux';
-// import { Link, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import { ReactSVG } from 'react-svg';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
@@ -39,9 +35,11 @@ const ProductCardsList = React.memo(({ product }) => {
       <div className="product-list">
         <Row gutter={15}>
           <Col md={6} xs={24}>
-            <figure>
-              <img src={productImage || defaultImage} alt={name} onError={handleImageError} />
-            </figure>
+            <NavLink to={`/admin/ecommerce/productDetails/${id}`}>
+              <figure>
+                <img src={productImage || defaultImage} alt={name} onError={handleImageError} />
+              </figure>
+            </NavLink>
           </Col>
           <Col md={12} xs={24}>
             <div className="product-single-description">
@@ -78,12 +76,8 @@ const ProductCardsList = React.memo(({ product }) => {
               </p>
 
               <div className="product-single-action">
-                <Button className="btn-cart" size="small" type="white" outlined>
-                  <UilShoppingBag />
-                  Add To Cart
-                </Button>
-                <Button size="small" type="primary">
-                  Buy Now
+                <Button className="btn-buy" size="default" type="primary">
+                  <UilShareAlt /> Share
                 </Button>
               </div>
             </div>

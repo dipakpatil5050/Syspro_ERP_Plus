@@ -1,5 +1,4 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Spin, Skeleton } from 'antd';
 import { Route, Routes, NavLink } from 'react-router-dom';
 import UilApps from '@iconscout/react-unicons/icons/uil-apps';
@@ -84,7 +83,7 @@ function Product() {
       UptoDate: '',
       FilterString: '',
       OffsetValue: 0,
-      PageSize: 1000000000,
+      PageSize: 100000000,
       OrderByColumn: 'i.Item_id Desc',
       LinkId: 0,
     };

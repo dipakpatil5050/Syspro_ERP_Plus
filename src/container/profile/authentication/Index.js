@@ -18,7 +18,8 @@ const AuthLayout = (WraperContent) => {
               {/* galaxy infotech logo */}
               {/* purple Color logo Link : https://i.imgur.com/loUfK6S.png */}
               {/* Original logo Link : https://i.imgur.com/ciq27SF.png */}
-              <img width={230} src="./mpinCompnayLogo.png" alt="Company Logo" />
+              {/* local computer path : src="./mpinCompnayLogo.png" */}
+              <img width={230} src="https://i.imgur.com/ciq27SF.png" alt="Company Logo Loading..." />
             </div>
             <WraperContent />
           </div>

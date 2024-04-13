@@ -838,6 +838,7 @@ const ProductDetailsWrapper = Styled.div`
                 font-weight: 500;
                 color: ${({ theme }) => theme['success-color']};
             }
+            
         }
         .shipping-cost{
             color: ${({ theme }) => theme[theme.mainContent]['gray-text']};

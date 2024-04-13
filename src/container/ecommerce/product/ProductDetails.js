@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Row, Col, Skeleton } from 'antd';
 import { useSelector } from 'react-redux';
@@ -16,8 +16,16 @@ function ProductDetails() {
   // const { catalogueData } = useSelector((state) => state.auth);
 
   const products = useSelector((state) => {
-    return state.auth.catalogueData.find((product) => product.Item_Id === parseInt(id));
+    return state.auth.catalogueData?.find((product) => product.Item_Id === parseInt(id));
   });
+
+  const [selectedImage, setSelectedImage] = useState(products?.Gallary[0]?.Filepath);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  const handleHover = (imagePath, index) => {
+    setSelectedImage(imagePath);
+    setActiveImageIndex(index);
+  };
 
   const PageRoutes = [
     {
@@ -38,7 +46,6 @@ function ProductDetails() {
           {/* <Col align="right">
             <Button>Close</Button>
           </Col> */}
-
           <ProductDetailsWrapper>
             <div className="product-details-box">
               <Row gutter={30}>
@@ -46,33 +53,44 @@ function ProductDetails() {
                   <div className="product-details-box__left pdbl">
                     <figure>
                       <img
-                        src={`http://103.67.238.230:1386/${products.Gallary[0]?.Filepath}`}
+                        src={`http://103.67.238.230:1386/${selectedImage}`}
                         alt={products.Item_Name}
-                        style={{ width: '100%' }}
+                        style={{ width: '100%', height: '400px' }}
                       />
                     </figure>
+
                     <div className="pdbl__slider pdbs">
                       <Row gutter={5}>
                         <Col md={4}>
                           <div className="pdbl__image pdbs" style={{ display: 'flex' }}>
                             {products.Gallary?.map((value, index) => {
+                              const borderStyle = index === activeImageIndex ? '2px solid #5840ff' : 'none';
                               return (
-                                <figure key={index} style={{ cursor: 'pointer', margin: '5px' }}>
+                                <figure
+                                  key={index}
+                                  style={{
+                                    cursor: 'pointer',
+                                    margin: '5px',
+                                    border: borderStyle,
+                                    borderRadius: '10px',
+                                  }}
+                                  onMouseEnter={() => handleHover(value?.Filepath, index)}
+                                  onMouseLeave={() =>
+                                    setActiveImageIndex(
+                                      selectedImage.split('/').pop() === value?.Filepath.split('/').pop()
+                                        ? activeImageIndex
+                                        : 0,
+                                    )
+                                  }
+                                >
                                   <img
-                                    src={`http://103.67.238.230:1386/${value.Filepath}`}
+                                    src={`http://103.67.238.230:1386/${value?.Filepath}`}
                                     alt={products.Item_Name}
                                     style={{ width: '100px', height: '100%' }}
                                   />
                                 </figure>
                               );
                             })}
-                            {/* <figure>
-                              <img
-                                src={`http://103.67.238.230:1386/${products.Gallary[1]?.Filepath}`}
-                                alt={products.Item_Name}
-                                style={{ width: '100%' }}
-                              />
-                            </figure> */}
                           </div>
                         </Col>
                       </Row>

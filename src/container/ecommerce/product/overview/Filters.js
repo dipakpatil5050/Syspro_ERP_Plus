@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
 // import { Slider } from '../../../../components/slider/slider';
-import { CheckboxGroup } from '../../../../components/checkbox/checkbox';
+// import { CheckboxGroup } from '../../../../components/checkbox/checkbox';
 import { Sidebar, SidebarSingle } from '../../Style';
 // import {
 //   filterByPriceRange,
@@ -37,29 +37,30 @@ const Filters = React.memo(() => {
   //   // dispatch(filterByRating([checkValue]));
   //   console.log(checkValue);
   // };
-  const onChangeBrand = (checkValue) => {
-    // dispatch(filterByBrand([checkValue]));
-    console.log(checkValue);
-  };
 
-  const optionsBrand = [
-    {
-      label: (
-        <>
-          Product 1 <span className="brand-count">25</span>
-        </>
-      ),
-      value: 'cup',
-    },
-    {
-      label: (
-        <>
-          Product 2 <span className="brand-count">25</span>
-        </>
-      ),
-      value: 'plate',
-    },
-  ];
+  // const onChangeBrand = (checkValue) => {
+  //   // dispatch(filterByBrand([checkValue]));
+  //   console.log(checkValue);
+  // };
+
+  // const optionsBrand = [
+  //   {
+  //     label: (
+  //       <>
+  //         Product 1 <span className="brand-count">25</span>
+  //       </>
+  //     ),
+  //     value: 'cup',
+  //   },
+  //   {
+  //     label: (
+  //       <>
+  //         Product 2 <span className="brand-count">25</span>
+  //       </>
+  //     ),
+  //     value: 'plate',
+  //   },
+  // ];
 
   // const onChangeCategory = (value) => {
   //   dispatch(filterByCategory(value));
@@ -91,25 +92,25 @@ const Filters = React.memo(() => {
                 {/* onClick={() => onChangeCategory('all')} */}
                 <Link to="#">
                   <span>All</span>
-                  <span className="ninjadash-category-count">25</span>
+                  <span className="ninjadash-category-count">547</span>
                 </Link>
               </li>
               <li>
                 <Link to="#">
                   <span>Unstich Lehanga</span>
-                  <span className="ninjadash-category-count">25</span>
+                  <span className="ninjadash-category-count">547</span>
                 </Link>
               </li>
             </ul>
           </nav>
-          <div className="sidebar-single__action">
+          {/* <div className="sidebar-single__action">
             <Link className="btn-seeMore" to="#">
               See more
             </Link>
-          </div>
+          </div> */}
         </SidebarSingle>
 
-        <SidebarSingle style={{ marginBottom: 32 }}>
+        {/* <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Brands</Heading>
           <CheckboxGroup options={optionsBrand} onChange={onChangeBrand} />
 
@@ -118,7 +119,7 @@ const Filters = React.memo(() => {
               See more ...
             </Link>
           </div>
-        </SidebarSingle>
+        </SidebarSingle> */}
       </Cards>
     </Sidebar>
   );
