@@ -131,7 +131,7 @@ DetailsRight.propTypes = {
     Item_Name: PropTypes.string.isRequired,
     SalePrice1: PropTypes.number.isRequired,
     Item_Code: PropTypes.string.isRequired,
-    Stock_qty: PropTypes.number,
+    Stock_qty: PropTypes.number.isRequired,
     DesignNo: PropTypes.string.isRequired,
   }).isRequired,
 };

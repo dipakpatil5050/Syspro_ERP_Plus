@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Spin, Button } from 'antd';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { UilArrowUp } from '@iconscout/react-unicons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductCardsList from './ProductCardList';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
+import { setLoadedItems } from '../../../../redux/reducers/authReducer';
 
 function List() {
-  const { catalogueData, loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  const [visible, setVisible] = useState(50);
+  const { catalogueData, loading, loadedItems } = useSelector((state) => state.auth);
+
+  const [visible, setVisible] = useState(loadedItems || 50);
   const [showTopButton, setShowTopButton] = useState(false);
 
   useEffect(() => {
@@ -28,6 +31,11 @@ function List() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('loadedItems', visible);
+    dispatch(setLoadedItems(visible));
+  }, [visible, dispatch]);
 
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 10);
