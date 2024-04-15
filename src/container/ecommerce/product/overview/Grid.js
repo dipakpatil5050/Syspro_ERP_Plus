@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, Spin, Button } from 'antd';
 import { UilArrowUp } from '@iconscout/react-unicons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
+import { setLoadedItems } from '../../../../redux/reducers/authReducer';
 
 function Grid() {
-  const { catalogueData, loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const { catalogueData, loading, loadedItems } = useSelector((state) => state.auth);
   // loading
 
-  const [visible, setVisible] = useState(50);
+  const [visible, setVisible] = useState(loadedItems || 50);
   const [showTopButton, setShowTopButton] = useState(false);
 
   useEffect(() => {
@@ -29,6 +32,11 @@ function Grid() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('loadedItems', visible);
+    dispatch(setLoadedItems(visible));
+  }, [visible, dispatch]);
 
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 10);

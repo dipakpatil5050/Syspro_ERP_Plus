@@ -67,6 +67,7 @@ export const authSlice = createSlice({
     login: Cookies.get('logedIn'),
     loading: false,
     error: null,
+    loadedItems: 50,
 
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
   },
@@ -91,6 +92,9 @@ export const authSlice = createSlice({
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
+    },
+    setLoadedItems(state, action) {
+      state.loadedItems = action.payload;
     },
     loginBegin: (state) => {
       state.loading = true;
@@ -155,6 +159,7 @@ export const {
   setLedgerReport,
   setSaleReport,
   setLoading,
+  setLoadedItems,
   loginBegin,
   loginSuccess,
   loginErr,

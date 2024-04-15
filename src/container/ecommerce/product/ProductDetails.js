@@ -64,7 +64,7 @@ function ProductDetails() {
                       <Row gutter={5}>
                         <Col md={4}>
                           <div className="pdbl__image pdbs" style={{ display: 'flex' }}>
-                            {products.Gallary?.map((value, index) => {
+                            {products?.Gallary?.map((value, index) => {
                               const borderStyle = index === activeImageIndex ? '2px solid #5840ff' : 'none';
                               return (
                                 <figure

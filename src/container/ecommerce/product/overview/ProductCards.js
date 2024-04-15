@@ -12,7 +12,9 @@ import { ProductCard } from '../../Style';
 
 function ProductCards({ product }) {
   const filepathprefix = 'http://103.67.238.230:1386/';
+
   const [imageError, setImageError] = useState(false);
+
   const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery } = product;
 
   const handleImageError = () => {
