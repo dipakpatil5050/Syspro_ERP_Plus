@@ -9,17 +9,18 @@ import { Cards } from '../../../components/cards/frame/cards-frame';
 
 const DetailsRight = lazy(() => import('./overview/DetailsRight'));
 
-function ProductDetails() {
-  // Get the product ID from the URL params
-  const { id } = useParams();
+// code changes from here
 
-  // const { catalogueData } = useSelector((state) => state.auth);
+function ProductDetails() {
+  const { id } = useParams();
 
   const products = useSelector((state) => {
     return state.auth.catalogueData?.find((product) => product.Item_Id === parseInt(id));
   });
 
-  const [selectedImage, setSelectedImage] = useState(products?.Gallary[0]?.Filepath);
+  const productImage = products?.Gallary[0]?.Filepath;
+
+  const [selectedImage, setSelectedImage] = useState(productImage);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const handleHover = (imagePath, index) => {
@@ -54,7 +55,7 @@ function ProductDetails() {
                     <figure>
                       <img
                         src={`http://103.67.238.230:1386/${selectedImage}`}
-                        alt={products.Item_Name}
+                        alt="No preview"
                         style={{ width: '100%', height: '400px' }}
                       />
                     </figure>

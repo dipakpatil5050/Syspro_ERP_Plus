@@ -37,7 +37,7 @@ function Grid() {
   const fetchMoreData = () => {
     setTimeout(() => {
       showMoreItems();
-    }, 1500); // Simulated delay for fetching more data
+    }, 1500);
   };
 
   const scrollToTop = () => {
@@ -47,7 +47,7 @@ function Grid() {
     });
   };
 
-  if (loading && visible === 50) {
+  if (loading && visible === 10) {
     return (
       <Row gutter={30}>
         <Col xs={24}>
@@ -60,7 +60,7 @@ function Grid() {
   }
 
   return (
-    <div>
+    <>
       <InfiniteScroll
         dataLength={visible}
         next={fetchMoreData}
@@ -82,6 +82,7 @@ function Grid() {
             ))}
         </Row>
       </InfiniteScroll>
+
       {showTopButton && (
         <Button
           type="primary"
@@ -92,7 +93,7 @@ function Grid() {
           onClick={scrollToTop}
         />
       )}
-    </div>
+    </>
   );
 }
 

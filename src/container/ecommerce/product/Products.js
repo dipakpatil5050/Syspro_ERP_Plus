@@ -57,6 +57,8 @@ function Product() {
 
   //   };
 
+  // Catalogue API variables
+
   const dispatch = useDispatch();
   const userMpinData = useSelector((state) => state.auth.userMpinData);
   const userData = useSelector((state) => state.auth.userData);
@@ -76,6 +78,17 @@ function Product() {
   // Catalogue API Calling :
 
   const fetchCatalogueData = async () => {
+    const isDataFresh = (data) => {
+      const expiryTime = 1000 * 60 * 60;
+      return Date.now() - data.fetchedAt < expiryTime;
+    };
+
+    const cachedData = JSON.parse(localStorage.getItem('catalogueData'));
+    if (cachedData && isDataFresh(cachedData)) {
+      dispatch(setCatalogueData(cachedData));
+      return;
+    }
+
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/ProductCataloguePagining`;
     const body = {
       ReportId: 0,

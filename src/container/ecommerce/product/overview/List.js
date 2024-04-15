@@ -30,13 +30,13 @@ function List() {
   }, []);
 
   const showMoreItems = () => {
-    setVisible((prevValue) => prevValue + 50);
+    setVisible((prevValue) => prevValue + 10);
   };
 
   const fetchMoreData = () => {
     setTimeout(() => {
       showMoreItems();
-    }, 1500); // Simulated delay for fetching more data
+    }, 1500);
   };
 
   const scrollToTop = () => {
