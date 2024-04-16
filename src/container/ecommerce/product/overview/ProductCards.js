@@ -30,10 +30,16 @@ function ProductCards({ product }) {
   const productImage = !imageError && gallery?.length > 0 ? filepathprefix + gallery[0]?.Filepath : null;
   const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
 
+  // purple Color Code: #8231d3.
+
   return (
     <>
       <ProductCard
-        style={{ marginBottom: 30, border: '1px solid #E9E9E9', boxShadow: '0px 3px 2px rgba(0, 0, 0, 0.22)' }}
+        style={{
+          marginBottom: 30,
+          border: isChecked ? '2px solid #007bff' : 'none',
+          boxShadow: '0px 3px 2px rgba(0, 0, 0, 0.24)',
+        }}
       >
         <label htmlFor={`checkbox-${id}`}>
           <Checkbox
@@ -42,19 +48,25 @@ function ProductCards({ product }) {
             onChange={handleCheckboxChange}
             style={{ position: 'absolute', top: 10, left: 10 }}
           />
-
           <figure>
-            <img src={productImage || defaultImage} alt={name} height={200} onError={handleImageError} />
+            <img
+              src={productImage || defaultImage}
+              alt={name}
+              height={200}
+              onError={handleImageError}
+              style={{ borderRadius: '9px' }}
+            />
           </figure>
         </label>
         {/* width={290} height={200} */}
 
-        <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
-          <Button className="btn-icon" shape="circle" type="primary" size="large">
-            <Share2 style={{ color: 'white' }} />
-          </Button>
-        </Col>
-
+        {!isChecked && (
+          <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
+            <Button className="btn-icon" shape="circle" type="primary" size="large">
+              <Share2 style={{ color: 'white' }} />
+            </Button>
+          </Col>
+        )}
         <figcaption>
           <Heading className="product-single-title" as="h5">
             <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>

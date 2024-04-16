@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Checkbox } from 'antd';
 import UilShareAlt from '@iconscout/react-unicons/icons/uil-share-alt';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -11,6 +11,8 @@ import { ProductCard } from '../../Style';
 const ProductCardsList = React.memo(({ product }) => {
   const filepathprefix = 'http://103.67.238.230:1386/';
   const [imageError, setImageError] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
   const {
     Item_Id: id,
     Item_Name: name,
@@ -26,20 +28,42 @@ const ProductCardsList = React.memo(({ product }) => {
     setImageError(true);
   };
 
+  const handleCheckboxChange = (e) => {
+    setIsChecked(e.target.checked);
+  };
+
   /* eslint-disable-next-line no-unsafe-optional-chaining */
   const productImage = !imageError && gallery.length > 0 ? filepathprefix + gallery[0].Filepath : null;
   const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
 
   return (
-    <ProductCard className="list-view" style={{ marginBottom: 20 }}>
+    <ProductCard
+      className="list-view"
+      style={{
+        marginBottom: 20,
+        border: isChecked ? '2px solid #007bff' : 'none',
+        boxShadow: '0px 3px 2px rgba(0, 0, 0, 0.24)',
+      }}
+    >
       <div className="product-list">
         <Row gutter={15}>
           <Col md={6} xs={24}>
-            <NavLink to={`/admin/ecommerce/productDetails/${id}`}>
+            <label htmlFor={`checkbox-${id}`}>
+              <Checkbox
+                id={`checkbox-${id}`}
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+                style={{ position: 'absolute', top: 10, left: 10 }}
+              />
               <figure>
-                <img src={productImage || defaultImage} alt={name} onError={handleImageError} />
+                <img
+                  src={productImage || defaultImage}
+                  alt={name}
+                  onError={handleImageError}
+                  style={{ borderRadius: '9px' }}
+                />
               </figure>
-            </NavLink>
+            </label>
           </Col>
           <Col md={12} xs={24}>
             <div className="product-single-description">
@@ -75,11 +99,13 @@ const ProductCardsList = React.memo(({ product }) => {
                 <span className="product-single-price__new">₹ {price} </span>
               </p>
 
-              <div className="product-single-action">
-                <Button className="btn-buy" size="default" type="primary">
-                  <UilShareAlt /> Share
-                </Button>
-              </div>
+              {!isChecked && (
+                <div className="product-single-action">
+                  <Button className="btn-buy" size="default" type="primary">
+                    <UilShareAlt /> Share
+                  </Button>
+                </div>
+              )}
             </div>
           </Col>
         </Row>
