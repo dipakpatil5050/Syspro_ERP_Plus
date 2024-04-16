@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 // import { IoShareSocialOutline } from 'react-icons/io5';
 import { Share2 } from 'lucide-react';
 // import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
+import { Col } from 'antd';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import { Col } from 'antd';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
@@ -26,31 +26,32 @@ function ProductCards({ product }) {
   const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
 
   return (
-    <ProductCard style={{ marginBottom: 30 }}>
-      <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
-        <figure>
-          <img src={productImage || defaultImage} alt={name} height={200} onError={handleImageError} />
-        </figure>
-      </NavLink>
-      {/* width={290} height={200} */}
+    <>
+      <ProductCard style={{ marginBottom: 30 }}>
+        <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
+          <figure>
+            <img src={productImage || defaultImage} alt={name} height={200} onError={handleImageError} />
+          </figure>
+        </NavLink>
+        {/* width={290} height={200} */}
 
-      <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
-        <Button className="btn-icon" shape="circle" type="primary" size="large">
-          <Share2 style={{ color: 'white' }} />
-        </Button>
-      </Col>
+        <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
+          <Button className="btn-icon" shape="circle" type="primary" size="large">
+            <Share2 style={{ color: 'white' }} />
+          </Button>
+        </Col>
 
-      <figcaption>
-        <Heading className="product-single-title" as="h5">
-          <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
-            {name}
-          </NavLink>
-        </Heading>
-        <p className="product-single-price">
-          <span className="product-single-price__new">₹ {price} </span>
-        </p>
+        <figcaption>
+          <Heading className="product-single-title" as="h5">
+            <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
+              {name}
+            </NavLink>
+          </Heading>
+          <p className="product-single-price">
+            <span className="product-single-price__new">₹ {price} </span>
+          </p>
 
-        {/* <div className="product-single-action">
+          {/* <div className="product-single-action">
           <Button size="small" type="white" className="btn-cart" outlined>
             <UilShoppingBag />
             Add To Cart
@@ -59,8 +60,9 @@ function ProductCards({ product }) {
             Buy Now
           </Button>
         </div> */}
-      </figcaption>
-    </ProductCard>
+        </figcaption>
+      </ProductCard>
+    </>
   );
 }
 

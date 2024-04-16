@@ -288,7 +288,7 @@ const Main = Styled.div`
     }
     .product-sidebar-col{
         @media only screen and (max-width: 767px){
-            order: 2;
+            order: 0;
         }
     }
     .ant-skeleton-paragraph{

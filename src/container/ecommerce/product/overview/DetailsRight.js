@@ -9,7 +9,9 @@ import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 
 const DetailsRight = React.memo(({ product }) => {
-  // argument = { product }
+  if (!product) {
+    return null;
+  }
   //   const dispatch = useDispatch();
   // const [state, setState] = useState({
   //   quantity: 1,
