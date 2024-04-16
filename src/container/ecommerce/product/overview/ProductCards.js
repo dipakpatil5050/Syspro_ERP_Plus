@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // import { IoShareSocialOutline } from 'react-icons/io5';
 import { Share2 } from 'lucide-react';
 // import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
-import { Col } from 'antd';
+import { Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import Heading from '../../../../components/heading/heading';
@@ -14,11 +14,16 @@ function ProductCards({ product }) {
   const filepathprefix = 'http://103.67.238.230:1386/';
 
   const [imageError, setImageError] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery } = product;
 
   const handleImageError = () => {
     setImageError(true);
+  };
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
   };
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
@@ -27,12 +32,21 @@ function ProductCards({ product }) {
 
   return (
     <>
-      <ProductCard style={{ marginBottom: 30, border: '2px solid #E9E9E9' }}>
-        <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
-          <figure style={{ border: '1px solid #E9E9E9' }}>
+      <ProductCard
+        style={{ marginBottom: 30, border: '1px solid #E9E9E9', boxShadow: '0px 3px 2px rgba(0, 0, 0, 0.22)' }}
+      >
+        <label htmlFor={`checkbox-${id}`}>
+          <Checkbox
+            id={`checkbox-${id}`}
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+            style={{ position: 'absolute', top: 10, left: 10 }}
+          />
+
+          <figure>
             <img src={productImage || defaultImage} alt={name} height={200} onError={handleImageError} />
           </figure>
-        </NavLink>
+        </label>
         {/* width={290} height={200} */}
 
         <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
