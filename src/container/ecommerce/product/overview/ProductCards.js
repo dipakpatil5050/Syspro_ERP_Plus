@@ -27,9 +27,9 @@ function ProductCards({ product }) {
 
   return (
     <>
-      <ProductCard style={{ marginBottom: 30 }}>
+      <ProductCard style={{ marginBottom: 30, border: '2px solid #E9E9E9' }}>
         <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
-          <figure>
+          <figure style={{ border: '1px solid #E9E9E9' }}>
             <img src={productImage || defaultImage} alt={name} height={200} onError={handleImageError} />
           </figure>
         </NavLink>
