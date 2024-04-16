@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // import { IoShareSocialOutline } from 'react-icons/io5';
 import { Share2 } from 'lucide-react';
 // import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
+import UilCheckCircle from '@iconscout/react-unicons/icons/uil-check-circle';
 import { Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
@@ -68,11 +69,17 @@ function ProductCards({ product }) {
           </Col>
         )}
         <figcaption>
+          {isChecked && (
+            <Button size="small" type="white" style={{ position: 'absolute', top: 10, right: 10 }}>
+              Selected &nbsp; <UilCheckCircle />
+            </Button>
+          )}
           <Heading className="product-single-title" as="h5">
             <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
               {name}
             </NavLink>
           </Heading>
+
           <p className="product-single-price">
             <span className="product-single-price__new">₹ {price} </span>
           </p>
