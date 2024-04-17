@@ -5,6 +5,7 @@ import UilSetting from '@iconscout/react-unicons/icons/uil-setting';
 import UilSignout from '@iconscout/react-unicons/icons/uil-signout';
 import UilUser from '@iconscout/react-unicons/icons/uil-user';
 import UilUsersAlt from '@iconscout/react-unicons/icons/uil-users-alt';
+// import UilShoppingCart from '@iconscout/react-unicons/icons/uil-shopping-cart';
 import { Avatar } from 'antd';
 import React from 'react';
 // import { useState } from 'react';
@@ -15,6 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { InfoWraper, UserDropDwon } from './auth-info-style';
 import Message from './Message';
 import Notification from './Notification';
+import ShoppingCart from './ShoppingCart';
 // import Search from './Search';
 import Settings from './settings';
 import { logOut, setUserData, setuserMpinData, setCatalogueData } from '../../../redux/reducers/authReducer';
@@ -119,6 +121,7 @@ const AuthInfo = React.memo(() => {
       {/* <Search /> */}
       <Message />
       <Notification />
+      <ShoppingCart />
       <Settings />
       {/* <div className="ninjadash-nav-actions__item ninjadash-nav-actions__language">
         <Dropdown placement="bottomRight" content={country} trigger="click">

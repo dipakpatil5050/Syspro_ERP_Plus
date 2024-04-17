@@ -3,28 +3,40 @@ import React, { useState } from 'react';
 // import { IoShareSocialOutline } from 'react-icons/io5';
 import { Share2 } from 'lucide-react';
 // import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
-import UilCheckCircle from '@iconscout/react-unicons/icons/uil-check-circle';
+// import UilCheckCircle from '@iconscout/react-unicons/icons/uil-check-circle';
 import { Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
+import { selectItem } from '../../../../redux/reducers/authReducer';
 
 function ProductCards({ product }) {
   const filepathprefix = 'http://103.67.238.230:1386/';
+  const dispatch = useDispatch();
 
   const [imageError, setImageError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
   const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery } = product;
 
+  // const selectedItemsCount = useSelector((state) => state.auth.selectedItems.length);
+
   const handleImageError = () => {
     setImageError(true);
   };
 
+  // localStorage functionality for  Selected Card Items
+  // useEffect(() => {
+  //   const selectedItemsFromStorage = JSON.parse(localStorage.getItem('selectedItems')) || [];
+  //   setIsChecked(selectedItemsFromStorage.includes(product.Item_Id));
+  // }, [product.Item_Id]);
+
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
+    dispatch(selectItem({ itemId: product.Item_Id, isChecked: event.target.checked }));
   };
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
@@ -35,6 +47,7 @@ function ProductCards({ product }) {
 
   return (
     <>
+      {/* <div>Selected Items: {selectedItemsCount}</div> */}
       <ProductCard
         style={{
           marginBottom: 30,
@@ -69,11 +82,11 @@ function ProductCards({ product }) {
           </Col>
         )}
         <figcaption>
-          {isChecked && (
-            <Button size="small" type="white" style={{ position: 'absolute', top: 10, right: 10 }}>
+          {/* {isChecked && (
+            <Button size="small" type="white" style={{ position: 'absolute', bottom: 35, right: 10 }}>
               Selected &nbsp; <UilCheckCircle />
             </Button>
-          )}
+          )} */}
           <Heading className="product-single-title" as="h5">
             <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
               {name}

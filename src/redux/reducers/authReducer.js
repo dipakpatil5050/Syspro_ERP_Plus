@@ -68,6 +68,7 @@ export const authSlice = createSlice({
     loading: false,
     error: null,
     loadedItems: 50,
+    selectedItems: [],
 
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
   },
@@ -95,6 +96,13 @@ export const authSlice = createSlice({
     },
     setLoadedItems(state, action) {
       state.loadedItems = action.payload;
+    },
+    selectItem: (state, action) => {
+      const { itemId, isChecked } = action.payload;
+      const updatedSelectedItems = isChecked
+        ? [...state.selectedItems, itemId]
+        : state.selectedItems.filter((id) => id !== itemId);
+      state.selectedItems = updatedSelectedItems;
     },
     loginBegin: (state) => {
       state.loading = true;
@@ -160,6 +168,7 @@ export const {
   setSaleReport,
   setLoading,
   setLoadedItems,
+  selectItem,
   loginBegin,
   loginSuccess,
   loginErr,
