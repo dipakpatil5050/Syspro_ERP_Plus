@@ -1,5 +1,5 @@
-import UilHdd from '@iconscout/react-unicons/icons/uil-hdd';
-import UilUpload from '@iconscout/react-unicons/icons/uil-upload';
+// import UilHdd from '@iconscout/react-unicons/icons/uil-hdd';
+// import UilUpload from '@iconscout/react-unicons/icons/uil-upload';
 import UilShoppingCart from '@iconscout/react-unicons/icons/uil-shopping-cart';
 import { Badge } from 'antd';
 import PropTypes from 'prop-types';
@@ -21,7 +21,8 @@ const ShoppingCart = React.memo(() => {
   //   };
   // });
 
-  const selectedItems = useSelector((state) => state.auth.selectedItems.length);
+  const selectedItems = useSelector((state) => state.auth.selectedItems);
+  const catalogueData = useSelector((state) => state.auth.catalogueData);
 
   function renderThumb({ style }) {
     const thumbStyle = {
@@ -65,125 +66,62 @@ const ShoppingCart = React.memo(() => {
     <UserActionDropDown className="ninjadash-top-dropdown">
       <Heading as="h5" className="ninjadash-top-dropdown__title">
         <span className="title-text">Product Cart</span>
-        <Badge className="badge-success" count={selectedItems} />
+        <Badge className="badge-success" count={selectedItems.length} />
       </Heading>
-      <Scrollbars
-        autoHeight
-        autoHide
-        renderThumbVertical={renderThumb}
-        renderView={renderView}
-        renderTrackVertical={renderTrackVertical}
-        renderTrackHorizontal={(props) => <div {...props} style={{ display: 'none' }} className="track-horizontal" />}
-      >
-        <ul className="ninjadash-top-dropdown__nav notification-list">
-          <li>
-            <Link to="#">
-              <div className="ninjadash-top-dropdown__content notifications">
-                <div className="notification-icon bg-primary">
-                  <UilHdd />
-                </div>
-                <div className="notification-content d-flex">
-                  <div className="notification-text">
-                    <Heading as="h5">
-                      <span>James</span> sent you a message
-                    </Heading>
-                    <p>5 hours ago</p>
-                  </div>
-                  <div className="notification-status">
-                    <Badge dot />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link to="#">
-              <div className="ninjadash-top-dropdown__content notifications">
-                <div className="notification-icon bg-secondary">
-                  <UilUpload />
-                </div>
-                <div className="notification-content d-flex">
-                  <div className="notification-text">
-                    <Heading as="h5">
-                      <span>James</span> sent you a message
-                    </Heading>
-                    <p>5 hours ago</p>
-                  </div>
+      {selectedItems.length === 0 ? (
+        <p className="empty-cart-message">Your cart is currently empty.</p>
+      ) : (
+        <Scrollbars
+          autoHeight
+          autoHide
+          renderThumbVertical={renderThumb}
+          renderView={renderView}
+          renderTrackVertical={renderTrackVertical}
+          renderTrackHorizontal={(props) => <div {...props} style={{ display: 'none' }} className="track-horizontal" />}
+        >
+          <ul className="ninjadash-top-dropdown__nav selected-items-list">
+            {selectedItems.map((itemId) => {
+              const product = catalogueData?.find((item) => item.Item_Id === itemId);
 
-                  <div className="notification-status">
-                    <Badge dot />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link to="#">
-              <div className="ninjadash-top-dropdown__content notifications">
-                <div className="notification-icon bg-secondary">
-                  <UilUpload />
-                </div>
-                <div className="notification-content d-flex">
-                  <div className="notification-text">
-                    <Heading as="h5">
-                      <span>James</span> sent you a message
-                    </Heading>
-                    <p>5 hours ago</p>
-                  </div>
+              if (!product) {
+                return <li key={itemId}>Product not found (ID: {itemId})</li>;
+              }
+              const filepathprefix = 'http://103.67.238.230:1386/';
+              /* eslint-disable-next-line no-unsafe-optional-chaining */
+              const productImage = filepathprefix + product?.Gallary[0]?.Filepath;
 
-                  <div className="notification-status">
-                    <Badge dot />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link to="#">
-              <div className="ninjadash-top-dropdown__content notifications">
-                <div className="notification-icon bg-secondary">
-                  <UilUpload />
-                </div>
-                <div className="notification-content d-flex">
-                  <div className="notification-text">
-                    <Heading as="h5">
-                      <span>James</span> sent you a message
-                    </Heading>
-                    <p>5 hours ago</p>
-                  </div>
+              return (
+                <li key={product.Item_Id}>
+                  <div className="ninjadash-top-dropdown__content notifications">
+                    <div className="notification-icon ">
+                      {/* <UilHdd /> */}
+                      <img
+                        src={productImage}
+                        alt="no preview"
+                        style={{ borderRadius: '100%', marginTop: '10px', width: '40px', height: '40px' }}
+                      />
+                    </div>
 
-                  <div className="notification-status">
-                    <Badge dot />
+                    <div className="notification-content d-flex">
+                      <div className="notification-text">
+                        <Heading as="h5">
+                          <span>{product.Item_Name}</span> added to Cart
+                        </Heading>
+                        <p>₹{product.SalePrice1}</p>
+                      </div>
+                      {/* <div className="notification-status">
+                        <Badge dot />
+                      </div> */}
+                    </div>
                   </div>
-                </div>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link to="#">
-              <div className="ninjadash-top-dropdown__content notifications">
-                <div className="notification-icon bg-secondary">
-                  <UilUpload />
-                </div>
-                <div className="notification-content d-flex">
-                  <div className="notification-text">
-                    <Heading as="h5">
-                      <span>James</span> sent you a message
-                    </Heading>
-                    <p>5 hours ago</p>
-                  </div>
-
-                  <div className="notification-status">
-                    <Badge dot />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </li>
-        </ul>
-      </Scrollbars>
+                </li>
+              );
+            })}
+          </ul>
+        </Scrollbars>
+      )}
       <Link className="btn-seeAll" to="#">
-        See all incoming activity
+        See all Catalogue Items sharing Details
       </Link>
     </UserActionDropDown>
   );
@@ -191,7 +129,7 @@ const ShoppingCart = React.memo(() => {
   return (
     <div className="ninjadash-nav-actions__item ninjadash-nav-actions__notification">
       <Popover placement="bottomLeft" content={content} action="hover">
-        <Badge style={{ display: 'flex' }} className="badge-success" count={selectedItems} offset={[-6, -3]}>
+        <Badge style={{ display: 'flex' }} className="badge-success" count={selectedItems.length} offset={[-6, -3]}>
           <Link to="#" className="ninjadash-nav-action-link">
             <UilShoppingCart />
           </Link>
