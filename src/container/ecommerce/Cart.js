@@ -13,12 +13,12 @@ const CartTable = lazy(() => import('./overview/CartTable'));
 function ShoppingCart() {
   const PageRoutes = [
     {
-      //   path: '/admin',
+      path: '/admin/ecommerce/products/grid',
       breadcrumbName: 'Catalogue',
     },
     {
       path: '',
-      breadcrumbName: 'Shopping Cart',
+      breadcrumbName: 'Item cart',
     },
   ];
   //   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ function ShoppingCart() {
 
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main" title="Shopping Cart" routes={PageRoutes} />
+      <PageHeader className="ninjadash-page-header-main" title="Item Cart" routes={PageRoutes} />
       <Main>
         <div className="cartWraper">
           <Row gutter={15}>
