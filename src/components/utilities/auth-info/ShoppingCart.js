@@ -120,7 +120,7 @@ const ShoppingCart = React.memo(() => {
           </ul>
         </Scrollbars>
       )}
-      <Link className="btn-seeAll" to="#">
+      <Link className="btn-seeAll" to="/admin/ecommerce/cart">
         See all Catalogue Items sharing Details
       </Link>
     </UserActionDropDown>

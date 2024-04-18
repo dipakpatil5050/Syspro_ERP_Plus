@@ -24,9 +24,7 @@ export const login = createAsyncThunk(
       const response = await axios.post(loginUrl, body, { headers });
       const userData = response.data;
       const Token = userData?.Data?.Token;
-      const msg = userData?.Message;
 
-      console.log(msg);
       Cookies.set('access_token', Token);
       Cookies.set('logedIn', true);
       dispatch(setUserData(userData));
@@ -68,7 +66,7 @@ export const authSlice = createSlice({
     loading: false,
     error: null,
     loadedItems: 50,
-    selectedItems: [],
+    selectedItems: JSON.parse(localStorage.getItem('selectedItems')) || [],
 
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
   },
@@ -103,6 +101,7 @@ export const authSlice = createSlice({
         ? [...state.selectedItems, itemId]
         : state.selectedItems.filter((id) => id !== itemId);
       state.selectedItems = updatedSelectedItems;
+      localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
     },
     loginBegin: (state) => {
       state.loading = true;

@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Checkbox } from 'antd';
 import UilShareAlt from '@iconscout/react-unicons/icons/uil-share-alt';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
+import { selectItem } from '../../../../redux/reducers/authReducer';
 // import { updateWishList } from '../../../../redux/product/actionCreator';
 
 const ProductCardsList = React.memo(({ product }) => {
   const filepathprefix = 'http://103.67.238.230:1386/';
   const [imageError, setImageError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  const dispatch = useDispatch();
 
   const {
     Item_Id: id,
@@ -28,8 +32,14 @@ const ProductCardsList = React.memo(({ product }) => {
     setImageError(true);
   };
 
-  const handleCheckboxChange = (e) => {
-    setIsChecked(e.target.checked);
+  useEffect(() => {
+    const selectedItemsFromStorage = JSON.parse(localStorage.getItem('selectedItems')) || [];
+    setIsChecked(selectedItemsFromStorage.includes(product.Item_Id));
+  }, [product.Item_Id]);
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+    dispatch(selectItem({ itemId: product.Item_Id, isChecked: event.target.checked }));
   };
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */

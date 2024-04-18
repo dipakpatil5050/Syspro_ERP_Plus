@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import UilShareAlt from '@iconscout/react-unicons/icons/uil-share-alt';
 // import { IoShareSocialOutline } from 'react-icons/io5';
 import { Share2 } from 'lucide-react';
@@ -29,10 +29,10 @@ function ProductCards({ product }) {
   };
 
   // localStorage functionality for  Selected Card Items
-  // useEffect(() => {
-  //   const selectedItemsFromStorage = JSON.parse(localStorage.getItem('selectedItems')) || [];
-  //   setIsChecked(selectedItemsFromStorage.includes(product.Item_Id));
-  // }, [product.Item_Id]);
+  useEffect(() => {
+    const selectedItemsFromStorage = JSON.parse(localStorage.getItem('selectedItems')) || [];
+    setIsChecked(selectedItemsFromStorage.includes(product.Item_Id));
+  }, [product.Item_Id]);
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
