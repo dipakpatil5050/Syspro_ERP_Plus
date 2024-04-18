@@ -703,7 +703,11 @@ const LayoutContainer = Styled.div`
         }
 
     }
-
+    .ant-layout-content {
+        flex: auto;
+        min-height: 0;
+        border: 3px solid #f2eafb;
+    }
     .atbd-main-layout{
         ${({ theme }) => (!theme.rtl ? 'margin-left' : 'margin-right')}: ${({ theme }) =>
   theme.topMenu ? 0 : '280px'};

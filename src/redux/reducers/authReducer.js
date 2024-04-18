@@ -103,6 +103,17 @@ export const authSlice = createSlice({
       state.selectedItems = updatedSelectedItems;
       localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
     },
+    deselectItem: (state, action) => {
+      const { itemId } = action.payload;
+      const updatedSelectedItems = state.selectedItems.reduce((acc, item) => {
+        if (item.itemId !== itemId) {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
+      state.selectedItems = updatedSelectedItems;
+      localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
+    },
     loginBegin: (state) => {
       state.loading = true;
     },
@@ -168,6 +179,7 @@ export const {
   setLoading,
   setLoadedItems,
   selectItem,
+  deselectItem,
   loginBegin,
   loginSuccess,
   loginErr,

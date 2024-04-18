@@ -1,22 +1,25 @@
-// import React, { useState, useEffect } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Table, Form, Input, Spin } from 'antd';
-// import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
-// import UilMinus from '@iconscout/react-unicons/icons/uil-minus';
 // import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
-// import { useDispatch, useSelector } from 'react-redux';
-
+import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
+import UilMinus from '@iconscout/react-unicons/icons/uil-minus';
 import { useSelector } from 'react-redux';
+
 import { FigureCart, ProductTable, CouponForm } from '../Style';
 import Heading from '../../../components/heading/heading';
 import { Button } from '../../../components/buttons/buttons';
 // import { cartGetData, cartUpdateQuantity, cartDelete } from '../../../redux/cart/actionCreator';
+// import { deselectItem } from '../../../redux/reducers/authReducer';
 
 function CartTable() {
   const cartData = useSelector((state) => state.auth.selectedItems);
   const catalogueData = useSelector((state) => state.auth.catalogueData);
 
-  //   const dispatch = useDispatch();
+  const [productQuantities, setProductQuantities] = useState([]);
+  localStorage.getItem('quantities');
+
+  // const dispatch = useDispatch();
+
   //   const { cartData, isLoading } = useSelector((state) => {
   //     return {
   //       cartData: state.cart.data,
@@ -38,26 +41,32 @@ function CartTable() {
   //     }
   //   }, [dispatch]);
 
-  //   const incrementUpdate = (id, quantity) => {
-  //     const data = parseInt(quantity, 10) + 1;
-  //     dispatch(cartUpdateQuantity(id, data, cartData));
-  //   };
+  const incrementUpdate = (productId) => {
+    setProductQuantities((prevQuantities) => {
+      const newQuantities = { ...prevQuantities };
+      newQuantities[productId] = (prevQuantities[productId] || 1) + 1;
+      return newQuantities;
+    });
+  };
 
-  //   const decrementUpdate = (id, quantity) => {
-  //     const data = parseInt(quantity, 10) >= 2 ? parseInt(quantity, 10) - 1 : 1;
-  //     dispatch(cartUpdateQuantity(id, data, cartData));
-  //   };
-
-  //   const cartDeleted = (id) => {
-  //     const confirm = window.confirm('Are you sure to delete this product?');
-  //     if (confirm) dispatch(cartDelete(id, cartData));
-  //   };
+  const decrementUpdate = (productId) => {
+    setProductQuantities((prevQuantities) => {
+      const newQuantities = { ...prevQuantities };
+      newQuantities[productId] = Math.max(0, prevQuantities[productId] - 1);
+      return newQuantities;
+    });
+  };
+  // const cartDeleted = (id) => {
+  //   const confirm = window.confirm('Are you sure to delete this product?');
+  //   if (confirm) dispatch(deselectItem(id));
+  // };
 
   const productTableData = [];
 
   if (cartData !== null) {
     cartData.map((itemId) => {
       const product = catalogueData?.find((item) => item.Item_Id === itemId);
+      const quantity = productQuantities[itemId] || 1;
 
       const filepathprefix = 'http://103.67.238.230:1386/';
       /* eslint-disable-next-line no-unsafe-optional-chaining */
@@ -71,12 +80,12 @@ function CartTable() {
               <figcaption>
                 <div className="cart-single__info">
                   <b>
-                    <Heading as="h6">{product.Item_Name}</Heading>
+                    <Heading as="h6">{product?.Item_Name}</Heading>
                   </b>
                   <ul className="info-list">
                     <li>
                       <span className="info-title">Item code :</span>
-                      <span>{product.Item_Code}</span>
+                      <span>{product?.Item_Code}</span>
                     </li>
                     {/* <li>
                       <span className="info-title"> Color :</span>
@@ -88,23 +97,24 @@ function CartTable() {
             </FigureCart>
           </div>
         ),
-        price: <span className="cart-single-price">₹ {product.SalePrice1}</span>,
-        // quantity: (
-        //   <div className="cart-single-quantity">
-        //     <Button onClick={() => decrementUpdate(id, quantity)} className="btn-dec" type="default">
-        //       <UilMinus />
-        //     </Button>
-        //     {quantity}
-        //     <Button onClick={() => incrementUpdate(id, quantity)} className="btn-inc" type="default">
-        //       <UilPlus />
-        //     </Button>
-        //   </div>
-        // ),
-        total: <span className="cart-single-t-price">₹ {product.SalePrice1}</span>,
+        price: <span className="cart-single-price">₹ {product?.SalePrice1}</span>,
+        quantity: (
+          <div className="cart-single-quantity">
+            <Button onClick={() => decrementUpdate(product.Item_Id)} className="btn-dec" type="default">
+              <UilMinus />
+            </Button>
+            {quantity}
+            <Button onClick={() => incrementUpdate(product.Item_Id)} className="btn-inc" type="default">
+              <UilPlus />
+            </Button>
+          </div>
+        ),
+        /* eslint-disable-next-line no-unsafe-optional-chaining */
+        total: <span className="cart-single-t-price">₹ {quantity * product?.SalePrice1}</span>,
         // action: (
         //   <div className="table-action">
         //     <Button
-        //       onClick={() => cartDeleted(id)}
+        //       onClick={() => cartDeleted(product.Item_Id)}
         //       className="btn-icon"
         //       to="#"
         //       size="default"
@@ -131,11 +141,11 @@ function CartTable() {
       dataIndex: 'price',
       key: 'price',
     },
-    // {
-    //   title: 'Quantity',
-    //   dataIndex: 'quantity',
-    //   key: 'quantity',
-    // },
+    {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
     {
       title: 'Total',
       dataIndex: 'total',
