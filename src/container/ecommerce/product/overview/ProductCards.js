@@ -17,6 +17,8 @@ function ProductCards({ product }) {
   const filepathprefix = 'http://103.67.238.230:1386/';
   const dispatch = useDispatch();
 
+  // const selectedItems = useSelector((state) => state.auth.selectedItems);
+
   const [imageError, setImageError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 

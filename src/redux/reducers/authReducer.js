@@ -92,9 +92,17 @@ export const authSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
-    setLoadedItems(state, action) {
+    setLoadedItems: (state, action) => {
       state.loadedItems = action.payload;
     },
+    // selectItem: (state, action) => {
+    //   const { isChecked, productData } = action.payload;
+    //   const updatedSelectedItems = isChecked
+    //     ? [...state.selectedItems, productData]
+    //     : state.selectedItems.filter((id) => id !== productData.Item_Id);
+    //   state.selectedItems = updatedSelectedItems;
+    //   localStorage.setItem('cartItems', JSON.stringify(updatedSelectedItems));
+    // },
     selectItem: (state, action) => {
       const { itemId, isChecked } = action.payload;
       const updatedSelectedItems = isChecked

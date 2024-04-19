@@ -133,7 +133,7 @@ function MenuItems({ toggleCollapsed }) {
     getItem(t('dashboard'), 'dashboard', !topMenu && <UilCreateDashboard />, [
       getItem(
         <NavLink onClick={toggleCollapsed} to={path}>
-          {t('Dashboard')} {t('view')}
+          {t('Dashboard')} {t('Overview')}
         </NavLink>,
         'demo-1',
         null,

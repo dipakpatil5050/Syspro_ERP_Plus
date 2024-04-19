@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 import { Row, Col, Table, Form, Input, Spin } from 'antd';
 // import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
@@ -15,8 +15,7 @@ function CartTable() {
   const cartData = useSelector((state) => state.auth.selectedItems);
   const catalogueData = useSelector((state) => state.auth.catalogueData);
 
-  const [productQuantities, setProductQuantities] = useState([]);
-  localStorage.getItem('quantities');
+  // const [productQuantities, setProductQuantities] = useState([]);
 
   // const dispatch = useDispatch();
 
@@ -41,21 +40,29 @@ function CartTable() {
   //     }
   //   }, [dispatch]);
 
-  const incrementUpdate = (productId) => {
-    setProductQuantities((prevQuantities) => {
-      const newQuantities = { ...prevQuantities };
-      newQuantities[productId] = (prevQuantities[productId] || 1) + 1;
-      return newQuantities;
-    });
-  };
+  // useEffect(() => {
+  //   const storedQuantities = localStorage.getItem('quantities');
+  //   const parsedQuantities = storedQuantities ? JSON.parse(storedQuantities) : {};
+  //   setProductQuantities(parsedQuantities);
+  // }, []);
 
-  const decrementUpdate = (productId) => {
-    setProductQuantities((prevQuantities) => {
-      const newQuantities = { ...prevQuantities };
-      newQuantities[productId] = Math.max(0, prevQuantities[productId] - 1);
-      return newQuantities;
-    });
-  };
+  // const incrementUpdate = (productId) => {
+  //   setProductQuantities((prevQuantities) => {
+  //     const newQuantities = Array.isArray(prevQuantities) ? [...prevQuantities] : [];
+  //     newQuantities[productId] = (prevQuantities[productId] || 1) + 1;
+  //     localStorage.setItem('quantities', JSON.stringify(newQuantities));
+  //     return newQuantities;
+  //   });
+  // };
+
+  // const decrementUpdate = (productId) => {
+  //   setProductQuantities((prevQuantities) => {
+  //     const newQuantities = Array.isArray(prevQuantities) ? [...prevQuantities] : [];
+  //     newQuantities[productId] = Math.max(0, prevQuantities[productId] - 1);
+  //     localStorage.setItem('quantities', JSON.stringify(newQuantities));
+  //     return newQuantities;
+  //   });
+  // };
   // const cartDeleted = (id) => {
   //   const confirm = window.confirm('Are you sure to delete this product?');
   //   if (confirm) dispatch(deselectItem(id));
@@ -66,7 +73,7 @@ function CartTable() {
   if (cartData !== null) {
     cartData.map((itemId) => {
       const product = catalogueData?.find((item) => item.Item_Id === itemId);
-      const quantity = productQuantities[itemId] || 1;
+      // const quantity = productQuantities[itemId] || 1;
 
       const filepathprefix = 'http://103.67.238.230:1386/';
       /* eslint-disable-next-line no-unsafe-optional-chaining */
@@ -84,7 +91,7 @@ function CartTable() {
                   </b>
                   <ul className="info-list">
                     <li>
-                      <span className="info-title">Item code :</span>
+                      <span className="info-t itle">Item code :</span>
                       <span>{product?.Item_Code}</span>
                     </li>
                     {/* <li>
@@ -100,17 +107,19 @@ function CartTable() {
         price: <span className="cart-single-price">₹ {product?.SalePrice1}</span>,
         quantity: (
           <div className="cart-single-quantity">
-            <Button onClick={() => decrementUpdate(product.Item_Id)} className="btn-dec" type="default">
+            <Button className="btn-dec" type="default">
+              {/* onClick={() => decrementUpdate(product.Item_Id)} */}
               <UilMinus />
             </Button>
-            {quantity}
-            <Button onClick={() => incrementUpdate(product.Item_Id)} className="btn-inc" type="default">
+            {/* {quantity} */}
+            {/* onClick={() => incrementUpdate(product.Item_Id)} */}
+            <Button className="btn-inc" type="default">
               <UilPlus />
             </Button>
           </div>
         ),
         /* eslint-disable-next-line no-unsafe-optional-chaining */
-        total: <span className="cart-single-t-price">₹ {quantity * product?.SalePrice1}</span>,
+        // total: <span className="cart-single-t-price">₹ {quantity * product?.SalePrice1}</span>,
         // action: (
         //   <div className="table-action">
         //     <Button

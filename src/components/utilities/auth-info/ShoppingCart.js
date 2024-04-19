@@ -86,6 +86,7 @@ const ShoppingCart = React.memo(() => {
               if (!product) {
                 return <li key={itemId}>Product not found (ID: {itemId})</li>;
               }
+
               const filepathprefix = 'http://103.67.238.230:1386/';
               /* eslint-disable-next-line no-unsafe-optional-chaining */
               const productImage = filepathprefix + product?.Gallary[0]?.Filepath;
