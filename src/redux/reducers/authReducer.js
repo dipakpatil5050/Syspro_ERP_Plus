@@ -113,12 +113,7 @@ export const authSlice = createSlice({
     },
     deselectItem: (state, action) => {
       const { itemId } = action.payload;
-      const updatedSelectedItems = state.selectedItems.reduce((acc, item) => {
-        if (item.itemId !== itemId) {
-          acc.push(item);
-        }
-        return acc;
-      }, []);
+      const updatedSelectedItems = state.selectedItems.filter((id) => id !== itemId);
       state.selectedItems = updatedSelectedItems;
       localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
     },
