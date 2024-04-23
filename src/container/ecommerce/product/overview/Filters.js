@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import UilSlidersV from '@iconscout/react-unicons/icons/uil-sliders-v';
 import { Select } from 'antd';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types'; // Import PropTypes
 import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
@@ -12,6 +13,9 @@ function Filters({ onFilterChange }) {
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedSubGroup, setSelectedSubGroup] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+
+  const filterStore = useSelector((state) => state.auth.catalogueData);
+  const filterData = filterStore?.filters;
 
   const handleGroupChange = (value) => {
     setSelectedGroup(value);
@@ -41,25 +45,40 @@ function Filters({ onFilterChange }) {
         <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Group</Heading>
           <Select style={{ width: '100%' }} placeholder="Select Group" onChange={handleGroupChange}>
+            {/* {console.log(filterData.group[0].Name)} */}
             <Option value="">All</Option>
-            <Option value="JIMMY CHOO">JIMMY CHOO</Option>
-            {/* Add more options as needed */}
+            {filterData &&
+              filterData?.Group?.map((groupItem) => (
+                <Option key={groupItem.Id} value={groupItem.Name}>
+                  {groupItem.Name}
+                </Option>
+              ))}
           </Select>
         </SidebarSingle>
 
         <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Sub-Group</Heading>
           <Select style={{ width: '100%' }} placeholder="Select Sub-Group" onChange={handleSubGroupChange}>
-            <Option value="">All</Option>
-            <Option value="JIMMY CHOO LEHENGA">JIMMY CHOO LEHENGA</Option>
+            {filterData &&
+              filterData?.SubGroup.map((subgroupItem) => {
+                return (
+                  <Option key={subgroupItem.Id} value={subgroupItem.Name}>
+                    {subgroupItem.Name}
+                  </Option>
+                );
+              })}
           </Select>
         </SidebarSingle>
 
         <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Category</Heading>
           <Select style={{ width: '100%' }} placeholder="Select Category" onChange={handleCategoryChange}>
-            <Option value="">All</Option>
-            <Option value="UNSTICH LEHANGA">UNSTICH LEHANGA</Option>
+            {filterData &&
+              filterData?.Category.map((categoryItem) => (
+                <Option key={categoryItem.Id} value={categoryItem.Name}>
+                  {categoryItem.Name}
+                </Option>
+              ))}
           </Select>
         </SidebarSingle>
       </Cards>

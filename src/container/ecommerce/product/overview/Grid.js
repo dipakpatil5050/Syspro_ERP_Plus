@@ -19,8 +19,6 @@ function Grid({ filters }) {
   const [filteredData, setFilteredData] = useState([]);
 
   const productsData = catalogueData?.products;
-  const filterData = catalogueData?.filters;
-  console.log(filterData);
 
   useEffect(() => {
     if (filters && filters.group) {
