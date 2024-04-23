@@ -16,6 +16,8 @@ function List() {
   const [visible, setVisible] = useState(loadedItems || 50);
   const [showTopButton, setShowTopButton] = useState(false);
 
+  const productsData = catalogueData.products;
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.pageYOffset > 300) {
@@ -70,7 +72,7 @@ function List() {
       <InfiniteScroll
         dataLength={visible}
         next={fetchMoreData}
-        hasMore={visible < catalogueData?.length}
+        hasMore={visible < productsData?.length}
         loader={<Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />}
         style={{ overflow: 'hidden' }}
         endMessage={
@@ -85,8 +87,8 @@ function List() {
         }
       >
         <Row gutter={15}>
-          {catalogueData && catalogueData.length ? (
-            catalogueData.slice(0, visible).map((product) => {
+          {productsData && productsData.length ? (
+            productsData.slice(0, visible).map((product) => {
               return (
                 <Col xs={24} key={product.Item_Id}>
                   <ProductCardsList product={product} />

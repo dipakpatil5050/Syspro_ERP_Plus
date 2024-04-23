@@ -30,7 +30,7 @@ function ProductCards({ product }) {
     setImageError(true);
   };
 
-  // localStorage functionality for  Selected Card Items
+  // localStorage functionality for Selected Card Items
   useEffect(() => {
     const selectedItemsFromStorage = JSON.parse(localStorage.getItem('selectedItems')) || [];
     setIsChecked(selectedItemsFromStorage.includes(product.Item_Id));
@@ -49,7 +49,6 @@ function ProductCards({ product }) {
 
   return (
     <>
-      {/* <div>Selected Items: {selectedItemsCount}</div> */}
       <ProductCard
         style={{
           marginBottom: 30,

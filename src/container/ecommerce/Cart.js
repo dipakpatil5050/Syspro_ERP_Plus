@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { Row, Col, Skeleton } from 'antd';
 import { Route, Routes } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main } from '../styled';
 import { Cards } from '../../components/cards/frame/cards-frame';
@@ -21,6 +20,12 @@ function ShoppingCart() {
       breadcrumbName: 'Item cart',
     },
   ];
+
+  // useEffect(() => {
+  //   if (cartGetData) {
+  //     dispatch(cartGetData());
+  //   }
+  // }, [dispatch]);
   //   const dispatch = useDispatch();
   //   const { cartData } = useSelector((state) => {
   //     return {
@@ -75,7 +80,7 @@ function ShoppingCart() {
                         </Cards>
                       }
                     >
-                      {/* <Ordersummary subtotal={subtotal} checkout={false} /> */}
+                      {/* <Ordersummary subtotal={subTotal} checkout={false} /> */}
                     </Suspense>
                   </Col>
                 </Row>

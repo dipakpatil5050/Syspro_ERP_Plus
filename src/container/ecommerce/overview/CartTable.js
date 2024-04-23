@@ -18,6 +18,8 @@ function CartTable() {
 
   const dispatch = useDispatch();
 
+  const productsData = catalogueData.products;
+
   useEffect(() => {
     const storedQuantities = localStorage.getItem('productQuantities');
     if (storedQuantities) {
@@ -115,12 +117,16 @@ function CartTable() {
 
   if (cartData !== null) {
     cartData.map((itemId) => {
-      const product = catalogueData?.find((item) => item.Item_Id === itemId);
+      const product = productsData?.find((item) => item.Item_Id === itemId);
       const quantity = productQuantities[itemId] || 1;
 
       const filepathprefix = 'http://103.67.238.230:1386/';
       /* eslint-disable-next-line no-unsafe-optional-chaining */
       const productImage = filepathprefix + product?.Gallary[0]?.Filepath;
+
+      /* eslint-disable-next-line no-unsafe-optional-chaining */
+      const totalPrice = quantity * product?.SalePrice1;
+
       return productTableData.push({
         key: product?.Item_Id,
         product: (
@@ -161,8 +167,7 @@ function CartTable() {
             </Button>
           </div>
         ),
-        /* eslint-disable-next-line no-unsafe-optional-chaining */
-        total: <span className="cart-single-t-price">₹ {quantity * product?.SalePrice1}</span>,
+        total: <span className="cart-single-t-price">₹ {totalPrice}</span>,
         action: (
           <div className="table-action">
             <Button
@@ -181,6 +186,11 @@ function CartTable() {
       });
     });
   }
+
+  const subtotal = productTableData.reduce((acc, curr) => {
+    return acc + curr.quantity * (curr.price || 0);
+  }, 0);
+  console.log(subtotal);
 
   const productTableColumns = [
     {

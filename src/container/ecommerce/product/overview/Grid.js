@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, Spin, Button } from 'antd';
+import PropTypes from 'prop-types';
 import { UilArrowUp } from '@iconscout/react-unicons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductCards from './ProductCards';
@@ -8,14 +9,27 @@ import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
 import { setLoadedItems } from '../../../../redux/reducers/authReducer';
 
-function Grid() {
+function Grid({ filters }) {
   const dispatch = useDispatch();
 
   const { catalogueData, loading, loadedItems } = useSelector((state) => state.auth);
-  // loading
 
   const [visible, setVisible] = useState(loadedItems || 50);
   const [showTopButton, setShowTopButton] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
+
+  const productsData = catalogueData?.products;
+  const filterData = catalogueData?.filters;
+  console.log(filterData);
+
+  useEffect(() => {
+    if (filters && filters.group) {
+      const filtered = productsData?.filter((product) => product.Group_Name === filters.group);
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(productsData);
+    }
+  }, [productsData, filters]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,6 +69,13 @@ function Grid() {
     });
   };
 
+  const filteredProducts = productsData?.filter((product) => {
+    if (filters.group && product.Group_Name !== filters.group) return false;
+    if (filters.subGroup && product.SubGroup_Name !== filters.subGroup) return false;
+    if (filters.category && product.Cat_Name !== filters.category) return false;
+    return true;
+  });
+
   if (loading && visible === 10) {
     return (
       <Row gutter={30}>
@@ -72,7 +93,7 @@ function Grid() {
       <InfiniteScroll
         dataLength={visible}
         next={fetchMoreData}
-        hasMore={visible < catalogueData?.length}
+        hasMore={visible < filteredProducts?.length}
         loader={<Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />}
         style={{ overflow: 'hidden' }}
         endMessage={
@@ -87,8 +108,8 @@ function Grid() {
         }
       >
         <Row gutter={30}>
-          {catalogueData &&
-            catalogueData.slice(0, visible).map((product) => (
+          {filteredData &&
+            filteredData.slice(0, visible).map((product) => (
               <Col xxl={6} lg={12} xs={24} key={product.Item_Id}>
                 <ProductCards product={product} />
               </Col>
@@ -110,4 +131,11 @@ function Grid() {
   );
 }
 
+Grid.propTypes = {
+  filters: PropTypes.shape({
+    group: PropTypes.string,
+    subGroup: PropTypes.string,
+    category: PropTypes.string,
+  }),
+};
 export default Grid;

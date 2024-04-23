@@ -24,6 +24,8 @@ const ShoppingCart = React.memo(() => {
   const selectedItems = useSelector((state) => state.auth.selectedItems);
   const catalogueData = useSelector((state) => state.auth.catalogueData);
 
+  const productsData = catalogueData?.products;
+
   function renderThumb({ style }) {
     const thumbStyle = {
       borderRadius: 6,
@@ -81,7 +83,7 @@ const ShoppingCart = React.memo(() => {
         >
           <ul className="ninjadash-top-dropdown__nav selected-items-list">
             {selectedItems.map((itemId) => {
-              const product = catalogueData?.find((item) => item.Item_Id === itemId);
+              const product = productsData?.find((item) => item.Item_Id === itemId);
 
               if (!product) {
                 return <li key={itemId}>Product not found (ID: {itemId})</li>;

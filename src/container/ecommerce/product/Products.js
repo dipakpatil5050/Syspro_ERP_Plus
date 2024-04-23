@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Row, Col, Spin, Skeleton } from 'antd';
 import { Route, Routes, NavLink } from 'react-router-dom';
 import UilApps from '@iconscout/react-unicons/icons/uil-apps';
@@ -34,6 +34,13 @@ function Product() {
     },
   ];
   const path = '.';
+
+  const [filters, setFilters] = useState({});
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
+
   //   const dispatch = useDispatch();
   //   const searchData = useSelector((state) => state.headerSearchData);
 
@@ -89,7 +96,7 @@ function Product() {
       return;
     }
 
-    const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/ProductCataloguePagining`;
+    const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
     const body = {
       ReportId: 0,
       FromDate: '',
@@ -145,7 +152,7 @@ function Product() {
                 </Cards>
               }
             >
-              <Filters />
+              <Filters onFilterChange={handleFilterChange} />
             </Suspense>
           </Col>
           <Col className="product-content-col" xxl={19} lg={17} md={14} xs={24}>
@@ -197,8 +204,8 @@ function Product() {
               }
             >
               <Routes>
-                <Route index element={<Grid />} />
-                <Route path="grid" element={<Grid />} />
+                <Route index element={<Grid filters={filters} />} />
+                <Route path="grid" element={<Grid filters={filters} />} />
                 <Route path="list" element={<List />} />
               </Routes>
             </Suspense>

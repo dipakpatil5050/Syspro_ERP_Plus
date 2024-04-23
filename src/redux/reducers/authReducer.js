@@ -53,6 +53,15 @@ export const logOut = createAsyncThunk('auth/logout', async () => {
   }
 });
 
+// cartGetData functionality
+// export const cartGetData = createAsyncThunk('auth/cartGetData', async (_, { getState }) => {
+//   const { cartItems } = getState().auth;
+//   const subtotal = cartItems.reduce((total, item) => {
+//     return total + item.price * item.quantity;
+//   }, 0);
+//   return subtotal;
+// });
+
 // Slice definition
 export const authSlice = createSlice({
   name: 'auth',
@@ -67,6 +76,7 @@ export const authSlice = createSlice({
     error: null,
     loadedItems: 50,
     selectedItems: JSON.parse(localStorage.getItem('selectedItems')) || [],
+    // subtotal: 0,
 
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
   },
@@ -95,14 +105,7 @@ export const authSlice = createSlice({
     setLoadedItems: (state, action) => {
       state.loadedItems = action.payload;
     },
-    // selectItem: (state, action) => {
-    //   const { isChecked, productData } = action.payload;
-    //   const updatedSelectedItems = isChecked
-    //     ? [...state.selectedItems, productData]
-    //     : state.selectedItems.filter((id) => id !== productData.Item_Id);
-    //   state.selectedItems = updatedSelectedItems;
-    //   localStorage.setItem('cartItems', JSON.stringify(updatedSelectedItems));
-    // },
+
     selectItem: (state, action) => {
       const { itemId, isChecked } = action.payload;
       const updatedSelectedItems = isChecked
@@ -170,6 +173,12 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       });
+    // .addCase(cartGetData.fulfilled, (state, action) => {
+    //   state.subtotal = action.payload;
+    // })
+    // .addCase(cartGetData.rejected, (state, action) => {
+    //   state.error = action.error.message;
+    // });
   },
 });
 

@@ -1,70 +1,32 @@
 import React, { useState } from 'react';
 import UilSlidersV from '@iconscout/react-unicons/icons/uil-sliders-v';
-import { Link } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
+import { Select } from 'antd';
+import PropTypes from 'prop-types'; // Import PropTypes
+import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
-// import { Slider } from '../../../../components/slider/slider';
-// import { CheckboxGroup } from '../../../../components/checkbox/checkbox';
-import { Sidebar, SidebarSingle } from '../../Style';
-// import {
-//   filterByPriceRange,
-//   filterByRating,
-//   filterByBrand,
-//   filterByCategory,
-// } from '../../../../redux/product/actionCreator';
 
-const Filters = React.memo(() => {
-  const [state, setState] = useState({
-    min: 0,
-    max: 1500,
-  });
+const { Option } = Select;
 
-  console.log(state);
-  console.log(setState);
-  //   const dispatch = useDispatch();
+function Filters({ onFilterChange }) {
+  const [selectedGroup, setSelectedGroup] = useState('');
+  const [selectedSubGroup, setSelectedSubGroup] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
-  // const { min, max } = state;
-  // const onChange = (value) => {
-  //   setState({
-  //     ...state,
-  //     min: value[0],
-  //     max: value[1],
-  //   });
-  // dispatch(filterByPriceRange(value));
-  // };
-  // const onChangeRating = (checkValue) => {
-  //   // dispatch(filterByRating([checkValue]));
-  //   console.log(checkValue);
-  // };
+  const handleGroupChange = (value) => {
+    setSelectedGroup(value);
+    onFilterChange({ group: value, subGroup: selectedSubGroup, category: selectedCategory });
+  };
 
-  // const onChangeBrand = (checkValue) => {
-  //   // dispatch(filterByBrand([checkValue]));
-  //   console.log(checkValue);
-  // };
+  const handleSubGroupChange = (value) => {
+    setSelectedSubGroup(value);
+    onFilterChange({ group: selectedGroup, subGroup: value, category: selectedCategory });
+  };
 
-  // const optionsBrand = [
-  //   {
-  //     label: (
-  //       <>
-  //         Product 1 <span className="brand-count">25</span>
-  //       </>
-  //     ),
-  //     value: 'cup',
-  //   },
-  //   {
-  //     label: (
-  //       <>
-  //         Product 2 <span className="brand-count">25</span>
-  //       </>
-  //     ),
-  //     value: 'plate',
-  //   },
-  // ];
-
-  // const onChangeCategory = (value) => {
-  //   dispatch(filterByCategory(value));
-  // };
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
+    onFilterChange({ group: selectedGroup, subGroup: selectedSubGroup, category: value });
+  };
 
   return (
     <Sidebar>
@@ -76,53 +38,37 @@ const Filters = React.memo(() => {
           </span>
         }
       >
-        {/* <SidebarSingle style={{ marginBottom: 32 }}>
-          <Heading as="h5">Price Range</Heading>
-          <Slider max={1500} onChange={onChange} range defaultValues={[min, max]} />
-          <p className="ninjadash-price-text">
-            ${min} - ${max}
-          </p>
-        </SidebarSingle> */}
         <SidebarSingle style={{ marginBottom: 32 }}>
-          <Heading as="h5">Category</Heading>
-
-          <nav>
-            <ul className="ninjadash-category-list">
-              <li>
-                {/* onClick={() => onChangeCategory('all')} */}
-                <Link to="#">
-                  <span>All</span>
-                  <span className="ninjadash-category-count">547</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="#">
-                  <span>Unstich Lehanga</span>
-                  <span className="ninjadash-category-count">547</span>
-                </Link>
-              </li>
-            </ul>
-          </nav>
-          {/* <div className="sidebar-single__action">
-            <Link className="btn-seeMore" to="#">
-              See more
-            </Link>
-          </div> */}
+          <Heading as="h5">Group</Heading>
+          <Select style={{ width: '100%' }} placeholder="Select Group" onChange={handleGroupChange}>
+            <Option value="">All</Option>
+            <Option value="JIMMY CHOO">JIMMY CHOO</Option>
+            {/* Add more options as needed */}
+          </Select>
         </SidebarSingle>
 
-        {/* <SidebarSingle style={{ marginBottom: 32 }}>
-          <Heading as="h5">Brands</Heading>
-          <CheckboxGroup options={optionsBrand} onChange={onChangeBrand} />
+        <SidebarSingle style={{ marginBottom: 32 }}>
+          <Heading as="h5">Sub-Group</Heading>
+          <Select style={{ width: '100%' }} placeholder="Select Sub-Group" onChange={handleSubGroupChange}>
+            <Option value="">All</Option>
+            <Option value="JIMMY CHOO LEHENGA">JIMMY CHOO LEHENGA</Option>
+          </Select>
+        </SidebarSingle>
 
-          <div className="sidebar-single__action">
-            <Link className="btn-seeMore" to="#">
-              See more ...
-            </Link>
-          </div>
-        </SidebarSingle> */}
+        <SidebarSingle style={{ marginBottom: 32 }}>
+          <Heading as="h5">Category</Heading>
+          <Select style={{ width: '100%' }} placeholder="Select Category" onChange={handleCategoryChange}>
+            <Option value="">All</Option>
+            <Option value="UNSTICH LEHANGA">UNSTICH LEHANGA</Option>
+          </Select>
+        </SidebarSingle>
       </Cards>
     </Sidebar>
   );
-});
+}
+
+Filters.propTypes = {
+  onFilterChange: PropTypes.func.isRequired,
+};
 
 export default Filters;
