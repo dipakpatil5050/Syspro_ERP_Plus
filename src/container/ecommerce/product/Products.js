@@ -118,7 +118,6 @@ function Product() {
       client: SlugUrl,
       'x-api-key': mPin,
     };
-
     // setLoading(true);
     try {
       dispatch(setLoading(true));

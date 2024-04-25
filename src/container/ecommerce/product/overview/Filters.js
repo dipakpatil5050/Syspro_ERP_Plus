@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import UilSlidersV from '@iconscout/react-unicons/icons/uil-sliders-v';
 import { Select } from 'antd';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
@@ -15,7 +16,10 @@ function Filters({ onFilterChange }) {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   const filterStore = useSelector((state) => state.auth.catalogueData);
+
   const filterData = filterStore?.filters;
+
+  const onChangeCategory = () => {};
 
   const handleGroupChange = (value) => {
     setSelectedGroup(value);
@@ -43,9 +47,56 @@ function Filters({ onFilterChange }) {
         }
       >
         <SidebarSingle style={{ marginBottom: 32 }}>
+          <Heading as="h5">Category</Heading>
+
+          <nav>
+            <ul className="ninjadash-category-list">
+              <li>
+                <Link onClick={() => onChangeCategory('all')} to="#">
+                  <span>All</span>
+                  {/* <span className="ninjadash-category-count">25</span>s */}
+                </Link>
+              </li>
+              {filterData &&
+                filterData.Category.map((categoryItem) => (
+                  <>
+                    <li key={categoryItem.Id}>
+                      <Link onClick={() => onChangeCategory('all')} to="#">
+                        <span>{categoryItem.Name}</span>
+                        <span className="ninjadash-category-count">{categoryItem.Count}</span>
+                      </Link>
+                    </li>
+                  </>
+                ))}
+            </ul>
+          </nav>
+          <div className="sidebar-single__action">
+            <Link className="btn-seeMore" to="#">
+              See more
+            </Link>
+          </div>
+        </SidebarSingle>
+        {/* groups */}
+
+        {/* <SidebarSingle style={{ marginBottom: 32 }}>
+          <Heading as="h5">Brands</Heading>
+          <CheckboxGroup options={optionsBrand} onChange={onChangeBrand} />
+
+          <div className="sidebar-single__action">
+            <Link className="btn-seeMore" to="#">
+              See more
+            </Link>
+          </div>
+        </SidebarSingle> */}
+
+        <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Group</Heading>
-          <Select style={{ width: '100%' }} placeholder="Select Group" onChange={handleGroupChange}>
-            {/* {console.log(filterData.group[0].Name)} */}
+          <Select
+            style={{ width: '100%' }}
+            placeholder="Select Group"
+            onChange={handleGroupChange}
+            value={selectedGroup || ''}
+          >
             <Option value="">All</Option>
             {filterData &&
               filterData?.Group?.map((groupItem) => (
@@ -55,10 +106,15 @@ function Filters({ onFilterChange }) {
               ))}
           </Select>
         </SidebarSingle>
-
         <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Sub-Group</Heading>
-          <Select style={{ width: '100%' }} placeholder="Select Sub-Group" onChange={handleSubGroupChange}>
+          <Select
+            style={{ width: '100%' }}
+            placeholder="Select Sub-Group"
+            onChange={handleSubGroupChange}
+            value={selectedSubGroup || ''}
+          >
+            <Option value="">All</Option>
             {filterData &&
               filterData?.SubGroup.map((subgroupItem) => {
                 return (
@@ -69,10 +125,15 @@ function Filters({ onFilterChange }) {
               })}
           </Select>
         </SidebarSingle>
-
         <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Category</Heading>
-          <Select style={{ width: '100%' }} placeholder="Select Category" onChange={handleCategoryChange}>
+          <Select
+            style={{ width: '100%' }}
+            placeholder="Select Category"
+            onChange={handleCategoryChange}
+            value={selectedCategory || ''}
+          >
+            <Option value="">All</Option>
             {filterData &&
               filterData?.Category.map((categoryItem) => (
                 <Option key={categoryItem.Id} value={categoryItem.Name}>

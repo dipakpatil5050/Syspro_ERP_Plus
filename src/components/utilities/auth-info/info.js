@@ -43,6 +43,7 @@ const AuthInfo = React.memo(() => {
     dispatch(setUserData(null));
     dispatch(setuserMpinData(null));
     dispatch(setCatalogueData(null));
+    localStorage.clear();
   };
 
   const userContent = (
