@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Spin, Button } from 'antd';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { UilArrowUp } from '@iconscout/react-unicons';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -11,9 +12,9 @@ import { setLoadedItems } from '../../../../redux/reducers/authReducer';
 function List() {
   const dispatch = useDispatch();
 
-  const { catalogueData, loading, loadedItems } = useSelector((state) => state.auth);
-
-  const [visible, setVisible] = useState(loadedItems || 50);
+  const { catalogueData, loading } = useSelector((state) => state.auth);
+  // , loadedItems
+  const [visible, setVisible] = useState(50); // loadedItems ||
   const [showTopButton, setShowTopButton] = useState(false);
 
   const productsData = catalogueData.products;
@@ -34,8 +35,8 @@ function List() {
     };
   }, []);
 
+  // localStorage.setItem('loadedItems', visible);
   useEffect(() => {
-    localStorage.setItem('loadedItems', visible);
     dispatch(setLoadedItems(visible));
   }, [visible, dispatch]);
 
@@ -115,5 +116,13 @@ function List() {
     </>
   );
 }
+
+List.propTypes = {
+  filters: PropTypes.shape({
+    group: PropTypes.string,
+    subGroup: PropTypes.string,
+    category: PropTypes.string,
+  }),
+};
 
 export default List;

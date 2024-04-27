@@ -68,7 +68,7 @@ export const authSlice = createSlice({
   initialState: {
     userData: JSON.parse(localStorage.getItem('userData')) || null,
     userMpinData: JSON.parse(localStorage.getItem('userMpinData')) || null,
-    catalogueData: JSON.parse(localStorage.getItem('catalogueData')) || null,
+    catalogueData: null,
     LedgerReport: null,
     SaleReport: null,
     login: Cookies.get('logedIn'),
@@ -79,6 +79,7 @@ export const authSlice = createSlice({
     // subtotal: 0,
 
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
+    // JSON.parse(localStorage.getItem('catalogueData')) || null,
   },
   reducers: {
     setUserData: (state, action) => {
@@ -91,7 +92,7 @@ export const authSlice = createSlice({
     },
     setCatalogueData: (state, action) => {
       state.catalogueData = action.payload;
-      localStorage.setItem('catalogueData', JSON.stringify(action.payload));
+      // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
     },
     setLedgerReport: (state, action) => {
       state.LedgerReport = action.payload;
