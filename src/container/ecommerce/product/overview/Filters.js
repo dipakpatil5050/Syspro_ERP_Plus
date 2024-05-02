@@ -12,7 +12,7 @@ import { setCatalogueData, setLoading } from '../../../../redux/reducers/authRed
 
 function Filters() {
   const [selectedGroupIds, setSelectedGroupIds] = useState('');
-  // const [selectedSubGroupIds, setSelectedSubGroupIds] = useState('');
+  const [selectedSubGroupIds, setSelectedSubGroupIds] = useState('');
   console.log(setSelectedGroupIds);
   // console.log(setSelectedSubGroupIds);
   // Catalogue API variables
@@ -43,26 +43,55 @@ function Filters() {
 
     setSelectedGroupIds(updatedSelectedGroupIds);
 
-    const filterString =
-      updatedSelectedGroupIds.length > 0 ? `AND Group_Id IN (${updatedSelectedGroupIds.join(',')})` : '';
+    // Clear SubGroup selections when Group changes
+    setSelectedSubGroupIds([]);
 
-    fetchCatalogueData(filterString); // Pass the updated filterString directly
+    const filterString = buildFilterString(updatedSelectedGroupIds, selectedSubGroupIds); // Pass both Group and SubGroup IDs
+
+    fetchCatalogueData(filterString);
   };
 
-  // const handleSubGroupSelection = () => {
-  //   const updatedSelectedSubGroupIds = isChecked ? [...selectedSubGroupIds] : [];
-  // };
+  const handleSubGroupSelectionChange = (subGroupId, isChecked) => {
+    const updatedSelectedSubGroupIds = isChecked
+      ? [...selectedSubGroupIds, subGroupId] // Add ID if checked
+      : selectedSubGroupIds.filter((id) => id !== subGroupId); // Remove ID if unchecked
+
+    setSelectedSubGroupIds(updatedSelectedSubGroupIds);
+
+    const filterString = buildFilterString(selectedGroupIds, updatedSelectedSubGroupIds); // Pass both Group and SubGroup IDs
+
+    fetchCatalogueData(filterString);
+  };
+
+  const buildFilterString = (groupIds, subGroupIds) => {
+    let filterString = '';
+
+    if (groupIds.length === 0 && subGroupIds.length === 0) {
+      return ''; // Empty filter string if nothing is selected
+    }
+
+    if (groupIds.length > 0) {
+      filterString += `AND Group_Id IN (${groupIds.join(',')})`;
+    }
+
+    if (subGroupIds.length > 0) {
+      filterString += (filterString.length > 0 ? ' AND ' : '') + `SubGroup_Id IN (${subGroupIds.join(',')})`;
+    }
+
+    return filterString;
+  };
 
   // Catalogue API Calling :
 
   const fetchCatalogueData = async (filterString) => {
     // const groupIds = selectedGroupIds;
     // const filterString = groupIds ? `AND Group_Id IN (${groupIds})` : '';
-
     // console.log(groupIds);
+
     console.log(filterString);
     // `AND Group_Id IN (${selectedGroupIds.join(',')})`
     console.log(selectedGroupIds);
+    console.log(selectedSubGroupIds);
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
     const body = {
@@ -100,22 +129,14 @@ function Filters() {
     }
   };
 
-  // const handleGroupSelectionChange = (groupId, isChecked) => {
-  //   const updatedSelectedGroupIds = isChecked
-  //     ? [...selectedGroupIds, groupId] // Add ID if checked
-  //     : selectedGroupIds?.filter((id) => id !== groupId); // Remove ID if unchecked
-
-  //   setSelectedGroupIds(updatedSelectedGroupIds);
-  //   fetchCatalogueData();
-  // };
-
   useEffect(() => {
     fetchCatalogueData();
   }, []);
 
   const handleClearFilters = () => {
     setSelectedGroupIds([]);
-    fetchCatalogueData();
+    setSelectedSubGroupIds([]);
+    fetchCatalogueData('');
   };
 
   return (
@@ -171,7 +192,13 @@ function Filters() {
           <Checkbox.Group>
             {filterData &&
               filterData.SubGroup.map((subgroupItem) => (
-                <Checkbox id={subgroupItem.Id} key={subgroupItem.Id} value={subgroupItem.Name}>
+                <Checkbox
+                  id={subgroupItem.Id}
+                  key={subgroupItem.Id}
+                  value={subgroupItem.Name}
+                  checked={selectedSubGroupIds.includes(subgroupItem.Id)}
+                  onChange={(e) => handleSubGroupSelectionChange(subgroupItem.Id, e.target.checked)}
+                >
                   {subgroupItem.Name}
                 </Checkbox>
               ))}
