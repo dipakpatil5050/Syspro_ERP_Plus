@@ -157,10 +157,15 @@ function Filters() {
 
         <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Category</Heading>
-          <Checkbox.Group>
+          <Checkbox.Group className="ant-checkbox-group">
             {filterData &&
               filterData.Category.map((CategoryItem) => (
-                <Checkbox id={CategoryItem.Id} key={CategoryItem.Id} value={CategoryItem.Name}>
+                <Checkbox
+                  className="ant-checkbox-group-item"
+                  id={CategoryItem.Id}
+                  key={CategoryItem.Id}
+                  value={CategoryItem.Name}
+                >
                   {CategoryItem.Name}
                 </Checkbox>
               ))}
@@ -171,10 +176,11 @@ function Filters() {
 
         <SidebarSingle style={{ marginBottom: 32 }}>
           <Heading as="h5">Group</Heading>
-          <Checkbox.Group>
+          <Checkbox.Group className="ant-checkbox-group">
             {filterData &&
               filterData.Group.map((groupItem) => (
                 <Checkbox
+                  className="ant-checkbox-group-item"
                   id={groupItem.Id}
                   key={groupItem.Id}
                   value={groupItem.Name}
@@ -186,13 +192,15 @@ function Filters() {
               ))}
           </Checkbox.Group>
         </SidebarSingle>
+
         {/* subGroup */}
         <SidebarSingle style={{ marginBottom: 32, height: 300, overflow: 'auto' }}>
           <Heading as="h5">Sub Group</Heading>
-          <Checkbox.Group>
+          <Checkbox.Group className="ant-checkbox-group">
             {filterData &&
               filterData.SubGroup.map((subgroupItem) => (
                 <Checkbox
+                  className="ant-checkbox-group-item"
                   id={subgroupItem.Id}
                   key={subgroupItem.Id}
                   value={subgroupItem.Name}

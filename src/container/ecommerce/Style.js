@@ -97,7 +97,7 @@ const SidebarSingle = Styled.div`
             align-items: center;
             color: ${({ theme }) => theme[theme.mainContent]['gray-text']};
             &:not(:last-child){
-                margin-bottom: 10px;
+                margin-bottom: 4px;
             }
             &.ant-checkbox-wrapper{
                 ${({ theme }) => (theme.rtl ? 'margin-left' : 'margin-right')}: 0;
