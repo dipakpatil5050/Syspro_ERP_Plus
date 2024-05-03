@@ -83,7 +83,7 @@ function Grid() {
                 <Spin />
               </div>
             )}
-            <Heading as="h1">No more products to load</Heading>
+            {!loading && <Heading as="h5">No more products to load</Heading>}
           </NotFoundWrapper>
         }
       >

@@ -11,8 +11,8 @@ import Heading from '../../../../components/heading/heading';
 import { setCatalogueData, setLoading } from '../../../../redux/reducers/authReducer';
 
 function Filters() {
-  const [selectedGroupIds, setSelectedGroupIds] = useState('');
-  const [selectedSubGroupIds, setSelectedSubGroupIds] = useState('');
+  const [selectedGroupIds, setSelectedGroupIds] = useState([]);
+  const [selectedSubGroupIds, setSelectedSubGroupIds] = useState([]);
   console.log(setSelectedGroupIds);
   // console.log(setSelectedSubGroupIds);
   // Catalogue API variables
@@ -136,8 +136,13 @@ function Filters() {
   const handleClearFilters = () => {
     setSelectedGroupIds([]);
     setSelectedSubGroupIds([]);
+    dispatch(setCatalogueData([]));
     fetchCatalogueData('');
   };
+
+  function capitalizeFirstLetter(str) {
+    return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  }
 
   return (
     <Sidebar>
@@ -153,65 +158,100 @@ function Filters() {
           Clear Filter
         </Button>
 
-        {/* Category */}
-
-        <SidebarSingle style={{ marginBottom: 32 }}>
-          <Heading as="h5">Category</Heading>
-          <Checkbox.Group className="ant-checkbox-group">
-            {filterData &&
-              filterData.Category.map((CategoryItem) => (
-                <Checkbox
-                  className="ant-checkbox-group-item"
-                  id={CategoryItem.Id}
-                  key={CategoryItem.Id}
-                  value={CategoryItem.Name}
-                >
-                  {CategoryItem.Name}
-                </Checkbox>
-              ))}
-          </Checkbox.Group>
-        </SidebarSingle>
-
-        {/* groups */}
-
-        <SidebarSingle style={{ marginBottom: 32 }}>
-          <Heading as="h5">Group</Heading>
-          <Checkbox.Group className="ant-checkbox-group">
-            {filterData &&
-              filterData.Group.map((groupItem) => (
-                <Checkbox
-                  className="ant-checkbox-group-item"
-                  id={groupItem.Id}
-                  key={groupItem.Id}
-                  value={groupItem.Name}
-                  checked={selectedGroupIds.includes(groupItem.Id)} // Set checked based on selectedGroupIds
-                  onChange={(e) => handleGroupSelectionChange(groupItem.Id, e.target.checked)}
-                >
-                  {groupItem.Name}
-                </Checkbox>
-              ))}
-          </Checkbox.Group>
-        </SidebarSingle>
-
-        {/* subGroup */}
-        <SidebarSingle style={{ marginBottom: 32, height: 300, overflow: 'auto' }}>
-          <Heading as="h5">Sub Group</Heading>
-          <Checkbox.Group className="ant-checkbox-group">
-            {filterData &&
-              filterData.SubGroup.map((subgroupItem) => (
-                <Checkbox
-                  className="ant-checkbox-group-item"
-                  id={subgroupItem.Id}
-                  key={subgroupItem.Id}
-                  value={subgroupItem.Name}
-                  checked={selectedSubGroupIds.includes(subgroupItem.Id)}
-                  onChange={(e) => handleSubGroupSelectionChange(subgroupItem.Id, e.target.checked)}
-                >
-                  {subgroupItem.Name}
-                </Checkbox>
-              ))}
-          </Checkbox.Group>
-        </SidebarSingle>
+        <>
+          {filterData && (
+            <>
+              {/* Category */}
+              <SidebarSingle style={{ marginBottom: 32 }}>
+                <Heading as="h5">Category</Heading>
+                <Checkbox.Group className="ant-checkbox-group">
+                  {filterData &&
+                    filterData.Category.map((CategoryItem) => (
+                      <Checkbox
+                        className="ant-checkbox-group-item"
+                        id={CategoryItem.Id}
+                        key={CategoryItem.Id}
+                        value={CategoryItem.Name}
+                      >
+                        {capitalizeFirstLetter(CategoryItem.Name)}
+                        <span className="ninjadash-category-count" style={{ fontSize: '12px' }}>
+                          {CategoryItem.Count}
+                        </span>
+                      </Checkbox>
+                    ))}
+                </Checkbox.Group>
+              </SidebarSingle>
+              {/* groups */}
+              <SidebarSingle style={{ marginBottom: 32 }}>
+                <Heading as="h5">Group</Heading>
+                <Checkbox.Group className="ant-checkbox-group">
+                  {filterData &&
+                    filterData.Group.map((groupItem) => (
+                      <Checkbox
+                        className="ant-checkbox-group-item"
+                        id={groupItem.Id}
+                        key={groupItem.Id}
+                        value={groupItem.Name}
+                        checked={selectedGroupIds.includes(groupItem.Id)} // Set checked based on selectedGroupIds
+                        onChange={(e) => handleGroupSelectionChange(groupItem.Id, e.target.checked)}
+                      >
+                        {capitalizeFirstLetter(groupItem.Name)}
+                        <span className="ninjadash-category-count" style={{ fontSize: '12px' }}>
+                          {groupItem.Count}
+                        </span>
+                      </Checkbox>
+                    ))}
+                </Checkbox.Group>
+              </SidebarSingle>
+              {/* subGroup */}
+              {/* css for Scrollbar  , height: 300, overflow: 'auto'  */}
+              <SidebarSingle className="" style={{ marginBottom: 32, height: 300, width: '110%', overflow: 'auto' }}>
+                <Heading as="h5">Sub Group</Heading>
+                <Checkbox.Group className="ant-checkbox-group">
+                  {filterData &&
+                    filterData.SubGroup.map((subgroupItem) => (
+                      <Checkbox
+                        className="ant-checkbox-group-item "
+                        id={subgroupItem.Id}
+                        key={subgroupItem.Id}
+                        value={subgroupItem.Name}
+                        checked={selectedSubGroupIds.includes(subgroupItem.Id)}
+                        onChange={(e) => handleSubGroupSelectionChange(subgroupItem.Id, e.target.checked)}
+                      >
+                        {capitalizeFirstLetter(subgroupItem.Name)}
+                        <span className="ninjadash-category-count" style={{ fontSize: '12px' }}>
+                          {subgroupItem.Count}
+                        </span>
+                      </Checkbox>
+                    ))}
+                </Checkbox.Group>
+              </SidebarSingle>
+              {/* Brand */}
+              {filterData.Brand.length > 0 && (
+                <>
+                  <SidebarSingle>
+                    <Heading as="h5">Brand</Heading>
+                    <Checkbox.Group className="ant-checkbox-group">
+                      {filterData &&
+                        filterData.Brand.map((brandItem) => (
+                          <Checkbox
+                            className="ant-checkbox-group-item"
+                            id={brandItem.Id}
+                            key={brandItem.Id}
+                            value={brandItem.Name}
+                            // checked={selectedSubGroupIds.includes(subgroupItem.Id)}
+                            // onChange={(e) => handleSubGroupSelectionChange(subgroupItem.Id, e.target.checked)}
+                          >
+                            {capitalizeFirstLetter(brandItem.Name)}
+                          </Checkbox>
+                        ))}
+                    </Checkbox.Group>
+                  </SidebarSingle>
+                </>
+              )}
+            </>
+          )}
+        </>
       </Cards>
     </Sidebar>
   );
