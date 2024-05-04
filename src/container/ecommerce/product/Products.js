@@ -34,7 +34,22 @@ function Product() {
 
   return (
     <>
-      {loading && <>Loading...</>}
+      {loading && (
+        <>
+          <Spin
+            size="large"
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '70%',
+              zIndex: 99999,
+              backgroundColor: 'white',
+              borderRadius: '50%',
+              padding: '10px',
+            }}
+          />
+        </>
+      )}
       <PageHeader className="ninjadash-page-header-main" routes={PageRoutes} />
       <Main>
         <Row gutter={30}>

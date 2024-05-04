@@ -90,7 +90,7 @@ function ProductDetails() {
                                 >
                                   <img
                                     src={`http://103.67.238.230:1386/${value?.Filepath}`}
-                                    alt={products.Item_Name}
+                                    alt={products?.Item_Name}
                                     style={{ width: '100px', height: '100%' }}
                                   />
                                 </figure>

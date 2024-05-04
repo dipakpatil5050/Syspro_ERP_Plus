@@ -78,11 +78,11 @@ function Grid() {
         style={{ overflow: 'hidden' }}
         endMessage={
           <NotFoundWrapper>
-            {loading && (
+            {/* {loading && (
               <div className="spin">
                 <Spin />
               </div>
-            )}
+            )} */}
             {!loading && <Heading as="h5">No more products to load</Heading>}
           </NotFoundWrapper>
         }
