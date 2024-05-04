@@ -13,8 +13,9 @@ import { setCatalogueData, setLoading } from '../../../../redux/reducers/authRed
 function Filters() {
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
   const [selectedSubGroupIds, setSelectedSubGroupIds] = useState([]);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   console.log(setSelectedGroupIds);
-  // console.log(setSelectedSubGroupIds);
+
   // Catalogue API variables
 
   const dispatch = useDispatch();
@@ -42,11 +43,10 @@ function Filters() {
       : selectedGroupIds.filter((id) => id !== groupId); // Remove ID if unchecked
 
     setSelectedGroupIds(updatedSelectedGroupIds);
-
     // Clear SubGroup selections when Group changes
     setSelectedSubGroupIds([]);
 
-    const filterString = buildFilterString(updatedSelectedGroupIds, selectedSubGroupIds); // Pass both Group and SubGroup IDs
+    const filterString = buildFilterString(updatedSelectedGroupIds, selectedSubGroupIds);
 
     fetchCatalogueData(filterString);
   };
@@ -63,20 +63,40 @@ function Filters() {
     fetchCatalogueData(filterString);
   };
 
-  const buildFilterString = (groupIds, subGroupIds) => {
+  const handleCategorySelectionChange = (categoryId, isChecked) => {
+    const updatedSelectedCategoryIds = isChecked
+      ? [...selectedCategoryIds, categoryId]
+      : selectedCategoryIds.filter((id) => id !== categoryId);
+
+    setSelectedCategoryIds(updatedSelectedCategoryIds);
+
+    const filterString = buildFilterString(selectedGroupIds, selectedSubGroupIds, updatedSelectedCategoryIds);
+
+    fetchCatalogueData(filterString);
+  };
+
+  const buildFilterString = (groupIds, subGroupIds, categoryIds) => {
     let filterString = '';
 
-    if (groupIds.length === 0 && subGroupIds.length === 0) {
-      return ''; // Empty filter string if nothing is selected
+    if (groupIds?.length === 0 && subGroupIds?.length === 0 && categoryIds?.length === 0) {
+      return filterString;
     }
 
-    if (groupIds.length > 0) {
-      filterString += `AND Group_Id IN (${groupIds.join(',')})`;
+    const filterParts = [];
+
+    if (groupIds?.length > 0) {
+      filterParts.push(`AND Group_Id IN (${groupIds.join(',')}) `);
     }
 
-    if (subGroupIds.length > 0) {
-      filterString += (filterString.length > 0 ? ' AND ' : '') + `SubGroup_Id IN (${subGroupIds.join(',')})`;
+    if (subGroupIds?.length > 0) {
+      filterParts.push(`AND SubGroup_Id IN (${subGroupIds.join(',')}) `);
     }
+
+    if (categoryIds?.length > 0) {
+      filterParts.push(`AND Cat_Id IN (${categoryIds.join(',')}) `);
+    }
+
+    filterString = filterParts.join(''); // Combine filter parts with AND
 
     return filterString;
   };
@@ -89,9 +109,7 @@ function Filters() {
     // console.log(groupIds);
 
     console.log(filterString);
-    // `AND Group_Id IN (${selectedGroupIds.join(',')})`
-    console.log(selectedGroupIds);
-    console.log(selectedSubGroupIds);
+
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
     const body = {
@@ -136,6 +154,7 @@ function Filters() {
   const handleClearFilters = () => {
     setSelectedGroupIds([]);
     setSelectedSubGroupIds([]);
+    setSelectedCategoryIds([]);
     dispatch(setCatalogueData([]));
     fetchCatalogueData('');
   };
@@ -166,16 +185,18 @@ function Filters() {
                 <Heading as="h5">Category</Heading>
                 <Checkbox.Group className="ant-checkbox-group">
                   {filterData &&
-                    filterData.Category.map((CategoryItem) => (
+                    filterData.Category.map((categoryItem) => (
                       <Checkbox
                         className="ant-checkbox-group-item"
-                        id={CategoryItem.Id}
-                        key={CategoryItem.Id}
-                        value={CategoryItem.Name}
+                        id={categoryItem.Id}
+                        key={categoryItem.Id}
+                        value={categoryItem.Name}
+                        checked={selectedCategoryIds.includes(categoryItem.Id)}
+                        onChange={(e) => handleCategorySelectionChange(categoryItem.Id, e.target.checked)}
                       >
-                        {capitalizeFirstLetter(CategoryItem.Name)}
+                        {capitalizeFirstLetter(categoryItem.Name)}
                         <span className="ninjadash-category-count" style={{ fontSize: '12px' }}>
-                          {CategoryItem.Count}
+                          {categoryItem.Count}
                         </span>
                       </Checkbox>
                     ))}
@@ -203,9 +224,10 @@ function Filters() {
                     ))}
                 </Checkbox.Group>
               </SidebarSingle>
+
               {/* subGroup */}
-              {/* css for Scrollbar  , height: 300, overflow: 'auto'  */}
-              <SidebarSingle className="" style={{ marginBottom: 32, height: 300, width: '110%', overflow: 'auto' }}>
+
+              <SidebarSingle className="" style={{ marginBottom: 32, height: 300, overflow: 'auto' }}>
                 <Heading as="h5">Sub Group</Heading>
                 <Checkbox.Group className="ant-checkbox-group">
                   {filterData &&
@@ -227,7 +249,7 @@ function Filters() {
                 </Checkbox.Group>
               </SidebarSingle>
               {/* Brand */}
-              {filterData.Brand.length > 0 && (
+              {filterData.Brand?.length > 0 && (
                 <>
                   <SidebarSingle>
                     <Heading as="h5">Brand</Heading>
@@ -258,8 +280,12 @@ function Filters() {
 }
 
 Filters.propTypes = {
-  onGroupSelectionChange: PropTypes.func.isRequired,
+  handleGroupSelectionChange: PropTypes.func.isRequired,
   selectedGroupIds: PropTypes.func.isRequired,
+  handleSubGroupSelectionChange: PropTypes.func.isRequired,
+  selectedSubGroupIds: PropTypes.func.isRequired,
+  handleCategorySelectionChange: PropTypes.func.isRequired,
+  selectedCategoryIds: PropTypes.func.isRequired,
 };
 
 export default Filters;
