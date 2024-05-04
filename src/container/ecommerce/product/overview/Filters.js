@@ -14,6 +14,7 @@ function Filters() {
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
   const [selectedSubGroupIds, setSelectedSubGroupIds] = useState([]);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
+  const [selectedBrandIds, setSelectedBrandIds] = useState([]);
   console.log(setSelectedGroupIds);
 
   // Catalogue API variables
@@ -75,10 +76,26 @@ function Filters() {
     fetchCatalogueData(filterString);
   };
 
-  const buildFilterString = (groupIds, subGroupIds, categoryIds) => {
+  const handleBrandSelectionChange = (brandId, isChecked) => {
+    const updatedSelectedBrandIds = isChecked
+      ? [...selectedBrandIds, brandId]
+      : selectedBrandIds.filter((id) => id !== brandId);
+
+    setSelectedBrandIds(updatedSelectedBrandIds);
+    const filterString = buildFilterString(
+      selectedGroupIds,
+      selectedSubGroupIds,
+      selectedCategoryIds,
+      updatedSelectedBrandIds,
+    );
+
+    fetchCatalogueData(filterString);
+  };
+
+  const buildFilterString = (groupIds, subGroupIds, categoryIds, brandIds) => {
     let filterString = '';
 
-    if (groupIds?.length === 0 && subGroupIds?.length === 0 && categoryIds?.length === 0) {
+    if (groupIds?.length === 0 && subGroupIds?.length === 0 && categoryIds?.length === 0 && brandIds?.length === 0) {
       return filterString;
     }
 
@@ -96,7 +113,11 @@ function Filters() {
       filterParts.push(`AND Cat_Id IN (${categoryIds.join(',')}) `);
     }
 
-    filterString = filterParts.join(''); // Combine filter parts with AND
+    if (brandIds?.length > 0) {
+      filterParts.push(`AND Brand_ID IN (${brandIds.join(',')}) `);
+    }
+
+    filterString = filterParts.join('');
 
     return filterString;
   };
@@ -155,6 +176,7 @@ function Filters() {
     setSelectedGroupIds([]);
     setSelectedSubGroupIds([]);
     setSelectedCategoryIds([]);
+    setSelectedBrandIds([]);
     dispatch(setCatalogueData([]));
     fetchCatalogueData('');
   };
@@ -213,7 +235,7 @@ function Filters() {
                         id={groupItem.Id}
                         key={groupItem.Id}
                         value={groupItem.Name}
-                        checked={selectedGroupIds.includes(groupItem.Id)} // Set checked based on selectedGroupIds
+                        checked={selectedGroupIds.includes(groupItem.Id)}
                         onChange={(e) => handleGroupSelectionChange(groupItem.Id, e.target.checked)}
                       >
                         {capitalizeFirstLetter(groupItem.Name)}
@@ -248,6 +270,7 @@ function Filters() {
                     ))}
                 </Checkbox.Group>
               </SidebarSingle>
+
               {/* Brand */}
               {filterData.Brand?.length > 0 && (
                 <>
@@ -261,8 +284,8 @@ function Filters() {
                             id={brandItem.Id}
                             key={brandItem.Id}
                             value={brandItem.Name}
-                            // checked={selectedSubGroupIds.includes(subgroupItem.Id)}
-                            // onChange={(e) => handleSubGroupSelectionChange(subgroupItem.Id, e.target.checked)}
+                            checked={selectedBrandIds.includes(brandItem.Id)}
+                            onChange={(e) => handleBrandSelectionChange(brandItem.Id, e.target.checked)}
                           >
                             {capitalizeFirstLetter(brandItem.Name)}
                           </Checkbox>
