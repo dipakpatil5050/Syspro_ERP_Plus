@@ -73,6 +73,7 @@ function ProductCards({ product }) {
             />
           </figure>
         </label>
+
         {/* width={290} height={200} */}
 
         {!isChecked && (

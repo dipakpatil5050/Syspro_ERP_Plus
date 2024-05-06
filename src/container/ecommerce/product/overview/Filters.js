@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useSelector, useDispatch } from 'react-redux';
+import { Slider } from '../../../../components/slider/slider';
 import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
@@ -23,8 +24,11 @@ function Filters() {
   const userMpinData = useSelector((state) => state.auth.userMpinData);
   const userData = useSelector((state) => state.auth.userData);
 
+  const pagesize = useSelector((state) => state.auth.pageSize);
+
   const filterStore = useSelector((state) => state.auth.catalogueData);
   const filterData = filterStore?.filters;
+
   // const loading = useSelector((state) => state.auth.loading);
 
   const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
@@ -122,15 +126,13 @@ function Filters() {
     return filterString;
   };
 
+  // const pageSize = () => {
+
+  // };
+
   // Catalogue API Calling :
 
   const fetchCatalogueData = async (filterString) => {
-    // const groupIds = selectedGroupIds;
-    // const filterString = groupIds ? `AND Group_Id IN (${groupIds})` : '';
-    // console.log(groupIds);
-
-    console.log(filterString);
-
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
     const body = {
@@ -139,10 +141,11 @@ function Filters() {
       UptoDate: '',
       FilterString: filterString,
       OffsetValue: 0,
-      PageSize: 100,
+      PageSize: pagesize || 100,
       OrderByColumn: 'i.Item_id Desc',
       LinkId: 0,
     };
+    console.log('pagesize value : ', pagesize);
 
     const headers = {
       'Content-Type': 'application/json',
@@ -170,7 +173,7 @@ function Filters() {
 
   useEffect(() => {
     fetchCatalogueData();
-  }, []);
+  }, [pagesize]);
 
   const handleClearFilters = () => {
     setSelectedGroupIds([]);
@@ -185,6 +188,21 @@ function Filters() {
     return str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
 
+  const [state, setState] = useState({
+    min: 0,
+    max: 1500,
+  });
+
+  const { min, max } = state;
+  const onChange = (value) => {
+    setState({
+      ...state,
+      min: value[0],
+      max: value[1],
+    });
+    // dispatch(filterByPriceRange(value));
+  };
+
   return (
     <Sidebar>
       <Cards
@@ -195,14 +213,27 @@ function Filters() {
           </span>
         }
       >
-        <Button style={{ marginBottom: 32 }} onClick={handleClearFilters} type="white">
-          Clear Filter
-        </Button>
+        {filterData && (
+          <Button style={{ marginBottom: 32 }} onClick={handleClearFilters} type="white">
+            Clear Filter
+          </Button>
+        )}
 
         <>
           {filterData && (
             <>
+              {/* Price Range */}
+
+              <SidebarSingle style={{ marginBottom: 32 }}>
+                <Heading as="h5">Price Range</Heading>
+                <Slider max={20000} onChange={onChange} range defaultValues={[min, max]} />
+                <p className="ninjadash-price-text">
+                  ₹ {min} - ₹ {max}
+                </p>
+              </SidebarSingle>
+
               {/* Category */}
+
               <SidebarSingle style={{ marginBottom: 32 }}>
                 <Heading as="h5">Category</Heading>
                 <Checkbox.Group className="ant-checkbox-group">

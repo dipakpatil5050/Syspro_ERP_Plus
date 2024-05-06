@@ -41,7 +41,7 @@ function Product() {
             style={{
               position: 'fixed',
               top: '50%',
-              left: '70%',
+              left: '45%',
               zIndex: 99999,
               backgroundColor: 'white',
               borderRadius: '50%',

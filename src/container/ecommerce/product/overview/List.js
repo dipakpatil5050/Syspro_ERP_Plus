@@ -13,7 +13,7 @@ function List() {
   const dispatch = useDispatch();
 
   const { catalogueData, loading } = useSelector((state) => state.auth);
-  // , loadedItems
+  // loadedItems
   const [visible, setVisible] = useState(50); // loadedItems ||
   const [showTopButton, setShowTopButton] = useState(false);
 

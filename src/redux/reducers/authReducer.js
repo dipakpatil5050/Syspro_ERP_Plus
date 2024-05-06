@@ -75,7 +75,9 @@ export const authSlice = createSlice({
     loading: false,
     error: null,
     loadedItems: 50,
+    pageSize: 100,
     selectedItems: JSON.parse(localStorage.getItem('selectedItems')) || [],
+
     // subtotal: 0,
 
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
@@ -121,6 +123,10 @@ export const authSlice = createSlice({
       state.selectedItems = updatedSelectedItems;
       localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
     },
+    setPageSize: (state, action) => {
+      state.pageSize = action.payload;
+    },
+
     loginBegin: (state) => {
       state.loading = true;
     },
@@ -193,6 +199,7 @@ export const {
   setLoadedItems,
   selectItem,
   deselectItem,
+  setPageSize,
   loginBegin,
   loginSuccess,
   loginErr,

@@ -6,7 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
-import { setLoadedItems } from '../../../../redux/reducers/authReducer';
+import { setLoadedItems, setPageSize } from '../../../../redux/reducers/authReducer';
 
 function Grid() {
   const dispatch = useDispatch();
@@ -17,6 +17,15 @@ function Grid() {
   const [showTopButton, setShowTopButton] = useState(false);
 
   const productsData = catalogueData?.products;
+
+  const totalItems = productsData?.length || 0;
+
+ 
+  // useEffect(() => {
+  //   if (totalItems === visible) {
+  //     dispatch(setPageSize(visible + 100)); // Increment page size by 100
+  //   }
+  // }, [visible, totalItems, dispatch]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +44,7 @@ function Grid() {
   }, []);
 
   // localStorage.setItem('loadedItems', visible);
+
   useEffect(() => {
     dispatch(setLoadedItems(visible));
   }, [visible, dispatch]);
@@ -43,7 +53,7 @@ function Grid() {
     setVisible((prevValue) => prevValue + 10);
   };
 
-  const fetchMoreData = () => {
+  const loadMoreData = () => {
     setTimeout(() => {
       showMoreItems();
     }, 1500);
@@ -72,7 +82,7 @@ function Grid() {
     <>
       <InfiniteScroll
         dataLength={visible}
-        next={fetchMoreData}
+        next={loadMoreData}
         hasMore={visible < productsData?.length}
         loader={<Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />}
         style={{ overflow: 'hidden' }}
