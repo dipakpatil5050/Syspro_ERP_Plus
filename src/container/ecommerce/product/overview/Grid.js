@@ -20,12 +20,11 @@ function Grid() {
 
   const totalItems = productsData?.length || 0;
 
- 
-  // useEffect(() => {
-  //   if (totalItems === visible) {
-  //     dispatch(setPageSize(visible + 100)); // Increment page size by 100
-  //   }
-  // }, [visible, totalItems, dispatch]);
+  useEffect(() => {
+    if (totalItems === visible) {
+      dispatch(setPageSize(visible + 100)); // Increment page size by 100
+    }
+  }, [visible, totalItems, dispatch]);
 
   useEffect(() => {
     const handleScroll = () => {
