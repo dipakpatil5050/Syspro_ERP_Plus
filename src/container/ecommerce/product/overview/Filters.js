@@ -9,7 +9,7 @@ import { Slider } from '../../../../components/slider/slider';
 import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
-import { setCatalogueData, setLoading } from '../../../../redux/reducers/authReducer';
+import { setCatalogueData, setFilterData, setLoading } from '../../../../redux/reducers/authReducer';
 
 function Filters() {
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
@@ -24,10 +24,14 @@ function Filters() {
   const userMpinData = useSelector((state) => state.auth.userMpinData);
   const userData = useSelector((state) => state.auth.userData);
 
-  const pagesize = useSelector((state) => state.auth.pageSize);
+  const offsetValue = useSelector((state) => state.auth.offsetValue);
 
-  const filterStore = useSelector((state) => state.auth.catalogueData);
-  const filterData = filterStore?.filters;
+  console.log(offsetValue);
+
+  // const filterStore = useSelector((state) => state.auth.catalogueData);
+  const filterData = useSelector((state) => state.auth.filterData);
+
+  // const filterData = filterStore?.filters;
 
   // const loading = useSelector((state) => state.auth.loading);
 
@@ -140,12 +144,11 @@ function Filters() {
       FromDate: '',
       UptoDate: '',
       FilterString: filterString,
-      OffsetValue: 0,
-      PageSize: pagesize || 100,
+      OffsetValue: offsetValue,
+      PageSize: 100,
       OrderByColumn: 'i.Item_id Desc',
       LinkId: 0,
     };
-    console.log('pagesize value : ', pagesize);
 
     const headers = {
       'Content-Type': 'application/json',
@@ -160,8 +163,11 @@ function Filters() {
     try {
       dispatch(setLoading(true));
       const response = await axios.post(CatalogueAPI, body, { headers });
-      const CatalogueDatafromAPI = response?.data?.Data;
-      dispatch(setCatalogueData(CatalogueDatafromAPI));
+      const CatalogueDataFromAPI = response?.data?.Data;
+      const productsData = CatalogueDataFromAPI?.products;
+      const filteredData = CatalogueDataFromAPI?.filters;
+      dispatch(setCatalogueData(productsData));
+      dispatch(setFilterData(filteredData));
       dispatch(setLoading(false));
     } catch (error) {
       console.error('Error in Catalogue data fetching:', error);
@@ -173,7 +179,7 @@ function Filters() {
 
   useEffect(() => {
     fetchCatalogueData();
-  }, [pagesize]);
+  }, [offsetValue]);
 
   const handleClearFilters = () => {
     setSelectedGroupIds([]);

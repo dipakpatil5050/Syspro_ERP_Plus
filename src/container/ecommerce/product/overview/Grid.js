@@ -6,7 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
-import { setLoadedItems, setPageSize } from '../../../../redux/reducers/authReducer';
+import { setLoadedItems, setOffsetValue } from '../../../../redux/reducers/authReducer';
 
 function Grid() {
   const dispatch = useDispatch();
@@ -16,15 +16,17 @@ function Grid() {
   const [visible, setVisible] = useState(50); // loadedItems
   const [showTopButton, setShowTopButton] = useState(false);
 
-  const productsData = catalogueData?.products;
-
-  const totalItems = productsData?.length || 0;
+  const productsData = catalogueData;
+  // const totalItems = productsData?.length || 0;
+  const totalItems = productsData?.length || 100;
 
   useEffect(() => {
     if (totalItems === visible) {
-      dispatch(setPageSize(visible + 100)); // Increment page size by 100
+      dispatch(setOffsetValue((prevOffset) => prevOffset + 1));
     }
   }, [visible, totalItems, dispatch]);
+
+  console.log('TotalItems : ', totalItems, 'Visible : ', visible);
 
   useEffect(() => {
     const handleScroll = () => {

@@ -68,14 +68,16 @@ export const authSlice = createSlice({
   initialState: {
     userData: JSON.parse(localStorage.getItem('userData')) || null,
     userMpinData: JSON.parse(localStorage.getItem('userMpinData')) || null,
-    catalogueData: null,
+    catalogueData: [],
+    filterData: null,
     LedgerReport: null,
     SaleReport: null,
     login: Cookies.get('logedIn'),
     loading: false,
     error: null,
     loadedItems: 50,
-    pageSize: 100,
+    // pageSize: 100,
+    offsetValue: 0,
     selectedItems: JSON.parse(localStorage.getItem('selectedItems')) || [],
 
     // subtotal: 0,
@@ -93,8 +95,13 @@ export const authSlice = createSlice({
       localStorage.setItem('userMpinData', JSON.stringify(action.payload));
     },
     setCatalogueData: (state, action) => {
-      state.catalogueData = action.payload;
+      const allData = action.payload;
+      state.catalogueData.push(...allData);
+      // state.catalogueData = action.payload;
       // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
+    },
+    setFilterData: (state, action) => {
+      state.filterData = action.payload;
     },
     setLedgerReport: (state, action) => {
       state.LedgerReport = action.payload;
@@ -123,8 +130,11 @@ export const authSlice = createSlice({
       state.selectedItems = updatedSelectedItems;
       localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
     },
-    setPageSize: (state, action) => {
-      state.pageSize = action.payload;
+    // setPageSize: (state, action) => {
+    //   state.pageSize = action.payload;
+    // },
+    setOffsetValue: (state, action) => {
+      state.offsetValue = action.payload;
     },
 
     loginBegin: (state) => {
@@ -193,13 +203,15 @@ export const {
   setuserMpinData,
   setUserData,
   setCatalogueData,
+  setFilterData,
   setLedgerReport,
   setSaleReport,
   setLoading,
   setLoadedItems,
   selectItem,
   deselectItem,
-  setPageSize,
+  // setPageSize,
+  setOffsetValue,
   loginBegin,
   loginSuccess,
   loginErr,

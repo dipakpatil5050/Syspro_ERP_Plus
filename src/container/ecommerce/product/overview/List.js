@@ -17,7 +17,7 @@ function List() {
   const [visible, setVisible] = useState(50); // loadedItems ||
   const [showTopButton, setShowTopButton] = useState(false);
 
-  const productsData = catalogueData.products;
+  const productsData = catalogueData;
 
   useEffect(() => {
     const handleScroll = () => {

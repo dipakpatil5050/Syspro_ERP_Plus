@@ -58,7 +58,7 @@ function ClientLogin() {
                 label="Username or Email Address"
               >
                 <Input
-                  placeholder="name@example.com"
+                  placeholder="Username"
                   autoComplete="username"
                   ref={loginInputRef}
                   value={username}

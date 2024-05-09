@@ -14,13 +14,9 @@ const DetailsRight = lazy(() => import('./overview/DetailsRight'));
 function ProductDetails() {
   const { id } = useParams();
 
-  const productdata = useSelector((state) => state.auth.catalogueData?.products);
+  const productdata = useSelector((state) => state.auth.catalogueData);
 
   const products = productdata?.find((product) => product.Item_Id === parseInt(id));
-
-  // const products = useSelector((state) => {
-  //   return state.auth.catalogueData?.find((product) => product.Item_Id === parseInt(id));
-  // });
 
   const productImage = products?.Gallary[0]?.Filepath;
 
