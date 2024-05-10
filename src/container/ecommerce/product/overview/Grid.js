@@ -15,18 +15,16 @@ function Grid() {
   // , loadedItems
   const [visible, setVisible] = useState(50); // loadedItems
   const [showTopButton, setShowTopButton] = useState(false);
+  const offsetValue = useSelector((state) => state.auth.offsetValue);
 
   const productsData = catalogueData;
-  // const totalItems = productsData?.length || 0;
-  const totalItems = productsData?.length || 100;
+  const totalItems = productsData?.length || 0;
 
   useEffect(() => {
     if (totalItems === visible) {
-      dispatch(setOffsetValue((prevOffset) => prevOffset + 1));
+      dispatch(setOffsetValue(offsetValue + 1));
     }
   }, [visible, totalItems, dispatch]);
-
-  console.log('TotalItems : ', totalItems, 'Visible : ', visible);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +55,7 @@ function Grid() {
   const loadMoreData = () => {
     setTimeout(() => {
       showMoreItems();
-    }, 1500);
+    }, 500);
   };
 
   const scrollToTop = () => {
@@ -67,17 +65,17 @@ function Grid() {
     });
   };
 
-  if (loading && visible === 10) {
-    return (
-      <Row gutter={30}>
-        <Col xs={24}>
-          <div className="spin">
-            <Spin />
-          </div>
-        </Col>
-      </Row>
-    );
-  }
+  // if (loading && visible === 10) {
+  //   return (
+  //     <Row gutter={30}>
+  //       <Col xs={24}>
+  //         <div className="spin">
+  //           <Spin />
+  //         </div>
+  //       </Col>
+  //     </Row>
+  //   );
+  // }
 
   return (
     <>

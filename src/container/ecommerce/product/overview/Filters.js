@@ -5,11 +5,18 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useSelector, useDispatch } from 'react-redux';
-import { Slider } from '../../../../components/slider/slider';
+// import { Slider } from '../../../../components/slider/slider';
 import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
-import { setCatalogueData, setFilterData, setLoading } from '../../../../redux/reducers/authReducer';
+import {
+  setCatalogueData,
+  setCatalogueDataFiltered,
+  setFilterData,
+  setLoading,
+} from '../../../../redux/reducers/authReducer';
+
+// setOffsetValue
 
 function Filters() {
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
@@ -23,16 +30,12 @@ function Filters() {
   const dispatch = useDispatch();
   const userMpinData = useSelector((state) => state.auth.userMpinData);
   const userData = useSelector((state) => state.auth.userData);
-
   const offsetValue = useSelector((state) => state.auth.offsetValue);
-
-  console.log(offsetValue);
 
   // const filterStore = useSelector((state) => state.auth.catalogueData);
   const filterData = useSelector((state) => state.auth.filterData);
 
   // const filterData = filterStore?.filters;
-
   // const loading = useSelector((state) => state.auth.loading);
 
   const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
@@ -57,7 +60,8 @@ function Filters() {
 
     const filterString = buildFilterString(updatedSelectedGroupIds, selectedSubGroupIds);
 
-    fetchCatalogueData(filterString);
+    // dispatch(setOffsetValue(0));
+    fetchCatalogueDataFiltered(filterString);
   };
 
   const handleSubGroupSelectionChange = (subGroupId, isChecked) => {
@@ -69,7 +73,7 @@ function Filters() {
 
     const filterString = buildFilterString(selectedGroupIds, updatedSelectedSubGroupIds); // Pass both Group and SubGroup IDs
 
-    fetchCatalogueData(filterString);
+    fetchCatalogueDataFiltered(filterString);
   };
 
   const handleCategorySelectionChange = (categoryId, isChecked) => {
@@ -81,7 +85,7 @@ function Filters() {
 
     const filterString = buildFilterString(selectedGroupIds, selectedSubGroupIds, updatedSelectedCategoryIds);
 
-    fetchCatalogueData(filterString);
+    fetchCatalogueDataFiltered(filterString);
   };
 
   const handleBrandSelectionChange = (brandId, isChecked) => {
@@ -97,10 +101,11 @@ function Filters() {
       updatedSelectedBrandIds,
     );
 
-    fetchCatalogueData(filterString);
+    fetchCatalogueDataFiltered(filterString);
   };
 
   const buildFilterString = (groupIds, subGroupIds, categoryIds, brandIds) => {
+    // dispatch(setCatalogueData([]));
     let filterString = '';
 
     if (groupIds?.length === 0 && subGroupIds?.length === 0 && categoryIds?.length === 0 && brandIds?.length === 0) {
@@ -177,6 +182,47 @@ function Filters() {
     }
   };
 
+  const fetchCatalogueDataFiltered = async (filterString) => {
+    const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
+
+    const body = {
+      ReportId: 0,
+      FromDate: '',
+      UptoDate: '',
+      FilterString: filterString,
+      OffsetValue: 0, //
+      PageSize: 100,
+      OrderByColumn: 'i.Item_id Desc',
+      LinkId: 0,
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      CompanyID: Companyid,
+      YearMasterID: YearMasterid,
+      PremiseID: Premiseid,
+      DepartmentID: Departmentid,
+      UserID: Userid,
+      client: SlugUrl,
+      'x-api-key': mPin,
+    };
+    try {
+      dispatch(setLoading(true));
+      const response = await axios.post(CatalogueAPI, body, { headers });
+      const CatalogueDataFromAPI = response?.data?.Data;
+      const productsData = CatalogueDataFromAPI?.products;
+      const filteredData = CatalogueDataFromAPI?.filters;
+      dispatch(setCatalogueDataFiltered(productsData));
+      dispatch(setFilterData(filteredData));
+      dispatch(setLoading(false));
+    } catch (error) {
+      console.error('Error in Catalogue data fetching:', error);
+      toast.error('Error in fetching catalogue report data from API Server.');
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
   useEffect(() => {
     fetchCatalogueData();
   }, [offsetValue]);
@@ -186,28 +232,31 @@ function Filters() {
     setSelectedSubGroupIds([]);
     setSelectedCategoryIds([]);
     setSelectedBrandIds([]);
+
     dispatch(setCatalogueData([]));
+    dispatch(setFilterData([]));
     fetchCatalogueData('');
+    // fetchCatalogueDataFiltered('');
   };
 
   function capitalizeFirstLetter(str) {
     return str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
 
-  const [state, setState] = useState({
-    min: 0,
-    max: 1500,
-  });
+  // const [state, setState] = useState({
+  //   min: 0,
+  //   max: 1500,
+  // });
 
-  const { min, max } = state;
-  const onChange = (value) => {
-    setState({
-      ...state,
-      min: value[0],
-      max: value[1],
-    });
-    // dispatch(filterByPriceRange(value));
-  };
+  // const { min, max } = state;
+  // const onChange = (value) => {
+  //   setState({
+  //     ...state,
+  //     min: value[0],
+  //     max: value[1],
+  //   });
+  //   // dispatch(filterByPriceRange(value));
+  // };
 
   return (
     <Sidebar>
@@ -230,13 +279,13 @@ function Filters() {
             <>
               {/* Price Range */}
 
-              <SidebarSingle style={{ marginBottom: 32 }}>
+              {/* <SidebarSingle style={{ marginBottom: 32 }}>
                 <Heading as="h5">Price Range</Heading>
                 <Slider max={20000} onChange={onChange} range defaultValues={[min, max]} />
                 <p className="ninjadash-price-text">
                   ₹ {min} - ₹ {max}
                 </p>
-              </SidebarSingle>
+              </SidebarSingle> */}
 
               {/* Category */}
 
@@ -244,7 +293,7 @@ function Filters() {
                 <Heading as="h5">Category</Heading>
                 <Checkbox.Group className="ant-checkbox-group">
                   {filterData &&
-                    filterData.Category.map((categoryItem) => (
+                    filterData?.Category?.map((categoryItem) => (
                       <Checkbox
                         className="ant-checkbox-group-item"
                         id={categoryItem.Id}
@@ -266,7 +315,7 @@ function Filters() {
                 <Heading as="h5">Group</Heading>
                 <Checkbox.Group className="ant-checkbox-group">
                   {filterData &&
-                    filterData.Group.map((groupItem) => (
+                    filterData?.Group?.map((groupItem) => (
                       <Checkbox
                         className="ant-checkbox-group-item"
                         id={groupItem.Id}
@@ -290,7 +339,7 @@ function Filters() {
                 <Heading as="h5">Sub Group</Heading>
                 <Checkbox.Group className="ant-checkbox-group">
                   {filterData &&
-                    filterData.SubGroup.map((subgroupItem) => (
+                    filterData?.SubGroup?.map((subgroupItem) => (
                       <Checkbox
                         className="ant-checkbox-group-item "
                         id={subgroupItem.Id}
@@ -309,13 +358,13 @@ function Filters() {
               </SidebarSingle>
 
               {/* Brand */}
-              {filterData.Brand?.length > 0 && (
+              {filterData?.Brand?.length > 0 && (
                 <>
                   <SidebarSingle>
                     <Heading as="h5">Brand</Heading>
                     <Checkbox.Group className="ant-checkbox-group">
                       {filterData &&
-                        filterData.Brand.map((brandItem) => (
+                        filterData?.Brand?.map((brandItem) => (
                           <Checkbox
                             className="ant-checkbox-group-item"
                             id={brandItem.Id}

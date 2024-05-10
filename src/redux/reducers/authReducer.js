@@ -79,9 +79,7 @@ export const authSlice = createSlice({
     // pageSize: 100,
     offsetValue: 0,
     selectedItems: JSON.parse(localStorage.getItem('selectedItems')) || [],
-
     // subtotal: 0,
-
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
     // JSON.parse(localStorage.getItem('catalogueData')) || null,
   },
@@ -95,9 +93,13 @@ export const authSlice = createSlice({
       localStorage.setItem('userMpinData', JSON.stringify(action.payload));
     },
     setCatalogueData: (state, action) => {
+      // state.catalogueData = action.payload;
       const allData = action.payload;
       state.catalogueData.push(...allData);
-      // state.catalogueData = action.payload;
+      // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
+    },
+    setCatalogueDataFiltered: (state, action) => {
+      state.catalogueData = action.payload;
       // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
     },
     setFilterData: (state, action) => {
@@ -124,6 +126,7 @@ export const authSlice = createSlice({
       state.selectedItems = updatedSelectedItems;
       localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
     },
+
     deselectItem: (state, action) => {
       const { itemId } = action.payload;
       const updatedSelectedItems = state.selectedItems.filter((id) => id !== itemId);
@@ -203,6 +206,7 @@ export const {
   setuserMpinData,
   setUserData,
   setCatalogueData,
+  setCatalogueDataFiltered,
   setFilterData,
   setLedgerReport,
   setSaleReport,
