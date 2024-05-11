@@ -38,7 +38,6 @@ const AuthInfo = React.memo(() => {
 
   const SignOut = (e) => {
     e.preventDefault();
-
     dispatch(logOut(() => navigate('/')));
     dispatch(setUserData(null));
     dispatch(setuserMpinData(null));

@@ -18,8 +18,6 @@ function CartTable() {
 
   const dispatch = useDispatch();
 
-  const productsData = catalogueData.products;
-
   useEffect(() => {
     const storedQuantities = localStorage.getItem('productQuantities');
     if (storedQuantities) {
@@ -117,7 +115,7 @@ function CartTable() {
 
   if (cartData !== null) {
     cartData.map((itemId) => {
-      const product = productsData?.find((item) => item.Item_Id === itemId);
+      const product = catalogueData?.find((item) => item.Item_Id === itemId);
       const quantity = productQuantities[itemId] || 1;
 
       const filepathprefix = 'http://103.67.238.230:1386/';
