@@ -1,3 +1,0 @@
-export const SET_USER_DATA = 'SET_USER_DATA';
-export const SET_USER_MPIN_DATA = 'SET_USER_MPIN_DATA';
-export const SET_LEDGER_REPORT = 'SET_LEDGER_REPORT';

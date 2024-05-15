@@ -11,56 +11,54 @@ import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
 import {
-  setCatalogueData,
-  setCatalogueDataFiltered,
-  setCatalogueTotalDataCount,
-  setClearFilter,
-  setFilterData,
-  setLoading,
-  setOffsetValue,
-  setTotalCataloguePages,
+setCatalogueData,
+setCatalogueDataFiltered,
+setCatalogueTotalDataCount,
+setClearFilter,
+setFilterData,
+setLoading,
+setTotalCataloguePages,
 } from '../../../../redux/reducers/authReducer';
 
 // setOffsetValue
 
 const Filters = React.memo(() => {
-  const [selectedGroupIds, setSelectedGroupIds] = useState([]);
-  const [selectedSubGroupIds, setSelectedSubGroupIds] = useState([]);
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
-  const [selectedBrandIds, setSelectedBrandIds] = useState([]);
+const [selectedGroupIds, setSelectedGroupIds] = useState([]);
+const [selectedSubGroupIds, setSelectedSubGroupIds] = useState([]);
+const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
+const [selectedBrandIds, setSelectedBrandIds] = useState([]);
 
-  // console.log('filter = ', setSelectedGroupIds);
+// console.log('filter = ', setSelectedGroupIds);
 
-  // Catalogue API variables
+// Catalogue API variables
 
-  const dispatch = useDispatch();
-  const userMpinData = useSelector((state) => state.auth.userMpinData);
-  const userData = useSelector((state) => state.auth.userData);
-  const offsetValue = useSelector((state) => state.auth.offsetValue);
-  // const totalCataloguePages = useSelector((state) => state.auth.totalCataloguePages);
-  const CatalogueData = useSelector((state) => state.auth.catalogueData);
-  // const hasMoreData = useSelector((state) => state.auth.hasMoreData);
+const dispatch = useDispatch();
+const userMpinData = useSelector((state) => state.auth.userMpinData);
+const userData = useSelector((state) => state.auth.userData);
+const offsetValue = useSelector((state) => state.auth.offsetValue);
+// const totalCataloguePages = useSelector((state) => state.auth.totalCataloguePages);
+// const hasMoreData = useSelector((state) => state.auth.hasMoreData);
 
-  // const filterStore = useSelector((state) => state.auth.catalogueData);
-  const filterData = useSelector((state) => state.auth.filterData);
+// const filterStore = useSelector((state) => state.auth.catalogueData);
+const filterData = useSelector((state) => state.auth.filterData);
 
-  // const filterData = filterStore?.filters;
-  // const loading = useSelector((state) => state.auth.loading);
+// const filterData = filterStore?.filters;
+// const loading = useSelector((state) => state.auth.loading);
 
-  const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
-  const mPin = userMpinData?.Data?.mPin;
-  const SlugUrl = userMpinData?.Data?.SlugUrl;
+const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
+const mPin = userMpinData?.Data?.mPin;
+const SlugUrl = userMpinData?.Data?.SlugUrl;
 
-  const userheaderdata = userData?.Data;
-  const Companyid = userheaderdata?.CompanyID;
-  const YearMasterid = userheaderdata?.YearMasterID;
-  const Premiseid = userheaderdata?.PremiseID;
-  const Departmentid = userheaderdata?.DepartmentID;
-  const Userid = userheaderdata?.UserID;
+const userheaderdata = userData?.Data;
+const Companyid = userheaderdata?.CompanyID;
+const YearMasterid = userheaderdata?.YearMasterID;
+const Premiseid = userheaderdata?.PremiseID;
+const Departmentid = userheaderdata?.DepartmentID;
+const Userid = userheaderdata?.UserID;
 
-  const buildFilterString = (groupIds, subGroupIds, categoryIds, brandIds) => {
-    // dispatch(setCatalogueData([]));
-    let filterString = '';
+const buildFilterString = (groupIds, subGroupIds, categoryIds, brandIds) => {
+// dispatch(setCatalogueData([]));
+let filterString = '';
 
     if (groupIds?.length === 0 && subGroupIds?.length === 0 && categoryIds?.length === 0 && brandIds?.length === 0) {
       return filterString;
@@ -87,10 +85,11 @@ const Filters = React.memo(() => {
     filterString = filterParts.join('');
 
     return filterString;
-  };
 
-  const fetchCatalogueDataFiltered = async (filterString) => {
-    const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
+};
+
+const fetchCatalogueDataFiltered = async (filterString) => {
+const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
     const body = {
       ReportId: 0,
@@ -135,51 +134,55 @@ const Filters = React.memo(() => {
     } finally {
       dispatch(setLoading(false));
     }
-  };
 
-  const handleGroupSelectionChange = (groupId, isChecked) => {
-    const updatedSelectedGroupIds = isChecked
-      ? [...selectedGroupIds, groupId] // Add ID if checked
-      : selectedGroupIds.filter((id) => id !== groupId); // Remove ID if unchecked
+};
+
+const handleGroupSelectionChange = (groupId, isChecked) => {
+const updatedSelectedGroupIds = isChecked
+? [...selectedGroupIds, groupId] // Add ID if checked
+: selectedGroupIds.filter((id) => id !== groupId); // Remove ID if unchecked
 
     setSelectedGroupIds(updatedSelectedGroupIds);
     // Clear SubGroup selections when Group changes
     setSelectedSubGroupIds([]);
 
-    const filterString = buildFilterString(updatedSelectedGroupIds);
+    const filterString = buildFilterString(updatedSelectedGroupIds, selectedSubGroupIds);
 
     // dispatch(setOffsetValue(0));
     fetchCatalogueDataFiltered(filterString);
-  };
 
-  const handleSubGroupSelectionChange = (subGroupId, isChecked) => {
-    const updatedSelectedSubGroupIds = isChecked
-      ? [...selectedSubGroupIds, subGroupId] // Add ID if checked
-      : selectedSubGroupIds.filter((id) => id !== subGroupId); // Remove ID if unchecked
+};
+
+const handleSubGroupSelectionChange = (subGroupId, isChecked) => {
+const updatedSelectedSubGroupIds = isChecked
+? [...selectedSubGroupIds, subGroupId] // Add ID if checked
+: selectedSubGroupIds.filter((id) => id !== subGroupId); // Remove ID if unchecked
 
     setSelectedSubGroupIds(updatedSelectedSubGroupIds);
 
     const filterString = buildFilterString(selectedGroupIds, updatedSelectedSubGroupIds); // Pass both Group and SubGroup IDs
 
     fetchCatalogueDataFiltered(filterString);
-  };
 
-  const handleCategorySelectionChange = (categoryId, isChecked) => {
-    const updatedSelectedCategoryIds = isChecked
-      ? [...selectedCategoryIds, categoryId]
-      : selectedCategoryIds.filter((id) => id !== categoryId);
+};
+
+const handleCategorySelectionChange = (categoryId, isChecked) => {
+const updatedSelectedCategoryIds = isChecked
+? [...selectedCategoryIds, categoryId]
+: selectedCategoryIds.filter((id) => id !== categoryId);
 
     setSelectedCategoryIds(updatedSelectedCategoryIds);
 
     const filterString = buildFilterString(selectedGroupIds, selectedSubGroupIds, updatedSelectedCategoryIds);
 
     fetchCatalogueDataFiltered(filterString);
-  };
 
-  const handleBrandSelectionChange = (brandId, isChecked) => {
-    const updatedSelectedBrandIds = isChecked
-      ? [...selectedBrandIds, brandId]
-      : selectedBrandIds.filter((id) => id !== brandId);
+};
+
+const handleBrandSelectionChange = (brandId, isChecked) => {
+const updatedSelectedBrandIds = isChecked
+? [...selectedBrandIds, brandId]
+: selectedBrandIds.filter((id) => id !== brandId);
 
     setSelectedBrandIds(updatedSelectedBrandIds);
     const filterString = buildFilterString(
@@ -190,16 +193,17 @@ const Filters = React.memo(() => {
     );
 
     fetchCatalogueDataFiltered(filterString);
-  };
 
-  // const pageSize = () => {
+};
 
-  // };
+// const pageSize = () => {
 
-  // Catalogue API Calling :
+// };
 
-  const fetchCatalogueData = async (filterString) => {
-    const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
+// Catalogue API Calling :
+
+const fetchCatalogueData = async (filterString) => {
+const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
     const body = {
       ReportId: 0,
@@ -241,46 +245,49 @@ const Filters = React.memo(() => {
     } finally {
       // dispatch(setLoading(false));
     }
-  };
 
-  // useEffect(() => {
-  //   fetchCatalogueData();
-  // }, [offsetValue]);
+};
 
-  // useEffect(() => {
-  //   if (!filterData) {
-  //     fetchCatalogueData();
-  //   }
-  // }, [filterData]);
+useEffect(() => {
+fetchCatalogueData();
+}, [offsetValue]);
 
-  // useEffect(() => {
-  //   const oldPageOffset = offsetValue;
-  //   if (!filterData || offsetValue !== oldPageOffset) {
-  //     fetchCatalogueData();
-  //   }
-  // }, [filterData, offsetValue]);
+// useEffect(() => {
+// if (!filterData) {
+// fetchCatalogueData();
+// }
+// }, [filterData]);
 
-  useEffect(() => {
-    if (CatalogueData.length === 0) {
-      fetchCatalogueData();
-    }
-  }, [offsetValue]);
+// useEffect(() => {
+// const oldPageOffset = offsetValue;
+// if (!filterData || offsetValue !== oldPageOffset) {
+// fetchCatalogueData();
+// }
+// }, [filterData, offsetValue]);
 
-  // console.log(Math.random());
+// useEffect(() => {
+// // if (offsetValue >= 0 || offsetValue < totalCataloguePages) {
+// // console.log('Data calling multiple time ');
+// // console.log('filter data ', filterData);
+// fetchCatalogueData();
+// // }
+// }, [offsetValue]);
 
-  // useEffect(() => {
-  //   // if (hasMoreData) {
-  //   fetchCatalogueData();
-  //   // }
-  // }, []);
+// console.log(Math.random());
 
-  // useEffect(() => {
-  //   console.log('objects loaded from API Server', Math.random());
-  // }, []);
+// useEffect(() => {
+// // if (hasMoreData) {
+// fetchCatalogueData();
+// // }
+// }, []);
 
-  const handleClearFilters = () => {
-    setSelectedGroupIds([]);
-    setSelectedSubGroupIds([]);
+// useEffect(() => {
+// console.log('objects loaded from API Server', Math.random());
+// }, []);
+
+const handleClearFilters = () => {
+setSelectedGroupIds([]);
+setSelectedSubGroupIds([]);
 
     setSelectedCategoryIds([]);
     setSelectedBrandIds([]);
@@ -289,44 +296,43 @@ const Filters = React.memo(() => {
     dispatch(setClearFilter());
     dispatch(setFilterData([]));
     fetchCatalogueData('');
-    dispatch(setOffsetValue(0));
     // fetchCatalogueDataFiltered('');
-  };
 
-  function capitalizeFirstLetter(str) {
-    return str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-  }
+};
 
-  // const [state, setState] = useState({
-  //   min: 0,
-  //   max: 1500,
-  // });
+function capitalizeFirstLetter(str) {
+return str?.replace(/\w\S\*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+}
 
-  // const { min, max } = state;
-  // const onChange = (value) => {
-  //   setState({
-  //     ...state,
-  //     min: value[0],
-  //     max: value[1],
-  //   });
-  //   // dispatch(filterByPriceRange(value));
-  // };
+// const [state, setState] = useState({
+// min: 0,
+// max: 1500,
+// });
 
-  return (
-    <Sidebar>
-      <Cards
-        title={
-          <span>
-            <UilSlidersV />
-            Filters
-          </span>
-        }
-      >
-        {filterData && (
-          <Button style={{ marginBottom: 32 }} onClick={handleClearFilters} type="white">
-            Clear Filter
-          </Button>
-        )}
+// const { min, max } = state;
+// const onChange = (value) => {
+// setState({
+// ...state,
+// min: value[0],
+// max: value[1],
+// });
+// // dispatch(filterByPriceRange(value));
+// };
+
+return (
+<Sidebar>
+<Cards
+title={
+<span>
+<UilSlidersV />
+Filters
+</span>
+} >
+{filterData && (
+<Button style={{ marginBottom: 32 }} onClick={handleClearFilters} type="white">
+Clear Filter
+</Button>
+)}
 
         <>
           {filterData && (
@@ -378,9 +384,7 @@ const Filters = React.memo(() => {
                         key={groupItem.Id}
                         value={groupItem.Name}
                         checked={selectedGroupIds.includes(groupItem.Id)}
-                        // checked={selectedGroupIds[groupItem.id]}
                         onChange={(e) => handleGroupSelectionChange(groupItem.Id, e.target.checked)}
-                        // onChange={(e) => groupSelectionChange(groupItem.Id, e.target.checked)}
                       >
                         {capitalizeFirstLetter(groupItem.Name)}
                         <span className="ninjadash-category-count" style={{ fontSize: '12px' }}>
@@ -444,16 +448,36 @@ const Filters = React.memo(() => {
         </>
       </Cards>
     </Sidebar>
-  );
+
+);
 });
 
 // Filters.propTypes = {
-//   handleGroupSelectionChange: PropTypes.func,
-//   selectedGroupIds: PropTypes.func.isRequired,
-//   handleSubGroupSelectionChange: PropTypes.func,
-//   selectedSubGroupIds: PropTypes.func,
-//   handleCategorySelectionChange: PropTypes.func,
-//   selectedCategoryIds: PropTypes.func,
+// handleGroupSelectionChange: PropTypes.func,
+// selectedGroupIds: PropTypes.func.isRequired,
+// handleSubGroupSelectionChange: PropTypes.func,
+// selectedSubGroupIds: PropTypes.func,
+// handleCategorySelectionChange: PropTypes.func,
+// selectedCategoryIds: PropTypes.func,
 // };
 
 export default Filters;
+
+filter group from salim bhai :
+
+```
+// const groupSelectionChange = (groupId, isChecked) => {
+// console.log('is checked : ', isChecked);
+// const newData = {
+// [groupId]: isChecked,
+// };
+// const newGroupIds = [...selectedGroupIds, newData];
+// console.log('New Group Ids', newGroupIds);
+
+// setSelectedGroupIds(newGroupIds);
+// const ids = Object.keys(newGroupIds);
+// console.log('Ids : ', ids);
+// const filterString = buildFilterString(ids);
+// fetchCatalogueDataFiltered(filterString);
+// };
+```

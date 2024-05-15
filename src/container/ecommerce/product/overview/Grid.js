@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Spin, Button } from 'antd';
+import { Row, Col, Button, Spin } from 'antd';
 import { UilArrowUp } from '@iconscout/react-unicons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
-import { setLoadedItems, setOffsetValue } from '../../../../redux/reducers/authReducer';
+import { setOffsetValue } from '../../../../redux/reducers/authReducer';
+// setLoadedItems
 
-function Grid() {
+const Grid = React.memo(() => {
   const dispatch = useDispatch();
 
-  const { catalogueData, loading } = useSelector((state) => state.auth);
-  // , loadedItems
-  const [visible, setVisible] = useState(50); // loadedItems
+  const { catalogueData, loading, hasMoreData } = useSelector((state) => state.auth);
+  // catalogueTotalDataCount, hasMoreData
+
   const [showTopButton, setShowTopButton] = useState(false);
   const offsetValue = useSelector((state) => state.auth.offsetValue);
 
-  const productsData = catalogueData;
-  const totalItems = productsData?.length || 0;
+  const totalItems = catalogueData?.length || 0;
 
-  useEffect(() => {
-    if (totalItems === visible) {
-      dispatch(setOffsetValue(offsetValue + 1));
-    }
-  }, [visible, totalItems, dispatch]);
+  // for debugging purposes
+  console.log('total items : ', totalItems);
+  console.log('has more data: ', hasMoreData);
+  console.log('Offset value Count : ', offsetValue);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,20 +41,8 @@ function Grid() {
     };
   }, []);
 
-  // localStorage.setItem('loadedItems', visible);
-
-  useEffect(() => {
-    dispatch(setLoadedItems(visible));
-  }, [visible, dispatch]);
-
-  const showMoreItems = () => {
-    setVisible((prevValue) => prevValue + 10);
-  };
-
   const loadMoreData = () => {
-    setTimeout(() => {
-      showMoreItems();
-    }, 500);
+    dispatch(setOffsetValue(offsetValue + 1));
   };
 
   const scrollToTop = () => {
@@ -64,41 +51,22 @@ function Grid() {
       behavior: 'smooth',
     });
   };
-
-  // if (loading && visible === 10) {
-  //   return (
-  //     <Row gutter={30}>
-  //       <Col xs={24}>
-  //         <div className="spin">
-  //           <Spin />
-  //         </div>
-  //       </Col>
-  //     </Row>
-  //   );
-  // }
-
+  // console.log(hasMoreData)
   return (
     <>
       <InfiniteScroll
-        dataLength={visible}
+        dataLength={totalItems}
         next={loadMoreData}
-        hasMore={visible < productsData?.length}
+        hasMore={hasMoreData}
         loader={<Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />}
         style={{ overflow: 'hidden' }}
         endMessage={
-          <NotFoundWrapper>
-            {/* {loading && (
-              <div className="spin">
-                <Spin />
-              </div>
-            )} */}
-            {!loading && <Heading as="h5">No more products to load</Heading>}
-          </NotFoundWrapper>
+          <NotFoundWrapper>{!loading && <Heading as="h5">No more products to load</Heading>}</NotFoundWrapper>
         }
       >
         <Row gutter={30}>
-          {productsData &&
-            productsData.slice(0, visible).map((product) => (
+          {catalogueData &&
+            catalogueData.map((product) => (
               <Col xxl={6} lg={12} xs={24} key={product.Item_Id}>
                 <ProductCards product={product} />
               </Col>
@@ -118,6 +86,6 @@ function Grid() {
       )}
     </>
   );
-}
+});
 
 export default Grid;

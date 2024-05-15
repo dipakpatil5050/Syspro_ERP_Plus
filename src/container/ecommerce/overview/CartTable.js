@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Table, Form, Input, Spin, Modal } from 'antd';
+import { Row, Col, Table, Form, Spin, Modal } from 'antd';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
 import UilMinus from '@iconscout/react-unicons/icons/uil-minus';
@@ -222,7 +222,7 @@ function CartTable() {
   //     setState({ ...state, coupon: values });
   //   };
 
-  const isLoading = false;
+  const isLoading = false ;
 
   return (
     <>
@@ -241,11 +241,11 @@ function CartTable() {
       <CouponForm>
         <Form name="submitCoupon">
           <Row gutter={15}>
-            <Col lg={4} sm={8} xs={24}>
+            {/* <Col lg={4} sm={8} xs={24}>
               <Form.Item name="coupon" label="">
                 <Input placeholder="Coupon Code" />
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col lg={4} sm={8} xs={24}>
               <Button htmlType="submit" size="default" type="primary">
                 Share

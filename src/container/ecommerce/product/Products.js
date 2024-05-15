@@ -16,7 +16,7 @@ const Filters = lazy(() => import('./overview/Filters'));
 const Grid = lazy(() => import('./overview/Grid'));
 const List = lazy(() => import('./overview/List'));
 
-function Product() {
+const Product = React.memo(() => {
   useDocumentTitle('Catalogue');
   const loading = useSelector((state) => state.auth.loading);
 
@@ -41,7 +41,7 @@ function Product() {
             style={{
               position: 'fixed',
               top: '50%',
-              left: '45%',
+              left: '50%',
               zIndex: 99999,
               backgroundColor: 'white',
               borderRadius: '50%',
@@ -124,6 +124,6 @@ function Product() {
       </Main>
     </>
   );
-}
+});
 
 export default Product;

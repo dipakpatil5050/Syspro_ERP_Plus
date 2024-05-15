@@ -18,21 +18,21 @@ const DetailsRight = React.memo(({ product }) => {
   // });
 
   /* eslint-disable camelcase */
-  const { Item_Name, Item_Code, SalePrice1, Stock_qty, DesignNo } = product;
+  const { Item_Name, Item_Code, SalePrice1, DesignNo } = product;
+  // Stock_qty,
+  // const availabilityText = Stock_qty > 0 ? 'In Stock' : 'Out of Stock'; //
 
-  const availabilityText = Stock_qty > 0 ? 'In Stock' : 'Out of Stock'; //
-
-  let stockStyle;
-  if (availabilityText === 'Out of Stock') {
-    stockStyle = {
-      color: 'red',
-      weight: 500,
-    };
-  } else {
-    stockStyle = {
-      color: 'green',
-    };
-  }
+  // let stockStyle;
+  // if (availabilityText === 'Out of Stock') {
+  //   stockStyle = {
+  //     color: 'red',
+  //     weight: 500,
+  //   };
+  // } else {
+  //   stockStyle = {
+  //     color: 'green',
+  //   };
+  // }
   // const { name, rate, price, oldPrice, description, category, brand, popular, id } = product;
 
   // const { quantity } = state;
@@ -70,13 +70,13 @@ const DetailsRight = React.memo(({ product }) => {
           <span className="pdbr__price">₹ {SalePrice1}</span>
         </Heading>
         <div className="pdbr__current-status">
-          <p>
+          {/* <p>
             <span className="current-status-title">Availability :</span>
 
             <span className="stock-status in-stock" style={stockStyle}>
               {availabilityText}
             </span>
-          </p>
+          </p> */}
           <p>
             <span className="current-status-title"> Item Name : </span>
             <span className="shipping-cost">{Item_Name}</span>
@@ -90,10 +90,10 @@ const DetailsRight = React.memo(({ product }) => {
             <span className="current-status-title"> Design No : </span>
             <span className="shipping-cost">{DesignNo}</span>
           </p>
-          <p>
+          {/* <p>
             <span className="current-status-title"> Stock : </span>
             <span className="shipping-cost">&emsp; &ensp; {Stock_qty}</span>
-          </p>
+          </p> */}
 
           {/* Quantity page :  */}
           {/* <p className="pdbr__quantity">
@@ -133,7 +133,7 @@ DetailsRight.propTypes = {
     Item_Name: PropTypes.string.isRequired,
     SalePrice1: PropTypes.number.isRequired,
     Item_Code: PropTypes.string.isRequired,
-    Stock_qty: PropTypes.number.isRequired,
+    // Stock_qty: PropTypes.number.isRequired,
     DesignNo: PropTypes.string.isRequired,
   }).isRequired,
 };

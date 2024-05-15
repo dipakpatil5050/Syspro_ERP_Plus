@@ -69,7 +69,7 @@ export const authSlice = createSlice({
     userData: JSON.parse(localStorage.getItem('userData')) || null,
     userMpinData: JSON.parse(localStorage.getItem('userMpinData')) || null,
     catalogueData: [],
-    filterData: null,
+    filterData: [],
     LedgerReport: null,
     SaleReport: null,
     login: Cookies.get('logedIn'),
@@ -77,8 +77,11 @@ export const authSlice = createSlice({
     error: null,
     loadedItems: 50,
     // pageSize: 100,
-    offsetValue: 0,
     selectedItems: JSON.parse(localStorage.getItem('selectedItems')) || [],
+    offsetValue: 0,
+    hasMoreData: true,
+    catalogueTotalDataCount: 0,
+    totalCataloguePages: 0,
     // subtotal: 0,
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
     // JSON.parse(localStorage.getItem('catalogueData')) || null,
@@ -98,9 +101,24 @@ export const authSlice = createSlice({
       state.catalogueData.push(...allData);
       // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
     },
+
+    setClearFilter: (state) => {
+      state.catalogueData = [];
+    },
+
     setCatalogueDataFiltered: (state, action) => {
       state.catalogueData = action.payload;
       // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
+    },
+    setTotalCataloguePages: (state, action) => {
+      state.totalCataloguePages = action.payload;
+      const totalPages = action.payload;
+      if (state.offsetValue === totalPages) {
+        state.hasMoreData = false;
+      }
+    },
+    setCatalogueTotalDataCount: (state, action) => {
+      state.catalogueTotalDataCount = action.payload;
     },
     setFilterData: (state, action) => {
       state.filterData = action.payload;
@@ -133,6 +151,7 @@ export const authSlice = createSlice({
       state.selectedItems = updatedSelectedItems;
       localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
     },
+
     // setPageSize: (state, action) => {
     //   state.pageSize = action.payload;
     // },
@@ -207,7 +226,10 @@ export const {
   setUserData,
   setCatalogueData,
   setCatalogueDataFiltered,
+  setTotalCataloguePages,
+  setCatalogueTotalDataCount,
   setFilterData,
+  setClearFilter,
   setLedgerReport,
   setSaleReport,
   setLoading,
