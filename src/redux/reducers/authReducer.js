@@ -69,6 +69,7 @@ export const authSlice = createSlice({
     userData: JSON.parse(localStorage.getItem('userData')) || null,
     userMpinData: JSON.parse(localStorage.getItem('userMpinData')) || null,
     catalogueData: [],
+    // filteredCatalogueData: [],
     filterData: [],
     LedgerReport: null,
     SaleReport: null,
@@ -109,6 +110,12 @@ export const authSlice = createSlice({
     setCatalogueDataFiltered: (state, action) => {
       state.catalogueData = action.payload;
       // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
+    },
+    filterByPriceRange(state, action) {
+      const [minPrice, maxPrice] = action.payload;
+      state.catalogueData = state.catalogueData.filter(
+        (product) => product.price >= minPrice && product.price <= maxPrice,
+      );
     },
     setTotalCataloguePages: (state, action) => {
       state.totalCataloguePages = action.payload;

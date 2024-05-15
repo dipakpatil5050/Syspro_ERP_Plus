@@ -1,6 +1,7 @@
 import UilSlidersV from '@iconscout/react-unicons/icons/uil-sliders-v';
 import React, { useEffect, useState } from 'react';
-import { Button, Checkbox } from 'antd';
+import { Checkbox } from 'antd';
+// Button
 // import PropTypes from 'prop-types';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -14,10 +15,10 @@ import {
   setCatalogueData,
   setCatalogueDataFiltered,
   setCatalogueTotalDataCount,
-  setClearFilter,
+  // setClearFilter,
   setFilterData,
   setLoading,
-  setOffsetValue,
+  // setOffsetValue,
   setTotalCataloguePages,
 } from '../../../../redux/reducers/authReducer';
 
@@ -38,7 +39,7 @@ const Filters = React.memo(() => {
   const userData = useSelector((state) => state.auth.userData);
   const offsetValue = useSelector((state) => state.auth.offsetValue);
   // const totalCataloguePages = useSelector((state) => state.auth.totalCataloguePages);
-  const CatalogueData = useSelector((state) => state.auth.catalogueData);
+  // const CatalogueData = useSelector((state) => state.auth.catalogueData);
   // const hasMoreData = useSelector((state) => state.auth.hasMoreData);
 
   // const filterStore = useSelector((state) => state.auth.catalogueData);
@@ -243,9 +244,9 @@ const Filters = React.memo(() => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchCatalogueData();
-  // }, [offsetValue]);
+  useEffect(() => {
+    fetchCatalogueData();
+  }, [offsetValue]);
 
   // useEffect(() => {
   //   if (!filterData) {
@@ -260,11 +261,11 @@ const Filters = React.memo(() => {
   //   }
   // }, [filterData, offsetValue]);
 
-  useEffect(() => {
-    if (CatalogueData.length === 0) {
-      fetchCatalogueData();
-    }
-  }, [offsetValue]);
+  // useEffect(() => {
+  //   if (CatalogueData.length === 0) {
+  //     fetchCatalogueData();
+  //   }
+  // }, []);
 
   // console.log(Math.random());
 
@@ -278,20 +279,22 @@ const Filters = React.memo(() => {
   //   console.log('objects loaded from API Server', Math.random());
   // }, []);
 
-  const handleClearFilters = () => {
-    setSelectedGroupIds([]);
-    setSelectedSubGroupIds([]);
+  // handle Clear filter button
 
-    setSelectedCategoryIds([]);
-    setSelectedBrandIds([]);
+  // const handleClearFilters = () => {
+  //   setSelectedGroupIds([]);
+  //   setSelectedSubGroupIds([]);
 
-    // dispatch(setCatalogueData([]));
-    dispatch(setClearFilter());
-    dispatch(setFilterData([]));
-    fetchCatalogueData('');
-    dispatch(setOffsetValue(0));
-    // fetchCatalogueDataFiltered('');
-  };
+  //   setSelectedCategoryIds([]);
+  //   setSelectedBrandIds([]);
+
+  //   // dispatch(setCatalogueData([]));
+  //   dispatch(setClearFilter());
+  //   dispatch(setFilterData([]));
+  //   fetchCatalogueData('');
+  //   dispatch(setOffsetValue(0));
+  //   // fetchCatalogueDataFiltered('');
+  // };
 
   function capitalizeFirstLetter(str) {
     return str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
@@ -299,11 +302,11 @@ const Filters = React.memo(() => {
 
   // const [state, setState] = useState({
   //   min: 0,
-  //   max: 1500,
+  //   max: 500,
   // });
 
   // const { min, max } = state;
-  // const onChange = (value) => {
+  // const onPriceChangeHandler = (value) => {
   //   setState({
   //     ...state,
   //     min: value[0],
@@ -322,24 +325,24 @@ const Filters = React.memo(() => {
           </span>
         }
       >
-        {filterData && (
+        {/* clear filter Button */}
+        {/* {filterData && (
           <Button style={{ marginBottom: 32 }} onClick={handleClearFilters} type="white">
             Clear Filter
           </Button>
-        )}
-
+        )} */}
         <>
           {filterData && (
             <>
               {/* Price Range */}
 
               {/* <SidebarSingle style={{ marginBottom: 32 }}>
-                  <Heading as="h5">Price Range</Heading>
-                  <Slider max={20000} onChange={onChange} range defaultValues={[min, max]} />
-                  <p className="ninjadash-price-text">
-                    ₹ {min} - ₹ {max}
-                  </p>
-                </SidebarSingle> */}
+                <Heading as="h5">Price Range</Heading>
+                <Slider max={50} onChange={onPriceChangeHandler} range defaultValues={[min, max]} />
+                <p className="ninjadash-price-text">
+                  ₹ {min} - ₹ {max}
+                </p>
+              </SidebarSingle> */}
 
               {/* Category */}
 

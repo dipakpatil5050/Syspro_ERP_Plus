@@ -1,0 +1,9 @@
+
+
+to call API on only initial rendering : 
+
+  useEffect(() => {
+    if (CatalogueData.length === 0) {
+      fetchCatalogueData();
+    }
+  }, []);
