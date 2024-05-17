@@ -7,6 +7,7 @@ import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
 import { setOffsetValue } from '../../../../redux/reducers/authReducer';
+// import catalogueService from '../../../../services/catalogueService';
 // setLoadedItems
 
 const Grid = React.memo(() => {
@@ -41,7 +42,7 @@ const Grid = React.memo(() => {
     };
   }, []);
 
-  const loadMoreData = () => {
+  const fetchMoreData = () => {
     dispatch(setOffsetValue(offsetValue + 1));
   };
 
@@ -52,11 +53,16 @@ const Grid = React.memo(() => {
     });
   };
   // console.log(hasMoreData)
+
+  // useEffect(() => {
+  //   catalogueService.getProducts();
+  // }, []);
+
   return (
     <>
       <InfiniteScroll
         dataLength={totalItems}
-        next={loadMoreData}
+        next={fetchMoreData}
         hasMore={hasMoreData}
         loader={<Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />}
         style={{ overflow: 'hidden' }}

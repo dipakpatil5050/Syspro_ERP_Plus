@@ -11,9 +11,9 @@ function ClientMpin() {
   const [mPin, setMPin] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const mPinInputRef = useRef(null);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   // const isLoading = useSelector((state) => state.auth.loading);
   // const [form] = Form.useForm();

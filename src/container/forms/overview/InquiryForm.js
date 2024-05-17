@@ -4,27 +4,30 @@ import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
 
-function VerticalForm() {
+function InquiryForm() {
   return (
     <BasicFormWrapper>
       <VerticalFormStyleWrap>
-        <Cards title="Vertical Form">
+        <Cards
+          title="Inquiry Form
+"
+        >
           <Form name="ninjadash-vertical-form" layout="vertical">
-            <Form.Item name="name" initialValue="Duran Clayton" label="Name">
+            <Form.Item name="name" label="Name">
               <Input placeholder="Name" />
             </Form.Item>
-            <Form.Item name="email" initialValue="username@email.com" label="Email Address">
+            <Form.Item name="email" label="Email Address">
               <Input placeholder="Enter Email" />
             </Form.Item>
-            <Form.Item name="password" initialValue="1234567" label="Password">
-              <Input.Password />
+            <Form.Item name="mobile" label="Mobile">
+              <Input placeholder="Enter Mobile Number" />
+            </Form.Item>
+            <Form.Item name="remark" label="Remark">
+              <Input placeholder="write something" />
             </Form.Item>
             <div className="ninjadash-form-action">
-              <Button className="btn-signin" htmlType="submit" type="light" size="large">
-                Cancel
-              </Button>
               <Button className="btn-signin" type="primary" size="large">
-                Save
+                Submit
               </Button>
             </div>
           </Form>
@@ -34,4 +37,4 @@ function VerticalForm() {
   );
 }
 
-export { VerticalForm };
+export { InquiryForm };

@@ -18,7 +18,19 @@ const DetailsRight = React.memo(({ product }) => {
   // });
 
   /* eslint-disable camelcase */
+
   const { Item_Name, Item_Code, SalePrice1, DesignNo } = product;
+
+  // const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // const showModal = () => {
+  //   setIsModalVisible(true);
+  // };
+
+  // const handleCancel = () => {
+  //   setIsModalVisible(false);
+  // };
+
   // Stock_qty,
   // const availabilityText = Stock_qty > 0 ? 'In Stock' : 'Out of Stock'; //
 
@@ -125,6 +137,10 @@ const DetailsRight = React.memo(({ product }) => {
           </li>
         </ul> */}
       </div>
+
+      {/* <Modal title="inquiry Form" visible={isModalVisible} onCancel={handleCancel} footer={null}>
+        <p>Home</p>
+      </Modal> */}
     </>
   );
 });

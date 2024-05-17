@@ -47,6 +47,26 @@ function ProductCards({ product }) {
 
   // purple Color Code: #8231d3.
 
+  // const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // const showModal = () => {
+  //   setIsModalVisible(true);
+  // };
+
+  // const handleCancel = () => {
+  //   setIsModalVisible(false);
+  // };
+
+  // const handleProductDetail = () => {
+  //   Modal.confirm({
+  //     title: 'Confirm Delete',
+  //     content: `Are you sure you want to remove this item from the cart?`,
+  //     okText: 'Yes',
+  //     cancelText: 'Cancel',
+  //     centered: true,
+  //   });
+  // };
+
   return (
     <>
       <ProductCard
@@ -90,11 +110,15 @@ function ProductCards({ product }) {
             </Button>
           )} */}
           <Heading className="product-single-title" as="h5">
-            <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
+            {/* <NavLink onClick={showModal} state={{ product }}>
+              {name}
+            </NavLink> */}
+
+            {/* link Option */}
+            <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }} target="_blank">
               {name}
             </NavLink>
           </Heading>
-
           <p className="product-single-price">
             <span className="product-single-price__new">₹ {price} </span>
           </p>
@@ -110,6 +134,24 @@ function ProductCards({ product }) {
         </div> */}
         </figcaption>
       </ProductCard>
+      {/* <Modal title="Product Detail" visible={isModalVisible} onCancel={handleCancel} footer={null}>
+        <img src={productImage} alt={name} style={{ maxWidth: '100%', marginBottom: '10px' }} />
+        <ul>
+          <li>
+            <b>Item Name </b>: {name}
+          </li>
+          <li>
+            <b>Item Code </b> : {id}
+          </li>
+          <li>
+            <b>Design No </b>: {designNo}
+          </li>
+          <li>
+            <b>Price </b>: ₹ {price}
+          </li>
+        </ul>
+      </Modal> */}
+      {/* {console.log(designNo)} */}
     </>
   );
 }
@@ -119,6 +161,7 @@ ProductCards.propTypes = {
     Item_Id: PropTypes.number.isRequired,
     Item_Name: PropTypes.string.isRequired,
     SalePrice1: PropTypes.number.isRequired,
+    DesignNo: PropTypes.number.isRequired,
     Gallary: PropTypes.arrayOf(
       PropTypes.shape({
         Document_Id: PropTypes.number.isRequired,

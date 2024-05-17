@@ -70,7 +70,7 @@ const fbAuthLoginWithGoogle = () => {
     } catch (err) {
       await dispatch(fbLoginErr(err));
     }
-  };
+  }; 
 };
 
 const fbAuthLoginWithFacebook = () => {

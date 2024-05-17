@@ -199,6 +199,7 @@ const Filters = React.memo(() => {
 
   // Catalogue API Calling :
 
+  // const isMounted = useRef(false);
   const fetchCatalogueData = async (filterString) => {
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 

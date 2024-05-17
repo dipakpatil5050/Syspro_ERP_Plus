@@ -4,6 +4,7 @@ import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
 import UilMinus from '@iconscout/react-unicons/icons/uil-minus';
 import { useSelector, useDispatch } from 'react-redux';
+import { InquiryForm } from '../../forms/overview/InquiryForm';
 
 import { FigureCart, ProductTable, CouponForm } from '../Style';
 import Heading from '../../../components/heading/heading';
@@ -110,6 +111,16 @@ function CartTable() {
   //   const confirm = window.confirm('Are you sure to delete this product?');
   //   if (confirm) dispatch(deselectItem(id));
   // };
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const productTableData = [];
 
@@ -222,7 +233,7 @@ function CartTable() {
   //     setState({ ...state, coupon: values });
   //   };
 
-  const isLoading = false ;
+  const isLoading = false;
 
   return (
     <>
@@ -237,7 +248,6 @@ function CartTable() {
           </div>
         )}
       </ProductTable>
-
       <CouponForm>
         <Form name="submitCoupon">
           <Row gutter={15}>
@@ -247,13 +257,18 @@ function CartTable() {
               </Form.Item>
             </Col> */}
             <Col lg={4} sm={8} xs={24}>
-              <Button htmlType="submit" size="default" type="primary">
+              <Button htmlType="submit" size="default" type="primary" onClick={showModal}>
                 Share
               </Button>
             </Col>
           </Row>
         </Form>
       </CouponForm>
+      {/* title="inquiry Form" */}
+      <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
+        <InquiryForm />
+      </Modal>
+      ;
     </>
   );
 }

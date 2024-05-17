@@ -24,14 +24,14 @@ const Departmentid = userheaderdata?.DepartmentID;
 const Userid = userheaderdata?.UserID;
 
 const catalogueService = {
-  async getProducts(filterString) {
+  async getProducts() {
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
     const body = {
       ReportId: 0,
       FromDate: '',
       UptoDate: '',
-      FilterString: filterString,
+      FilterString: '',
       OffsetValue: offsetValue,
       PageSize: 100,
       OrderByColumn: 'i.Item_id Desc',
@@ -48,6 +48,7 @@ const catalogueService = {
       client: SlugUrl,
       'x-api-key': mPin,
     };
+
     try {
       dispatch(setLoading(true));
       const response = await axios.post(CatalogueAPI, body, { headers });
