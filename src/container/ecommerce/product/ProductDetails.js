@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Skeleton } from 'antd';
+import { Row, Col, Skeleton, Spin } from 'antd';
 import { useSelector } from 'react-redux';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 import { Main } from '../../styled';
@@ -13,12 +13,15 @@ const DetailsRight = lazy(() => import('./overview/DetailsRight'));
 
 function ProductDetails() {
   const { id } = useParams();
-
   const productdata = useSelector((state) => state.auth.catalogueData);
+  // const products = useSelector((state) => state.auth.singleProduct);
+
+  // const products = useSelector((state) => state.auth.singleProduct);
 
   const products = productdata?.find((product) => product.Item_Id === parseInt(id));
 
   const productImage = products?.Gallary[0]?.Filepath;
+  // const productImage = products?.Gallary?.length > 0 ? products.Gallary[0]?.Filepath : '';
 
   const [selectedImage, setSelectedImage] = useState(productImage);
   const [activeImageIndex, setActiveImageIndex] = useState(0);

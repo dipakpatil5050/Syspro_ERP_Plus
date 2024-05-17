@@ -83,6 +83,7 @@ export const authSlice = createSlice({
     hasMoreData: true,
     catalogueTotalDataCount: 0,
     totalCataloguePages: 0,
+    singleProduct: [],
     // subtotal: 0,
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
     // JSON.parse(localStorage.getItem('catalogueData')) || null,
@@ -95,7 +96,7 @@ export const authSlice = createSlice({
     setuserMpinData: (state, action) => {
       state.userMpinData = action.payload;
       localStorage.setItem('userMpinData', JSON.stringify(action.payload));
-      localStorage.setItem('mPin', JSON.stringify(action.payload.Data.mPin));
+      // localStorage.setItem('mPin', JSON.stringify(action.payload?.Data.mPin));
     },
     setCatalogueData: (state, action) => {
       // state.catalogueData = action.payload;
@@ -103,6 +104,17 @@ export const authSlice = createSlice({
       state.catalogueData.push(...allData);
       // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
     },
+
+    // setCatalogueData: (state, action) => {
+    //   const allData = action.payload;
+    //   allData.forEach(product => {
+    //     const productExists = state.catalogueData.find(item => item.id === product.id);
+    //     if (!productExists) {
+    //       state.catalogueData.push(product);
+    //     }
+    //   });
+    //   // localStorage.setItem('catalogueData', JSON.stringify(state.catalogueData));
+    // },
 
     setClearFilter: (state) => {
       state.catalogueData = [];
@@ -127,6 +139,9 @@ export const authSlice = createSlice({
     },
     setCatalogueTotalDataCount: (state, action) => {
       state.catalogueTotalDataCount = action.payload;
+    },
+    setSingleProduct: (state, action) => {
+      state.singleProduct = action.payload;
     },
     setFilterData: (state, action) => {
       state.filterData = action.payload;
@@ -236,6 +251,7 @@ export const {
   setCatalogueDataFiltered,
   setTotalCataloguePages,
   setCatalogueTotalDataCount,
+  setSingleProduct,
   setFilterData,
   setClearFilter,
   setLedgerReport,

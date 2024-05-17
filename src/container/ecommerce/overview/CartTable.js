@@ -268,7 +268,6 @@ function CartTable() {
       <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
         <InquiryForm />
       </Modal>
-      ;
     </>
   );
 }

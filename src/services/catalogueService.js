@@ -7,6 +7,7 @@ import {
   setFilterData,
   setLoading,
   setTotalCataloguePages,
+  setSingleProduct,
 } from '../redux/reducers/authReducer';
 
 const dispatch = useDispatch();
@@ -67,6 +68,30 @@ const catalogueService = {
       toast.error('Error in fetching catalogue report data from API Server.');
     } finally {
       dispatch(setLoading(false));
+    }
+  },
+  async getProductByID(id) {
+    const productByIdAPI = `${ServerBaseUrl}api/CommonAPI/GetProductByID?Item_ID=${id1}`;
+    const headers = {
+      'Content-Type': 'application/json',
+      CompanyID: Companyid,
+      YearMasterID: YearMasterid,
+      PremiseID: Premiseid,
+      DepartmentID: Departmentid,
+      UserID: Userid,
+      client: SlugUrl,
+      'x-api-key': mPin,
+    };
+    try {
+      setLoading(true);
+      const response = await axios.get(productByIdAPI, { headers });
+      const productDetailResponse = response.data?.Data;
+      dispatch(setSingleProduct(productDetailResponse?.products));
+      console.log('Data for single Item Card', JSON.stringify(productDetailResponse?.products));
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setLoading(false);
     }
   },
 };

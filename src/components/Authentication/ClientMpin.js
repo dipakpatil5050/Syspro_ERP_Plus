@@ -22,7 +22,7 @@ function ClientMpin() {
     setMPin(e.target.value.toUpperCase());
   };
 
-  const fetchData = async () => {
+  const fetchMPinData = async () => {
     const mpinapi = `http://103.67.238.230:1385/SysMpin/authenticateSysmpin?mPin=${mPin}`;
     const headers = {
       'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ function ClientMpin() {
   const handlempinSubmit = async (e) => {
     try {
       e.preventDefault();
-      await fetchData();
+      await fetchMPinData();
     } catch (error) {
       console.log('Error : ', error);
     }
@@ -80,7 +80,7 @@ function ClientMpin() {
             <Form name="login" onFinish={handlempinSubmit} layout="vertical">
               <Form.Item
                 name="mPin"
-                rules={[{ message: 'Please input your mpin !', required: true }]}
+                rules={[{ message: 'Please input your mPin !', required: true }]}
                 // initialValue="SYSPRO04"
                 label="Connect to your Business"
               >
