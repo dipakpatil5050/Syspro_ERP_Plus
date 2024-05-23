@@ -58,6 +58,7 @@
     "radix": 0,
     "consistent-return": 0,
     "no-alert": 0,
+    "new-cap": "off",
     "func-names": 0,
     "no-console": "off",
     "camelcase": "off",

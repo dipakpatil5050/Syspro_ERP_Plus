@@ -149,7 +149,7 @@ function CartTable() {
                   </b>
                   <ul className="info-list">
                     <li>
-                      <span className="info-t itle">Item code :</span>
+                      <span className="info-title">Item code :</span>
                       <span>{product?.Item_Code}</span>
                     </li>
                     {/* <li>

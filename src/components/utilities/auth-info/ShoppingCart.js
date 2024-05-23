@@ -15,6 +15,7 @@ import { Popover } from '../../popup/popup';
 
 const ShoppingCart = React.memo(() => {
   const rtl = false;
+
   // const { rtl } = useSelector((state) => {
   //   return {
   //     rtl: state.ChangeLayoutMode.rtlData,
@@ -23,6 +24,8 @@ const ShoppingCart = React.memo(() => {
 
   const selectedItems = useSelector((state) => state.auth.selectedItems);
   const catalogueData = useSelector((state) => state.auth.catalogueData);
+
+  // localStorage.getItem('selectedItems');
 
   function renderThumb({ style }) {
     const thumbStyle = {
@@ -122,7 +125,7 @@ const ShoppingCart = React.memo(() => {
         </Scrollbars>
       )}
       <Link className="btn-seeAll" to="/admin/ecommerce/cart">
-        See all Catalogue Items sharing Details
+        Proceed to Checkout
       </Link>
     </UserActionDropDown>
   );

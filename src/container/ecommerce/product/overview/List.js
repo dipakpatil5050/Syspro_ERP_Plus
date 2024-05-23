@@ -7,16 +7,17 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductCardsList from './ProductCardList';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
-import { setLoadedItems } from '../../../../redux/reducers/authReducer';
+import { setLoadedItems, setOffsetValue } from '../../../../redux/reducers/authReducer';
 
 function List() {
   const dispatch = useDispatch();
 
-  const { catalogueData, loading } = useSelector((state) => state.auth);
+  const { catalogueData, loading, offsetValue } = useSelector((state) => state.auth);
   // loadedItems
   const [visible, setVisible] = useState(50); // loadedItems ||
   const [showTopButton, setShowTopButton] = useState(false);
   const productsData = catalogueData;
+  const totalItems = productsData?.length;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,7 +37,10 @@ function List() {
 
   // localStorage.setItem('loadedItems', visible);
   useEffect(() => {
-    dispatch(setLoadedItems(visible));
+    if (totalItems === visible) {
+      dispatch(setOffsetValue(offsetValue + 1));
+    }
+    // dispatch(setLoadedItems(visible));
   }, [visible, dispatch]);
 
   const showMoreItems = () => {

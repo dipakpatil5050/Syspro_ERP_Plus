@@ -68,7 +68,7 @@ export const authSlice = createSlice({
   initialState: {
     userData: JSON.parse(localStorage.getItem('userData')) || null,
     userMpinData: JSON.parse(localStorage.getItem('userMpinData')) || null,
-    catalogueData: [],
+    catalogueData: [], // JSON.parse(localStorage.getItem('catalogueData')) ||
     // filteredCatalogueData: [],
     filterData: [],
     LedgerReport: null,
@@ -102,13 +102,13 @@ export const authSlice = createSlice({
       // state.catalogueData = action.payload;
       const allData = action.payload;
       state.catalogueData.push(...allData);
-      // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
+      // localStorage.setItem('catalogueData', JSON.stringify(state.catalogueData.push(...allData)));
     },
 
     // setCatalogueData: (state, action) => {
     //   const allData = action.payload;
-    //   allData.forEach(product => {
-    //     const productExists = state.catalogueData.find(item => item.id === product.id);
+    //   allData.forEach((product) => {
+    //     const productExists = state.catalogueData.find((item) => item.Item_Id === product.id);
     //     if (!productExists) {
     //       state.catalogueData.push(product);
     //     }
@@ -116,6 +116,9 @@ export const authSlice = createSlice({
     //   // localStorage.setItem('catalogueData', JSON.stringify(state.catalogueData));
     // },
 
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
     setClearFilter: (state) => {
       state.catalogueData = [];
     },
@@ -137,8 +140,13 @@ export const authSlice = createSlice({
         state.hasMoreData = false;
       }
     },
+
+    // && state.catalogueData.length < state.catalogueTotalDataCount
+
     setCatalogueTotalDataCount: (state, action) => {
       state.catalogueTotalDataCount = action.payload;
+      // if (state.catalogueTotalDataCount  state.catalogueData.length) {
+      // }
     },
     setSingleProduct: (state, action) => {
       state.singleProduct = action.payload;
@@ -161,6 +169,7 @@ export const authSlice = createSlice({
 
     selectItem: (state, action) => {
       const { itemId, isChecked } = action.payload;
+      // state.selectedItems = action.payload
       const updatedSelectedItems = isChecked
         ? [...state.selectedItems, itemId]
         : state.selectedItems.filter((id) => id !== itemId);
@@ -260,6 +269,7 @@ export const {
   setLoadedItems,
   selectItem,
   deselectItem,
+  setError,
   // setPageSize,
   setOffsetValue,
   loginBegin,

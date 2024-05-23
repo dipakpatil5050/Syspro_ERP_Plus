@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { baseURL } from './src/common';
+import Cookies from 'js-cookie';
+import { BaseURLApi } from './common';
+
 // import { logOut } from './src/redux/reducers/authReducer';
 
 export const http = axios.create({
-  baseURL: baseURL,
+  baseURL: BaseURLApi,
 });
 
 // for Request
@@ -13,10 +15,10 @@ http.interceptors.request.use(
     const token = Cookies.get('access_token');
     const mPin = localStorage.getItem('mPin');
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     config.headers['Content-Type'] = 'application/json';
-    config.headers['x-api-key'] = mPin;
+    config.headers['x-api-key'] = config.data || mPin;
     return config;
   },
   (error) => {

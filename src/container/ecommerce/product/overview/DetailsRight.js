@@ -1,25 +1,27 @@
 import React from 'react';
 import { Rate } from 'antd';
 // import UilHeart from '@iconscout/react-unicons/icons/uil-heart';
-import UilShareAlt from '@iconscout/react-unicons/icons/uil-share-alt';
+import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
+// import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 // import FontAwesome from 'react-fontawesome';
 import Heading from '../../../../components/heading/heading';
 // import { updateWishList } from '../../../../redux/product/actionCreator';
 import { Button } from '../../../../components/buttons/buttons';
+// import { selectItem } from '../../../../redux/reducers/authReducer';
 
 const DetailsRight = React.memo(({ product }) => {
   if (!product) {
     return null;
   }
-  //   const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // const [state, setState] = useState({
   //   quantity: 1,
   // });
 
   /* eslint-disable camelcase */
 
-  const { Item_Name, Item_Code, SalePrice1, DesignNo } = product;
+  const { Item_Name, Item_Code, SalePrice1, DesignNo, Item_Id } = product;
 
   // const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -66,6 +68,10 @@ const DetailsRight = React.memo(({ product }) => {
   //       ...state,
   //       quantity: quantity - 1,
   //     });
+  // };
+
+  // const addToCart = (id) => {
+  //   dispatch(selectItem({ ItemId: id }));
   // };
 
   return (
@@ -123,10 +129,11 @@ const DetailsRight = React.memo(({ product }) => {
         </div>
         <br />
         {/* buy now and Add to Cart Button will be here */}
+        {/* onClick={addToCart(Item_Id)} */}
         <div className="pdbr__Actions d-flex align-items-center">
           <div className="pdbr__product-action">
-            <Button className="btn-buy" size="default" type="primary">
-              <UilShareAlt /> Share
+            <Button className="btn-cart" size="default" type="secondary">
+              <UilShoppingBag /> Add To Cart
             </Button>
           </div>
         </div>
@@ -149,6 +156,7 @@ DetailsRight.propTypes = {
     Item_Name: PropTypes.string.isRequired,
     SalePrice1: PropTypes.number.isRequired,
     Item_Code: PropTypes.string.isRequired,
+    Item_Id: PropTypes.string.isRequired,
     // Stock_qty: PropTypes.number.isRequired,
     DesignNo: PropTypes.string.isRequired,
   }).isRequired,

@@ -90,6 +90,7 @@ const Filters = React.memo(() => {
     return filterString;
   };
 
+  // Catalogue Filtered Data Fetching
   const fetchCatalogueDataFiltered = async (filterString) => {
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
@@ -99,7 +100,7 @@ const Filters = React.memo(() => {
       UptoDate: '',
       FilterString: filterString,
       OffsetValue: 0, // 0
-      PageSize: 10000,
+      PageSize: 100000,
       OrderByColumn: 'i.Item_id Desc',
       LinkId: 0,
     };

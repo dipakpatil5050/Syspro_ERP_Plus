@@ -48,7 +48,7 @@ function ClientLogin() {
       <Col xxl={6} xl={8} md={12} sm={18} xs={24}>
         <AuthFormWrap>
           <div className="ninjadash-authentication-top">
-            <h2 className="ninjadash-authentication-top__title">Login to Galaxy Infotech</h2>
+            <h2 className="ninjadash-authentication-top__title">Welcome</h2>
           </div>
           <div className="ninjadash-authentication-content">
             <Form name="login" onFinish={handleLogin} layout="vertical">

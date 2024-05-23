@@ -7,9 +7,9 @@ import { Share2 } from 'lucide-react';
 import { Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 // import {  } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
@@ -33,12 +33,12 @@ function ProductCards({ product }) {
 
   // const selectedItemsCount = useSelector((state) => state.auth.selectedItems.length);
 
-  const userMpinData = useSelector((state) => state.auth.userMpinData);
-  const userData = useSelector((state) => state.auth.userData);
+  // const userMpinData = useSelector((state) => state.auth.userMpinData);
+  // const userData = useSelector((state) => state.auth.userData);
 
   // const catalogueData = useSelector((state) => state.auth.catalogueData);
 
-  const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
+  // const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
   // const mPin = userMpinData?.Data?.mPin;
   // const SlugUrl = userMpinData?.Data?.SlugUrl;
 

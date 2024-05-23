@@ -1,11 +1,12 @@
 import { Button, Col, Form, Input, Row } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { AuthFormWrap } from '../../container/profile/authentication/overview/style';
-import { setuserMpinData } from '../../redux/reducers/authReducer';
+import { setError, setuserMpinData } from '../../redux/reducers/authReducer';
+import { addMPin } from '../../Actions/AuthActions';
 
 function ClientMpin() {
   const [mPin, setMPin] = useState('');
@@ -15,12 +16,35 @@ function ClientMpin() {
 
   const navigate = useNavigate();
 
+  const userMpinData = useSelector((state) => state.auth.userMpinData);
   // const isLoading = useSelector((state) => state.auth.loading);
+  const userMpinDataError = useSelector((state) => state.auth.error);
   // const [form] = Form.useForm();
 
   const handleInputChange = (e) => {
     setMPin(e.target.value.toUpperCase());
   };
+
+  // useEffect(() => {
+  //   if (userMpinData?.IsSuccess) {
+  //     navigate('/login');
+  //     toast.success('Mpin Verified !');
+  //   }
+
+  //   return () => {
+  //     dispatch(setuserMpinData(null));
+  //   };
+  // }, [userMpinData]);
+
+  // useEffect(() => {
+  //   if (userMpinDataError !== null && !userMpinDataError?.IsSuccess) {
+  //     toast.error('Invalid MPin');
+  //   }
+
+  //   return () => {
+  //     dispatch(setError(null));
+  //   };
+  // }, [userMpinDataError]);
 
   const fetchMPinData = async () => {
     const mpinapi = `http://103.67.238.230:1385/SysMpin/authenticateSysmpin?mPin=${mPin}`;
@@ -56,7 +80,11 @@ function ClientMpin() {
     }
   };
 
-  const handlempinSubmit = async (e) => {
+  // const fetchMPinData = async () => {
+  //   dispatch(addMPin(mPin));
+  // };
+
+  const handleMPinSubmit = async (e) => {
     try {
       e.preventDefault();
       await fetchMPinData();
@@ -77,7 +105,7 @@ function ClientMpin() {
             <h2 className="ninjadash-authentication-top__title">mPin</h2>
           </div>
           <div className="ninjadash-authentication-content">
-            <Form name="login" onFinish={handlempinSubmit} layout="vertical">
+            <Form name="login" onFinish={handleMPinSubmit} layout="vertical">
               <Form.Item
                 name="mPin"
                 rules={[{ message: 'Please input your mPin !', required: true }]}
@@ -95,7 +123,7 @@ function ClientMpin() {
               </Form.Item>
 
               <Form.Item>
-                <Button className="btn-signin" htmlType="submit" type="primary" size="large" onClick={handlempinSubmit}>
+                <Button className="btn-signin" htmlType="submit" type="primary" size="large" onClick={handleMPinSubmit}>
                   {isLoading ? 'Connecting...' : 'Connect Now'}
                 </Button>
               </Form.Item>

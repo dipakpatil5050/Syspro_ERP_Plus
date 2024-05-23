@@ -16,12 +16,14 @@ const Grid = React.memo(() => {
   const { catalogueData, loading, hasMoreData } = useSelector((state) => state.auth);
   // catalogueTotalDataCount, hasMoreData
 
+  // const [visible, setVisible] = useState(50);
   const [showTopButton, setShowTopButton] = useState(false);
   const offsetValue = useSelector((state) => state.auth.offsetValue);
 
   const totalItems = catalogueData?.length || 0;
 
   // for debugging purposes
+
   console.log('total items : ', totalItems);
   console.log('has more data: ', hasMoreData);
   console.log('Offset value Count : ', offsetValue);
@@ -52,11 +54,6 @@ const Grid = React.memo(() => {
       behavior: 'smooth',
     });
   };
-  // console.log(hasMoreData)
-
-  // useEffect(() => {
-  //   catalogueService.getProducts();
-  // }, []);
 
   return (
     <>
@@ -79,7 +76,6 @@ const Grid = React.memo(() => {
             ))}
         </Row>
       </InfiniteScroll>
-
       {showTopButton && (
         <Button
           type="primary"
