@@ -2,7 +2,7 @@ import React from 'react';
 import { Rate } from 'antd';
 // import UilHeart from '@iconscout/react-unicons/icons/uil-heart';
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
-// import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 // import FontAwesome from 'react-fontawesome';
 import Heading from '../../../../components/heading/heading';
@@ -10,18 +10,22 @@ import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 // import { selectItem } from '../../../../redux/reducers/authReducer';
 
-const DetailsRight = React.memo(({ product }) => {
-  if (!product) {
-    return null;
-  }
+function DetailsRight() {
+  // if (!product) {
+  //   return null;
+  // }
   // const dispatch = useDispatch();
   // const [state, setState] = useState({
   //   quantity: 1,
   // });
 
+  const products = useSelector((state) => state.auth.singleProduct[0]);
+
   /* eslint-disable camelcase */
 
-  const { Item_Name, Item_Code, SalePrice1, DesignNo, Item_Id } = product;
+  // const product = products[0];
+
+  // const { Item_Name, Item_Code, SalePrice1, DesignNo, Item_Id } = product;
 
   // const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -70,22 +74,23 @@ const DetailsRight = React.memo(({ product }) => {
   //     });
   // };
 
-  // const addToCart = (id) => {
-  //   dispatch(selectItem({ ItemId: id }));
-  // };
+  const addToCart = (id) => {
+    console.log('ID : ' + id);
+    // dispatch(selectItem({ ItemId: id }));
+  };
 
   return (
     <>
       <div className="product-details-box__right pdbr">
         {/* eslint-disable camelcase  */}
         <Heading className="pdbr__title" as="h1">
-          {Item_Name}
+          {products?.Item_Name}
         </Heading>
-        <Rate allowHalf defaultValue={SalePrice1} disabled />
+        <Rate allowHalf defaultValue={products?.SalePrice1} disabled />
 
         <Heading className="pdbr__new-price" as="h3">
           {/* <span className="pdbr__currency">₹ </span> */}
-          <span className="pdbr__price">₹ {SalePrice1}</span>
+          <span className="pdbr__price">₹ {products?.SalePrice1}</span>
         </Heading>
         <div className="pdbr__current-status">
           {/* <p>
@@ -97,16 +102,16 @@ const DetailsRight = React.memo(({ product }) => {
           </p> */}
           <p>
             <span className="current-status-title"> Item Name : </span>
-            <span className="shipping-cost">{Item_Name}</span>
+            <span className="shipping-cost">{products?.Item_Name}</span>
           </p>
           <p>
             <span className="current-status-title"> Item Code : </span>
-            <span className="shipping-cost">&nbsp;{Item_Code}</span>
+            <span className="shipping-cost">&nbsp;{products?.Item_Code}</span>
           </p>
 
           <p>
             <span className="current-status-title"> Design No : </span>
-            <span className="shipping-cost">{DesignNo}</span>
+            <span className="shipping-cost">{products?.DesignNo}</span>
           </p>
           {/* <p>
             <span className="current-status-title"> Stock : </span>
@@ -132,7 +137,7 @@ const DetailsRight = React.memo(({ product }) => {
         {/* onClick={addToCart(Item_Id)} */}
         <div className="pdbr__Actions d-flex align-items-center">
           <div className="pdbr__product-action">
-            <Button className="btn-cart" size="default" type="secondary">
+            <Button className="btn-cart" size="default" type="secondary" onClick={() => addToCart(products?.Item_Id)}>
               <UilShoppingBag /> Add To Cart
             </Button>
           </div>
@@ -150,7 +155,7 @@ const DetailsRight = React.memo(({ product }) => {
       </Modal> */}
     </>
   );
-});
+}
 DetailsRight.propTypes = {
   product: PropTypes.shape({
     Item_Name: PropTypes.string.isRequired,

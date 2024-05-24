@@ -6,20 +6,21 @@ import { Share2 } from 'lucide-react';
 // import UilCheckCircle from '@iconscout/react-unicons/icons/uil-check-circle';
 import { Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
-// import axios from 'axios';
-// import {  } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
-// import { selectItem } from '../../../../redux/reducers/authReducer';
+// import { selectItem, setLoading } from '../../../../redux/reducers/authReducer';
 import { setLoading, selectItem, setSingleProduct } from '../../../../redux/reducers/authReducer';
 
 function ProductCards({ product }) {
   const filepathprefix = 'http://103.67.238.230:1386/';
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
   // const { paramId } = useParams();
 
   // const selectedItems = useSelector((state) => state.auth.selectedItems);
@@ -33,49 +34,7 @@ function ProductCards({ product }) {
 
   // const selectedItemsCount = useSelector((state) => state.auth.selectedItems.length);
 
-  // const userMpinData = useSelector((state) => state.auth.userMpinData);
-  // const userData = useSelector((state) => state.auth.userData);
-
   // const catalogueData = useSelector((state) => state.auth.catalogueData);
-
-  // const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
-  // const mPin = userMpinData?.Data?.mPin;
-  // const SlugUrl = userMpinData?.Data?.SlugUrl;
-
-  // const userheaderdata = userData?.Data;
-  // const Companyid = userheaderdata?.CompanyID;
-  // const YearMasterid = userheaderdata?.YearMasterID;
-  // const Premiseid = userheaderdata?.PremiseID;
-  // const Departmentid = userheaderdata?.DepartmentID;
-  // const Userid = userheaderdata?.UserID;
-
-  // const products = catalogueData?.find((productData) => productData.Item_Id === parseInt(paramId));
-
-  // const fetchSingleProductDetailById = useCallback(
-  //   async (id1) => {
-  //     const productByIdAPI = `${ServerBaseUrl}api/CommonAPI/GetProductByID?Item_ID=${id1}`;
-  //     const headers = {
-  //       'Content-Type': 'application/json',
-  //       CompanyID: userData?.Data?.CompanyID,
-  //       YearMasterID: userData?.Data?.YearMasterID,
-  //       PremiseID: userData?.Data?.PremiseID,
-  //       DepartmentID: userData?.Data?.DepartmentID,
-  //       UserID: userData?.Data?.UserID,
-  //       client: userMpinData?.Data?.SlugUrl,
-  //       'x-api-key': userMpinData?.Data?.mPin,
-  //     };
-  //     try {
-  //       dispatch(setLoading(true));
-  //       const response = await axios.get(productByIdAPI, { headers });
-  //       dispatch(setSingleProduct(response.data?.Data?.products[0]));
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     } finally {
-  //       dispatch(setLoading(false));
-  //     }
-  //   },
-  //   [dispatch, userMpinData, userData],
-  // );
 
   const handleImageError = () => {
     setImageError(true);
@@ -118,12 +77,9 @@ function ProductCards({ product }) {
   //   });
   // };
 
-  // const handleProductClick = (e) => {
-  //   e.preventDefault();
-  //   fetchSingleProductDetailById(id);
-  //   navigate(`/admin/ecommerce/productDetails/${id}`);
-  // };
-  // console.log(handleProductById);
+  const handleProductClick = (itemid) => {
+    window.open(`/admin/ecommerce/productDetails/${itemid}`, '_blank');
+  };
 
   return (
     <>
@@ -169,9 +125,9 @@ function ProductCards({ product }) {
           )} */}
           <Heading className="product-single-title" as="h5">
             {/* onClick={showModal} */}
-            <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
+            {/* <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
               {name}
-            </NavLink>
+            </NavLink> */}
             {/* onClick={handleProductById(id)} */}
 
             {/* <b>{name}</b> */}
@@ -180,13 +136,9 @@ function ProductCards({ product }) {
 
             {/* to={`/admin/ecommerce/productDetails/${id}`} */}
 
-            {/* <Link onClick={handleProductClick} target="_blank">
-              {name}
-            </Link> */}
+            {/* <Link to={`/admin/ecommerce/productDetails/${id}`}>{name}</Link> */}
 
-            {/* <a href={`/admin/ecommerce/productDetails/${id}`} onClick={handleProductClick}>
-              {name}
-            </a> */}
+            <Link onClick={() => handleProductClick(id)}>{name}</Link>
 
             {/* {name} */}
             {/* <Button onClick={handleProductById}>{name}</Button> */}
