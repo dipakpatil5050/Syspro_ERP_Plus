@@ -7,7 +7,7 @@ import { Share2 } from 'lucide-react';
 import { Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 // import { NavLink } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Heading from '../../../../components/heading/heading';

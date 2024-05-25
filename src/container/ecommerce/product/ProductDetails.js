@@ -1,11 +1,12 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Skeleton, Spin } from 'antd';
+import { Row, Col, Skeleton, Spin, Checkbox, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 import { Main } from '../../styled';
-import { ProductDetailsWrapper } from '../Style';
+import { ProductCard, ProductDetailsWrapper } from '../Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { setLoading, setSingleProduct } from '../../../redux/reducers/authReducer';
 
@@ -14,6 +15,10 @@ const DetailsRight = lazy(() => import('./overview/DetailsRight'));
 // code changes from here
 
 function ProductDetails() {
+  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedDocId, setSelectedDocId] = useState(null);
+  const [checkedImages, setCheckedImages] = useState({});
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.auth.singleProduct[0]);
@@ -55,7 +60,7 @@ function ProductDetails() {
 
   // const products = productdata?.find((product) => product.Item_Id === parseInt(id));
   // products?.Gallary[0]?.Filepath
-  const productImage = products?.Gallary[0]?.Filepath;
+  // const productImage = products?.Gallary[0]?.Filepath;
   // const productImage = products?.Gallary?.length > 0 ? products.Gallary[0]?.Filepath : '';
 
   // const [selectedImage, setSelectedImage] = useState(productImage);
@@ -66,9 +71,36 @@ function ProductDetails() {
   //   setActiveImageIndex(index);
   // };
 
-  // requirement :  1. want to open Product Detail page on New tab when click on Product name on ProductCards
-  // 2. if possible call the getProductDetailsById API on productdetails page after click on Product name
-  // 3.
+  useEffect(() => {
+    if (products?.Gallary?.length > 0) {
+      setSelectedImage(products.Gallary[0].Filepath);
+      setSelectedDocId(products.Gallary[0].Document_Id);
+    }
+  }, [products]);
+
+  // console.log('Selected Document ID : ', selectedDocId);
+
+  const handleImageClick = (filepath, docId) => {
+    setSelectedImage(filepath);
+    setSelectedDocId(docId);
+  };
+
+  const handleCheckboxChange = (docId, isChecked) => {
+    setCheckedImages((prevState) => ({
+      ...prevState,
+      [docId]: isChecked,
+    }));
+  };
+
+  const handleAddToCart = () => {
+    if (selectedDocId) {
+      console.log(`Selected Document ID: ${selectedDocId}`);
+      // Call API or dispatch action to add to cart
+    }
+    console.log('Item ID : ' + products.Item_Id);
+  };
+
+  const productImage = selectedImage ? `http://103.67.238.230:1386/${selectedImage}` : '';
 
   const PageRoutes = [
     {
@@ -119,42 +151,56 @@ function ProductDetails() {
                       <div className="product-details-box__left pdbl">
                         <figure>
                           <img
-                            src={`http://103.67.238.230:1386/${productImage}`}
+                            src={productImage}
                             alt="No preview"
                             style={{ width: '100%', height: '400px' }}
+                            onError={(e) =>
+                              (e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview')
+                            }
                           />
                         </figure>
+
                         <div className="pdbl__slider pdbs">
                           <Row gutter={5}>
                             <Col md={4}>
                               <div className="pdbl__image pdbs" style={{ display: 'flex' }}>
                                 {products?.Gallary?.map((value, index) => {
                                   /* const borderStyle = index === activeImageIndex ? '2px solid #5840ff' : 'none'; */
-
+                                  <Checkbox
+                                    checked={checkedImages[value.Document_Id] || false}
+                                    onChange={(e) => handleCheckboxChange(value.Document_Id, e.target.checked)}
+                                  />;
                                   return (
-                                    <figure
-                                      key={index}
-                                      style={{
-                                        cursor: 'pointer',
-                                        margin: '5px',
-                                        // border: borderStyle,
-                                        borderRadius: '10px',
-                                      }}
-                                      // onMouseEnter={() => handleHover(value?.Filepath, index)}
-                                      // onMouseLeave={() =>
-                                      //   setActiveImageIndex(
-                                      //     selectedImage.split('/').pop() === value?.Filepath.split('/').pop()
-                                      //       ? activeImageIndex
-                                      //       : 0,
-                                      //   )
-                                      // }
-                                    >
-                                      <img
-                                        src={`http://103.67.238.230:1386/${value?.Filepath}`}
-                                        alt={products?.Item_Name}
-                                        style={{ width: '100px', height: '100%' }}
-                                      />
-                                    </figure>
+                                    <>
+                                      <figure
+                                        key={index}
+                                        style={{
+                                          cursor: 'pointer',
+                                          margin: '5px',
+                                          // border: borderStyle,
+                                          borderRadius: '10px',
+                                        }}
+                                        onClick={() => handleImageClick(value.Filepath, value.Document_Id)}
+                                        // onMouseEnter={() => handleHover(value?.Filepath, index)}
+                                        // onMouseLeave={() =>
+                                        //   setActiveImageIndex(
+                                        //     selectedImage.split('/').pop() === value?.Filepath.split('/').pop()
+                                        //       ? activeImageIndex
+                                        //       : 0,
+                                        //   )
+                                        // }
+                                      >
+                                        <img
+                                          src={`http://103.67.238.230:1386/${value.Filepath}`}
+                                          alt={products?.Item_Name}
+                                          style={{ width: '100px', height: '100%' }}
+                                          onError={(e) =>
+                                            (e.target.src =
+                                              'https://dummyimage.com/100x100/ffffff/000000.png&text=No+Preview')
+                                          }
+                                        />
+                                      </figure>
+                                    </>
                                   );
                                 })}
                               </div>
@@ -175,6 +221,19 @@ function ProductDetails() {
                     >
                       <DetailsRight product={products} />
                     </Suspense>
+                    <br />
+                    <ProductCard>
+                      <div className="pdbr__Actions d-flex align-items-center">
+                        <div className="pdbr__product-action">
+                          <Button className="btn-cart" size="default" type="primary" onClick={handleAddToCart}>
+                            <UilShoppingBag size={15} /> Add To Cart
+                          </Button>
+                        </div>
+                      </div>
+                    </ProductCard>
+                    {/* <Button className="btn-cart" size="default" type="secondary" onClick={handleAddToCart}>
+                      Add to Cart
+                    </Button> */}
                   </Col>
                 </Row>
               </div>

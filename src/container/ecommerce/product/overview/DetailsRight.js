@@ -133,15 +133,16 @@ function DetailsRight() {
         </p> */}
         </div>
         <br />
+        <br />
         {/* buy now and Add to Cart Button will be here */}
         {/* onClick={addToCart(Item_Id)} */}
-        <div className="pdbr__Actions d-flex align-items-center">
+        {/* <div className="pdbr__Actions d-flex align-items-center">
           <div className="pdbr__product-action">
             <Button className="btn-cart" size="default" type="secondary" onClick={() => addToCart(products?.Item_Id)}>
               <UilShoppingBag /> Add To Cart
             </Button>
           </div>
-        </div>
+        </div> */}
         {/* <ul className="pdbr__list">
           <li>
             <span>Category:</span>
