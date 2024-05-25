@@ -1,24 +1,40 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { BaseURLApi } from './common';
-
-// import { logOut } from './src/redux/reducers/authReducer';
+import { BaseURLApi, ServerBaseurl } from './common';
+import store from './redux/store';
 
 export const http = axios.create({
-  baseURL: BaseURLApi,
+  // baseURL: BaseURLApi,
+  baseURL: ServerBaseurl,
 });
 
-// for Request
+// for Request from API endpoint
 
 http.interceptors.request.use(
   async (config) => {
     const token = Cookies.get('access_token');
-    const mPin = localStorage.getItem('mPin');
+    const state = store.getState(); // Access Redux state
+    const { userData, userMpinData } = state.auth;
+    const mPin = userMpinData?.Data?.mPin;
+    // const mPin = localStorage.getItem('mPin');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // if (mPin) {
+    //   config.headers['x-api-key'] = mPin;
+    // }
     config.headers['Content-Type'] = 'application/json';
-    config.headers['x-api-key'] = config.data || mPin;
+    config.headers['x-api-key'] = mPin;
+    // config.data || mPin
+    if (userData && userMpinData) {
+      config.headers.CompanyID = userData.Data.CompanyID;
+      config.headers.YearMasterID = userData.Data.YearMasterID;
+      config.headers.PremiseID = userData.Data.PremiseID;
+      config.headers.DepartmentID = userData.Data.DepartmentID;
+      config.headers.UserID = userData.Data.UserID;
+      config.headers.client = userMpinData.Data.SlugUrl;
+    }
+
     return config;
   },
   (error) => {
@@ -30,7 +46,7 @@ http.interceptors.request.use(
 
 http.interceptors.response.use(
   (response) => {
-    // Handle successful response
+    // Handle successful response here
     return response;
   },
   async (error) => {
@@ -39,9 +55,6 @@ http.interceptors.response.use(
       // Unauthorized access - maybe token expired
       Cookies.remove('access_token');
       alert('Session expired', 'Please log in again.');
-      // Optionally, navigate the user to the login screen
-      // logOut
-      // navigation.navigate("Login"); // assuming you have navigation setup
     }
     // Show error alert
     // Alert.alert("Error", error.response?.data?.message || "An error occurred");

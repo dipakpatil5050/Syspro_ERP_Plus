@@ -3,12 +3,15 @@ import { useParams } from 'react-router-dom';
 import { Row, Col, Skeleton, Spin, Checkbox, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 import { Main } from '../../styled';
 import { ProductCard, ProductDetailsWrapper } from '../Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
-import { setLoading, setSingleProduct } from '../../../redux/reducers/authReducer';
+// import { setLoading, setSingleProduct } from '../../../redux/reducers/authReducer';
+import { fetchSingleProductDetailById, addToCart } from '../../../Actions/Catalogue/CartAction';
+// import { addToCart } from '../../../Actions/Catalogue/CartAction';
 
 const DetailsRight = lazy(() => import('./overview/DetailsRight'));
 
@@ -23,37 +26,43 @@ function ProductDetails() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.auth.singleProduct[0]);
   const loading = useSelector((state) => state.auth.loading);
-  const userMpinData = useSelector((state) => state.auth.userMpinData);
-  const userData = useSelector((state) => state.auth.userData);
+  // const userMpinData = useSelector((state) => state.auth.userMpinData);
+  // const userData = useSelector((state) => state.auth.userData);
 
-  const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
+  // const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
 
-  const fetchSingleProductDetailById = async (itemId) => {
-    const productByIdAPI = `${ServerBaseUrl}api/CommonAPI/GetProductByID?Item_ID=${itemId}`;
-    const headers = {
-      'Content-Type': 'application/json',
-      CompanyID: userData?.Data?.CompanyID,
-      YearMasterID: userData?.Data?.YearMasterID,
-      PremiseID: userData?.Data?.PremiseID,
-      DepartmentID: userData?.Data?.DepartmentID,
-      UserID: userData?.Data?.UserID,
-      client: userMpinData?.Data?.SlugUrl,
-      'x-api-key': userMpinData?.Data?.mPin,
-    };
-    try {
-      dispatch(setLoading(true));
-      const response = await axios.get(productByIdAPI, { headers });
-      dispatch(setSingleProduct(response.data?.Data?.products));
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
+  // const fetchSingleProductDetailById = async (itemId) => {
+  //   const productByIdAPI = `${ServerBaseUrl}api/CommonAPI/GetProductByID?Item_ID=${itemId}`;
+  //   const headers = {
+  //     'Content-Type': 'application/json',
+  //     CompanyID: userData?.Data?.CompanyID,
+  //     YearMasterID: userData?.Data?.YearMasterID,
+  //     PremiseID: userData?.Data?.PremiseID,
+  //     DepartmentID: userData?.Data?.DepartmentID,
+  //     UserID: userData?.Data?.UserID,
+  //     client: userMpinData?.Data?.SlugUrl,
+  //     'x-api-key': userMpinData?.Data?.mPin,
+  //   };
+  //   try {
+  //     dispatch(setLoading(true));
+  //     const response = await axios.get(productByIdAPI, { headers });
+  //     dispatch(setSingleProduct(response.data?.Data?.products));
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   } finally {
+  //     dispatch(setLoading(false));
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchSingleProductDetailById(id);
+  // }, [id]);
+
+  // new axios inteceptor logic
 
   useEffect(() => {
-    fetchSingleProductDetailById(id);
-  }, [id]);
+    dispatch(fetchSingleProductDetailById(id));
+  }, [id, dispatch]);
 
   // const productdata = products1;
   // const products = useSelector((state) => state.auth.singleProduct);
@@ -92,7 +101,45 @@ function ProductDetails() {
     }));
   };
 
-  const handleAddToCart = () => {
+  // const itemID = products?.Item_Id;
+
+  // const FetchAddToCart = async () => {
+  //   const addToCartAPI = `${ServerBaseUrl}api/CommonAPI/Save_Cart`;
+
+  //   const body = {
+  //     Item_Id: itemID,
+  //     Document_Id: selectedDocId,
+  //   };
+  //   const headers = {
+  //     'Content-Type': 'application/json',
+  //     CompanyID: userData?.Data?.CompanyID,
+  //     YearMasterID: userData?.Data?.YearMasterID,
+  //     PremiseID: userData?.Data?.PremiseID,
+  //     DepartmentID: userData?.Data?.DepartmentID,
+  //     UserID: userData?.Data?.UserID,
+  //     client: userMpinData?.Data?.SlugUrl,
+  //     'x-api-key': userMpinData?.Data?.mPin,
+  //   };
+
+  //   try {
+  //     dispatch(setLoading(true));
+  //     const response = await axios.post(addToCartAPI, body, { headers });
+  //     // dispatch(setSingleProduct(response.data?.Data?.products));
+  //     const alertMsg = response?.data?.Message;
+  //     toast.success(alertMsg);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //     toast.error(error.message);
+  //   } finally {
+  //     dispatch(setLoading(false));
+  //   }
+  // };
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    dispatch(addToCart(products.Item_Id, selectedDocId));
+    // FetchAddToCart();
+    // dispatch(addToCart());
     if (selectedDocId) {
       console.log(`Selected Document ID: ${selectedDocId}`);
       // Call API or dispatch action to add to cart
