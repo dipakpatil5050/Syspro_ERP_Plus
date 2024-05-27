@@ -5,16 +5,26 @@ import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
 import UilMinus from '@iconscout/react-unicons/icons/uil-minus';
 import { useSelector, useDispatch } from 'react-redux';
 import { InquiryForm } from '../../forms/overview/InquiryForm';
-
 import { FigureCart, ProductTable, CouponForm } from '../Style';
 import Heading from '../../../components/heading/heading';
 import { Button } from '../../../components/buttons/buttons';
+import { getCartItem } from '../../../Actions/Catalogue/CartAction';
 // import { cartGetData, cartUpdateQuantity, cartDelete } from '../../../redux/cart/actionCreator';
 import { deselectItem } from '../../../redux/reducers/authReducer';
 
 function CartTable() {
-  const cartData = useSelector((state) => state.auth.selectedItems);
-  const catalogueData = useSelector((state) => state.auth.catalogueData);
+  // const cartData = useSelector((state) => state.auth.selectedItems);
+
+  // useEffect(() => {
+  //   dispatch(id);
+  // }, [id, dispatch]);
+
+  const cartData = useSelector((state) => state.cart.cartItems);
+
+  console.log('cart length : ', cartData.length);
+
+  // const catalogueData = useSelector((state) => state.auth.catalogueData);
+
   const [productQuantities, setProductQuantities] = useState({});
 
   const dispatch = useDispatch();
@@ -78,11 +88,11 @@ function CartTable() {
   //     current: 0,
   //   });
 
-  //   useEffect(() => {
-  //     if (cartGetData) {
-  //       dispatch(cartGetData());
-  //     }
-  //   }, [dispatch]);
+  useEffect(() => {
+    if (getCartItem) {
+      dispatch(getCartItem());
+    }
+  }, [dispatch]);
 
   // useEffect(() => {
   //   const storedQuantities = localStorage.getItem('quantities');
@@ -125,23 +135,23 @@ function CartTable() {
   const productTableData = [];
 
   if (cartData !== null) {
-    cartData.map((itemId) => {
-      const product = catalogueData?.find((item) => item.Item_Id === itemId);
-      const quantity = productQuantities[itemId] || 1;
+    cartData.map((product) => {
+      // const product = catalogueData?.find((item) => item.Item_Id === itemId);
+      // const quantity = productQuantities[itemId] || 1;
+      const quantity = 1;
 
-      const filepathprefix = 'http://103.67.238.230:1386/';
+      // const filepathprefix = 'http://103.67.238.230:1386/';
       /* eslint-disable-next-line no-unsafe-optional-chaining */
-      const productImage = filepathprefix + product?.Gallary[0]?.Filepath;
+      // const productImage = filepathprefix + product?.Gallary[0]?.Filepath;
 
       /* eslint-disable-next-line no-unsafe-optional-chaining */
       const totalPrice = quantity * product?.SalePrice1;
-
       return productTableData.push({
         key: product?.Item_Id,
         product: (
           <div className="cart-single">
             <FigureCart>
-              <img style={{ width: 80 }} src={productImage} alt="" />
+              <img style={{ width: 80 }} src={product?.Filepath} alt="" />
               <figcaption>
                 <div className="cart-single__info">
                   <b>
@@ -150,7 +160,7 @@ function CartTable() {
                   <ul className="info-list">
                     <li>
                       <span className="info-title">Item code :</span>
-                      <span>{product?.Item_Code}</span>
+                      <span>{product?.Item_Id}</span>
                     </li>
                     {/* <li>
                       <span className="info-title"> Color :</span>
@@ -162,7 +172,7 @@ function CartTable() {
             </FigureCart>
           </div>
         ),
-        price: <span className="cart-single-price">₹ {product?.SalePrice1}</span>,
+        price: <span className="cart-single-price">₹ {product?.Saleprice1}</span>,
         quantity: (
           <div className="cart-single-quantity">
             <Button className="btn-dec" type="default" onClick={() => decrementQuantity(product.Item_Id)}>
@@ -176,7 +186,7 @@ function CartTable() {
             </Button>
           </div>
         ),
-        total: <span className="cart-single-t-price">₹ {totalPrice}</span>,
+        total: <span className="cart-single-t-price">₹ {product?.Total}</span>,
         action: (
           <div className="table-action">
             <Button
@@ -196,10 +206,10 @@ function CartTable() {
     });
   }
 
-  const subtotal = productTableData.reduce((acc, curr) => {
-    return acc + curr.quantity * (curr.price || 0);
-  }, 0);
-  console.log(subtotal);
+  // const subtotal = productTableData.reduce((acc, curr) => {
+  //   return acc + curr.quantity * (curr.price || 0);
+  // }, 0);
+  // console.log(subtotal);
 
   const productTableColumns = [
     {

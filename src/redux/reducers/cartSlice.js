@@ -1,69 +1,58 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
+  cartItems: [], // localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) :
+  cartId: 1,
   isLoading: false,
   error: null,
   total: 0,
 };
 
-export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async () => {
-  const data = localStorage.getItem('cartItems');
-  return data ? JSON.parse(data) : [];
-});
+// export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async () => {
+//   const data = localStorage.getItem('cartItems');
+//   return data ? JSON.parse(data) : [];
+// });
 
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action) => {
-      const item = action.payload;
-      const existingItem = state.cartItems.find((cartItem) => cartItem.id === item.id);
+    // addToCart: (state, action) => {
+    //   const item = action.payload;
+    //   const existingItem = state.cartItems.find((cartItem) => cartItem.id === item.id);
+    //   if (existingItem) {
+    //     existingItem.quantity += action.payload.quantityToAdd || 1;
+    //   } else {
+    //     state.cartItems.push({ ...item, quantity: action.payload.quantityToAdd || 1 });
+    //   }
+    // },
+    // removeFromCart: (state, action) => {
+    //   const itemId = action.payload;
+    //   const itemIndex = state.cartItems.findIndex((item) => item.id === itemId);
+    //   if (itemIndex !== -1) {
+    //     state.cartItems.splice(itemIndex, 1);
+    //   }
+    // },
+    // clearCart: (state) => {
+    //   state.cartItems = [];
+    // },
+    // updateCartQuantity: (state, action) => {
+    //   const { itemId, quantity } = action.payload;
+    //   const itemIndex = state.cartItems.findIndex((item) => item.id === itemId);
+    //   if (itemIndex !== -1) {
+    //     state.cartItems[itemIndex].quantity = quantity;
+    //   }
+    // },
 
-      if (existingItem) {
-        existingItem.quantity += action.payload.quantityToAdd || 1;
-      } else {
-        state.cartItems.push({ ...item, quantity: action.payload.quantityToAdd || 1 });
-      }
+    setCartItems: (state, action) => {
+      state.cartItems = action.payload;
     },
-    removeFromCart: (state, action) => {
-      const itemId = action.payload;
-      const itemIndex = state.cartItems.findIndex((item) => item.id === itemId);
-
-      if (itemIndex !== -1) {
-        state.cartItems.splice(itemIndex, 1);
-      }
+    setCartId: (state, action) => {
+      state.cartId = action.payload;
     },
-    clearCart: (state) => {
-      state.cartItems = [];
-    },
-    updateCartQuantity: (state, action) => {
-      const { itemId, quantity } = action.payload;
-      const itemIndex = state.cartItems.findIndex((item) => item.id === itemId);
-
-      if (itemIndex !== -1) {
-        state.cartItems[itemIndex].quantity = quantity;
-      }
-    },
-  },
-
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchCartItems.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(fetchCartItems.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.cartItems = action.payload;
-      })
-      .addCase(fetchCartItems.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
-      });
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, updateCartQuantity } = cartSlice.actions;
+export const { setCartItems, setCartId } = cartSlice.actions;
 
 export default cartSlice.reducer;

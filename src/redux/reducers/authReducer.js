@@ -96,7 +96,7 @@ export const authSlice = createSlice({
     setuserMpinData: (state, action) => {
       state.userMpinData = action.payload;
       localStorage.setItem('userMpinData', JSON.stringify(action.payload));
-      localStorage.setItem('mPin', JSON.stringify(action.payload?.Data.mPin));
+      localStorage.setItem('SlugUrl', JSON.stringify(action.payload?.Data.SlugUrl));
     },
     setCatalogueData: (state, action) => {
       // state.catalogueData = action.payload;

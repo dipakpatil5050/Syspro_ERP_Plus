@@ -10,7 +10,7 @@ import { Main } from '../../styled';
 import { ProductCard, ProductDetailsWrapper } from '../Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 // import { setLoading, setSingleProduct } from '../../../redux/reducers/authReducer';
-import { fetchSingleProductDetailById, addToCart } from '../../../Actions/Catalogue/CartAction';
+import { fetchSingleProductDetailById, addToCart, getCartItem } from '../../../Actions/Catalogue/CartAction';
 // import { addToCart } from '../../../Actions/Catalogue/CartAction';
 
 const DetailsRight = lazy(() => import('./overview/DetailsRight'));
@@ -62,6 +62,7 @@ function ProductDetails() {
 
   useEffect(() => {
     dispatch(fetchSingleProductDetailById(id));
+    dispatch(getCartItem());
   }, [id, dispatch]);
 
   // const productdata = products1;
@@ -138,13 +139,10 @@ function ProductDetails() {
   const handleAddToCart = (e) => {
     e.preventDefault();
     dispatch(addToCart(products.Item_Id, selectedDocId));
-    // FetchAddToCart();
-    // dispatch(addToCart());
+
     if (selectedDocId) {
       console.log(`Selected Document ID: ${selectedDocId}`);
-      // Call API or dispatch action to add to cart
     }
-    console.log('Item ID : ' + products.Item_Id);
   };
 
   const productImage = selectedImage ? `http://103.67.238.230:1386/${selectedImage}` : '';

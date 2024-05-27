@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { BaseURLApi, ServerBaseurl } from './common';
+import { ServerBaseurl } from './common';
 import store from './redux/store';
 
 export const http = axios.create({

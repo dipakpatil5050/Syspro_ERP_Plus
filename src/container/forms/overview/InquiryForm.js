@@ -29,6 +29,7 @@ function InquiryForm() {
   const CompanyName = userheaderdata?.CompanyName;
 
   const selectedItems = useSelector((state) => state.auth.selectedItems);
+
   const itemIDs = selectedItems.join(',');
   console.log(itemIDs);
 

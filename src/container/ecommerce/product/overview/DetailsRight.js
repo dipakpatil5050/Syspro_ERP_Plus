@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Rate } from 'antd';
 // import UilHeart from '@iconscout/react-unicons/icons/uil-heart';
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 // import FontAwesome from 'react-fontawesome';
 import Heading from '../../../../components/heading/heading';
+import { getCartItem } from '../../../../Actions/Catalogue/CartAction';
 // import { updateWishList } from '../../../../redux/product/actionCreator';
 import { Button } from '../../../../components/buttons/buttons';
 // import { selectItem } from '../../../../redux/reducers/authReducer';
 
 function DetailsRight() {
+  const dispatch = useDispatch();
+
   // if (!product) {
   //   return null;
   // }
@@ -18,6 +21,10 @@ function DetailsRight() {
   // const [state, setState] = useState({
   //   quantity: 1,
   // });
+
+  useEffect(() => {
+    dispatch(getCartItem());
+  }, [dispatch]);
 
   const products = useSelector((state) => state.auth.singleProduct[0]);
 

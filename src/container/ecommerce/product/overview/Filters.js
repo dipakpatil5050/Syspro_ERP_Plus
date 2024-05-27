@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
+
 import {
   setCatalogueData,
   setCatalogueDataFiltered,

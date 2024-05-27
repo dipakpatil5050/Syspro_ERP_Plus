@@ -1,10 +1,12 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Row, Col, Skeleton } from 'antd';
 import { Route, Routes } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main } from '../styled';
 import { Cards } from '../../components/cards/frame/cards-frame';
 // import { cartGetData } from '../../redux/cart/actionCreator';
+import { getCartItem } from '../../Actions/Catalogue/CartAction';
 
 const CartTable = lazy(() => import('./overview/CartTable'));
 // const Ordersummary = lazy(() => import('./overview/Ordersummary'));
@@ -21,12 +23,7 @@ function ShoppingCart() {
     },
   ];
 
-  // useEffect(() => {
-  //   if (cartGetData) {
-  //     dispatch(cartGetData());
-  //   }
-  // }, [dispatch]);
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   //   const { cartData } = useSelector((state) => {
   //     return {
   //       cartData: state.cart.data,
@@ -34,11 +31,17 @@ function ShoppingCart() {
   //     };
   //   });
 
-  //   useEffect(() => {
-  //     if (cartGetData) {
-  //       dispatch(cartGetData());
-  //     }
-  //   }, [dispatch]);
+  // useEffect(() => {
+  //   if (cartGetData) {
+  //     dispatch(cartGetData());
+  //   }
+  // }, [dispatch]);
+
+  useEffect(() => {
+    if (getCartItem) {
+      dispatch(getCartItem());
+    }
+  }, [dispatch]);
 
   //   let subtotal = 0;
 

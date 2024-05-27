@@ -1,8 +1,7 @@
-// import { useSelector } from 'react-redux';
+// export const BaseURLApi = 'http://103.67.238.230:1385/';
 
-// const userMpinData = useSelector((state) => state.auth.userMpinData);
-// const Serverbaseurl = userMpinData?.Data?.ServerBaseUrl;
+const slugUrl = localStorage.getItem('SlugUrl');
 
-export const BaseURLApi = 'http://103.67.238.230:1385/';
+const Slug = slugUrl?.slice(1, -1);
 
-export const ServerBaseurl = 'http://103.67.238.230:1385/textile';
+export const ServerBaseurl = `http://103.67.238.230:1385/${Slug}/`;
