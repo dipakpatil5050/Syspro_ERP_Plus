@@ -53,3 +53,20 @@ export const getCartItem = () => async (dispatch) => {
     toast.error(error.message);
   }
 };
+
+export const removeFromCart = (itemID) => async (dispatch) => {
+  const body = {
+    Id: itemID,
+    Cart_Id: 1,
+  };
+
+  try {
+    const response = await CatalogueServices.removeFromCart(body);
+    // dispatch(setCartItems(response.data?.Data?.Table));
+    // dispatch(setCartItems());
+    toast.success(response.data?.Message);
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+    toast.error(error.message);
+  }
+};

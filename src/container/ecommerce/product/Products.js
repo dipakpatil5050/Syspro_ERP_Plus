@@ -11,6 +11,9 @@ import { TopToolBox } from '../Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 import useDocumentTitle from '../../../components/dynamic-Page-Title/useDocumentTitle';
+// import { getCartItem } from '../../../Actions/Catalogue/CartAction';
+
+const { getCartItem } = lazy(() => import('../../../Actions/Catalogue/CartAction'));
 
 const Filters = lazy(() => import('./overview/Filters'));
 const Grid = lazy(() => import('./overview/Grid'));

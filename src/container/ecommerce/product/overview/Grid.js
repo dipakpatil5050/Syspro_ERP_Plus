@@ -7,16 +7,12 @@ import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
 import { setOffsetValue } from '../../../../redux/reducers/authReducer';
-import { getCartItem } from '../../../../Actions/Catalogue/CartAction';
+// import { getCartItem } from '../../../../Actions/Catalogue/CartAction';
 // import catalogueService from '../../../../services/catalogueService';
 // setLoadedItems
 
 const Grid = React.memo(() => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getCartItem());
-  }, [dispatch]);
 
   const { catalogueData, loading, hasMoreData } = useSelector((state) => state.auth);
   // catalogueTotalDataCount, hasMoreData
@@ -26,6 +22,12 @@ const Grid = React.memo(() => {
   const offsetValue = useSelector((state) => state.auth.offsetValue);
 
   const totalItems = catalogueData?.length || 0;
+
+  // useEffect(() => {
+  //   if (getCartItem) {
+  //     dispatch(getCartItem());
+  //   }
+  // }, [dispatch]);
 
   // for debugging purposes
 

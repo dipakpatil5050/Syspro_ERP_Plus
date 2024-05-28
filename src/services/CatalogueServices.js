@@ -1,7 +1,6 @@
 import { http } from '../http-common';
 
 class CatalogueServices {
-  /* eslint-disable class-methods-use-this */
   fetchSingleProductDetailById(itemId) {
     return http.get(`api/CommonAPI/GetProductByID?Item_ID=${itemId}`);
   }
@@ -12,6 +11,10 @@ class CatalogueServices {
 
   getCartItem(body) {
     return http.post('api/CommonAPI//AllCartItemDetails', body);
+  }
+
+  removeFromCart(body) {
+    return http.post('api/CommonAPI/Cart_Item_Delete', body);
   }
 }
 

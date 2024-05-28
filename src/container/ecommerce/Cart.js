@@ -7,11 +7,14 @@ import { Main } from '../styled';
 import { Cards } from '../../components/cards/frame/cards-frame';
 // import { cartGetData } from '../../redux/cart/actionCreator';
 import { getCartItem } from '../../Actions/Catalogue/CartAction';
+import useDocumentTitle from '../../components/dynamic-Page-Title/useDocumentTitle';
 
 const CartTable = lazy(() => import('./overview/CartTable'));
 // const Ordersummary = lazy(() => import('./overview/Ordersummary'));
 
 function ShoppingCart() {
+  useDocumentTitle('Checkout');
+
   const PageRoutes = [
     {
       path: '/admin/ecommerce/products/grid',
@@ -19,7 +22,7 @@ function ShoppingCart() {
     },
     {
       path: '',
-      breadcrumbName: 'Item cart',
+      breadcrumbName: 'Checkout',
     },
   ];
 
@@ -55,7 +58,7 @@ function ShoppingCart() {
 
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main" title="Item Cart" routes={PageRoutes} />
+      <PageHeader className="ninjadash-page-header-main" routes={PageRoutes} />
       <Main>
         <div className="cartWraper">
           <Row gutter={15}>

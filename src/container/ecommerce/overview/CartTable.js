@@ -8,9 +8,9 @@ import { InquiryForm } from '../../forms/overview/InquiryForm';
 import { FigureCart, ProductTable, CouponForm } from '../Style';
 import Heading from '../../../components/heading/heading';
 import { Button } from '../../../components/buttons/buttons';
-import { getCartItem } from '../../../Actions/Catalogue/CartAction';
+import { getCartItem, removeFromCart } from '../../../Actions/Catalogue/CartAction';
 // import { cartGetData, cartUpdateQuantity, cartDelete } from '../../../redux/cart/actionCreator';
-import { deselectItem } from '../../../redux/reducers/authReducer';
+// import { deselectItem } from '../../../redux/reducers/authReducer';
 
 function CartTable() {
   // const cartData = useSelector((state) => state.auth.selectedItems);
@@ -20,8 +20,6 @@ function CartTable() {
   // }, [id, dispatch]);
 
   const cartData = useSelector((state) => state.cart.cartItems);
-
-  console.log('cart length : ', cartData.length);
 
   // const catalogueData = useSelector((state) => state.auth.catalogueData);
 
@@ -64,7 +62,9 @@ function CartTable() {
       cancelText: 'Cancel',
       centered: true,
       onOk: () => {
-        dispatch(deselectItem({ itemId }));
+        // dispatch(deselectItem({ itemId }));
+        dispatch(removeFromCart(itemId));
+        dispatch(getCartItem());
       },
     });
   };
@@ -189,7 +189,7 @@ function CartTable() {
         action: (
           <div className="table-action">
             <Button
-              onClick={() => handleDeleteItem(product.Item_Id, product.Item_Name)}
+              onClick={() => handleDeleteItem(product.Id, product.Item_Name)}
               className="btn-icon"
               to="#"
               size="default"
