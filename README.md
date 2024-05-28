@@ -14,7 +14,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ![image](https://github.com/dipakpatil5050/Syspro_ERP_Plus/assets/92545685/da76d97a-31cb-446c-ae57-b79650a76d24)
 
-## Catalogue Screen
+## E-Commerce : Catalogue Screen
 
 ![image](https://github.com/dipakpatil5050/Syspro_ERP_Plus/assets/92545685/6b469aa9-a911-4483-a952-7cdf9c90f758)
 
