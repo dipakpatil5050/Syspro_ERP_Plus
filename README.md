@@ -2,6 +2,22 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## MPin Authentication Screen
+
+![image](https://github.com/dipakpatil5050/Syspro_ERP_Plus/assets/92545685/e3fe9d8a-8a90-4208-874c-c67228efa581)
+
+## Login Screen
+
+![image](https://github.com/dipakpatil5050/Syspro_ERP_Plus/assets/92545685/5867a3e5-1b4e-4f0b-ad72-b9ed5e7dff08)
+
+## Dashboard Screen
+
+![image](https://github.com/dipakpatil5050/Syspro_ERP_Plus/assets/92545685/da76d97a-31cb-446c-ae57-b79650a76d24)
+
+## Catalogue Screen
+
+![image](https://github.com/dipakpatil5050/Syspro_ERP_Plus/assets/92545685/6b469aa9-a911-4483-a952-7cdf9c90f758)
+
 ## Available Scripts
 
 In the project directory, you can run:
