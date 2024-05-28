@@ -14,13 +14,14 @@ import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
 // import { selectItem, setLoading } from '../../../../redux/reducers/authReducer';
-import { setLoading, selectItem, setSingleProduct } from '../../../../redux/reducers/authReducer';
+import { selectItem } from '../../../../redux/reducers/authReducer';
 
 function ProductCards({ product }) {
   const filepathprefix = 'http://103.67.238.230:1386/';
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
   // const { paramId } = useParams();
 
   // const selectedItems = useSelector((state) => state.auth.selectedItems);

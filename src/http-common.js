@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
 import { ServerBaseurl } from './common';
 import store from './redux/store';
 
@@ -16,13 +17,9 @@ http.interceptors.request.use(
     const state = store.getState(); // Access Redux state
     const { userData, userMpinData } = state.auth;
     const mPin = userMpinData?.Data?.mPin;
-    // const mPin = localStorage.getItem('mPin');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    // if (mPin) {
-    //   config.headers['x-api-key'] = mPin;
-    // }
     config.headers['Content-Type'] = 'application/json';
     config.headers['x-api-key'] = mPin;
     // config.data || mPin
@@ -54,7 +51,7 @@ http.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // Unauthorized access - maybe token expired
       Cookies.remove('access_token');
-      alert('Session expired', 'Please log in again.');
+      toast.error('Session expired', 'Please log in again.');
     }
     // Show error alert
     // Alert.alert("Error", error.response?.data?.message || "An error occurred");

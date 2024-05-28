@@ -19,6 +19,7 @@ import Notification from './Notification';
 import ShoppingCart from './ShoppingCart';
 // import Search from './Search';
 import Settings from './settings';
+
 import { logOut, setUserData, setuserMpinData, setCatalogueData } from '../../../redux/reducers/authReducer';
 
 // import { Dropdown } from '../../dropdown/dropdown';

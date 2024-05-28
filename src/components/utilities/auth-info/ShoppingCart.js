@@ -1,4 +1,3 @@
-// import UilHdd from '@iconscout/react-unicons/icons/uil-hdd';
 // import UilUpload from '@iconscout/react-unicons/icons/uil-upload';
 import UilShoppingCart from '@iconscout/react-unicons/icons/uil-shopping-cart';
 import { Badge } from 'antd';
@@ -21,9 +20,12 @@ const ShoppingCart = React.memo(() => {
   //     rtl: state.ChangeLayoutMode.rtlData,
   //   };
   // });
+  // const selectedItems = useSelector((state) => state.auth.selectedItems);
 
-  const selectedItems = useSelector((state) => state.auth.selectedItems);
-  const catalogueData = useSelector((state) => state.auth.catalogueData);
+  const cartItems = useSelector((state) => state.cart.cartItems);
+
+  // console.log('All Cart Items List ', cartItems);
+  // const catalogueData = useSelector((state) => state.auth.catalogueData);
 
   // localStorage.getItem('selectedItems');
 
@@ -69,9 +71,9 @@ const ShoppingCart = React.memo(() => {
     <UserActionDropDown className="ninjadash-top-dropdown">
       <Heading as="h5" className="ninjadash-top-dropdown__title">
         <span className="title-text">Product Cart</span>
-        <Badge className="badge-success" count={selectedItems.length} />
+        <Badge className="badge-success" count={cartItems.length} />
       </Heading>
-      {selectedItems.length === 0 ? (
+      {cartItems.length === 0 ? (
         <p className="empty-cart-message">Your cart is currently empty.</p>
       ) : (
         <Scrollbars
@@ -83,24 +85,23 @@ const ShoppingCart = React.memo(() => {
           renderTrackHorizontal={(props) => <div {...props} style={{ display: 'none' }} className="track-horizontal" />}
         >
           <ul className="ninjadash-top-dropdown__nav selected-items-list">
-            {selectedItems.map((itemId) => {
-              const product = catalogueData?.find((item) => item.Item_Id === itemId);
+            {cartItems.map((product) => {
+              // const product = catalogueData?.find((item) => item.Item_Id === itemId);
 
-              if (!product) {
-                return <li key={itemId}>Product not found (ID: {itemId})</li>;
+              if (!cartItems) {
+                return <li key={product.Item_Id}>Product Added (ID: {product.Item_Id})</li>;
               }
 
-              const filepathprefix = 'http://103.67.238.230:1386/';
-              /* eslint-disable-next-line no-unsafe-optional-chaining */
-              const productImage = filepathprefix + product?.Gallary[0]?.Filepath;
+              // const filepathprefix = 'http://103.67.238.230:1386/';
+              // /* eslint-disable-next-line no-unsafe-optional-chaining */
+              // const productImage = filepathprefix + product?.Gallary[0]?.Filepath;
 
               return (
                 <li key={product.Item_Id}>
                   <div className="ninjadash-top-dropdown__content notifications">
                     <div className="notification-icon ">
-                      {/* <UilHdd /> */}
                       <img
-                        src={productImage}
+                        src={product.Filepath}
                         alt="no preview"
                         style={{ borderRadius: '100%', marginTop: '10px', width: '40px', height: '40px' }}
                       />
@@ -111,7 +112,7 @@ const ShoppingCart = React.memo(() => {
                         <Heading as="h5">
                           <span>{product.Item_Name}</span> added to Cart
                         </Heading>
-                        <p>₹{product.SalePrice1}</p>
+                        <p>₹{product.Saleprice1}</p>
                       </div>
                       {/* <div className="notification-status">
                         <Badge dot />
@@ -133,7 +134,7 @@ const ShoppingCart = React.memo(() => {
   return (
     <div className="ninjadash-nav-actions__item ninjadash-nav-actions__notification">
       <Popover placement="bottomLeft" content={content} action="hover">
-        <Badge style={{ display: 'flex' }} className="badge-success" count={selectedItems.length} offset={[-6, -3]}>
+        <Badge style={{ display: 'flex' }} className="badge-success" count={cartItems.length} offset={[-6, -3]}>
           <Link to="#" className="ninjadash-nav-action-link">
             <UilShoppingCart />
           </Link>

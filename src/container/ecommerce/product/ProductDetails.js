@@ -62,8 +62,11 @@ function ProductDetails() {
 
   useEffect(() => {
     dispatch(fetchSingleProductDetailById(id));
-    dispatch(getCartItem());
   }, [id, dispatch]);
+
+  useEffect(() => {
+    dispatch(getCartItem());
+  }, [dispatch]);
 
   // const productdata = products1;
   // const products = useSelector((state) => state.auth.singleProduct);
@@ -143,6 +146,7 @@ function ProductDetails() {
     if (selectedDocId) {
       console.log(`Selected Document ID: ${selectedDocId}`);
     }
+    dispatch(getCartItem());
   };
 
   const productImage = selectedImage ? `http://103.67.238.230:1386/${selectedImage}` : '';
