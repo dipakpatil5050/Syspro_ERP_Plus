@@ -106,7 +106,6 @@ const ShoppingCart = React.memo(() => {
                         style={{ borderRadius: '100%', marginTop: '10px', width: '40px', height: '40px' }}
                       />
                     </div>
-
                     <div className="notification-content d-flex">
                       <div className="notification-text">
                         <Heading as="h5">

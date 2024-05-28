@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Table, Form, Spin, Modal } from 'antd';
+import { Row, Col, Table, Form, Spin, Modal, Input } from 'antd';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
 import UilMinus from '@iconscout/react-unicons/icons/uil-minus';
@@ -136,16 +136,9 @@ function CartTable() {
 
   if (cartData !== null) {
     cartData.map((product) => {
-      // const product = catalogueData?.find((item) => item.Item_Id === itemId);
       // const quantity = productQuantities[itemId] || 1;
       const quantity = 1;
 
-      // const filepathprefix = 'http://103.67.238.230:1386/';
-      /* eslint-disable-next-line no-unsafe-optional-chaining */
-      // const productImage = filepathprefix + product?.Gallary[0]?.Filepath;
-
-      /* eslint-disable-next-line no-unsafe-optional-chaining */
-      const totalPrice = quantity * product?.SalePrice1;
       return productTableData.push({
         key: product?.Item_Id,
         product: (
@@ -187,6 +180,12 @@ function CartTable() {
           </div>
         ),
         total: <span className="cart-single-t-price">₹ {product?.Total}</span>,
+
+        remark: (
+          <span className="cart-single-t-price">
+            <Input type="text" placeholder="write remark" />
+          </span>
+        ),
         action: (
           <div className="table-action">
             <Button
@@ -233,7 +232,12 @@ function CartTable() {
       key: 'total',
     },
     {
-      title: '',
+      title: 'Remark',
+      dataIndex: 'remark',
+      key: 'remark',
+    },
+    {
+      title: 'Action',
       dataIndex: 'action',
       key: 'action',
     },
