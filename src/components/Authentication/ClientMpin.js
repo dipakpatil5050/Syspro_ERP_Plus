@@ -16,9 +16,9 @@ function ClientMpin() {
 
   const navigate = useNavigate();
 
-  const userMpinData = useSelector((state) => state.auth.userMpinData);
+  // const userMpinData = useSelector((state) => state.auth.userMpinData);
   // const isLoading = useSelector((state) => state.auth.loading);
-  const userMpinDataError = useSelector((state) => state.auth.error);
+  // const userMpinDataError = useSelector((state) => state.auth.error);
   // const [form] = Form.useForm();
 
   const handleInputChange = (e) => {

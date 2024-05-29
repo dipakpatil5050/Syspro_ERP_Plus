@@ -1020,6 +1020,15 @@ const ProductTable = Styled.div`
                             }
                         }
                     }
+                    .table-action-update{
+                        button{
+                            background: #FF4D4F15;
+                            i,
+                            svg{
+                                color: ${({ theme }) => theme['danger-color']};
+                            }
+                        }
+                    }
                 }
             }
             >tr{
@@ -1189,6 +1198,18 @@ const ProductTable = Styled.div`
             }
         }
         .table-action{
+            text-align: ${({ theme }) => (theme.rtl ? 'left' : 'right')};
+            button{
+                padding: 0 11px;
+                height: 38px;
+                background: #fff;
+                i,
+                svg{
+                    color: #707070;
+                }
+            }
+        }
+        .table-action-update{
             text-align: ${({ theme }) => (theme.rtl ? 'left' : 'right')};
             button{
                 padding: 0 11px;
