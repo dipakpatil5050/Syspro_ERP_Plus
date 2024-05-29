@@ -4,10 +4,6 @@ import toast from 'react-hot-toast';
 // import { ServerBaseurl } from './common';
 import store from './redux/store';
 
-// const mpinstate = store.getState();
-// const mpinData = mpinstate.auth.userMpinData;
-// const ServerBaseurl = mpinData?.Data?.ServerBaseUrl;
-
 export const http = axios.create();
 
 // for Request from API endpoint
