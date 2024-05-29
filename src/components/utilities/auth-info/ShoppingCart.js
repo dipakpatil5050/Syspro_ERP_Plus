@@ -71,9 +71,9 @@ const ShoppingCart = React.memo(() => {
     <UserActionDropDown className="ninjadash-top-dropdown">
       <Heading as="h5" className="ninjadash-top-dropdown__title">
         <span className="title-text">Product Cart</span>
-        <Badge className="badge-success" count={cartItems.length} />
+        <Badge className="badge-success" count={cartItems?.TotalCountOfCartItem} />
       </Heading>
-      {cartItems.length === 0 ? (
+      {cartItems?.TotalCountOfCartItem === 0 ? (
         <p className="empty-cart-message">Your cart is currently empty.</p>
       ) : (
         <Scrollbars
@@ -85,7 +85,7 @@ const ShoppingCart = React.memo(() => {
           renderTrackHorizontal={(props) => <div {...props} style={{ display: 'none' }} className="track-horizontal" />}
         >
           <ul className="ninjadash-top-dropdown__nav selected-items-list">
-            {cartItems.map((product) => {
+            {cartItems?.CartItem?.map((product) => {
               // const product = catalogueData?.find((item) => item.Item_Id === itemId);
 
               if (!cartItems) {
@@ -133,7 +133,12 @@ const ShoppingCart = React.memo(() => {
   return (
     <div className="ninjadash-nav-actions__item ninjadash-nav-actions__notification">
       <Popover placement="bottomLeft" content={content} action="hover">
-        <Badge style={{ display: 'flex' }} className="badge-success" count={cartItems.length} offset={[-6, -3]}>
+        <Badge
+          style={{ display: 'flex' }}
+          className="badge-success"
+          count={cartItems?.TotalCountOfCartItem}
+          offset={[-6, -3]}
+        >
           <Link to="#" className="ninjadash-nav-action-link">
             <UilShoppingCart />
           </Link>

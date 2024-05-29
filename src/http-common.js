@@ -1,13 +1,14 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
-import { ServerBaseurl } from './common';
+// import { ServerBaseurl } from './common';
 import store from './redux/store';
 
-export const http = axios.create({
-  // baseURL: BaseURLApi,
-  baseURL: ServerBaseurl,
-});
+// const mpinstate = store.getState();
+// const mpinData = mpinstate.auth.userMpinData;
+// const ServerBaseurl = mpinData?.Data?.ServerBaseUrl;
+
+export const http = axios.create();
 
 // for Request from API endpoint
 
@@ -17,12 +18,19 @@ http.interceptors.request.use(
     const state = store.getState(); // Access Redux state
     const { userData, userMpinData } = state.auth;
     const mPin = userMpinData?.Data?.mPin;
+
+    const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
+    if (ServerBaseUrl) {
+      config.baseURL = ServerBaseUrl;
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     config.headers['Content-Type'] = 'application/json';
     config.headers['x-api-key'] = mPin;
     // config.data || mPin
+
     if (userData && userMpinData) {
       config.headers.CompanyID = userData.Data.CompanyID;
       config.headers.YearMasterID = userData.Data.YearMasterID;
@@ -31,7 +39,6 @@ http.interceptors.request.use(
       config.headers.UserID = userData.Data.UserID;
       config.headers.client = userMpinData.Data.SlugUrl;
     }
-
     return config;
   },
   (error) => {
@@ -55,6 +62,7 @@ http.interceptors.response.use(
     }
     // Show error alert
     // Alert.alert("Error", error.response?.data?.message || "An error occurred");
+
     return Promise.reject(error);
   },
 );

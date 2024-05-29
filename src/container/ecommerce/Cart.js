@@ -10,7 +10,7 @@ import { getCartItem } from '../../Actions/Catalogue/CartAction';
 import useDocumentTitle from '../../components/dynamic-Page-Title/useDocumentTitle';
 
 const CartTable = lazy(() => import('./overview/CartTable'));
-// const Ordersummary = lazy(() => import('./overview/Ordersummary'));
+const Ordersummary = lazy(() => import('./overview/Ordersummary'));
 
 function ShoppingCart() {
   useDocumentTitle('Checkout');
@@ -41,10 +41,8 @@ function ShoppingCart() {
   // }, [dispatch]);
 
   useEffect(() => {
-    if (getCartItem) {
-      dispatch(getCartItem());
-    }
-  }, [dispatch]);
+    dispatch(getCartItem());
+  }, []);
 
   //   let subtotal = 0;
 

@@ -47,10 +47,10 @@ export const getCartItem = () => async (dispatch) => {
 
   try {
     const response = await CatalogueServices.getCartItem(body);
-    dispatch(setCartItems(response.data?.Data?.Table));
+    dispatch(setCartItems(response?.data?.Data));
   } catch (error) {
     console.error('Error adding to cart:', error);
-    toast.error(error.message);
+    // toast.error(error.message);
   }
 };
 

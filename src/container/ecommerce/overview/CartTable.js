@@ -19,7 +19,9 @@ function CartTable() {
   //   dispatch(id);
   // }, [id, dispatch]);
 
-  const cartData = useSelector((state) => state.cart.cartItems);
+  const cartData = useSelector((state) => state.cart.cartItems.CartItem);
+
+  // const subtotal = cartData.reduce((total, item) => total + item.price * item.quantity, 0);
 
   // const catalogueData = useSelector((state) => state.auth.catalogueData);
 
@@ -135,7 +137,7 @@ function CartTable() {
   const productTableData = [];
 
   if (cartData !== null) {
-    cartData.map((product) => {
+    cartData?.map((product) => {
       // const quantity = productQuantities[itemId] || 1;
       const quantity = 1;
 

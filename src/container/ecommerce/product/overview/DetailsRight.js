@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import Heading from '../../../../components/heading/heading';
 import { getCartItem } from '../../../../Actions/Catalogue/CartAction';
 // import { updateWishList } from '../../../../redux/product/actionCreator';
-import { Button } from '../../../../components/buttons/buttons';
+// import { Button } from '../../../../components/buttons/buttons';
 // import { selectItem } from '../../../../redux/reducers/authReducer';
 
 function DetailsRight() {
@@ -80,11 +80,6 @@ function DetailsRight() {
   //       quantity: quantity - 1,
   //     });
   // };
-
-  const addToCart = (id) => {
-    console.log('ID : ' + id);
-    // dispatch(selectItem({ ItemId: id }));
-  };
 
   return (
     <>

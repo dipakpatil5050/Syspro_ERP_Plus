@@ -1,9 +1,9 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Row, Col, Spin, Skeleton } from 'antd';
 import { Route, Routes, NavLink } from 'react-router-dom';
 import UilApps from '@iconscout/react-unicons/icons/uil-apps';
 import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Main } from '../../styled';
 // import { AutoComplete } from '../../../components/autoComplete/autoComplete';
 import { TopToolBox } from '../Style';
@@ -13,7 +13,7 @@ import { PageHeader } from '../../../components/page-headers/page-headers';
 import useDocumentTitle from '../../../components/dynamic-Page-Title/useDocumentTitle';
 // import { getCartItem } from '../../../Actions/Catalogue/CartAction';
 
-const { getCartItem } = lazy(() => import('../../../Actions/Catalogue/CartAction'));
+// const { getCartItem } = lazy(() => import('../../../Actions/Catalogue/CartAction'));
 
 const Filters = lazy(() => import('./overview/Filters'));
 const Grid = lazy(() => import('./overview/Grid'));
@@ -21,7 +21,14 @@ const List = lazy(() => import('./overview/List'));
 
 const Product = React.memo(() => {
   useDocumentTitle('Catalogue');
+  const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
+
+  // useEffect(() => {
+  //   if (getCartItem) {
+  //     dispatch(getCartItem());
+  //   }
+  // }, [dispatch]);
 
   const PageRoutes = [
     {
