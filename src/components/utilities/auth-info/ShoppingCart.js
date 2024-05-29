@@ -15,19 +15,7 @@ import { Popover } from '../../popup/popup';
 const ShoppingCart = React.memo(() => {
   const rtl = false;
 
-  // const { rtl } = useSelector((state) => {
-  //   return {
-  //     rtl: state.ChangeLayoutMode.rtlData,
-  //   };
-  // });
-  // const selectedItems = useSelector((state) => state.auth.selectedItems);
-
   const cartItems = useSelector((state) => state.cart.cartItems);
-
-  // console.log('All Cart Items List ', cartItems);
-  // const catalogueData = useSelector((state) => state.auth.catalogueData);
-
-  // localStorage.getItem('selectedItems');
 
   function renderThumb({ style }) {
     const thumbStyle = {
