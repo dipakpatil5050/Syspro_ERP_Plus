@@ -26,63 +26,15 @@ function ProductDetails() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.auth.singleProduct[0]);
   const loading = useSelector((state) => state.auth.loading);
-  // const userMpinData = useSelector((state) => state.auth.userMpinData);
-  // const userData = useSelector((state) => state.auth.userData);
-
-  // const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
-
-  // const fetchSingleProductDetailById = async (itemId) => {
-  //   const productByIdAPI = `${ServerBaseUrl}api/CommonAPI/GetProductByID?Item_ID=${itemId}`;
-  //   const headers = {
-  //     'Content-Type': 'application/json',
-  //     CompanyID: userData?.Data?.CompanyID,
-  //     YearMasterID: userData?.Data?.YearMasterID,
-  //     PremiseID: userData?.Data?.PremiseID,
-  //     DepartmentID: userData?.Data?.DepartmentID,
-  //     UserID: userData?.Data?.UserID,
-  //     client: userMpinData?.Data?.SlugUrl,
-  //     'x-api-key': userMpinData?.Data?.mPin,
-  //   };
-  //   try {
-  //     dispatch(setLoading(true));
-  //     const response = await axios.get(productByIdAPI, { headers });
-  //     dispatch(setSingleProduct(response.data?.Data?.products));
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   } finally {
-  //     dispatch(setLoading(false));
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchSingleProductDetailById(id);
-  // }, [id]);
-
-  // new axios inteceptor logic
+  const cartId = useSelector((state) => state.cart.cartId);
 
   useEffect(() => {
     dispatch(fetchSingleProductDetailById(id));
   }, [id, dispatch]);
 
   useEffect(() => {
-    dispatch(getCartItem());
+    dispatch(getCartItem(cartId));
   }, [dispatch]);
-
-  // const productdata = products1;
-  // const products = useSelector((state) => state.auth.singleProduct);
-
-  // const products = productdata?.find((product) => product.Item_Id === parseInt(id));
-  // products?.Gallary[0]?.Filepath
-  // const productImage = products?.Gallary[0]?.Filepath;
-  // const productImage = products?.Gallary?.length > 0 ? products.Gallary[0]?.Filepath : '';
-
-  // const [selectedImage, setSelectedImage] = useState(productImage);
-  // const [activeImageIndex, setActiveImageIndex] = useState(0);
-
-  // const handleHover = (imagePath, index) => {
-  //   setSelectedImage(imagePath);
-  //   setActiveImageIndex(index);
-  // };
 
   useEffect(() => {
     if (products?.Gallary?.length > 0) {
@@ -90,8 +42,6 @@ function ProductDetails() {
       setSelectedDocId(products.Gallary[0].Document_Id);
     }
   }, [products]);
-
-  // console.log('Selected Document ID : ', selectedDocId);
 
   const handleImageClick = (filepath, docId) => {
     setSelectedImage(filepath);
@@ -105,40 +55,6 @@ function ProductDetails() {
     }));
   };
 
-  // const itemID = products?.Item_Id;
-
-  // const FetchAddToCart = async () => {
-  //   const addToCartAPI = `${ServerBaseUrl}api/CommonAPI/Save_Cart`;
-
-  //   const body = {
-  //     Item_Id: itemID,
-  //     Document_Id: selectedDocId,
-  //   };
-  //   const headers = {
-  //     'Content-Type': 'application/json',
-  //     CompanyID: userData?.Data?.CompanyID,
-  //     YearMasterID: userData?.Data?.YearMasterID,
-  //     PremiseID: userData?.Data?.PremiseID,
-  //     DepartmentID: userData?.Data?.DepartmentID,
-  //     UserID: userData?.Data?.UserID,
-  //     client: userMpinData?.Data?.SlugUrl,
-  //     'x-api-key': userMpinData?.Data?.mPin,
-  //   };
-
-  //   try {
-  //     dispatch(setLoading(true));
-  //     const response = await axios.post(addToCartAPI, body, { headers });
-  //     // dispatch(setSingleProduct(response.data?.Data?.products));
-  //     const alertMsg = response?.data?.Message;
-  //     toast.success(alertMsg);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //     toast.error(error.message);
-  //   } finally {
-  //     dispatch(setLoading(false));
-  //   }
-  // };
-
   const handleAddToCart = (e) => {
     e.preventDefault();
     dispatch(addToCart(products.Item_Id, selectedDocId));
@@ -146,7 +62,7 @@ function ProductDetails() {
     if (selectedDocId) {
       console.log(`Selected Document ID: ${selectedDocId}`);
     }
-    dispatch(getCartItem());
+    dispatch(getCartItem(cartId));
   };
 
   const productImage = selectedImage ? `http://103.67.238.230:1386/${selectedImage}` : '';

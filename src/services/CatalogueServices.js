@@ -1,4 +1,4 @@
-import { http } from '../http-common';
+import { http } from '../API-Interceptor';
 
 class CatalogueServices {
   fetchSingleProductDetailById(itemId) {
@@ -15,6 +15,10 @@ class CatalogueServices {
 
   removeFromCart(body) {
     return http.post('api/CommonAPI/Cart_Item_Delete', body);
+  }
+
+  updateCartItem(body) {
+    return http.post('api/CommonAPI/Cart_Item_Update', body);
   }
 }
 

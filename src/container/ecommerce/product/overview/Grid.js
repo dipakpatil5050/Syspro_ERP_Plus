@@ -13,7 +13,7 @@ import { getCartItem } from '../../../../Actions/Catalogue/CartAction';
 
 const Grid = React.memo(() => {
   const dispatch = useDispatch();
-
+  const cartId = useSelector((state) => state.cart.cartId);
   const { catalogueData, loading, hasMoreData } = useSelector((state) => state.auth);
   // catalogueTotalDataCount, hasMoreData
 
@@ -24,7 +24,7 @@ const Grid = React.memo(() => {
   const totalItems = catalogueData?.length || 0;
 
   useEffect(() => {
-    dispatch(getCartItem());
+    dispatch(getCartItem(cartId));
   }, []);
 
   // for debugging purposes

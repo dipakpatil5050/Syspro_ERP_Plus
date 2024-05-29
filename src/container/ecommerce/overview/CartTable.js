@@ -10,51 +10,48 @@ import Heading from '../../../components/heading/heading';
 import { Button } from '../../../components/buttons/buttons';
 import { getCartItem, removeFromCart } from '../../../Actions/Catalogue/CartAction';
 // import { cartGetData, cartUpdateQuantity, cartDelete } from '../../../redux/cart/actionCreator';
+
 // import { deselectItem } from '../../../redux/reducers/authReducer';
 
 function CartTable() {
-  // const cartData = useSelector((state) => state.auth.selectedItems);
-
-  // useEffect(() => {
-  //   dispatch(id);
-  // }, [id, dispatch]);
-
   const cartData = useSelector((state) => state.cart.cartItems.CartItem);
 
-  // const subtotal = cartData.reduce((total, item) => total + item.price * item.quantity, 0);
+  const cartId = useSelector((state) => state.cart.cartId);
 
-  // const catalogueData = useSelector((state) => state.auth.catalogueData);
+  const isLoading = useSelector((state) => state.auth.loading);
 
-  const [productQuantities, setProductQuantities] = useState({});
+  // const [productQuantities, setProductQuantities] = useState(1);
+
+  // const [itemQuantity, setItemQuantity] = useState(1);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const storedQuantities = localStorage.getItem('productQuantities');
-    if (storedQuantities) {
-      setProductQuantities(JSON.parse(storedQuantities));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedQuantities = localStorage.getItem('productQuantities');
+  //   if (storedQuantities) {
+  //     setProductQuantities(JSON.parse(storedQuantities));
+  //   }
+  // }, []);
 
-  const updateQuantity = (itemId, newQuantity) => {
-    const updatedQuantities = { ...productQuantities, [itemId]: newQuantity };
-    setProductQuantities(updatedQuantities);
-    localStorage.setItem('productQuantities', JSON.stringify(updatedQuantities));
-  };
+  // const updateQuantity = (itemId, newQuantity) => {
+  //   const updatedQuantities = { ...productQuantities, [itemId]: newQuantity };
+  //   setProductQuantities(updatedQuantities);
+  //   localStorage.setItem('productQuantities', JSON.stringify(updatedQuantities));
+  // };
 
-  // Increment quantity
-  const incrementQuantity = (itemId) => {
-    const currentQuantity = productQuantities[itemId] || 1;
-    const newQuantity = currentQuantity + 1;
-    updateQuantity(itemId, newQuantity);
-  };
+  // // Increment quantity
+  // const incrementQuantity = (itemId) => {
+  //   const currentQuantity = productQuantities[itemId] || 1;
+  //   const newQuantity = currentQuantity + 1;
+  //   updateQuantity(itemId, newQuantity);
+  // };
 
-  // Decrement quantity
-  const decrementQuantity = (itemId) => {
-    const currentQuantity = productQuantities[itemId] || 1;
-    const newQuantity = Math.max(1, currentQuantity - 1);
-    updateQuantity(itemId, newQuantity);
-  };
+  // // Decrement quantity
+  // const decrementQuantity = (itemId) => {
+  //   const currentQuantity = productQuantities[itemId] || 1;
+  //   const newQuantity = Math.max(1, currentQuantity - 1);
+  //   updateQuantity(itemId, newQuantity);
+  // };
 
   const handleDeleteItem = (itemId, name) => {
     Modal.confirm({
@@ -64,9 +61,8 @@ function CartTable() {
       cancelText: 'Cancel',
       centered: true,
       onOk: () => {
-        // dispatch(deselectItem({ itemId }));
-        dispatch(removeFromCart(itemId));
-        dispatch(getCartItem());
+        dispatch(removeFromCart(itemId, cartId));
+        dispatch(getCartItem(cartId));
       },
     });
   };
@@ -92,7 +88,7 @@ function CartTable() {
 
   useEffect(() => {
     if (getCartItem) {
-      dispatch(getCartItem());
+      dispatch(getCartItem(cartId));
     }
   }, [dispatch]);
 
@@ -119,6 +115,7 @@ function CartTable() {
   //     return newQuantities;
   //   });
   // };
+
   // const cartDelete = (id) => {
   //   const confirm = window.confirm('Are you sure to delete this product?');
   //   if (confirm) dispatch(deselectItem(id));
@@ -138,8 +135,7 @@ function CartTable() {
 
   if (cartData !== null) {
     cartData?.map((product) => {
-      // const quantity = productQuantities[itemId] || 1;
-      const quantity = 1;
+      // const quantity = 1;
 
       return productTableData.push({
         key: product?.Item_Id,
@@ -170,13 +166,13 @@ function CartTable() {
         price: <span className="cart-single-price">₹ {product?.Saleprice1}</span>,
         quantity: (
           <div className="cart-single-quantity">
-            <Button className="btn-dec" type="default" onClick={() => decrementQuantity(product.Item_Id)}>
+            <Button className="btn-dec" type="default">
               {/* onClick={() => decrementUpdate(product.Item_Id)} */}
               <UilMinus />
             </Button>
-            {quantity}
+            {product.Qty}
             {/* onClick={() => incrementUpdate(product.Item_Id)} */}
-            <Button className="btn-inc" type="default" onClick={() => incrementQuantity(product.Item_Id)}>
+            <Button className="btn-inc" type="default">
               <UilPlus />
             </Button>
           </div>
@@ -185,7 +181,8 @@ function CartTable() {
 
         remark: (
           <span className="cart-single-t-price">
-            <Input type="text" placeholder="write remark" />
+            {/* value={product?.Remark} */}
+            <Input type="text" placeholder={`${product?.Remark || 'Write Remark'}`} />
           </span>
         ),
         action: (
@@ -206,11 +203,6 @@ function CartTable() {
       });
     });
   }
-
-  // const subtotal = productTableData.reduce((acc, curr) => {
-  //   return acc + curr.quantity * (curr.price || 0);
-  // }, 0);
-  // console.log(subtotal);
 
   const productTableColumns = [
     {
@@ -245,12 +237,6 @@ function CartTable() {
     },
   ];
 
-  //   const submitCoupon = (values) => {
-  //     setState({ ...state, coupon: values });
-  //   };
-
-  const isLoading = false;
-
   return (
     <>
       <ProductTable>
@@ -280,8 +266,8 @@ function CartTable() {
           </Row>
         </Form>
       </CouponForm>
-      {/* title="inquiry Form" */}
-      <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
+      {/* visible ={isModalVisible}  instead of open if not works */}
+      <Modal open={isModalVisible} onCancel={handleCancel} footer={null}>
         <InquiryForm />
       </Modal>
     </>

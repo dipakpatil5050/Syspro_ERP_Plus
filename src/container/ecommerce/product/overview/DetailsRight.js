@@ -13,7 +13,7 @@ import { getCartItem } from '../../../../Actions/Catalogue/CartAction';
 
 function DetailsRight() {
   const dispatch = useDispatch();
-
+  const cartId = useSelector((state) => state.cart.cartId);
   // if (!product) {
   //   return null;
   // }
@@ -23,7 +23,7 @@ function DetailsRight() {
   // });
 
   useEffect(() => {
-    dispatch(getCartItem());
+    dispatch(getCartItem(cartId));
   }, [dispatch]);
 
   const products = useSelector((state) => state.auth.singleProduct[0]);
@@ -160,7 +160,7 @@ function DetailsRight() {
   );
 }
 DetailsRight.propTypes = {
-  product: PropTypes.shape({
+  products: PropTypes.shape({
     Item_Name: PropTypes.string.isRequired,
     SalePrice1: PropTypes.number.isRequired,
     Item_Code: PropTypes.string.isRequired,

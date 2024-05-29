@@ -19,7 +19,6 @@ http.interceptors.request.use(
     if (ServerBaseUrl) {
       config.baseURL = ServerBaseUrl;
     }
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -1,4 +1,4 @@
-import { http } from '../http-common';
+import { http } from '../API-Interceptor';
 
 class authService {
   /* eslint-disable class-methods-use-this */

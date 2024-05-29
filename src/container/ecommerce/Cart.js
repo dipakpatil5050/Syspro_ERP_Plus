@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { Row, Col, Skeleton } from 'antd';
 import { Route, Routes } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main } from '../styled';
 import { Cards } from '../../components/cards/frame/cards-frame';
@@ -15,6 +15,8 @@ const Ordersummary = lazy(() => import('./overview/Ordersummary'));
 function ShoppingCart() {
   useDocumentTitle('Checkout');
 
+  const cartId = useSelector((state) => state.cart.cartId);
+
   const PageRoutes = [
     {
       path: '/admin/ecommerce/products/grid',
@@ -27,32 +29,10 @@ function ShoppingCart() {
   ];
 
   const dispatch = useDispatch();
-  //   const { cartData } = useSelector((state) => {
-  //     return {
-  //       cartData: state.cart.data,
-  //       rtl: state.ChangeLayoutMode.rtlData,
-  //     };
-  //   });
-
-  // useEffect(() => {
-  //   if (cartGetData) {
-  //     dispatch(cartGetData());
-  //   }
-  // }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getCartItem());
+    dispatch(getCartItem(cartId));
   }, []);
-
-  //   let subtotal = 0;
-
-  //   if (cartData !== null) {
-  //     cartData.map((data) => {
-  //       const { quantity, price } = data;
-  //       subtotal += parseInt(quantity, 10) * parseInt(price, 10);
-  //       return subtotal;
-  //     });
-  //   }
 
   return (
     <>
