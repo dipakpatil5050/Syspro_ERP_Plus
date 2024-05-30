@@ -75,7 +75,6 @@ export const updateCartItem = (itemID, cartId, quantity, remark) => async (dispa
     Qty: quantity,
     Remark: remark,
   };
-
   try {
     const response = await CatalogueServices.updateCartItem(body);
     toast.success(response.data?.Message);

@@ -1,62 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Table, Form, Spin, Modal, Input } from 'antd';
-import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
-import UilCheckCircle from '@iconscout/react-unicons/icons/uil-check-circle';
-
-import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
-import UilMinus from '@iconscout/react-unicons/icons/uil-minus';
+import { UilTrashAlt, UilCheckCircle, UilPlus, UilMinus } from '@iconscout/react-unicons';
 import { useSelector, useDispatch } from 'react-redux';
 import { InquiryForm } from '../../forms/overview/InquiryForm';
 import { FigureCart, ProductTable, CouponForm } from '../Style';
 import Heading from '../../../components/heading/heading';
 import { Button } from '../../../components/buttons/buttons';
 import { getCartItem, removeFromCart, updateCartItem } from '../../../Actions/Catalogue/CartAction';
-// import { cartGetData, cartUpdateQuantity, cartDelete } from '../../../redux/cart/actionCreator';
-
-// import { deselectItem } from '../../../redux/reducers/authReducer';
 
 function CartTable() {
   const cartData = useSelector((state) => state.cart.cartItems.CartItem);
-
   const cartId = useSelector((state) => state.cart.cartId);
-
   const isLoading = useSelector((state) => state.auth.loading);
-
-  // const [productQuantities, setProductQuantities] = useState(1);
-
-  const [itemQuantity, setItemQuantity] = useState(0);
-
-  const [remark, setRemark] = useState('');
-
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const storedQuantities = localStorage.getItem('productQuantities');
-  //   if (storedQuantities) {
-  //     setProductQuantities(JSON.parse(storedQuantities));
-  //   }
-  // }, []);
+  const [itemQuantity, setItemQuantity] = useState({});
+  const [remarks, setRemarks] = useState({});
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // const updateQuantity = (itemId, newQuantity) => {
-  //   const updatedQuantities = { ...productQuantities, [itemId]: newQuantity };
-  //   setProductQuantities(updatedQuantities);
-  //   localStorage.setItem('productQuantities', JSON.stringify(updatedQuantities));
-  // };
+  useEffect(() => {
+    if (cartId) {
+      dispatch(getCartItem(cartId));
+    }
+  }, [dispatch, cartId]);
 
   // Increment quantity
   const incrementQuantity = (itemId, Qty) => {
     const updatedQty = Qty + 1;
-    setItemQuantity(updatedQty);
-    dispatch(updateCartItem(itemId, cartId, updatedQty, remark));
+    setItemQuantity((prev) => ({ ...prev, [itemId]: updatedQty }));
+    dispatch(updateCartItem(itemId, cartId, updatedQty, remarks[itemId] || ''));
     dispatch(getCartItem(cartId));
   };
 
+  console.log(remarks);
+
   // Decrement quantity
   const decrementQuantity = (itemId, Qty) => {
-    const updatedQty = Qty - 1;
-    setItemQuantity(updatedQty);
-    dispatch(updateCartItem(itemId, cartId, updatedQty, remark));
-    dispatch(getCartItem(cartId));
+    if (Qty > 1) {
+      const updatedQty = Qty - 1;
+      setItemQuantity((prev) => ({ ...prev, [itemId]: updatedQty }));
+      dispatch(updateCartItem(itemId, cartId, updatedQty, remarks[itemId] || ''));
+      dispatch(getCartItem(cartId));
+    }
   };
 
   const handleDeleteItem = (itemId, name) => {
@@ -73,25 +58,19 @@ function CartTable() {
     });
   };
 
-  const handleItemUpdate = (itemId) => {
-    dispatch(updateCartItem(itemId, cartId, itemQuantity, remark));
+  const handleRemarkChange = (e, itemId) => {
+    const { value } = e.target;
+    setRemarks((prev) => ({ ...prev, [itemId]: value }));
   };
 
-  useEffect(() => {
-    if (getCartItem) {
-      dispatch(getCartItem(cartId));
-    }
-  }, [dispatch]);
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
+  const handleRemarkBlur = (itemId) => {
+    const remark = remarks[itemId] || '';
+    const quantity = itemQuantity[itemId] || cartData.find((item) => item.Id === itemId)?.Qty || 1;
+    dispatch(updateCartItem(itemId, cartId, quantity, remark));
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const showModal = () => setIsModalVisible(true);
+  const handleCancel = () => setIsModalVisible(false);
 
   const productTableData = [];
 
@@ -127,44 +106,45 @@ function CartTable() {
         quantity: (
           <div className="cart-single-quantity">
             <Button className="btn-dec" type="default" onClick={() => decrementQuantity(product.Id, product.Qty)}>
-              {/* onClick={() => decrementUpdate(product.Item_Id)} */}
               <UilMinus />
             </Button>
             {product.Qty}
-            {/* onClick={() => incrementUpdate(product.Item_Id)} */}
             <Button className="btn-inc" type="default" onClick={() => incrementQuantity(product.Id, product.Qty)}>
               <UilPlus />
             </Button>
           </div>
         ),
         total: <span className="cart-single-t-price">₹ {product?.Total}</span>,
-
         remark: (
           <span className="cart-single-t-price remark-value">
-            <Input type="text" placeholder={`${product?.Remark || 'Write Remark'}`} />
+            <Input
+              type="text"
+              value={remarks[product?.Id] || ''}
+              onChange={(e) => handleRemarkChange(e, product?.Id)}
+              onBlur={() => handleRemarkBlur(product?.Id)}
+              placeholder={`${product?.Remark || 'Write Remark'}`}
+            />
           </span>
         ),
         action: (
           <div className="table-action">
-            <Button
-              onClick={() => handleItemUpdate(product.Id)}
+            {/* <Button
+              // onClick={() => handleItemUpdate(product.Id)}
               className="btn-icon"
               to="#"
               size="default"
+              title="Update"
               type="primary"
               shape="circle"
               transparented
             >
               <UilCheckCircle />
-              {/* <img
-                src="https://image.shutterstock.com/image-vector/update-icon-vector-solid-illustration-260nw-405097894.jpg"
-                alt="action"
-              /> */}
-            </Button>
-            {'  '}
+            </Button> */}
+            {/* {'  '} */}
             <Button
               onClick={() => handleDeleteItem(product.Id, product.Item_Name)}
               className="btn-icon"
+              title="Delete"
               to="#"
               size="default"
               type="danger"
@@ -241,7 +221,6 @@ function CartTable() {
           </Row>
         </Form>
       </CouponForm>
-      {/* visible ={isModalVisible}  instead of open if not works */}
       <Modal open={isModalVisible} onCancel={handleCancel} footer={null}>
         <InquiryForm />
       </Modal>
