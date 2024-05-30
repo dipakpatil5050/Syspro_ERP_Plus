@@ -32,7 +32,7 @@ function ShoppingCart() {
 
   useEffect(() => {
     dispatch(getCartItem(cartId));
-  }, []);
+  }, [cartId, dispatch]);
 
   return (
     <>
@@ -64,7 +64,8 @@ function ShoppingCart() {
                         </Cards>
                       }
                     >
-                      {/* <Ordersummary subtotal={subTotal} checkout={false} /> */}
+                      <Ordersummary />
+                      {/* subtotal={subTotal} checkout={false} */}
                     </Suspense>
                   </Col>
                 </Row>

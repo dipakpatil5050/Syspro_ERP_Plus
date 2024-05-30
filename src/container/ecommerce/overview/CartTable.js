@@ -24,7 +24,6 @@ function CartTable() {
     }
   }, [dispatch, cartId]);
 
-  // Increment quantity
   const incrementQuantity = (itemId, Qty) => {
     const updatedQty = Qty + 1;
     setItemQuantity((prev) => ({ ...prev, [itemId]: updatedQty }));
@@ -32,9 +31,6 @@ function CartTable() {
     dispatch(getCartItem(cartId));
   };
 
-  console.log(remarks);
-
-  // Decrement quantity
   const decrementQuantity = (itemId, Qty) => {
     if (Qty > 1) {
       const updatedQty = Qty - 1;
@@ -67,6 +63,7 @@ function CartTable() {
     const remark = remarks[itemId] || '';
     const quantity = itemQuantity[itemId] || cartData.find((item) => item.Id === itemId)?.Qty || 1;
     dispatch(updateCartItem(itemId, cartId, quantity, remark));
+    dispatch(getCartItem(cartId));
   };
 
   const showModal = () => setIsModalVisible(true);
@@ -128,19 +125,6 @@ function CartTable() {
         ),
         action: (
           <div className="table-action">
-            {/* <Button
-              // onClick={() => handleItemUpdate(product.Id)}
-              className="btn-icon"
-              to="#"
-              size="default"
-              title="Update"
-              type="primary"
-              shape="circle"
-              transparented
-            >
-              <UilCheckCircle />
-            </Button> */}
-            {/* {'  '} */}
             <Button
               onClick={() => handleDeleteItem(product.Id, product.Item_Name)}
               className="btn-icon"
