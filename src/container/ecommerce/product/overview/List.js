@@ -7,17 +7,20 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductCardsList from './ProductCardList';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
-import { setLoadedItems, setOffsetValue } from '../../../../redux/reducers/authReducer';
+import { setOffsetValue } from '../../../../redux/reducers/authReducer';
 
 function List() {
   const dispatch = useDispatch();
+  const cartId = useSelector((state) => state.cart.cartId);
+  const { catalogueData, loading, offsetValue, hasMoreData } = useSelector((state) => state.auth);
 
-  const { catalogueData, loading, offsetValue } = useSelector((state) => state.auth);
-  // loadedItems
-  const [visible, setVisible] = useState(50); // loadedItems ||
   const [showTopButton, setShowTopButton] = useState(false);
-  const productsData = catalogueData;
-  const totalItems = productsData?.length;
+
+  const totalItems = catalogueData?.length || 0;
+
+  useEffect(() => {
+    dispatch(getCartItem(cartId));
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,22 +38,8 @@ function List() {
     };
   }, []);
 
-  // localStorage.setItem('loadedItems', visible);
-  useEffect(() => {
-    if (totalItems === visible) {
-      dispatch(setOffsetValue(offsetValue + 1));
-    }
-    // dispatch(setLoadedItems(visible));
-  }, [visible, dispatch]);
-
-  const showMoreItems = () => {
-    setVisible((prevValue) => prevValue + 10);
-  };
-
   const fetchMoreData = () => {
-    setTimeout(() => {
-      showMoreItems();
-    }, 1500);
+    dispatch(setOffsetValue(offsetValue + 1));
   };
 
   const scrollToTop = () => {
@@ -60,50 +49,36 @@ function List() {
     });
   };
 
-  if (loading && visible === 10) {
-    return (
-      <Row gutter={30}>
-        <Col xs={24}>
-          <div className="spin">
-            <Spin />
-          </div>
-        </Col>
-      </Row>
-    );
-  }
   return (
     <>
       <InfiniteScroll
-        dataLength={visible}
+        dataLength={totalItems}
         next={fetchMoreData}
-        hasMore={visible < productsData?.length}
+        hasMore={hasMoreData}
         loader={<Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />}
         style={{ overflow: 'hidden' }}
         endMessage={
           <NotFoundWrapper>
-            {loading && (
-              <div className="spin">
-                <Spin />
-              </div>
+            {!loading && (
+              // (
+              //   <div className="spin">
+              //     <Spin />
+              //   </div>
+              // )
+              <Heading as="h1">No more products to load</Heading>
             )}
-            <Heading as="h1">No more products to load</Heading>
           </NotFoundWrapper>
         }
       >
         <Row gutter={15}>
-          {productsData && productsData.length ? (
-            productsData.slice(0, visible).map((product) => {
+          {catalogueData &&
+            catalogueData.map((product) => {
               return (
                 <Col xs={24} key={product.Item_Id}>
                   <ProductCardsList product={product} />
                 </Col>
               );
-            })
-          ) : (
-            <Col xs={24}>
-              <Heading as="h1">Data Not Found</Heading>
-            </Col>
-          )}
+            })}
         </Row>
       </InfiniteScroll>
       {showTopButton && (
