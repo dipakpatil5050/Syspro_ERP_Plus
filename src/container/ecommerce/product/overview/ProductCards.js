@@ -116,13 +116,13 @@ function ProductCards({ product }) {
           </figure>
         </label>
 
-        {!isChecked && (
+        {/* {!isChecked && (
           <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
             <Button className="btn-icon" shape="circle" type="primary" size="large">
               <Share2 style={{ color: 'white' }} />
             </Button>
           </Col>
-        )}
+        )} */}
         <figcaption>
           {/* {isChecked && (
             <Button size="small" type="white" style={{ position: 'absolute', bottom: 35, right: 10 }}>
