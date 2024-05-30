@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 // import UilShareAlt from '@iconscout/react-unicons/icons/uil-share-alt';
 // import { IoShareSocialOutline } from 'react-icons/io5';
-import { Share2 } from 'lucide-react';
+import { Pointer, Share2 } from 'lucide-react';
 // import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
 // import UilCheckCircle from '@iconscout/react-unicons/icons/uil-check-circle';
 import { Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 // import { NavLink } from 'react-router-dom';
 // import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
@@ -18,8 +18,8 @@ import { selectItem } from '../../../../redux/reducers/authReducer';
 
 function ProductCards({ product }) {
   const filepathprefix = 'http://103.67.238.230:1386/';
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // const { paramId } = useParams();
@@ -42,15 +42,15 @@ function ProductCards({ product }) {
   };
 
   // localStorage functionality for Selected Card Items
-  useEffect(() => {
-    const selectedItemsFromStorage = JSON.parse(localStorage.getItem('selectedItems')) || [];
-    setIsChecked(selectedItemsFromStorage.includes(product.Item_Id));
-  }, [product.Item_Id]);
+  // useEffect(() => {
+  //   const selectedItemsFromStorage = JSON.parse(localStorage.getItem('selectedItems')) || [];
+  //   setIsChecked(selectedItemsFromStorage.includes(product.Item_Id));
+  // }, [product.Item_Id]);
 
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-    dispatch(selectItem({ itemId: product.Item_Id, isChecked: event.target.checked }));
-  };
+  // const handleCheckboxChange = (event) => {
+  //   setIsChecked(event.target.checked);
+  //   dispatch(selectItem({ itemId: product.Item_Id, isChecked: event.target.checked }));
+  // };
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
   const productImage = !imageError && gallery?.length > 0 ? filepathprefix + gallery[0]?.Filepath : null;
@@ -82,6 +82,10 @@ function ProductCards({ product }) {
     window.open(`/admin/ecommerce/productDetails/${itemid}`, '_blank');
   };
 
+  function capitalizeFirstLetter(str) {
+    return str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  }
+
   return (
     <>
       <ProductCard
@@ -89,27 +93,28 @@ function ProductCards({ product }) {
           marginBottom: 30,
           border: isChecked ? '2px solid #007bff' : 'none',
           boxShadow: '0px 3px 2px rgba(0, 0, 0, 0.24)',
+          cursor: 'pointer',
         }}
+        // ref={product.Item_Id}
+        onClick={() => handleProductClick(product.Item_Id)}
       >
         <label htmlFor={`checkbox-${id}`}>
-          <Checkbox
+          {/* <Checkbox
             id={`checkbox-${id}`}
             checked={isChecked}
-            onChange={handleCheckboxChange}
+            // onChange={handleCheckboxChange}
             style={{ position: 'absolute', top: 10, left: 10 }}
-          />
+          /> */}
           <figure>
             <img
               src={productImage || defaultImage}
               alt={name}
               height={200}
               onError={handleImageError}
-              style={{ borderRadius: '9px' }}
+              style={{ borderRadius: '9px', cursor: 'pointer' }}
             />
           </figure>
         </label>
-
-        {/* width={290} height={200} */}
 
         {!isChecked && (
           <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
@@ -133,14 +138,12 @@ function ProductCards({ product }) {
 
             {/* <b>{name}</b> */}
 
-            {/* link Option */}
-
             {/* to={`/admin/ecommerce/productDetails/${id}`} */}
 
             {/* <Link to={`/admin/ecommerce/productDetails/${id}`}>{name}</Link> */}
 
             <Link onClick={() => handleProductClick(id)}>{name}</Link>
-
+            {/* {capitalizeFirstLetter(name) */}
             {/* {name} */}
             {/* <Button onClick={handleProductById}>{name}</Button> */}
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Table, Form, Spin, Modal, Input } from 'antd';
 import { UilTrashAlt, UilCheckCircle, UilPlus, UilMinus } from '@iconscout/react-unicons';
+import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { InquiryForm } from '../../forms/overview/InquiryForm';
 import { FigureCart, ProductTable, CouponForm } from '../Style';
@@ -68,6 +70,45 @@ function CartTable() {
 
   const showModal = () => setIsModalVisible(true);
   const handleCancel = () => setIsModalVisible(false);
+
+  const rtl = false;
+  function renderThumb({ style }) {
+    const thumbStyle = {
+      borderRadius: 6,
+      backgroundColor: '#F1F2F6',
+    };
+    return <div style={{ ...style, ...thumbStyle }} />;
+  }
+
+  const renderTrackVertical = () => {
+    const thumbStyle = {
+      position: 'absolute',
+      width: '6px',
+      transition: 'opacity 200ms ease 0s',
+      opacity: 0,
+      [rtl ? 'left' : 'right']: '2px',
+      bottom: '2px',
+      top: '2px',
+      borderRadius: '3px',
+    };
+    return <div className="hello" style={thumbStyle} />;
+  };
+
+  function renderView({ style }) {
+    const customStyle = {
+      marginRight: rtl && 'auto',
+      [rtl ? 'marginLeft' : 'marginRight']: '-17px',
+    };
+    return <div style={{ ...style, ...customStyle }} />;
+  }
+
+  renderThumb.propTypes = {
+    style: PropTypes.shape(PropTypes.object),
+  };
+
+  renderView.propTypes = {
+    style: PropTypes.shape(PropTypes.object),
+  };
 
   const productTableData = [];
 
@@ -185,18 +226,25 @@ function CartTable() {
           </div>
         ) : (
           <div className="table-cart table-responsive">
-            <Table pagination={false} dataSource={productTableData} columns={productTableColumns} />
+            <Scrollbars
+              // autoHeight
+              autoHide
+              style={{ height: 750 }}
+              renderThumbVertical={renderThumb}
+              renderView={renderView}
+              renderTrackVertical={renderTrackVertical}
+              renderTrackHorizontal={(props) => (
+                <div {...props} style={{ display: ' ' }} className="track-horizontal" />
+              )}
+            >
+              <Table pagination={false} dataSource={productTableData} columns={productTableColumns} />
+            </Scrollbars>
           </div>
         )}
       </ProductTable>
       <CouponForm>
         <Form name="submitCoupon">
           <Row gutter={15}>
-            {/* <Col lg={4} sm={8} xs={24}>
-              <Form.Item name="coupon" label="">
-                <Input placeholder="Coupon Code" />
-              </Form.Item>
-            </Col> */}
             <Col lg={4} sm={8} xs={24}>
               <Button htmlType="submit" size="default" type="primary" onClick={showModal}>
                 Share

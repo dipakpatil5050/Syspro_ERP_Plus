@@ -21,6 +21,7 @@ const { Header, Sider, Content } = Layout;
 
 const ThemeLayout = (WrappedComponent) => {
   const currentYear = new Date().getFullYear();
+
   class LayoutComponent extends Component {
     constructor(props) {
       super(props);
@@ -210,14 +211,21 @@ const ThemeLayout = (WrappedComponent) => {
                     <Row>
                       <Col md={12} xs={24}>
                         <span className="admin-footer__copyright">
-                          © {currentYear} <Link to="#">Galaxy Infotech</Link>
+                          © {currentYear}
+                          <Link target="_blank" to="https://sysproerp.com">
+                            Galaxy Infotech
+                          </Link>
                         </span>
                       </Col>
                       <Col md={12} xs={24}>
                         <div className="admin-footer__links">
-                          <NavLink to="#">About</NavLink>
+                          <NavLink target="_blank" to="https://sysproerp.com/about-us/">
+                            About
+                          </NavLink>
                           <NavLink to="#">Team</NavLink>
-                          <NavLink to="#">Contact</NavLink>
+                          <NavLink target="_blank" to="https://sysproerp.com/contact-us/">
+                            Contact
+                          </NavLink>
                         </div>
                       </Col>
                     </Row>

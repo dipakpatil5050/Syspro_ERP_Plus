@@ -11,12 +11,12 @@ import { ProductCard, ProductDetailsWrapper } from '../Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 // import { setLoading, setSingleProduct } from '../../../redux/reducers/authReducer';
 import { fetchSingleProductDetailById, addToCart, getCartItem } from '../../../Actions/Catalogue/CartAction';
-import useDocumentTitle from '../../../components/dynamic-Page-Title/useDocumentTitle';
+// import useDocumentTitle from '../../../components/dynamic-Page-Title/useDocumentTitle';
 
 const DetailsRight = lazy(() => import('./overview/DetailsRight'));
 
 function ProductDetails() {
-  useDocumentTitle('Product Details');
+  // useDocumentTitle('Product Details');
   const [selectedImage, setSelectedImage] = useState('');
   const [selectedDocId, setSelectedDocId] = useState(null);
   const [checkedImages, setCheckedImages] = useState({});

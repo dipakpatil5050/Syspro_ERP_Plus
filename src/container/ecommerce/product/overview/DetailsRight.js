@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 // import FontAwesome from 'react-fontawesome';
 import Heading from '../../../../components/heading/heading';
 import { getCartItem } from '../../../../Actions/Catalogue/CartAction';
+import useDocumentTitle from '../../../../components/dynamic-Page-Title/useDocumentTitle';
 // import { updateWishList } from '../../../../redux/product/actionCreator';
 // import { Button } from '../../../../components/buttons/buttons';
 // import { selectItem } from '../../../../redux/reducers/authReducer';
@@ -28,13 +29,7 @@ function DetailsRight() {
 
   const products = useSelector((state) => state.auth.singleProduct[0]);
 
-  /* eslint-disable camelcase */
-
-  // const product = products[0];
-
-  // const { Item_Name, Item_Code, SalePrice1, DesignNo, Item_Id } = product;
-
-  // const [isModalVisible, setIsModalVisible] = useState(false);
+  useDocumentTitle(`${products?.Item_Name}- Product Details`);
 
   // const showModal = () => {
   //   setIsModalVisible(true);
@@ -58,10 +53,6 @@ function DetailsRight() {
   //     color: 'green',
   //   };
   // }
-  // const { name, rate, price, oldPrice, description, category, brand, popular, id } = product;
-
-  // const { quantity } = state;
-  // console.log(id);
 
   // Quantity :
   // const incrementQuantity = (e) => {
@@ -152,10 +143,6 @@ function DetailsRight() {
           </li>
         </ul> */}
       </div>
-
-      {/* <Modal title="inquiry Form" visible={isModalVisible} onCancel={handleCancel} footer={null}>
-        <p>Home</p>
-      </Modal> */}
     </>
   );
 }
