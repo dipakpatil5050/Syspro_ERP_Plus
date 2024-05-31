@@ -4,7 +4,6 @@ import { UilTrashAlt, UilCheckCircle, UilPlus, UilMinus } from '@iconscout/react
 import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { InquiryForm } from '../../forms/overview/InquiryForm';
 import { FigureCart, ProductTable, CouponForm } from '../Style';
 import Heading from '../../../components/heading/heading';
 import { Button } from '../../../components/buttons/buttons';
@@ -18,7 +17,6 @@ function CartTable() {
 
   const [itemQuantity, setItemQuantity] = useState({});
   const [remarks, setRemarks] = useState({});
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     if (cartId) {
@@ -67,9 +65,6 @@ function CartTable() {
     dispatch(updateCartItem(itemId, cartId, quantity, remark));
     dispatch(getCartItem(cartId));
   };
-
-  const showModal = () => setIsModalVisible(true);
-  const handleCancel = () => setIsModalVisible(false);
 
   const rtl = false;
   function renderThumb({ style }) {
@@ -160,7 +155,7 @@ function CartTable() {
               value={remarks[product?.Id] || ''}
               onChange={(e) => handleRemarkChange(e, product?.Id)}
               onBlur={() => handleRemarkBlur(product?.Id)}
-              placeholder={`${product?.Remark || 'Write Remark'}`}
+              placeholder={`${product?.Remark || 'Write Remark ...'}`}
             />
           </span>
         ),
@@ -242,20 +237,6 @@ function CartTable() {
           </div>
         )}
       </ProductTable>
-      <CouponForm>
-        <Form name="submitCoupon">
-          <Row gutter={15}>
-            <Col lg={4} sm={8} xs={24}>
-              <Button htmlType="submit" size="default" type="primary" onClick={showModal}>
-                Share
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </CouponForm>
-      <Modal open={isModalVisible} onCancel={handleCancel} footer={null}>
-        <InquiryForm />
-      </Modal>
     </>
   );
 }

@@ -24,7 +24,6 @@ const Grid = React.memo(() => {
   }, []);
 
   // for debugging console
-
   // console.log('total items : ', totalItems);
   // console.log('has more data: ', hasMoreData);
   // console.log('Offset value Count : ', offsetValue);

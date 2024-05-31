@@ -14,7 +14,6 @@ import { Popover } from '../../popup/popup';
 
 const ShoppingCart = React.memo(() => {
   const rtl = false;
-
   const cartItems = useSelector((state) => state.cart.cartItems);
 
   function renderThumb({ style }) {
@@ -24,7 +23,6 @@ const ShoppingCart = React.memo(() => {
     };
     return <div style={{ ...style, ...thumbStyle }} />;
   }
-
   const renderTrackVertical = () => {
     const thumbStyle = {
       position: 'absolute',
@@ -74,15 +72,9 @@ const ShoppingCart = React.memo(() => {
         >
           <ul className="ninjadash-top-dropdown__nav selected-items-list">
             {cartItems?.CartItem?.map((product) => {
-              // const product = catalogueData?.find((item) => item.Item_Id === itemId);
-
               if (!cartItems) {
                 return <li key={product.Item_Id}>Product Added (ID: {product.Item_Id})</li>;
               }
-
-              // const filepathprefix = 'http://103.67.238.230:1386/';
-              // /* eslint-disable-next-line no-unsafe-optional-chaining */
-              // const productImage = filepathprefix + product?.Gallary[0]?.Filepath;
 
               return (
                 <li key={product.Item_Id}>

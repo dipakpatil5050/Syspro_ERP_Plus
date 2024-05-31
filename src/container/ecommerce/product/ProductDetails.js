@@ -118,9 +118,9 @@ function ProductDetails() {
                             src={productImage}
                             alt="No preview"
                             style={{ width: '100%', height: '400px' }}
-                            onError={(e) =>
-                              (e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview')
-                            }
+                            onError={(e) => {
+                              e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
+                            }}
                           />
                         </figure>
 
@@ -130,10 +130,10 @@ function ProductDetails() {
                               <div className="pdbl__image pdbs" style={{ display: 'flex' }}>
                                 {products?.Gallary?.map((value, index) => {
                                   /* const borderStyle = index === activeImageIndex ? '2px solid #5840ff' : 'none'; */
-                                  <Checkbox
-                                    checked={checkedImages[value.Document_Id] || false}
-                                    onChange={(e) => handleCheckboxChange(value.Document_Id, e.target.checked)}
-                                  />;
+                                  // <Checkbox
+                                  //   checked={checkedImages[value.Document_Id] || false}
+                                  //   onChange={(e) => handleCheckboxChange(value.Document_Id, e.target.checked)}
+                                  // />;
                                   return (
                                     <>
                                       <figure
@@ -144,24 +144,16 @@ function ProductDetails() {
                                           // border: borderStyle,
                                           borderRadius: '10px',
                                         }}
-                                        onClick={() => handleImageClick(value.Filepath, value.Document_Id)}
-                                        // onMouseEnter={() => handleHover(value?.Filepath, index)}
-                                        // onMouseLeave={() =>
-                                        //   setActiveImageIndex(
-                                        //     selectedImage.split('/').pop() === value?.Filepath.split('/').pop()
-                                        //       ? activeImageIndex
-                                        //       : 0,
-                                        //   )
-                                        // }
                                       >
                                         <img
                                           src={`http://103.67.238.230:1386/${value.Filepath}`}
                                           alt={products?.Item_Name}
                                           style={{ width: '100px', height: '100%' }}
-                                          onError={(e) =>
-                                            (e.target.src =
-                                              'https://dummyimage.com/100x100/ffffff/000000.png&text=No+Preview')
-                                          }
+                                          onError={(e) => {
+                                            e.target.src =
+                                              'https://dummyimage.com/100x100/ffffff/000000.png&text=No+Preview';
+                                          }}
+                                          onClick={() => handleImageClick(value.Filepath, value.Document_Id)}
                                         />
                                       </figure>
                                     </>

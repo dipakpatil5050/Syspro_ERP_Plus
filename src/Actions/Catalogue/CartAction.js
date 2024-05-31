@@ -77,6 +77,22 @@ export const updateCartItem = (itemID, cartId, quantity, remark) => async (dispa
   };
   try {
     const response = await CatalogueServices.updateCartItem(body);
+    // toast.success(response.data?.Message);
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+    toast.error(error.message);
+  }
+};
+
+export const sendInquiry = (itemID, cartId, quantity, remark) => async (dispatch) => {
+  const body = {
+    Id: itemID,
+    Cart_Id: cartId,
+    Qty: quantity,
+    Remark: remark,
+  };
+  try {
+    const response = await CatalogueServices.sendInquiry(body);
     toast.success(response.data?.Message);
   } catch (error) {
     console.error('Error adding to cart:', error);

@@ -8,6 +8,7 @@ import ProductCardsList from './ProductCardList';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
 import { setOffsetValue } from '../../../../redux/reducers/authReducer';
+import { getCartItem } from '../../../../Actions/Catalogue/CartAction';
 
 function List() {
   const dispatch = useDispatch();

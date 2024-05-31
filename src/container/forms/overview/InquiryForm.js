@@ -1,86 +1,25 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Spin } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
-import toast from 'react-hot-toast';
 import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
-import { setLoading } from '../../../redux/reducers/authReducer';
+import { sendInquiry } from '../../../Actions/Catalogue/CartAction';
 
 function InquiryForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [address, setAddress] = useState('');
+  const [gst, setGst] = useState('');
+  const [remark, setRemark] = useState('');
+
   const dispatch = useDispatch();
-  const userFormData = new FormData();
-  const userMpinData = useSelector((state) => state.auth.userMpinData);
-  const userData = useSelector((state) => state.auth.userData);
-
   const loading = useSelector((state) => state.auth.loading);
+  const cartId = useSelector((state) => state.cart.cartId);
 
-  const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
-  const mPin = userMpinData?.Data?.mPin;
-  const SlugUrl = userMpinData?.Data?.SlugUrl;
-
-  const userheaderdata = userData?.Data;
-  const Companyid = userheaderdata?.CompanyID;
-  const YearMasterid = userheaderdata?.YearMasterID;
-  const Premiseid = userheaderdata?.PremiseID;
-  const Departmentid = userheaderdata?.DepartmentID;
-  const Userid = userheaderdata?.UserID;
-  const CompanyName = userheaderdata?.CompanyName;
-
-  const selectedItems = useSelector((state) => state.auth.selectedItems);
-
-  const itemIDs = selectedItems.join(',');
-  console.log(itemIDs);
-
-  const [formData, setFormData] = useState({
-    firstname: '',
-    email: '',
-    telephone: '',
-    remarks: '',
-  });
-
-  const handleChange = (event) => {
-    // formData.append([event.target.name],event.target.value );
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
-  const handleInquirySubmit = async (e) => {
-    userFormData.append('CompanyName', CompanyName);
-    userFormData.append('itemids', itemIDs);
-    userFormData.append('firstname', formData.firstname);
-    userFormData.append('email', formData.email);
-    userFormData.append('telephone', formData.telephone);
-    userFormData.append('remarks', formData.remarks);
-    e.preventDefault();
-    const EmailInquiryAPI = `${ServerBaseUrl}api/CommonAPI/productinquiry`;
-
-    const headers = {
-      'Content-Type': 'multipart/form-data',
-      CompanyID: Companyid,
-      YearMasterID: YearMasterid,
-      PremiseID: Premiseid,
-      DepartmentID: Departmentid,
-      UserID: Userid,
-      client: SlugUrl,
-      'x-api-key': mPin,
-    };
-    try {
-      dispatch(setLoading(true));
-      const response = await axios.post(EmailInquiryAPI, userFormData, { headers });
-      const EmailInquiryAPIResponse = response?.data?.Data;
-      console.log(EmailInquiryAPIResponse);
-      toast.success('Product inquiry Sent successfully....!');
-      dispatch(setLoading(false));
-      console.log(formData);
-    } catch (error) {
-      console.error('Error in data fetching:', error);
-      toast.error('Error to fetch API.');
-    } finally {
-      dispatch(setLoading(false));
-    }
+  const handleInquirySubmit = () => {
+    dispatch(sendInquiry(cartId));
   };
 
   return (
@@ -103,31 +42,62 @@ function InquiryForm() {
         <VerticalFormStyleWrap>
           <Cards title="Inquiry Form">
             <Form onSubmit={handleInquirySubmit} name="ninjadash-vertical-form" layout="vertical">
-              <Form.Item name="firstname" label="Name">
+              <Form.Item name="firstname" label="Name" rules={[{ message: 'Please enter your name', required: true }]}>
                 <Input
                   placeholder="Name"
                   id="firstname"
                   name="firstname"
-                  value={formData.firstname}
-                  onChange={handleChange}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Form.Item>
-              <Form.Item name="email" label="Email Address">
+              <Form.Item
+                name="email"
+                label="Email Address"
+                rules={[{ message: 'Please enter your email', required: true }]}
+              >
                 <Input
                   placeholder="Enter Email"
                   id="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Item>
-              <Form.Item name="telephone" label="Phone Number">
+              <Form.Item
+                name="telephone"
+                label="Mobile Number"
+                rules={[{ message: 'Please enter your mobile number', required: true }]}
+              >
                 <Input
-                  placeholder="Enter Phone Number"
+                  placeholder="Enter Mobile Number"
                   id="telephone"
                   name="telephone"
-                  value={formData.telephone}
-                  onChange={handleChange}
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
+                />
+              </Form.Item>
+              <Form.Item
+                name="address"
+                label="Address"
+                rules={[{ message: 'Please enter your address', required: true }]}
+              >
+                <textarea
+                  placeholder="Please Enter your address "
+                  name="txtDescEd"
+                  cols="63"
+                  rows="3"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </Form.Item>
+              <Form.Item name="gst" label="GST Number">
+                <Input
+                  placeholder="Enter GST Number"
+                  id="gst"
+                  name="gst"
+                  value={gst}
+                  onChange={(e) => setGst(e.target.value)}
                 />
               </Form.Item>
               <Form.Item name="remarks" label="Remarks">
@@ -135,8 +105,8 @@ function InquiryForm() {
                   placeholder="write something for description"
                   id="remarks"
                   name="remarks"
-                  value={formData.remarks}
-                  onChange={handleChange}
+                  value={remark}
+                  onChange={(e) => setRemark(e.target.value)}
                 />
               </Form.Item>
               <div className="ninjadash-form-action">

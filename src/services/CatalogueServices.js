@@ -20,6 +20,10 @@ class CatalogueServices {
   updateCartItem(body) {
     return http.post('api/CommonAPI/Cart_Item_Update', body);
   }
+
+  sendInquiry(body) {
+    return http.post('api/CommonAPI/ProductInquiry', body);
+  }
 }
 
 export default new CatalogueServices();
