@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   cartItems: [], // localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) :
   cartId: 1,
+  IndentId: 0,
+  orderPDF: null,
   isLoading: false,
   error: null,
   total: 0,
@@ -50,9 +52,15 @@ export const cartSlice = createSlice({
     setCartId: (state, action) => {
       state.cartId = action.payload;
     },
+    setIntentId: (state, action) => {
+      state.IndentId = action.payload;
+    },
+    setOrderPdf: (state, action) => {
+      state.orderPDF = action.payload;
+    },
   },
 });
 
-export const { setCartItems, setCartId } = cartSlice.actions;
+export const { setCartItems, setCartId, setIntentId, setOrderPdf } = cartSlice.actions;
 
 export default cartSlice.reducer;

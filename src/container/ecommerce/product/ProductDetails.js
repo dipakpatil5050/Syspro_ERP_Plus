@@ -33,7 +33,7 @@ function ProductDetails() {
 
   useEffect(() => {
     dispatch(getCartItem(cartId));
-  }, [dispatch]);
+  }, [dispatch, cartId]);
 
   useEffect(() => {
     if (products?.Gallary?.length > 0) {

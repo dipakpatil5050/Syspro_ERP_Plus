@@ -22,7 +22,11 @@ class CatalogueServices {
   }
 
   sendInquiry(body) {
-    return http.post('api/CommonAPI/ProductInquiry', body);
+    return http.post('api/CommonAPI/OrderIndent', body);
+  }
+
+  orderPrint(body) {
+    return http.post('api/CommonAPI/OrderPrint', body);
   }
 }
 
