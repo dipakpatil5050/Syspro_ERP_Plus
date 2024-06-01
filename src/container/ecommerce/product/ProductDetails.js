@@ -61,6 +61,7 @@ function ProductDetails() {
     if (selectedDocId) {
       console.log(`Selected Document ID: ${selectedDocId}`);
     }
+
     dispatch(getCartItem(cartId));
   };
 

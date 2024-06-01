@@ -4,7 +4,7 @@ const initialState = {
   cartItems: [], // localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) :
   cartId: 1,
   IndentId: 0,
-  orderPDF: null,
+  orderPDF: '',
   isLoading: false,
   error: null,
   total: 0,
