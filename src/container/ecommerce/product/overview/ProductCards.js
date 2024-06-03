@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 // import UilShareAlt from '@iconscout/react-unicons/icons/uil-share-alt';
 // import { IoShareSocialOutline } from 'react-icons/io5';
 import { Pointer, Share2 } from 'lucide-react';
-// import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
+import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
 // import UilCheckCircle from '@iconscout/react-unicons/icons/uil-check-circle';
 import { Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
@@ -13,6 +13,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
+import { addToCart } from '../../../../Actions/Catalogue/CartAction';
+
 // import { selectItem, setLoading } from '../../../../redux/reducers/authReducer';
 import { selectItem } from '../../../../redux/reducers/authReducer';
 
@@ -29,8 +31,9 @@ function ProductCards({ product }) {
   const [imageError, setImageError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery } = product;
+  const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery, Document_Id: docId } = product;
 
+  console.log(docId);
   // console.log('Products IDs : ', id);
 
   // const selectedItemsCount = useSelector((state) => state.auth.selectedItems.length);
@@ -96,7 +99,6 @@ function ProductCards({ product }) {
           cursor: 'pointer',
         }}
         // ref={product.Item_Id}
-        onClick={() => handleProductClick(product.Item_Id)}
       >
         <label htmlFor={`checkbox-${id}`}>
           {/* <Checkbox
@@ -105,65 +107,37 @@ function ProductCards({ product }) {
             // onChange={handleCheckboxChange}
             style={{ position: 'absolute', top: 10, left: 10 }}
           /> */}
-          <figure>
+          <figure onClick={() => handleProductClick(product.Item_Id)}>
+            {/* here multiple item images will be shown with Slider */}
+            {/* maxWidth: '100%', aspectRatio: 'auto' */}
             <img
               src={productImage || defaultImage}
               alt={name}
-              height={200}
+              height={300}
               onError={handleImageError}
-              style={{ borderRadius: '9px', cursor: 'pointer' }}
+              style={{
+                borderRadius: '9px',
+                cursor: 'pointer',
+                maxWidth: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center center',
+              }}
             />
           </figure>
         </label>
-
-        {/* {!isChecked && (
-          <Col align="right" style={{ position: 'absolute', right: '0', top: '178px' }}>
-            <Button className="btn-icon" shape="circle" type="primary" size="large">
-              <Share2 style={{ color: 'white' }} />
-            </Button>
-          </Col>
-        )} */}
         <figcaption>
-          {/* {isChecked && (
-            <Button size="small" type="white" style={{ position: 'absolute', bottom: 35, right: 10 }}>
-              Selected &nbsp; <UilCheckCircle />
-            </Button>
-          )} */}
           <Heading className="product-single-title" as="h5">
-            {/* onClick={showModal} */}
-            {/* <NavLink to={`/admin/ecommerce/productDetails/${id}`} state={{ product }}>
-              {name}
-            </NavLink> */}
-            {/* onClick={handleProductById(id)} */}
-
-            {/* <b>{name}</b> */}
-
-            {/* to={`/admin/ecommerce/productDetails/${id}`} */}
-
-            {/* <Link to={`/admin/ecommerce/productDetails/${id}`}>{name}</Link> */}
-
             <Link onClick={() => handleProductClick(id)}>{name}</Link>
-            {/* {capitalizeFirstLetter(name) */}
-            {/* {name} */}
-            {/* <Button onClick={handleProductById}>{name}</Button> */}
-
-            {/* from API */}
-            {/* to={`/admin/ecommerce/productDetails/${id}`} */}
-            {/* <p onClick={handleProductById(product?.Item_Id)}>{name}</p> */}
-            {/* <a target="_blank">{name}</a> */}
           </Heading>
-          <p className="product-single-price">
+          <p className="product-single-price" style={{ marginTop: '7px' }}>
             <span className="product-single-price__new">₹ {price} </span>
           </p>
-          {/* <div className="product-single-action">
-          <Button size="small" type="white" className="btn-cart" outlined>
-            <UilShoppingBag />
-            Add To Cart
-          </Button>
-          <Button size="small" type="primary">
-            Buy Now
-          </Button>
-        </div> */}
+          <div className="" style={{ textAlign: 'end', position: 'absolute', bottom: 36, right: 10 }}>
+            <Button size="small" type="primary" className="">
+              <UilShoppingBag />
+              Add To Cart
+            </Button>
+          </div>
         </figcaption>
       </ProductCard>
       {/* <Modal title="Product Detail" visible={isModalVisible} onCancel={handleCancel} footer={null}>
@@ -194,6 +168,7 @@ ProductCards.propTypes = {
     Item_Name: PropTypes.string.isRequired,
     SalePrice1: PropTypes.number.isRequired,
     DesignNo: PropTypes.number.isRequired,
+    Document_Id: PropTypes.number.isRequired,
     Gallary: PropTypes.arrayOf(
       PropTypes.shape({
         Document_Id: PropTypes.number.isRequired,

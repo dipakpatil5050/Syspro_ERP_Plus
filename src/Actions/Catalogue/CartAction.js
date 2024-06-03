@@ -113,15 +113,13 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     };
     const res = await CatalogueServices.orderPrint(bodydata);
     dispatch(setOrderPdf(res.data?.Data?.ReportPath));
-    console.log('Pdf File Path ', res.data?.Data?.ReportPath);
     toast.success('🛒🛍️Your Order has been Placed successfully....!✨');
     setTimeout(() => {
       window.open(res.data?.Data?.ReportPath, '_blank');
     }, 2500);
-      
     dispatch(setCartItems([]));
   } catch (error) {
-    console.error('Error while send Inquiry:', error);
+    console.error('Inquiry send Error:', error);
     toast.error(error.message);
   }
 };

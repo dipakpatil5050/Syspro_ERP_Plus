@@ -224,7 +224,7 @@ function CartTable() {
             <Scrollbars
               // autoHeight
               autoHide
-              style={{ height: 750 }}
+              style={{ height: 700 }}
               renderThumbVertical={renderThumb}
               renderView={renderView}
               renderTrackVertical={renderTrackVertical}

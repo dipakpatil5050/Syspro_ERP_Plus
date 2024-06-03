@@ -330,9 +330,9 @@ const ProductCard = Styled.div`
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        margin: 21px -5px -5px -5px;
+        margin: 10px -5px -5px -5px;
         button{
-            margin: 5px;
+            margin: 2px;
             &:hover{
                 svg{
                     color: ${({ theme }) => theme['primary-color']};

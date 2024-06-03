@@ -95,16 +95,6 @@ const ProductCardsList = React.memo(({ product }) => {
                 <li>
                   <b>Design No </b> : {design}
                 </li>
-
-                <li>
-                  <b>Stock </b>: {view.Stock}
-                </li>
-                <li>
-                  <b>WIP </b>: {view.WIP}
-                </li>
-                <li>
-                  <b>Order </b>: {view.Order}
-                </li>
               </ul>
             </div>
           </Col>

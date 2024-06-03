@@ -20,7 +20,6 @@ function InquiryForm() {
   const loading = useSelector((state) => state.auth.loading);
   const cartId = useSelector((state) => state.cart.cartId);
   const CartItem = useSelector((state) => state.cart.cartItems.CartItem);
-  // const orderPdf = useSelector((state) => state.cart.orderPdf);
 
   const handleInquirySubmit = () => {
     dispatch(sendInquiry(name, email, mobile, address, gst, remark, cartId, CartItem));
