@@ -65,7 +65,7 @@ function ProductDetails() {
     dispatch(getCartItem(cartId));
   };
 
-  const productImage = selectedImage ? `http://103.67.238.230:1386/${selectedImage}` : '';
+  const productImage = selectedImage ? selectedImage : '';
 
   const PageRoutes = [
     {
@@ -147,7 +147,7 @@ function ProductDetails() {
                                         }}
                                       >
                                         <img
-                                          src={`http://103.67.238.230:1386/${value.Filepath}`}
+                                          src={value.Filepath}
                                           alt={products?.Item_Name}
                                           style={{ width: '100px', height: '100%' }}
                                           onError={(e) => {

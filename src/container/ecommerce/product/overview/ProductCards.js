@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Pointer, Share2 } from 'lucide-react';
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
 // import UilCheckCircle from '@iconscout/react-unicons/icons/uil-check-circle';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
 import { Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -113,22 +115,51 @@ function ProductCards({ product }) {
             // onChange={handleCheckboxChange}
             style={{ position: 'absolute', top: 10, left: 10 }}
           /> */}
-          <figure onClick={() => handleProductClick(product.Item_Id)}>
+          <figure>
+            {/* figure onClick Event :  */}
+
+            {/* onClick={() => handleProductClick(product.Item_Id)} */}
+
             {/* here multiple item images will be shown with Slider */}
             {/* maxWidth: '100%', aspectRatio: 'auto' */}
-            <img
-              src={productImage || defaultImage}
-              alt={name}
-              height={300}
-              onError={handleImageError}
-              style={{
-                borderRadius: '9px',
-                cursor: 'pointer',
-                maxWidth: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center center',
-              }}
-            />
+
+            {/* <Carousel>
+              {gallery.map((image, index) => (
+                <img
+                  key={index}
+                  src={image.Filepath || defaultImage}
+                  alt={name}
+                  height={300}
+                  onError={handleImageError}
+                  style={{
+                    borderRadius: '9px',
+                    cursor: 'pointer',
+                    maxWidth: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center center',
+                  }}
+                />
+              ))}
+            </Carousel> */}
+
+            <Carousel showThumbs={false} showStatus={false}>
+              {gallery.map((image, index) => (
+                <img
+                  key={index}
+                  src={image.Filepath || defaultImage}
+                  alt={name}
+                  height={300}
+                  onError={handleImageError}
+                  style={{
+                    borderRadius: '9px',
+                    cursor: 'pointer',
+                    maxWidth: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center center',
+                  }}
+                />
+              ))}
+            </Carousel>
           </figure>
         </label>
         <figcaption>

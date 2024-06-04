@@ -11,7 +11,6 @@ import { ProductCard } from '../../Style';
 // import { updateWishList } from '../../../../redux/product/actionCreator';
 
 const ProductCardsList = React.memo(({ product }) => {
-  const filepathprefix = 'http://103.67.238.230:1386/';
   const [imageError, setImageError] = useState(false);
   // const [isChecked, setIsChecked] = useState(false);
 
@@ -47,7 +46,7 @@ const ProductCardsList = React.memo(({ product }) => {
   };
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
-  const productImage = !imageError && gallery.length > 0 ? filepathprefix + gallery[0].Filepath : null;
+  const productImage = !imageError && gallery.length > 0 ? gallery[0].Filepath : null;
   const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
 
   return (
