@@ -15,9 +15,11 @@ import useDocumentTitle from '../../../../components/dynamic-Page-Title/useDocum
 function DetailsRight() {
   const dispatch = useDispatch();
   const cartId = useSelector((state) => state.cart.cartId);
+
   // if (!product) {
   //   return null;
   // }
+
   // const dispatch = useDispatch();
   // const [state, setState] = useState({
   //   quantity: 1,

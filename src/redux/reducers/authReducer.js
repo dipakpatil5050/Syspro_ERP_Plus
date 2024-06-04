@@ -99,7 +99,6 @@ export const authSlice = createSlice({
       localStorage.setItem('SlugUrl', JSON.stringify(action.payload?.Data.SlugUrl));
     },
     setCatalogueData: (state, action) => {
-      // state.catalogueData = action.payload;
       const allData = action.payload;
       state.catalogueData.push(...allData);
       // localStorage.setItem('catalogueData', JSON.stringify(state.catalogueData.push(...allData)));
@@ -140,8 +139,6 @@ export const authSlice = createSlice({
         state.hasMoreData = false;
       }
     },
-
-    // && state.catalogueData.length < state.catalogueTotalDataCount
 
     setCatalogueTotalDataCount: (state, action) => {
       state.catalogueTotalDataCount = action.payload;

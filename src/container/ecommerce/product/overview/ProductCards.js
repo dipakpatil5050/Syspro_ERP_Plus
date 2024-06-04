@@ -13,16 +13,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
-import { addToCart } from '../../../../Actions/Catalogue/CartAction';
+import { addToCart, getCartItem } from '../../../../Actions/Catalogue/CartAction';
 
 // import { selectItem, setLoading } from '../../../../redux/reducers/authReducer';
 import { selectItem } from '../../../../redux/reducers/authReducer';
 
 function ProductCards({ product }) {
-  const filepathprefix = 'http://103.67.238.230:1386/';
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const cartId = useSelector((state) => state.cart.cartId);
 
   // const { paramId } = useParams();
 
@@ -31,9 +31,10 @@ function ProductCards({ product }) {
   const [imageError, setImageError] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery, Document_Id: docId } = product;
+  const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery } = product;
 
-  console.log(docId);
+  const docsIds = gallery[0].Document_Id;
+
   // console.log('Products IDs : ', id);
 
   // const selectedItemsCount = useSelector((state) => state.auth.selectedItems.length);
@@ -56,7 +57,7 @@ function ProductCards({ product }) {
   // };
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
-  const productImage = !imageError && gallery?.length > 0 ? filepathprefix + gallery[0]?.Filepath : null;
+  const productImage = !imageError && gallery?.length > 0 ? gallery[0]?.Filepath : null;
   const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
 
   // purple Color Code: #8231d3.
@@ -88,6 +89,11 @@ function ProductCards({ product }) {
   function capitalizeFirstLetter(str) {
     return str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
+
+  const addToCartFromGrid = () => {
+    dispatch(addToCart(id, docsIds));
+    dispatch(getCartItem(cartId));
+  };
 
   return (
     <>
@@ -132,32 +138,14 @@ function ProductCards({ product }) {
           <p className="product-single-price" style={{ marginTop: '7px' }}>
             <span className="product-single-price__new">₹ {price} </span>
           </p>
-          <div className="" style={{ textAlign: 'end', position: 'absolute', bottom: 36, right: 10 }}>
-            <Button size="small" type="primary" className="">
+          <div className="" style={{ textAlign: 'end', position: 'absolute', bottom: 36, right: 16 }}>
+            <Button size="small" type="primary" onClick={addToCartFromGrid}>
               <UilShoppingBag />
               Add To Cart
             </Button>
           </div>
         </figcaption>
       </ProductCard>
-      {/* <Modal title="Product Detail" visible={isModalVisible} onCancel={handleCancel} footer={null}>
-        <img src={productImage} alt={name} style={{ maxWidth: '100%', marginBottom: '10px' }} />
-        <ul>
-          <li>
-            <b>Item Name </b>: {name}
-          </li>
-          <li>
-            <b>Item Code </b> : {id}
-          </li>
-          <li>
-            <b>Design No </b>: {designNo}
-          </li>
-          <li>
-            <b>Price </b>: ₹ {price}
-          </li>
-        </ul>
-      </Modal> */}
-      {/* {console.log(designNo)} */}
     </>
   );
 }
