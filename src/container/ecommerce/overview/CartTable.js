@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Table, Form, Spin, Modal, Input } from 'antd';
-import { UilTrashAlt, UilCheckCircle, UilPlus, UilMinus } from '@iconscout/react-unicons';
+import { UilTrashAlt, UilPlus, UilMinus } from '@iconscout/react-unicons';
 import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { FigureCart, ProductTable, CouponForm } from '../Style';
+import { FigureCart, ProductTable } from '../Style';
 import Heading from '../../../components/heading/heading';
 import { Button } from '../../../components/buttons/buttons';
 import { getCartItem, removeFromCart, updateCartItem } from '../../../Actions/Catalogue/CartAction';

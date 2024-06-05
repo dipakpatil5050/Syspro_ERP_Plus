@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Spin } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
 import { sendInquiry } from '../../../Actions/Catalogue/CartAction';
 
-function InquiryForm() {
+function InquiryForm({ handleCancel }) {
   const [form] = Form.useForm();
 
   const [name, setName] = useState('');
@@ -23,6 +24,10 @@ function InquiryForm() {
 
   const handleInquirySubmit = () => {
     dispatch(sendInquiry(name, email, mobile, address, gst, remark, cartId, CartItem));
+    setTimeout(() => {
+      handleCancel();
+      form.resetFields();
+    }, 3000);
   };
 
   return (
@@ -133,5 +138,9 @@ function InquiryForm() {
     </>
   );
 }
+
+InquiryForm.propTypes = {
+  handleCancel: PropTypes.func,
+};
 
 export { InquiryForm };

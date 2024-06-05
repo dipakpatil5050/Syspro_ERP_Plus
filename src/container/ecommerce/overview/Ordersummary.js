@@ -69,7 +69,7 @@ function Ordersummary() {
         </OrderSummary>
       </Cards>
       <Modal open={isModalVisible} onCancel={handleCancel} footer={null}>
-        <InquiryForm />
+        <InquiryForm handleCancel={handleCancel} />
       </Modal>
     </>
   );

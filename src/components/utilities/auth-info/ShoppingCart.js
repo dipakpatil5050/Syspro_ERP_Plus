@@ -71,13 +71,13 @@ const ShoppingCart = React.memo(() => {
           renderTrackHorizontal={(props) => <div {...props} style={{ display: 'none' }} className="track-horizontal" />}
         >
           <ul className="ninjadash-top-dropdown__nav selected-items-list">
-            {cartItems?.CartItem?.map((product) => {
+            {cartItems?.CartItem?.map((product, index) => {
               if (!cartItems) {
                 return <li key={product.Item_Id}>Product Added (ID: {product.Item_Id})</li>;
               }
 
               return (
-                <li key={product.Item_Id}>
+                <li key={index}>
                   <div className="ninjadash-top-dropdown__content notifications">
                     <div className="notification-icon ">
                       <img

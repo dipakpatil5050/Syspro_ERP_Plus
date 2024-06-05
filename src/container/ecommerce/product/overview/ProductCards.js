@@ -28,14 +28,12 @@ function ProductCards({ product }) {
 
   // const { paramId } = useParams();
 
-  // const selectedItems = useSelector((state) => state.auth.selectedItems);
-
   const [imageError, setImageError] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery } = product;
 
-  const docsIds = gallery[0].Document_Id;
+  // const docsIds = gallery[0].Document_Id;
 
   // console.log('Products IDs : ', id);
 
@@ -60,29 +58,8 @@ function ProductCards({ product }) {
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
   const productImage = !imageError && gallery?.length > 0 ? gallery[0]?.Filepath : null;
+
   const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
-
-  // purple Color Code: #8231d3.
-
-  // const [isModalVisible, setIsModalVisible] = useState(false);
-
-  // const showModal = () => {
-  //   setIsModalVisible(true);
-  // };
-
-  // const handleCancel = () => {
-  //   setIsModalVisible(false);
-  // };
-
-  // const handleProductDetail = () => {
-  //   Modal.confirm({
-  //     title: 'Confirm Delete',
-  //     content: `Are you sure you want to remove this item from the cart?`,
-  //     okText: 'Yes',
-  //     cancelText: 'Cancel',
-  //     centered: true,
-  //   });
-  // };
 
   const handleProductClick = (itemid) => {
     window.open(`/admin/ecommerce/productDetails/${itemid}`, '_blank');
@@ -93,8 +70,14 @@ function ProductCards({ product }) {
   }
 
   const addToCartFromGrid = () => {
-    dispatch(addToCart(id, docsIds));
-    dispatch(getCartItem(cartId));
+    const activeImage = gallery[activeImageIndex];
+    const docsIds = activeImage?.Document_Id;
+
+    if (docsIds) {
+      dispatch(addToCart(id, docsIds));
+      dispatch(getCartItem(cartId));
+    }
+    setActiveImageIndex(0);
   };
 
   return (
@@ -102,11 +85,10 @@ function ProductCards({ product }) {
       <ProductCard
         style={{
           marginBottom: 30,
-          border: isChecked ? '2px solid #007bff' : 'none',
+          // border: isChecked ? '2px solid #007bff' : 'none',
           boxShadow: '0px 3px 2px rgba(0, 0, 0, 0.24)',
           cursor: 'pointer',
         }}
-        // ref={product.Item_Id}
       >
         <label htmlFor={`checkbox-${id}`}>
           {/* <Checkbox
@@ -120,29 +102,7 @@ function ProductCards({ product }) {
 
             {/* onClick={() => handleProductClick(product.Item_Id)} */}
 
-            {/* here multiple item images will be shown with Slider */}
-            {/* maxWidth: '100%', aspectRatio: 'auto' */}
-
-            {/* <Carousel>
-              {gallery.map((image, index) => (
-                <img
-                  key={index}
-                  src={image.Filepath || defaultImage}
-                  alt={name}
-                  height={300}
-                  onError={handleImageError}
-                  style={{
-                    borderRadius: '9px',
-                    cursor: 'pointer',
-                    maxWidth: '100%',
-                    objectFit: 'cover',
-                    objectPosition: 'center center',
-                  }}
-                />
-              ))}
-            </Carousel> */}
-
-            <Carousel showThumbs={false} showStatus={false}>
+            <Carousel showThumbs={false} showStatus={false} swipeable onChange={(index) => setActiveImageIndex(index)}>
               {gallery.map((image, index) => (
                 <img
                   key={index}

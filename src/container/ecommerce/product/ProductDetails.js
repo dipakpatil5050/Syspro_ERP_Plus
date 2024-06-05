@@ -57,15 +57,10 @@ function ProductDetails() {
   const handleAddToCart = (e) => {
     e.preventDefault();
     dispatch(addToCart(products.Item_Id, selectedDocId));
-
-    if (selectedDocId) {
-      console.log(`Selected Document ID: ${selectedDocId}`);
-    }
-
     dispatch(getCartItem(cartId));
   };
 
-  const productImage = selectedImage ? selectedImage : '';
+  // const productImage = selectedImage ? selectedImage : '';
 
   const PageRoutes = [
     {
@@ -116,7 +111,7 @@ function ProductDetails() {
                       <div className="product-details-box__left pdbl">
                         <figure>
                           <img
-                            src={productImage}
+                            src={selectedImage}
                             alt="No preview"
                             style={{ width: '100%', height: '400px' }}
                             onError={(e) => {

@@ -104,6 +104,7 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
   }));
 
   try {
+    dispatch(setLoading(true));
     const response = await CatalogueServices.sendInquiry(body);
     dispatch(setIntentId(response.data?.Data));
     // toast.success('Product inquiry Sent successfully....!');
@@ -118,8 +119,10 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
       window.open(res.data?.Data?.ReportPath, '_blank');
     }, 2500);
     dispatch(setCartItems([]));
+    dispatch(setLoading(false));
   } catch (error) {
     console.error('Inquiry send Error:', error);
     toast.error(error.message);
+    dispatch(setLoading(false));
   }
 };

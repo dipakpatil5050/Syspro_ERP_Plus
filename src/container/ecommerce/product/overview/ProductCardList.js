@@ -12,9 +12,6 @@ import { ProductCard } from '../../Style';
 
 const ProductCardsList = React.memo(({ product }) => {
   const [imageError, setImageError] = useState(false);
-  // const [isChecked, setIsChecked] = useState(false);
-
-  const dispatch = useDispatch();
 
   const {
     Item_Id: id,
@@ -92,7 +89,7 @@ const ProductCardsList = React.memo(({ product }) => {
                   <b>SubGroup </b> : {subgroup}
                 </li>
                 <li>
-                  <b>Design No </b> : {design}
+                  <b>Item Code </b> : {id}
                 </li>
               </ul>
             </div>
