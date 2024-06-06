@@ -91,15 +91,7 @@ function ProductCards({ product }) {
         }}
       >
         <label htmlFor={`checkbox-${id}`}>
-          {/* <Checkbox
-            id={`checkbox-${id}`}
-            checked={isChecked}
-            // onChange={handleCheckboxChange}
-            style={{ position: 'absolute', top: 10, left: 10 }}
-          /> */}
           <figure>
-            {/* figure onClick Event :  */}
-
             {/* onClick={() => handleProductClick(product.Item_Id)} */}
 
             <Carousel showThumbs={false} showStatus={false} swipeable onChange={(index) => setActiveImageIndex(index)}>

@@ -7,6 +7,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@babel/plugin-transform-optional-chaining": "^7.22.12",
     "@babel/plugin-transform-spread": "^7.22.5",
+    "@datobs/react-image-magnifiers": "^1.4.8",
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/sortable": "^7.0.2",
     "@dnd-kit/utilities": "^3.2.1",

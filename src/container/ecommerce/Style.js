@@ -945,6 +945,76 @@ const ProductDetailsWrapper = Styled.div`
         }
     }
 
+    .pdbr__Actions-for-deatil-page{
+        @media only screen and (max-width: 1399px){
+            flex-flow: column;
+            align-items: flex-start;
+        }
+        .pdbr__product-action{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            .btn-cart{
+                padding: 0 26.35px;
+            }
+            .btn-buy{
+                padding: 0 29.85px;
+            }
+            .btn-cart,
+            .btn-buy{
+                border-radius: 6px;
+                height: 44px;
+            }
+            button,
+            a{
+                ${({ theme }) => (theme.rtl ? 'margin-left' : 'margin-right')}: 10px;
+                @media only screen and (max-width: 1399px){
+                    margin-bottom: 20px;
+                }
+                &:focus{
+                    svg{
+                        fill: #5a5f7d;
+                    }
+                }
+            }
+            .btn-icon{
+                padding: 0 13px;
+                &:hover{
+                    background: transparent;
+                }
+                i{
+                    color: #707070;
+                }
+            }
+            .btn-heart{
+                svg{
+                    fill: ${({ theme }) => theme[theme.mainContent]['extra-light-text']};
+                }
+                &.favourite{
+                    fill: ${({ theme }) => theme['primary-color']}
+                }
+            }
+        }
+        .pdbr__socials{
+            margin: 0px 0 0 5px;
+            a{
+                color: #666666;
+                &:not(:last-child){
+                    ${({ theme }) => (theme.rtl ? 'margin-left' : 'margin-right')}: 12px;
+                }
+                span{
+                    font-size: 14px;
+                    color: #666666;
+                }
+                &:hover{
+                    span{
+                        color: ${({ theme }) => theme[theme.mainContent]['menu-active']};
+                    }
+                }
+            }
+        }
+    }
+
     .pdbr__list{
         &:not(:last-child){
             margin-bottom: 10px;

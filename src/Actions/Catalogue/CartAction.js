@@ -121,7 +121,7 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     dispatch(setCartItems([]));
     dispatch(setLoading(false));
   } catch (error) {
-    console.error('Inquiry send Error:', error);
+    console.error('Inquiry sending Error:', error);
     toast.error(error.message);
     dispatch(setLoading(false));
   }

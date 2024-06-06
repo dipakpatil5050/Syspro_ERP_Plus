@@ -2,8 +2,16 @@ import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Row, Col, Skeleton, Spin, Checkbox, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
+import {
+  // Magnifier,
+  // GlassMagnifier,
+  SideBySideMagnifier,
+  // PictureInPictureMagnifier,
+  MOUSE_ACTIVATION,
+  TOUCH_ACTIVATION,
+} from '@datobs/react-image-magnifiers';
+
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 import { Main } from '../../styled';
@@ -20,12 +28,21 @@ function ProductDetails() {
   const [selectedImage, setSelectedImage] = useState('');
   const [selectedDocId, setSelectedDocId] = useState(null);
   const [checkedImages, setCheckedImages] = useState({});
+  // const [isMagnifierVisible, setIsMagnifierVisible] = useState(false);
 
   const { id } = useParams();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.auth.singleProduct[0]);
   const loading = useSelector((state) => state.auth.loading);
   const cartId = useSelector((state) => state.cart.cartId);
+
+  // const handleMouseEnter = () => {
+  //   setIsMagnifierVisible(true);
+  // };
+
+  // const handleMouseLeave = () => {
+  //   setIsMagnifierVisible(false);
+  // };
 
   useEffect(() => {
     dispatch(fetchSingleProductDetailById(id));
@@ -78,10 +95,6 @@ function ProductDetails() {
 
       <Main>
         <Cards headless>
-          {/* Close Button  */}
-          {/* <Col align="right">
-            <Button>Close</Button>
-          </Col> */}
           {loading ? (
             <>
               <Spin
@@ -110,20 +123,36 @@ function ProductDetails() {
                     <Col xs={24} lg={10}>
                       <div className="product-details-box__left pdbl">
                         <figure>
-                          <img
+                          <SideBySideMagnifier
+                            imageSrc={selectedImage}
+                            imageAlt="No preview"
+                            largeImageSrc={selectedImage}
+                            onError={(e) => {
+                              e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
+                            }}
+                          />
+                          {/* <img
                             src={selectedImage}
                             alt="No preview"
                             style={{ width: '100%', height: '400px' }}
                             onError={(e) => {
                               e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
                             }}
-                          />
+                          /> */}
                         </figure>
-
                         <div className="pdbl__slider pdbs">
                           <Row gutter={5}>
                             <Col md={4}>
-                              <div className="pdbl__image pdbs" style={{ display: 'flex' }}>
+                              {/* <Scrollbars> */}
+                              <div
+                                className="pdbl__image pdbs"
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'flexwrap',
+                                  overflow: 'auto',
+                                  width: '300px',
+                                }}
+                              >
                                 {products?.Gallary?.map((value, index) => {
                                   /* const borderStyle = index === activeImageIndex ? '2px solid #5840ff' : 'none'; */
                                   // <Checkbox
@@ -156,6 +185,7 @@ function ProductDetails() {
                                   );
                                 })}
                               </div>
+                              {/* </Scrollbars> */}
                             </Col>
                           </Row>
                         </div>
@@ -173,9 +203,9 @@ function ProductDetails() {
                     >
                       <DetailsRight product={products} />
                     </Suspense>
-                    <br />
+                    {/* <br /> */}
                     <ProductCard>
-                      <div className="pdbr__Actions d-flex align-items-center">
+                      <div className="pdbr__Actions-for-deatil-page d-flex align-items-center">
                         <div className="pdbr__product-action">
                           <Button className="btn-cart" size="default" type="primary" onClick={handleAddToCart}>
                             <UilShoppingBag size={15} /> Add To Cart
@@ -183,9 +213,13 @@ function ProductDetails() {
                         </div>
                       </div>
                     </ProductCard>
-                    {/* <Button className="btn-cart" size="default" type="secondary" onClick={handleAddToCart}>
-                      Add to Cart
-                    </Button> */}
+                    {/* <div className="pdbr__Actions d-flex align-items-center">
+                      <div className="pdbr__product-action">
+                        <Button className="btn-cart" size="default" type="primary" onClick={handleAddToCart}>
+                          <UilShoppingBag size={15} /> Add to Cart
+                        </Button>
+                      </div>
+                    </div> */}
                   </Col>
                 </Row>
               </div>
