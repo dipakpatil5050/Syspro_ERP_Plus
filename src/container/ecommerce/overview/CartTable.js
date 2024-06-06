@@ -114,7 +114,14 @@ function CartTable() {
         product: (
           <div className="cart-single">
             <FigureCart>
-              <img style={{ width: 80 }} src={product?.Filepath} alt="Product loading..." />
+              <img
+                style={{ width: 80 }}
+                src={product?.Filepath}
+                alt="Product loading..."
+                onError={(e) => {
+                  e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
+                }}
+              />
               <figcaption>
                 <div className="cart-single__info">
                   <b>

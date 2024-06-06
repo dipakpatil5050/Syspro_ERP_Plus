@@ -4,7 +4,7 @@ import { Row, Col, Skeleton, Spin, Checkbox, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
 import {
-  // Magnifier,
+  Magnifier,
   // GlassMagnifier,
   SideBySideMagnifier,
   // PictureInPictureMagnifier,
@@ -13,6 +13,7 @@ import {
 } from '@datobs/react-image-magnifiers';
 
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
+import useMobileView from './useMobileView';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 import { Main } from '../../styled';
 import { ProductCard, ProductDetailsWrapper } from '../Style';
@@ -35,6 +36,7 @@ function ProductDetails() {
   const products = useSelector((state) => state.auth.singleProduct[0]);
   const loading = useSelector((state) => state.auth.loading);
   const cartId = useSelector((state) => state.cart.cartId);
+  const isMobile = useMobileView();
 
   // const handleMouseEnter = () => {
   //   setIsMagnifierVisible(true);
@@ -43,6 +45,8 @@ function ProductDetails() {
   // const handleMouseLeave = () => {
   //   setIsMagnifierVisible(false);
   // };
+
+  const defaultImage = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
 
   useEffect(() => {
     dispatch(fetchSingleProductDetailById(id));
@@ -123,22 +127,35 @@ function ProductDetails() {
                     <Col xs={24} lg={10}>
                       <div className="product-details-box__left pdbl">
                         <figure>
-                          <SideBySideMagnifier
-                            imageSrc={selectedImage}
-                            imageAlt="No preview"
-                            largeImageSrc={selectedImage}
-                            onError={(e) => {
-                              e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
-                            }}
-                          />
-                          {/* <img
-                            src={selectedImage}
-                            alt="No preview"
-                            style={{ width: '100%', height: '400px' }}
-                            onError={(e) => {
-                              e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
-                            }}
-                          /> */}
+                          {isMobile ? (
+                            <>
+                              <Magnifier
+                                src={selectedImage}
+                                alt="No preview"
+                                onError={(e) => {
+                                  e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
+                                }}
+                                activation={TOUCH_ACTIVATION}
+                              />
+                              <img
+                                src={selectedImage}
+                                alt="No preview"
+                                style={{ width: '100%', height: '400px', objectFit: 'cover' }}
+                                onError={(e) => {
+                                  e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
+                                }}
+                              />
+                            </>
+                          ) : (
+                            <SideBySideMagnifier
+                              imageSrc={selectedImage}
+                              imageAlt="No preview"
+                              largeImageSrc={selectedImage}
+                              onError={(e) => {
+                                e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
+                              }}
+                            />
+                          )}
                         </figure>
                         <div className="pdbl__slider pdbs">
                           <Row gutter={5}>
@@ -154,11 +171,6 @@ function ProductDetails() {
                                 }}
                               >
                                 {products?.Gallary?.map((value, index) => {
-                                  /* const borderStyle = index === activeImageIndex ? '2px solid #5840ff' : 'none'; */
-                                  // <Checkbox
-                                  //   checked={checkedImages[value.Document_Id] || false}
-                                  //   onChange={(e) => handleCheckboxChange(value.Document_Id, e.target.checked)}
-                                  // />;
                                   return (
                                     <>
                                       <figure
@@ -166,7 +178,6 @@ function ProductDetails() {
                                         style={{
                                           cursor: 'pointer',
                                           margin: '5px',
-                                          // border: borderStyle,
                                           borderRadius: '10px',
                                         }}
                                       >

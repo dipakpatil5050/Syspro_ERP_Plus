@@ -17,9 +17,6 @@ import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
 import { addToCart, getCartItem } from '../../../../Actions/Catalogue/CartAction';
 
-// import { selectItem, setLoading } from '../../../../redux/reducers/authReducer';
-import { selectItem } from '../../../../redux/reducers/authReducer';
-
 function ProductCards({ product }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -101,12 +98,16 @@ function ProductCards({ product }) {
                   src={image.Filepath || defaultImage}
                   alt={name}
                   height={300}
-                  onError={handleImageError}
+                  // onError={handleImageError}
+                  onError={(e) => {
+                    e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
+                  }}
                   style={{
                     borderRadius: '9px',
                     cursor: 'pointer',
                     maxWidth: '100%',
-                    objectFit: 'cover',
+                    // objectFit: 'cover',   //  take the size of container can crop top and bottom and fit to screen
+                    objectFit: 'contain', // add white space for extra imagec area
                     objectPosition: 'center center',
                   }}
                 />

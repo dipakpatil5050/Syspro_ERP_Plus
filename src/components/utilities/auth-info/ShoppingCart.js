@@ -84,6 +84,9 @@ const ShoppingCart = React.memo(() => {
                         src={product.Filepath}
                         alt="no preview"
                         style={{ borderRadius: '100%', marginTop: '10px', width: '40px', height: '40px' }}
+                        onError={(e) => {
+                          e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
+                        }}
                       />
                     </div>
                     <div className="notification-content d-flex">
