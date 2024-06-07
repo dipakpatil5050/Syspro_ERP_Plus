@@ -107,7 +107,6 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     dispatch(setLoading(true));
     const response = await CatalogueServices.sendInquiry(body);
     dispatch(setIntentId(response.data?.Data));
-    // toast.success('Product inquiry Sent successfully....!');
 
     const bodydata = {
       Indent_Id: response.data?.Data?.IndentID,
@@ -115,9 +114,19 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     const res = await CatalogueServices.orderPrint(bodydata);
     dispatch(setOrderPdf(res.data?.Data?.ReportPath));
     toast.success('🛒🛍️Your Order has been Placed successfully....!✨');
+
+    // Whats App API
+
+    const pdfPath = res.data?.Data?.ReportPath;
+    const token = 'cltjual8g0gyf2sfyrd2bxrsb'; // whats app token it will be dynamic later
+
+    const whatsappresponse = await CatalogueServices.whatsAppFile(token, mobile, pdfPath, remark);
+    console.log('whats App data share : ', whatsappresponse?.data?.status);
+
     setTimeout(() => {
-      window.open(res.data?.Data?.ReportPath, '_blank');
+      window.open(pdfPath, '_blank');
     }, 2500);
+
     dispatch(setCartItems([]));
     dispatch(setLoading(false));
   } catch (error) {

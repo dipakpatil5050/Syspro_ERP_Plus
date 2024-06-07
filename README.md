@@ -84,3 +84,30 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+```Javascript
+
+#region WhatsApp
+public bool SendWhatsAppFile(string ContactNo, string Message, String savePath)
+{
+try
+{
+WebClient clientFile = new WebClient();
+var data = new System.Collections.Specialized.NameValueCollection();
+data.Add("token", \_Commonservice.GetWHATSAPpValue("WHATSAPPAPITOKEN"));
+data.Add("phone", "91" + ContactNo);
+data.Add("message", Message);
+clientFile.QueryString = data;
+var bytes = clientFile.UploadFile(\_Commonservice.GetWHATSAPpValue("WHATSAPPAPI"), savePath);
+String mStrResult = new System.Text.UTF8Encoding().GetString(bytes);
+clientFile.Dispose();
+return true;
+}
+catch (Exception ex)
+{
+LogError(ex);
+return false;
+}
+}
+#endregion
+```

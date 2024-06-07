@@ -18,8 +18,11 @@ import { PageHeader } from '../../../components/page-headers/page-headers';
 import { Main } from '../../styled';
 import { ProductCard, ProductDetailsWrapper } from '../Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
+
 // import { setLoading, setSingleProduct } from '../../../redux/reducers/authReducer';
+
 import { fetchSingleProductDetailById, addToCart, getCartItem } from '../../../Actions/Catalogue/CartAction';
+
 // import useDocumentTitle from '../../../components/dynamic-Page-Title/useDocumentTitle';
 
 const DetailsRight = lazy(() => import('./overview/DetailsRight'));
