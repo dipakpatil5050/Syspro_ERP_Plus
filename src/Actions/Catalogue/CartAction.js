@@ -121,7 +121,7 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     const token = 'cltjual8g0gyf2sfyrd2bxrsb'; // whats app token it will be dynamic later
 
     const whatsappresponse = await CatalogueServices.whatsAppFile(token, mobile, pdfPath, remark);
-    console.log('whats App data share : ', whatsappresponse?.data?.status);
+    console.log('Order Invoice shared to whats App : ', whatsappresponse?.data?.status);
 
     setTimeout(() => {
       window.open(pdfPath, '_blank');

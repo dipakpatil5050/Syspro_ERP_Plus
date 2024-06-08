@@ -364,13 +364,13 @@ function MenuItems({ toggleCollapsed }) {
     //     'cart',
     //     null,
     //   ),
-    //   getItem(
-    //     <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/orders`}>
-    //       {t('orders')}
-    //     </NavLink>,
-    //     'orsers',
-    //     null,
-    //   ),
+    // getItem(
+    //   <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/orders`}>
+    //     {t('orders')}
+    //   </NavLink>,
+    //   'orsers',
+    //   null,
+    // ),
     //   getItem(
     //     <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/sellers`}>
     //       {t('sellers')}
@@ -1177,7 +1177,13 @@ function MenuItems({ toggleCollapsed }) {
         'products',
         null,
       ),
-
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/orders`}>
+          {t('Orders')}
+        </NavLink>,
+        'orders',
+        null,
+      ),
       getItem(
         <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/add-product`}>
           {t('Catalogue')} {t('Upload')}
@@ -1547,7 +1553,7 @@ function MenuItems({ toggleCollapsed }) {
       onOpenChange={onOpenChange}
       onClick={onClick}
       mode={!topMenu || window.innerWidth <= 991 ? 'inline' : 'horizontal'}
-      // // eslint-disable-next-line no-nested-ternary
+      // eslint-disable-next-line no-nested-ternary
       defaultSelectedKeys={
         !topMenu
           ? [
