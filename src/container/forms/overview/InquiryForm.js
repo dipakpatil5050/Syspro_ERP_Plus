@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
-import { sendInquiry } from '../../../Actions/Catalogue/CartAction';
+import { sendInquiry } from '../../../Actions/Catalogue/OrderActions';
 
 function InquiryForm({ handleCancel }) {
   const [form] = Form.useForm();
@@ -50,7 +50,7 @@ function InquiryForm({ handleCancel }) {
         <VerticalFormStyleWrap>
           <Cards title="Inquiry Form">
             <Form form={form} onSubmit={handleInquirySubmit} name="inquiry-form" layout="vertical">
-              <Form.Item name="name" label="Name" rules={[{ message: 'Please enter your name', required: true }]}>
+              <Form.Item name="name" label="Firm Name" rules={[{ message: 'Please enter your name', required: true }]}>
                 <Input
                   placeholder="Name"
                   id="name"
