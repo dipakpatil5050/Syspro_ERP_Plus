@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table } from 'antd';
+import UilDocumentInfo from '@iconscout/react-unicons/icons/uil-document-info';
 import { TopToolBox } from './Style';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main, TableWrapper } from '../styled';
+import { Button } from '../../components/buttons/buttons';
 import { Cards } from '../../components/cards/frame/cards-frame';
 
 function Orders() {
@@ -76,9 +78,18 @@ function Orders() {
         ),
         amount: <span className="ordered-amount">{Total}</span>,
         date: <span className="ordered-date">08-06-2024</span>,
+        document: (
+          <div className="table-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Button className="btn-icon" type="info" to="#" shape="circle">
+              <UilDocumentInfo />
+            </Button>
+          </div>
+        ),
       });
     });
   }
+
+  // Order Invoice PDF Document download feature added in Order history screen
 
   const columns = [
     {
@@ -107,9 +118,9 @@ function Orders() {
       key: 'date',
     },
     {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
+      title: 'Document ',
+      dataIndex: 'document',
+      key: 'document',
     },
   ];
 
@@ -174,7 +185,7 @@ function Orders() {
                   rowSelection={rowSelection}
                   dataSource={dataSource}
                   columns={columns}
-                  pagination={{ pageSize: 10, showSizeChanger: true, total: cartData?.length }}
+                  pagination={{ pageSize: 10, total: cartData?.length }} // showSizeChanger: true,
                 />
               </TableWrapper>
             </Col>
