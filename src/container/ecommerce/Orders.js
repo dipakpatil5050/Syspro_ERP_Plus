@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table } from 'antd';
 import UilDocumentInfo from '@iconscout/react-unicons/icons/uil-document-info';
@@ -7,6 +7,7 @@ import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main, TableWrapper } from '../styled';
 import { Button } from '../../components/buttons/buttons';
 import { Cards } from '../../components/cards/frame/cards-frame';
+import { invoicePrint, orderHistory } from '../../Actions/Catalogue/OrderActions';
 
 function Orders() {
   const PageRoutes = [
@@ -20,8 +21,12 @@ function Orders() {
     },
   ];
 
-  const cartData = useSelector((state) => state.cart.cartItems.CartItem);
+  const orderData = useSelector((state) => state.cart.orderHistory);
+
+  const loading = useSelector((state) => state.cart.isLoading);
+
   const dispatch = useDispatch();
+
   //   const { searchData, orders } = useSelector((state) => {
   //     return {
   //       searchData: state.headerSearchData,
@@ -30,8 +35,10 @@ function Orders() {
   //   });
 
   const [state, setState] = useState({
-    item: cartData,
+    item: orderData,
     selectedRowKeys: [],
+    currentPage: 1,
+    pageSize: 10,
   });
 
   //   const { notData, item, selectedRowKeys } = state;
@@ -58,39 +65,46 @@ function Orders() {
   //     dispatch(orderFilter('status', e.target.value));
   //   };
 
-  const dataSource = [];
-  if (cartData?.length) {
-    cartData.map((item, key) => {
-      const { Id, Item_Id, Total, Item_Name } = item;
+  const handlePageChange = (current, size) => {
+    setState((prevState) => ({
+      ...prevState,
+      currentPage: current,
+      pageSize: size,
+    }));
+  };
 
-      return dataSource.push({
+  useEffect(() => {
+    dispatch(orderHistory(state.currentPage - 1, state.pageSize));
+  }, [dispatch, state.currentPage, state.pageSize]);
+
+  const handleInvoiceDownload = (Indent_Id) => {
+    dispatch(invoicePrint(Indent_Id));
+  };
+
+  const dataSource =
+    orderData?.products?.map((item, key) => {
+      const { Indent_Id, Item_Name, Saleprice1 } = item;
+      return {
         key: key + 1,
-        id: <span className="order-id">{Id}</span>,
-        customer: <span className="customer-name">{Item_Name}</span>,
-        status: (
-          <span
-          // className={`status ${
-          //   status === 'Shipped' ? 'Success' : status === 'Awaiting Shipment' ? 'warning' : 'error'
-          // }`}
-          >
-            {Item_Id}
-          </span>
-        ),
-        amount: <span className="ordered-amount">{Total}</span>,
+        id: <span className="order-id">{Indent_Id}</span>,
+        item: <span className="customer-name">{Item_Name}</span>,
+        amount: <span className="ordered-amount">{Saleprice1}</span>,
         date: <span className="ordered-date">08-06-2024</span>,
         document: (
           <div className="table-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Button className="btn-icon" type="info" to="#" shape="circle">
+            <Button
+              onClick={() => handleInvoiceDownload(Indent_Id)}
+              className="btn-icon"
+              type="info"
+              to="#"
+              shape="circle"
+            >
               <UilDocumentInfo />
             </Button>
           </div>
         ),
-      });
-    });
-  }
-
-  // Order Invoice PDF Document download feature added in Order history screen
-
+      };
+    }) || [];
   const columns = [
     {
       title: 'Order Id',
@@ -98,15 +112,15 @@ function Orders() {
       key: 'id',
     },
     {
-      title: 'customer',
-      dataIndex: 'customer',
-      key: 'customer',
+      title: 'Item',
+      dataIndex: 'item',
+      key: 'item',
     },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-    },
+    // {
+    //   title: 'Status',
+    //   dataIndex: 'status',
+    //   key: 'status',
+    // },
     {
       title: 'Amount',
       dataIndex: 'amount',
@@ -116,6 +130,16 @@ function Orders() {
       title: 'Date',
       dataIndex: 'date',
       key: 'date',
+      filters: [
+        {
+          text: 'Date',
+          value: 'Date',
+        },
+        {
+          text: 'Day',
+          value: 'Day',
+        },
+      ],
     },
     {
       title: 'Document ',
@@ -124,14 +148,15 @@ function Orders() {
     },
   ];
 
-  const onSelectChange = (selectedRowKey) => {
-    setState({ ...state, selectedRowKeys: selectedRowKey });
+  const onSelectChange = (selectedRowKeys) => {
+    setState((prevState) => ({
+      ...prevState,
+      selectedRowKeys,
+    }));
   };
 
   const rowSelection = {
-    onChange: (selectRowKeys) => {
-      onSelectChange(selectRowKeys);
-    },
+    onChange: onSelectChange,
   };
 
   return (
@@ -182,10 +207,18 @@ function Orders() {
             <Col md={24}>
               <TableWrapper className="table-order table-responsive">
                 <Table
-                  rowSelection={rowSelection}
+                  // rowSelection={rowSelection}
                   dataSource={dataSource}
                   columns={columns}
-                  pagination={{ pageSize: 10, total: cartData?.length }} // showSizeChanger: true,
+                  pagination={{
+                    showSizeChanger: true,
+                    current: state.currentPage,
+                    pageSize: state.pageSize,
+                    total: orderData?.TotalCount,
+                    loading: loading,
+                    onChange: handlePageChange,
+                    onShowSizeChange: handlePageChange,
+                  }}
                 />
               </TableWrapper>
             </Col>

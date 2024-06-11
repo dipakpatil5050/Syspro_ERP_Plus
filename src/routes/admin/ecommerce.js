@@ -7,13 +7,12 @@ const ProductAdd = lazy(() => import('../../container/ecommerce/product/AddProdu
 const ProductDetails = lazy(() => import('../../container/ecommerce/product/ProductDetails'));
 const Cart = lazy(() => import('../../container/ecommerce/Cart'));
 const Orders = lazy(() => import('../../container/ecommerce/Orders'));
+const NotFound = lazy(() => import('../../container/pages/404'));
 
 // const ProductEdit = lazy(() => import('../../container/ecommerce/product/EditProduct'));
 // const Invoice = lazy(() => import('../../container/ecommerce/Invoice'));
 // const Sellers = lazy(() => import('../../container/ecommerce/Sellers'));
 // const Checkout = lazy(() => import('../../container/ecommerce/Checkout'));
-
-const NotFound = lazy(() => import('../../container/pages/404'));
 
 function EcommerceRoute() {
   return (

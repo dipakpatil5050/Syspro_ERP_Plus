@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import OrderServices from '../../services/OrderServices';
 import { setLoading } from '../../redux/reducers/authReducer';
-import { setCartItems, setIntentId, setOrderPdf } from '../../redux/reducers/cartSlice';
+import { setCartItems, setIntentId, setOrderHistory, setOrderPdf, setIsLoading } from '../../redux/reducers/cartSlice';
 
 export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, cartItems) => async (dispatch) => {
   const body = cartItems?.map((item) => ({
@@ -11,12 +11,10 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     GST_No: gst,
     email: email,
     Remark: remark,
-
     Row_id: item.Id,
     Rate: item.Saleprice1,
     Qty: item.Qty,
     Amount: item.Total,
-
     Cart_Id: cartId,
     Indent_Id: 0,
     SetQty: 0,
@@ -54,4 +52,29 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     toast.error(error.message);
     dispatch(setLoading(false));
   }
+};
+
+export const invoicePrint = (indentId) => async (dispatch) => {
+  const bodydata = {
+    Indent_Id: indentId,
+  };
+  dispatch(setIsLoading(true));
+  const InvoiceRes = await OrderServices.orderPrint(bodydata);
+  dispatch(setOrderPdf(InvoiceRes.data?.Data?.ReportPath));
+  dispatch(setIsLoading(false));
+  const pdfPath = InvoiceRes.data?.Data?.ReportPath;
+  window.open(pdfPath, '_blank');
+};
+
+export const orderHistory = (offsetValue, pagesize) => async (dispatch) => {
+  const historyBody = {
+    FilterString: '',
+    OffsetValue: offsetValue,
+    PageSize: pagesize,
+  };
+
+  dispatch(setIsLoading(true));
+  const historyRes = await OrderServices.orderHistory(historyBody);
+  dispatch(setOrderHistory(historyRes.data?.Data));
+  dispatch(setIsLoading(false));
 };
