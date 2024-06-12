@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Table } from 'antd';
+import { Row, Col, Table, Spin } from 'antd';
 import UilDocumentInfo from '@iconscout/react-unicons/icons/uil-document-info';
 import { TopToolBox } from './Style';
 import { PageHeader } from '../../components/page-headers/page-headers';
@@ -80,6 +80,7 @@ function Orders() {
   const handleInvoiceDownload = (Indent_Id) => {
     dispatch(invoicePrint(Indent_Id));
   };
+  // table-actions
 
   const dataSource =
     orderData?.products?.map((item, key) => {
@@ -91,15 +92,20 @@ function Orders() {
         amount: <span className="ordered-amount">{Saleprice1}</span>,
         date: <span className="ordered-date">08-06-2024</span>,
         document: (
-          <div className="table-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Button
+              title="Invoice PDF"
               onClick={() => handleInvoiceDownload(Indent_Id)}
               className="btn-icon"
               type="info"
               to="#"
               shape="circle"
             >
-              <UilDocumentInfo />
+              <UilDocumentInfo color="black" />
+              {/* <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/121px-PDF_file_icon.svg.png"
+                alt="pdf"
+              /> */}
             </Button>
           </div>
         ),
@@ -206,6 +212,19 @@ function Orders() {
           <Row gutter={15}>
             <Col md={24}>
               <TableWrapper className="table-order table-responsive">
+                {loading && (
+                  <div
+                    className="table-loading"
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      zIndex: 99999,
+                    }}
+                  >
+                    <Spin size="large" />
+                  </div>
+                )}
                 <Table
                   // rowSelection={rowSelection}
                   dataSource={dataSource}
