@@ -111,6 +111,17 @@ function Orders() {
         ),
       };
     }) || [];
+
+  // filters: [
+  //   {
+  //     text: 'Date',
+  //     value: 'Date',
+  //   },
+  //   {
+  //     text: 'Day',
+  //     value: 'Day',
+  //   },
+  // ],
   const columns = [
     {
       title: 'Order Id',
@@ -136,16 +147,6 @@ function Orders() {
       title: 'Date',
       dataIndex: 'date',
       key: 'date',
-      filters: [
-        {
-          text: 'Date',
-          value: 'Date',
-        },
-        {
-          text: 'Day',
-          value: 'Day',
-        },
-      ],
     },
     {
       title: 'Document ',
@@ -227,6 +228,7 @@ function Orders() {
                 )}
                 <Table
                   // rowSelection={rowSelection}
+                  // bordered
                   dataSource={dataSource}
                   columns={columns}
                   pagination={{
@@ -238,6 +240,9 @@ function Orders() {
                     onChange: handlePageChange,
                     onShowSizeChange: handlePageChange,
                   }}
+                  // expandable={{
+                  //   expandedRowRender: () => <p style={{ margin: 0 }}>{record.Item_Name}</p>,
+                  // }}
                 />
               </TableWrapper>
             </Col>

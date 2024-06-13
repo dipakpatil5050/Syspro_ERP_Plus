@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { NavLink } from 'react-router-dom';
 // import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import useMobileView from '../useMobileView';
 import Heading from '../../../../components/heading/heading';
 import { Button } from '../../../../components/buttons/buttons';
 import { ProductCard } from '../../Style';
@@ -20,6 +21,7 @@ import { addToCart, getCartItem } from '../../../../Actions/Catalogue/CartAction
 function ProductCards({ product }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isMobile = useMobileView();
 
   const cartId = useSelector((state) => state.cart.cartId);
 
@@ -105,8 +107,8 @@ function ProductCards({ product }) {
                   style={{
                     borderRadius: '9px',
                     cursor: 'pointer',
-                    maxWidth: '100%',
-                    // objectFit: 'cover',   //  take the size of container can crop top and bottom and fit to screen
+                    // maxWidth: '100%',
+                    // objectFit: 'cover', //  take the size of container can crop top and bottom and fit to screen
                     objectFit: 'contain', // add white space for extra imagec area
                     objectPosition: 'center center',
                   }}
@@ -117,17 +119,27 @@ function ProductCards({ product }) {
         </label>
         <figcaption>
           <Heading className="product-single-title" as="h5">
-            <Link onClick={() => handleProductClick(id)}>{name}</Link>
+            <Link to={`/admin/ecommerce/productDetails/${id}`}>{name}</Link>
           </Heading>
-          <p className="product-single-price" style={{ marginTop: '7px' }}>
-            <span className="product-single-price__new">₹ {price} </span>
+
+          <p className="product-single-price">
+            <span className="product-single-price__new">${price} </span>
           </p>
-          <div className="" style={{ textAlign: 'end', position: 'absolute', bottom: 36, right: 16 }}>
-            <Button size="small" type="primary" onClick={addToCartFromGrid}>
-              <UilShoppingBag />
-              Add To Cart
-            </Button>
-          </div>
+          {isMobile ? (
+            <div className="" style={{ textAlign: 'end', position: 'absolute', bottom: 36, right: 16 }}>
+              <Button size="small" type="primary" onClick={addToCartFromGrid}>
+                <UilShoppingBag />
+                Add To Cart
+              </Button>
+            </div>
+          ) : (
+            <div className="product-single-action">
+              <Button size="small" type="primary" onClick={addToCartFromGrid}>
+                <UilShoppingBag />
+                Add To Cart
+              </Button>
+            </div>
+          )}
         </figcaption>
       </ProductCard>
     </>
