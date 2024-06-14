@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table, Spin } from 'antd';
 import UilDocumentInfo from '@iconscout/react-unicons/icons/uil-document-info';
+import Order from './Order.json';
 import { TopToolBox } from './Style';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main, TableWrapper } from '../styled';
@@ -22,11 +23,13 @@ function Orders() {
     },
   ];
 
-  const orderData = useSelector((state) => state.cart.orderHistory);
+  // const orderData = useSelector((state) => state.cart.orderHistory);
   const loading = useSelector((state) => state.cart.isLoading);
   const cartId = useSelector((state) => state.cart.cartId);
 
   const dispatch = useDispatch();
+
+  const orderData = useSelector((state) => state.cart.cartItems.CartItem);
 
   //   const { searchData, orders } = useSelector((state) => {
   //     return {
@@ -86,16 +89,18 @@ function Orders() {
     dispatch(invoicePrint(Indent_Id));
   };
   // table-actions
-
+  // ?.products
   const dataSource =
-    orderData?.products?.map((item, key) => {
-      const { Indent_Id, Item_Name, Saleprice1 } = item;
+    Order?.map((item, key) => {
+      const { Indent_Id, Party_Name, OrderDate, Amount, OrderQty, remark, Items } = item;
       return {
         key: key + 1,
         id: <span className="order-id">{Indent_Id}</span>,
-        item: <span className="customer-name">{Item_Name}</span>,
-        amount: <span className="ordered-amount">{Saleprice1}</span>,
-        date: <span className="ordered-date">08-06-2024</span>,
+        party: <span className="customer-name">{Party_Name}</span>,
+        quantity: <span className="ordered-amount">{OrderQty}</span>,
+        amount: <span className="ordered-amount">{Amount}</span>,
+        date: <span className="ordered-date">{OrderDate}</span>,
+        remark: <span className="ordered-date">{remark}</span>,
         document: (
           <div className="" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Button
@@ -113,6 +118,13 @@ function Orders() {
               /> */}
             </Button>
           </div>
+        ),
+        items: (
+          <span className="Items-Deatails">
+            {Items.map((data, index) => {
+              return <li key={index}>{data.Item_Id}</li>;
+            })}
+          </span>
         ),
       };
     }) || [];
@@ -134,15 +146,20 @@ function Orders() {
       key: 'id',
     },
     {
-      title: 'Item',
-      dataIndex: 'item',
-      key: 'item',
+      title: 'Party Name ',
+      dataIndex: 'party',
+      key: 'party',
     },
     // {
     //   title: 'Status',
     //   dataIndex: 'status',
     //   key: 'status',
     // },
+    {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
     {
       title: 'Amount',
       dataIndex: 'amount',
@@ -154,22 +171,16 @@ function Orders() {
       key: 'date',
     },
     {
+      title: 'Remark',
+      dataIndex: 'remark',
+      key: 'remark',
+    },
+    {
       title: 'Document ',
       dataIndex: 'document',
       key: 'document',
     },
   ];
-
-  const onSelectChange = (selectedRowKeys) => {
-    setState((prevState) => ({
-      ...prevState,
-      selectedRowKeys,
-    }));
-  };
-
-  const rowSelection = {
-    onChange: onSelectChange,
-  };
 
   return (
     <>
@@ -232,8 +243,7 @@ function Orders() {
                   </div>
                 )}
                 <Table
-                  // rowSelection={rowSelection}
-                  // bordered
+                  bordered
                   dataSource={dataSource}
                   columns={columns}
                   pagination={{
@@ -245,9 +255,9 @@ function Orders() {
                     onChange: handlePageChange,
                     onShowSizeChange: handlePageChange,
                   }}
-                  // expandable={{
-                  //   expandedRowRender: () => <p style={{ margin: 0 }}>{record.Item_Name}</p>,
-                  // }}
+                  expandable={{
+                    expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.items}</p>,
+                  }}
                 />
               </TableWrapper>
             </Col>

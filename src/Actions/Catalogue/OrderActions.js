@@ -73,8 +73,13 @@ export const orderHistory = (offsetValue, pagesize) => async (dispatch) => {
     PageSize: pagesize,
   };
 
-  dispatch(setIsLoading(true));
-  const historyRes = await OrderServices.orderHistory(historyBody);
-  dispatch(setOrderHistory(historyRes.data?.Data));
-  dispatch(setIsLoading(false));
+  try {
+    dispatch(setIsLoading(true));
+    const historyRes = await OrderServices.orderHistory(historyBody);
+    dispatch(setOrderHistory(historyRes.data?.Data));
+    dispatch(setIsLoading(false));
+  } catch (error) {
+    console.error('Error while fetching order history:', error);
+    dispatch(setIsLoading(false));
+  }
 };

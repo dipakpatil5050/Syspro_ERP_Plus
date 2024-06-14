@@ -8,7 +8,6 @@ const initialState = {
   orderPDF: '',
   isLoading: false,
   error: null,
-  total: 0,
 };
 
 // export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async () => {
