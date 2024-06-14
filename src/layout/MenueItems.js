@@ -35,7 +35,7 @@ import {
   // UilQuestionCircle,
   // UilSearch,
   // UilServer,
-  // UilSetting,
+  UilSetting,
   UilShoppingCart,
   // UilSquareFull,
   // UilTable,
@@ -130,6 +130,7 @@ function MenuItems({ toggleCollapsed }) {
   // };
 
   const items = [
+    //  Dashboard
     getItem(t('dashboard'), 'dashboard', !topMenu && <UilCreateDashboard />, [
       getItem(
         <NavLink onClick={toggleCollapsed} to={path}>
@@ -138,6 +139,7 @@ function MenuItems({ toggleCollapsed }) {
         'demo-1',
         null,
       ),
+
       // all remaining Dashboard demo's
       // getItem(
       //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-2`}>
@@ -203,6 +205,83 @@ function MenuItems({ toggleCollapsed }) {
       //   null,
       // ),
     ]),
+
+    // Configuration
+    getItem(t('Configuration'), 'configuration', !topMenu && <UilSetting />, [
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={path}>
+          {t('Configuration')}
+        </NavLink>,
+        'configuration',
+        null,
+      ),
+
+      // all remaining Dashboard demo's
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-2`}>
+      //     {t('demo')} {t('2')}
+      //   </NavLink>,
+      //   'demo-2',
+      //   null,
+      // ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-3`}>
+      //     {t('demo')} {t('3')}
+      //   </NavLink>,
+      //   'demo-3',
+      //   null,
+      // ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-4`}>
+      //     {t('demo')} {t('4')}
+      //   </NavLink>,
+      //   'demo-4',
+      //   null,
+      // ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-5`}>
+      //     {t('demo')} {t('5')}
+      //   </NavLink>,
+      //   'demo-5',
+      //   null,
+      // ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-6`}>
+      //     {t('demo')} {t('6')}
+      //   </NavLink>,
+      //   'demo-6',
+      //   null,
+      // ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-7`}>
+      //     {t('demo')} {t('7')}
+      //   </NavLink>,
+      //   'demo-7',
+      //   null,
+      // ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-8`}>
+      //     {t('demo')} {t('8')}
+      //   </NavLink>,
+      //   'demo-8',
+      //   null,
+      // ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-9`}>
+      //     {t('demo')} {t('9')}
+      //   </NavLink>,
+      //   'demo-9',
+      //   null,
+      // ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/demo-10`}>
+      //     {t('demo')} {t('10')}
+      //   </NavLink>,
+      //   'demo-10',
+      //   null,
+      // ),
+    ]),
+
     // getItem(t('layouts'), 'layout', !topMenu && <UilWindowSection />, [
     //   getItem(
     //     <NavLink
@@ -293,6 +372,59 @@ function MenuItems({ toggleCollapsed }) {
     //   'changelog',
     //   !topMenu && <UilArrowGrowth />,
     // ),
+
+    // Purchase Module
+
+    // getItem(t('Purchase Module'), 'Purchase', !topMenu && <UilFileCheckAlt />, [
+    //   getItem(
+    //     <NavLink onClick={toggleCollapsed} to={`${path}/features/purchase-outstanding-report`}>
+    //       {t('Purchase Outstanding')} {t('Report')}
+    //     </NavLink>,
+    //     'basicTable',
+    //     null,
+    //   ),
+    //   getItem(
+    //     <NavLink onClick={toggleCollapsed} to={`${path}/features/stock-report`}>
+    //       {t('Stock')} {t('Report')}
+    //     </NavLink>,
+    //     'stockreport',
+    //     null,
+    //   ),
+    // ]),
+
+    // E-Commerce section : Catalogue
+    getItem(
+      !topMenu && <NavTitle className="ninjadash-sidebar-nav-title">{t('B2B E-Commerce')}</NavTitle>,
+      'app-title',
+      null,
+      null,
+      'group',
+    ),
+
+    getItem(t('Catalogue'), 'ecommerce', !topMenu && <UilShoppingCart />, [
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/products/grid`}>
+          {t('Catalogue')}
+        </NavLink>,
+        'products',
+        null,
+      ),
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/orders`}>
+          {t('Orders')}
+        </NavLink>,
+        'orders',
+        null,
+      ),
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/add-product`}>
+          {t('Catalogue')} {t('Upload')}
+        </NavLink>,
+        'add-product',
+        null,
+      ),
+    ]),
+
     getItem(
       !topMenu && <NavTitle className="ninjadash-sidebar-nav-title">{t('Reports')}</NavTitle>,
       'app-title',
@@ -1082,14 +1214,6 @@ function MenuItems({ toggleCollapsed }) {
     // Account Reports
 
     getItem(t('Account Reports'), 'forms', !topMenu && <UilCompactDisc />, [
-      // getItem(
-      //   <NavLink onClick={toggleCollapsed} to={`${path}/features/form-layout`}>
-      //     {t('form')} {t('layouts')}
-      //   </NavLink>,
-      //   'form-layout',
-      //   null,
-      // ),
-
       // Form Component Navlink
       getItem(
         <NavLink onClick={toggleCollapsed} to={`${path}/features/ledger-report`}>
@@ -1098,20 +1222,6 @@ function MenuItems({ toggleCollapsed }) {
         'form-elements',
         null,
       ),
-      // getItem(
-      //   <NavLink onClick={toggleCollapsed} to={`${path}/features/form-components`}>
-      //     {t('form')} {t('components')}
-      //   </NavLink>,
-      //   'form-components',
-      //   null,
-      // ),
-      // getItem(
-      //   <NavLink onClick={toggleCollapsed} to={`${path}/features/form-validation`}>
-      //     {t('form')} {t('validation')}
-      //   </NavLink>,
-      //   'form-validation',
-      //   null,
-      // ),
     ]),
 
     // Sale Module
@@ -1137,58 +1247,6 @@ function MenuItems({ toggleCollapsed }) {
           {t('Sale Outstanding')} {t('Report')}
         </NavLink>,
         'saleoutstandingreport',
-        null,
-      ),
-    ]),
-
-    // Purchase Module
-
-    // getItem(t('Purchase Module'), 'Purchase', !topMenu && <UilFileCheckAlt />, [
-    //   getItem(
-    //     <NavLink onClick={toggleCollapsed} to={`${path}/features/purchase-outstanding-report`}>
-    //       {t('Purchase Outstanding')} {t('Report')}
-    //     </NavLink>,
-    //     'basicTable',
-    //     null,
-    //   ),
-    //   getItem(
-    //     <NavLink onClick={toggleCollapsed} to={`${path}/features/stock-report`}>
-    //       {t('Stock')} {t('Report')}
-    //     </NavLink>,
-    //     'stockreport',
-    //     null,
-    //   ),
-    // ]),
-
-    // E-Commerce section : Catalogue
-    getItem(
-      !topMenu && <NavTitle className="ninjadash-sidebar-nav-title">{t('E-Commerce')}</NavTitle>,
-      'app-title',
-      null,
-      null,
-      'group',
-    ),
-
-    getItem(t('Catalogue'), 'ecommerce', !topMenu && <UilShoppingCart />, [
-      getItem(
-        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/products/grid`}>
-          {t('Catalogue')}
-        </NavLink>,
-        'products',
-        null,
-      ),
-      getItem(
-        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/orders`}>
-          {t('Orders')}
-        </NavLink>,
-        'orders',
-        null,
-      ),
-      getItem(
-        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/add-product`}>
-          {t('Catalogue')} {t('Upload')}
-        </NavLink>,
-        'add-product',
         null,
       ),
     ]),

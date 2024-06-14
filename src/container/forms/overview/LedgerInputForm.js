@@ -8,8 +8,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import moment from 'moment';
 import './ledgerreport.css';
-
-import { IoMdClose } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 import { HorizontalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper, Main } from '../../styled';
@@ -163,6 +162,7 @@ function LedgerInputForm() {
       const response = await axios.post(PDFAPI, body, { headers });
       const ledgerReportPDF = response?.data?.Data;
       const pdfurl = ledgerReportPDF?.ReportPath;
+      window.open(pdfurl, '_blank');
       setViewPdf(pdfurl);
     } catch (error) {
       // eslint-disable-next-line
@@ -203,14 +203,6 @@ function LedgerInputForm() {
     selectedPartyOptionRef.current = selectedOption;
   };
 
-  // const handleSelectAccountGroupChange = (selectedOption) => {
-  //   selectedAccountGroupOptionRef.current = selectedOption;
-  // };
-
-  const togglePdfViewer = () => {
-    setViewPdf(!viewPdf);
-  };
-
   // const reporttypeoptions = ledgerReportData?.Table.map((report) => ({
   //   value: report.Rep_Rpt,
   //   label: report.Rep_Name,
@@ -244,107 +236,106 @@ function LedgerInputForm() {
         </div>
       )}
       <HorizontalFormStyleWrap className="sDash_input-form">
-        {!viewPdf && (
-          <Cards border title="Ledger Report">
-            <Form name="input-form" layout="horizontal">
-              <Row align="middle" gutter={40}>
-                {/* From Date */}
-                <Col md={4} xs={24}>
-                  <label htmlFor="fromdate">From Date : </label>
-                </Col>
-                <Col md={8} xs={24}>
-                  <Form.Item name="fromdate" rules={[{ required: true, message: 'Please select From Date' }]}>
-                    <DatePicker
-                      defaultValue={defaultFromDate}
-                      // defaultValue={moment('01-04-2023', 'DD-MM-YYYY')}
-                      onChange={(date) => {
-                        setFromDate(date);
-                      }}
-                      id="from-date"
-                      format="DD-MM-YYYY"
-                      name="from-date"
-                    />
-                  </Form.Item>
-                </Col>
-                {/* To Date */}
-                <Col md={4} xs={24}>
-                  <label htmlFor="todate">To Date : </label>
-                </Col>
-                <Col md={8} xs={24}>
-                  <Form.Item name="todate" rules={[{ required: true, message: 'Please select To Date' }]}>
-                    <DatePicker
-                      defaultValue={defaultToDate}
-                      // defaultValue={moment('31-03-2024', 'DD-MM-YYYY')}
-                      onChange={(date) => {
-                        setToDate(date);
-                      }}
-                      id="to-date"
-                      name="to-date"
-                      format="DD-MM-YYYY"
-                      minDate={fromDate}
-                      maxDate={new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate())}
-                      // style={{ width: '70%' }}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
+        <Cards border title="Ledger Report">
+          <Form name="input-form" layout="horizontal">
+            <Row align="middle" gutter={40}>
+              {/* From Date */}
+              <Col md={4} xs={24}>
+                <label htmlFor="fromdate">From Date : </label>
+              </Col>
+              <Col md={8} xs={24}>
+                <Form.Item name="fromdate" rules={[{ required: true, message: 'Please select From Date' }]}>
+                  <DatePicker
+                    defaultValue={defaultFromDate}
+                    // defaultValue={moment('01-04-2023', 'DD-MM-YYYY')}
+                    onChange={(date) => {
+                      setFromDate(date);
+                    }}
+                    id="from-date"
+                    format="DD-MM-YYYY"
+                    name="from-date"
+                  />
+                </Form.Item>
+              </Col>
+              {/* To Date */}
+              <Col md={4} xs={24}>
+                <label htmlFor="todate">To Date : </label>
+              </Col>
+              <Col md={8} xs={24}>
+                <Form.Item name="todate" rules={[{ required: true, message: 'Please select To Date' }]}>
+                  <DatePicker
+                    defaultValue={defaultToDate}
+                    // defaultValue={moment('31-03-2024', 'DD-MM-YYYY')}
+                    onChange={(date) => {
+                      setToDate(date);
+                    }}
+                    id="to-date"
+                    name="to-date"
+                    format="DD-MM-YYYY"
+                    minDate={fromDate}
+                    maxDate={new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate())}
+                    // style={{ width: '70%' }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
 
-              <Row align="middle" gutter={40}>
-                <Col md={4} xs={24}>
-                  <label htmlFor="report-type">Report Type :</label>
-                </Col>
-                <Col md={8} xs={24}>
-                  {/* {console.log('defaultReportType in report type form field: ', defaultReportType)} */}
-                  <Form.Item name="report-type">
-                    <Select
-                      id="party"
-                      name="party"
-                      options={ledgerReportData?.Table.map((report) => ({
-                        value: report.Rep_Rpt,
-                        label: report.Rep_Name,
-                      }))}
-                      // defaultValue={selectedReportType}
-                      defaultValue={defaultValue}
-                      // value={selectedReportType}
-                      placeholder="Select Ledger Report Type"
-                      onChange={handleSelectReportTypeChange}
-                      // allowClear
-                      showSearch
-                      // isClearable
-                    />
-                  </Form.Item>
-                </Col>
+            <Row align="middle" gutter={40}>
+              <Col md={4} xs={24}>
+                <label htmlFor="report-type">Report Type :</label>
+              </Col>
+              <Col md={8} xs={24}>
+                {/* {console.log('defaultReportType in report type form field: ', defaultReportType)} */}
+                <Form.Item name="report-type">
+                  <Select
+                    id="party"
+                    name="party"
+                    options={ledgerReportData?.Table.map((report) => ({
+                      value: report.Rep_Rpt,
+                      label: report.Rep_Name,
+                    }))}
+                    // defaultValue={selectedReportType}
+                    defaultValue={defaultValue}
+                    // value={selectedReportType}
+                    placeholder="Select Ledger Report Type"
+                    onChange={handleSelectReportTypeChange}
+                    // allowClear
+                    showSearch
+                    // isClearable
+                  />
+                </Form.Item>
+              </Col>
 
-                {isCompany && (
-                  <>
-                    <Col md={4} xs={24}>
-                      <label htmlFor="party">Party :</label>
-                    </Col>
-                    <Col md={8} xs={24}>
-                      <Form.Item name="party">
-                        <Select
-                          id="party"
-                          name="party"
-                          options={ledgerReportData?.Table3.map((report) => ({
-                            value: report.Account_ID,
-                            label: report.Account_Name,
-                          }))}
-                          placeholder="Select Party"
-                          onChange={handleSelectPartyChange}
-                          allowClear
-                          // isMulti
-                          showSearch
-                          isClearable
-                        />
-                      </Form.Item>
-                    </Col>
-                  </>
-                )}
-              </Row>
-              {/* <Row align="middle">
+              {isCompany && (
+                <>
+                  <Col md={4} xs={24}>
+                    <label htmlFor="party">Party :</label>
+                  </Col>
+                  <Col md={8} xs={24}>
+                    <Form.Item name="party">
+                      <Select
+                        id="party"
+                        name="party"
+                        options={ledgerReportData?.Table3.map((report) => ({
+                          value: report.Account_ID,
+                          label: report.Account_Name,
+                        }))}
+                        placeholder="Select Party"
+                        onChange={handleSelectPartyChange}
+                        allowClear
+                        // isMulti
+                        showSearch
+                        isClearable
+                      />
+                    </Form.Item>
+                  </Col>
+                </>
+              )}
+            </Row>
+            {/* <Row align="middle">
                 
               </Row> */}
-              {/* <Row align="middle" gutter={30}>
+            {/* <Row align="middle" gutter={30}>
                 <Col md={4} xs={24}>
                   <label htmlFor="account-group">Account Group :</label>
                 </Col>
@@ -366,38 +357,15 @@ function LedgerInputForm() {
                   </Form.Item>
                 </Col>
               </Row> */}
-              <Row justify="end">
-                <Col>
-                  <Button type="primary" onClick={handleLedgerReportPDF}>
-                    Apply
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
-          </Cards>
-        )}
-
-        {viewPdf && (
-          <Main
-            style={{ backgroundColor: 'white', borderRadius: '5px', padding: '10px', border: '1px solid #d9d9d9' }}
-            title="Sale Report PDF Document"
-          >
             <Row justify="end">
               <Col>
-                <Button type="danger" onClick={togglePdfViewer}>
-                  {viewPdf ? <IoMdClose size={22} /> : 'View PDF'}
+                <Button type="primary" onClick={handleLedgerReportPDF}>
+                  Apply
                 </Button>
               </Col>
             </Row>
-            {viewPdf && (
-              <div className="pdf-container">
-                <iframe src={viewPdf} title="Sale Report" width="100%" height="700px">
-                  view PDF
-                </iframe>
-              </div>
-            )}
-          </Main>
-        )}
+          </Form>
+        </Cards>
       </HorizontalFormStyleWrap>
     </BasicFormWrapper>
   );

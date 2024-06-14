@@ -99,14 +99,6 @@ const ProductCardsList = React.memo(({ product }) => {
               <p className="product-single-price">
                 <span className="product-single-price__new">₹ {price} </span>
               </p>
-
-              {/* {!isChecked && (
-                <div className="product-single-action">
-                  <Button className="btn-buy" size="default" type="primary">
-                    <UilShareAlt /> Share
-                  </Button>
-                </div>
-              )} */}
             </div>
           </Col>
         </Row>

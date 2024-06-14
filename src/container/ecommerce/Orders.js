@@ -8,6 +8,7 @@ import { Main, TableWrapper } from '../styled';
 import { Button } from '../../components/buttons/buttons';
 import { Cards } from '../../components/cards/frame/cards-frame';
 import { invoicePrint, orderHistory } from '../../Actions/Catalogue/OrderActions';
+import { getCartItem } from '../../Actions/Catalogue/CartAction';
 
 function Orders() {
   const PageRoutes = [
@@ -22,8 +23,8 @@ function Orders() {
   ];
 
   const orderData = useSelector((state) => state.cart.orderHistory);
-
   const loading = useSelector((state) => state.cart.isLoading);
+  const cartId = useSelector((state) => state.cart.cartId);
 
   const dispatch = useDispatch();
 
@@ -64,6 +65,10 @@ function Orders() {
   //   const handleChangeForFilter = (e) => {
   //     dispatch(orderFilter('status', e.target.value));
   //   };
+
+  useEffect(() => {
+    dispatch(getCartItem(cartId));
+  }, [dispatch, cartId]);
 
   const handlePageChange = (current, size) => {
     setState((prevState) => ({
