@@ -24,6 +24,8 @@ const Product = React.memo(() => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
 
+  const { catalogueData } = useSelector((state) => state.auth);
+
   // useEffect(() => {
   //   if (getCartItem) {
   //     dispatch(getCartItem());
@@ -90,6 +92,11 @@ const Product = React.memo(() => {
                     />                   
                     */}
                 </Col>
+                {catalogueData.length > 0 && (
+                  <Col xxl={7} lg={12} xs={24}>
+                    <p className="search-result">Showing 1–100 of {catalogueData[0]?.FilterTotalCount} results</p>
+                  </Col>
+                )}
                 <Col xxl={10} xs={24} align="end">
                   <div className="product-list-action d-flex justify-content-between align-items-center">
                     {/* {(window.innerWidth <= 991 && window.innerWidth >= 768) ||

@@ -29,8 +29,6 @@ function Orders() {
 
   const dispatch = useDispatch();
 
-  // const orderData = useSelector((state) => state.cart.cartItems.CartItem);
-
   //   const { searchData, orders } = useSelector((state) => {
   //     return {
   //       searchData: state.headerSearchData,
@@ -143,7 +141,7 @@ function Orders() {
         items: (
           <table style={{ border: '1px solid black', marginTop: '10px', padding: '20px' }}>
             <thead>
-              <tr>
+              <tr style={{ textAlign: 'center' }}>
                 <th>Sr.No.</th>
                 <th>Item Id</th>
                 <th>Item Name</th>
@@ -157,7 +155,7 @@ function Orders() {
 
             <tbody>
               {cartItems.map((Data, index) => (
-                <tr key={index}>
+                <tr key={index} style={{ textAlign: 'center' }}>
                   <td>{index + 1}</td>
                   <td>{Data.Item_Id}</td>
                   <td>{Data.Item_Name}</td>
@@ -167,7 +165,7 @@ function Orders() {
                   <td>{Data.Total}</td>
                   <td style={{ textAlign: 'end' }}>
                     <Link to={Data.Filepath} target="_blank">
-                      Document
+                      Item Image
                     </Link>
                   </td>
                 </tr>
@@ -292,7 +290,6 @@ function Orders() {
                   expandable={{
                     expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.items}</p>,
                   }}
-                  // expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
                 />
               </TableWrapper>
             </Col>

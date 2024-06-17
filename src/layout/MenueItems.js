@@ -209,10 +209,24 @@ function MenuItems({ toggleCollapsed }) {
     // Configuration
     getItem(t('Configuration'), 'configuration', !topMenu && <UilSetting />, [
       getItem(
-        <NavLink onClick={toggleCollapsed} to={path}>
-          {t('Configuration')}
+        <NavLink onClick={toggleCollapsed} to={`${path}/components/users`}>
+          {t('Users')}
         </NavLink>,
-        'configuration',
+        'users',
+        null,
+      ),
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/components/rules`}>
+          {t('Rule Management')}
+        </NavLink>,
+        'rules',
+        null,
+      ),
+      getItem(
+        <NavLink onClick={toggleCollapsed} to={`${path}/components/assigntouser`}>
+          {t('User-Rule Assign')}
+        </NavLink>,
+        'assigntouser',
         null,
       ),
 
