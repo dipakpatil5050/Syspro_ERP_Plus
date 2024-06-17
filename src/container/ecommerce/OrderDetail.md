@@ -27,7 +27,7 @@ const App = () => {
           <Space size="middle">
             <a>Pause</a>
             <a>Stop</a>
-            <Dropdown menu={{ items }}>
+            <Dropdown overlay={{ items }}>
               <a>
                 More <DownOutlined />
               </a>
@@ -75,18 +75,6 @@ const App = () => {
   return (
     <>
       <Table columns={columns} expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }} dataSource={data} />
-      <Table
-        columns={columns}
-        expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
-        dataSource={data}
-        size="middle"
-      />
-      <Table
-        columns={columns}
-        expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
-        dataSource={data}
-        size="small"
-      />
     </>
   );
 };
