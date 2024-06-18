@@ -64,15 +64,16 @@ const AuthInfo = React.memo(() => {
             </Link>
           </li>
           <li>
-            <Link to="#">
-              <UilSetting /> Settings
+            <Link to="/admin/ecommerce/orders">
+              <UilDollarSign /> My Orders
             </Link>
           </li>
           <li>
             <Link to="#">
-              <UilDollarSign /> Billing
+              <UilSetting /> Settings
             </Link>
           </li>
+
           <li>
             <Link to="#">
               <UilUsersAlt /> Activity

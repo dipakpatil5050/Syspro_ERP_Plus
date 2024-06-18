@@ -8,6 +8,7 @@ import Pages from './pages';
 import withAdminLayout from '../../layout/withAdminLayout';
 
 const Components = lazy(() => import('./components'));
+const Configuration = lazy(() => import('./configuration'));
 
 const NotFound = lazy(() => import('../../container/pages/404'));
 
@@ -28,6 +29,8 @@ const Admin = React.memo(() => {
         <Route index path="/*" element={<Dashboard />} />
         <Route path="pages/*" element={<Pages />} />
         <Route path="components/*" element={<Components />} />
+        <Route path="configuration/*" element={<Configuration />} />
+
         <Route path="features/*" element={<Features />} />
         <Route path="ecommerce/*" element={<Ecommerce />} />
 

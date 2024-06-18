@@ -89,12 +89,13 @@ const Product = React.memo(() => {
                       placeholder="Search"
                       width="100%"
                       patterns
+                      1–100 of 
                     />                   
                     */}
                 </Col>
                 {catalogueData.length > 0 && (
                   <Col xxl={7} lg={12} xs={24}>
-                    <p className="search-result">Showing 1–100 of {catalogueData[0]?.FilterTotalCount} results</p>
+                    <p className="search-result">Showing {catalogueData[0]?.FilterTotalCount} results</p>
                   </Col>
                 )}
                 <Col xxl={10} xs={24} align="end">

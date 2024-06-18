@@ -8,10 +8,8 @@ function RuleManagement() {
   const [brands, setBrands] = useState([]);
   const [rules, setRules] = useState([]);
   const [ruleName, setRuleName] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedGroup, setSelectedGroup] = useState('');
-  const [selectedSubgroup, setSelectedSubgroup] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedType, setSelectedType] = useState('');
+  const [selectedValue, setSelectedValue] = useState('');
   const [selectedRule, setSelectedRule] = useState(null);
   const [message, setMessage] = useState('');
 
@@ -41,10 +39,8 @@ function RuleManagement() {
     event.preventDefault();
     const rule = {
       name: ruleName,
-      categoryId: selectedCategory,
-      groupId: selectedGroup,
-      subgroupId: selectedSubgroup,
-      brandId: selectedBrand,
+      type: selectedType,
+      value: selectedValue,
     };
 
     try {
@@ -69,10 +65,8 @@ function RuleManagement() {
         setMessage('Rule saved successfully.');
         setSelectedRule(null);
         setRuleName('');
-        setSelectedCategory('');
-        setSelectedGroup('');
-        setSelectedSubgroup('');
-        setSelectedBrand('');
+        setSelectedType('');
+        setSelectedValue('');
         // fetchData(); // Refresh rules
       } else {
         setMessage('Failed to save rule.');
@@ -86,10 +80,8 @@ function RuleManagement() {
   const handleEdit = (rule) => {
     setSelectedRule(rule);
     setRuleName(rule.name);
-    setSelectedCategory(rule.categoryId);
-    setSelectedGroup(rule.groupId);
-    setSelectedSubgroup(rule.subgroupId);
-    setSelectedBrand(rule.brandId);
+    setSelectedType(rule.type);
+    setSelectedValue(rule.value);
   };
 
   const handleDelete = async (ruleId) => {
@@ -110,6 +102,49 @@ function RuleManagement() {
     }
   };
 
+  const createSelectOptions = (items, labelKey, valueKey) => {
+    return items.map((item) => (
+      <option key={item[valueKey]} value={item[valueKey]}>
+        {item[labelKey]}
+      </option>
+    ));
+  };
+
+  const renderSelect = () => {
+    switch (selectedType) {
+      case 'Category':
+        return (
+          <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)}>
+            <option value="">--Select Category--</option>
+            {createSelectOptions(categories, 'name', 'id')}
+          </select>
+        );
+      case 'Group':
+        return (
+          <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)}>
+            <option value="">--Select Group--</option>
+            {createSelectOptions(groups, 'name', 'id')}
+          </select>
+        );
+      case 'Sub-Group':
+        return (
+          <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)}>
+            <option value="">--Select Sub-Group--</option>
+            {createSelectOptions(subgroups, 'name', 'id')}
+          </select>
+        );
+      case 'Brand':
+        return (
+          <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)}>
+            <option value="">--Select Brand--</option>
+            {createSelectOptions(brands, 'name', 'id')}
+          </select>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div>
       <h1>Rule Management</h1>
@@ -120,56 +155,26 @@ function RuleManagement() {
           <input type="text" id="ruleName" value={ruleName} onChange={(e) => setRuleName(e.target.value)} required />
         </div>
         <div>
-          <label htmlFor="categorySelect">Select Category:</label>
-          <select id="categorySelect" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-            <option value="">--Select Category--</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
+          <label htmlFor="typeSelect">Select Rule Type:</label>
+          <select id="typeSelect" value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
+            <option value="">--Select Type--</option>
+            <option value="Category">Category</option>
+            <option value="Group">Group</option>
+            <option value="Sub-Group">Sub-Group</option>
+            <option value="Brand">Brand</option>
           </select>
         </div>
         <div>
-          <label htmlFor="groupSelect">Select Group:</label>
-          <select id="groupSelect" value={selectedGroup} onChange={(e) => setSelectedGroup(e.target.value)}>
-            <option value="">--Select Group--</option>
-            {groups.map((group) => (
-              <option key={group.id} value={group.id}>
-                {group.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="subgroupSelect">Select Subgroup:</label>
-          <select id="subgroupSelect" value={selectedSubgroup} onChange={(e) => setSelectedSubgroup(e.target.value)}>
-            <option value="">--Select Subgroup--</option>
-            {subgroups.map((subgroup) => (
-              <option key={subgroup.id} value={subgroup.id}>
-                {subgroup.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="brandSelect">Select Brand:</label>
-          <select id="brandSelect" value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
-            <option value="">--Select Brand--</option>
-            {brands.map((brand) => (
-              <option key={brand.id} value={brand.id}>
-                {brand.name}
-              </option>
-            ))}
-          </select>
+          <label htmlFor="valueSelect">Select Value:</label>
+          {renderSelect()}
         </div>
         <button type="submit">{selectedRule ? 'Update Rule' : 'Create Rule'}</button>
       </form>
-      <h2>Existing Rules</h2>
+      <h2>Rules Collection</h2>
       <ul>
         {rules.map((rule) => (
           <li key={rule.id}>
-            {rule.name} - {rule.categoryId} - {rule.groupId} - {rule.subgroupId} - {rule.brandId}
+            {rule.name} - {rule.type} - {rule.value}
             <Button onClick={() => handleEdit(rule)}>Edit</Button>
             <Button onClick={() => handleDelete(rule.id)}>Delete</Button>
           </li>
