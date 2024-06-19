@@ -76,7 +76,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/m
 ### Advanced Configuration
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-![image](https://github.com/dipakpatil5050/Syspro_ERP_Plus/assets/92545685/ea48ddd9-2fa2-43b8-9c85-230f620599d7)
+
 
 ### Deployment
 
