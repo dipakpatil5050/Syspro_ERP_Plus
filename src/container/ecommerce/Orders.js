@@ -134,7 +134,8 @@ function Orders() {
               to="#"
               shape="circle"
             >
-              <UilDocumentInfo color="black" size="large" />
+              {/* <UilDocumentInfo color="black" size="large" /> */}
+              Invoice
             </Button>
           </div>
         ),

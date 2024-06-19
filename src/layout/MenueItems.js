@@ -215,8 +215,9 @@ function MenuItems({ toggleCollapsed }) {
       //   'users',
       //   null,
       // ),
+      // /components/rules
       getItem(
-        <NavLink onClick={toggleCollapsed} to={`${path}/components/rules`}>
+        <NavLink onClick={toggleCollapsed} to={`${path}/configuration/rulemaster`}>
           {t('Rule Master')}
         </NavLink>,
         'rules',

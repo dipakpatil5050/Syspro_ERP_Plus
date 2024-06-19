@@ -168,6 +168,7 @@ function RuleManagement() {
           <label htmlFor="valueSelect">Select Value:</label>
           {renderSelect()}
         </div>
+        <button type="submit">+ Add Rule</button>
         <button type="submit">{selectedRule ? 'Update Rule' : 'Create Rule'}</button>
       </form>
       <h2>Rules Collection</h2>

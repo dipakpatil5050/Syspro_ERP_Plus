@@ -1,8 +1,8 @@
 import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import RuleManagement from '../../components/Rules-Master/RuleManagement';
+// import RuleManagement from '../../components/Rules-Master/RuleManagement';
 import AssignRuleToUser from '../../components/Rules-Master/AssignRuleToUser';
-import RuleMaster from '../../components/Rules-Master/rule-forms/RuleMaster';
+import RuleMaster from '../../components/Rules-Master/rule-form/RuleMaster';
 
 const DashboardBase = lazy(() => import('../../container/dashboard/DashboardBase'));
 const NotFound = lazy(() => import('../../container/pages/404'));
