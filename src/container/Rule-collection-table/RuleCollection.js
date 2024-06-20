@@ -3,18 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table, Spin } from 'antd';
 import UilDocumentInfo from '@iconscout/react-unicons/icons/uil-document-info';
 import { Link } from 'react-router-dom';
+import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
+import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
+import UilEye from '@iconscout/react-unicons/icons/uil-eye';
+import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import { TopToolBox } from './Style';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main, TableWrapper } from '../styled';
 import { Button } from '../../components/buttons/buttons';
 import { Cards } from '../../components/cards/frame/cards-frame';
-import { invoicePrint, orderHistory } from '../../Actions/Catalogue/OrderActions';
-import { getCartItem } from '../../Actions/Catalogue/CartAction';
+import { orderHistory } from '../../Actions/Catalogue/OrderActions';
 
 function RuleCollection() {
   const orderData = useSelector((state) => state.cart.orderHistory);
   const loading = useSelector((state) => state.cart.isLoading);
-  const cartId = useSelector((state) => state.cart.cartId);
 
   const dispatch = useDispatch();
 
@@ -24,27 +26,25 @@ function RuleCollection() {
     dispatch(orderHistory(currentPage, pageSize));
   }, [dispatch, currentPage, pageSize]);
 
-  const handleInvoiceDownload = (Indent_Id) => {
-    dispatch(invoicePrint(Indent_Id));
-  };
-
   // table-actions
 
   const dataSource =
     orderData?.products?.map((item, key) => {
-      const { Indent_Id, Account_Name, Indent_Dt, Amount, Qty, Remark, cartItems } = item;
+      const { Indent_Id, Account_Name, Indent_Dt, Amount, Qty } = item;
       return {
         key: key + 1,
         id: <span className="order-id">{Indent_Id}</span>,
-        party: <span className="customer-name">{Account_Name}</span>,
+        rule: <span className="customer-name">{Account_Name}</span>,
         quantity: <span className="ordered-amount">{Qty}</span>,
         amount: <span className="ordered-amount">{Amount}</span>,
         date: <span className="ordered-date">{Indent_Dt}</span>,
-        remark: <span className="ordered-date">{Remark}</span>,
-        document: (
-          <div className="" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Button title="Invoice PDF" className="btn-icon" type="info" to="#" shape="circle">
-              Delete
+        action: (
+          <div className="table-actions">
+            <Button className="btn-icon" type="info" to="#" shape="circle">
+              <UilEdit />
+            </Button>
+            <Button className="btn-icon" type="danger" to="#" shape="circle">
+              <UilTrashAlt />
             </Button>
           </div>
         ),
@@ -53,24 +53,27 @@ function RuleCollection() {
 
   const columns = [
     {
-      title: 'Order Id',
+      title: 'Rule Id',
       dataIndex: 'id',
       key: 'id',
+      style: {
+        width: '50px',
+      },
     },
     {
-      title: 'Party Name ',
-      dataIndex: 'party',
-      key: 'party',
+      title: 'Rule Name ',
+      dataIndex: 'rule',
+      key: 'rule',
     },
     {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
+      title: 'Rule Type',
+      dataIndex: 'ruletype',
+      key: 'ruletype',
     },
     {
-      title: 'Amount',
-      dataIndex: 'amount',
-      key: 'amount',
+      title: 'Rule value',
+      dataIndex: 'rulevalue',
+      key: 'rulevalue',
     },
     {
       title: 'Date',
@@ -78,14 +81,9 @@ function RuleCollection() {
       key: 'date',
     },
     {
-      title: 'Remark',
-      dataIndex: 'remark',
-      key: 'remark',
-    },
-    {
-      title: 'Document ',
-      dataIndex: 'document',
-      key: 'document',
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
     },
   ];
 
@@ -116,7 +114,7 @@ function RuleCollection() {
                     <Spin size="large" />
                   </div>
                 )}
-                <Table bordered dataSource={dataSource} columns={columns} />
+                <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
               </TableWrapper>
             </Col>
           </Row>

@@ -22,7 +22,7 @@ function RuleMaster() {
   const [selectedType, setSelectedType] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
   const [filters, setFilters] = useState(data.filters);
-  const [array, setArray] = useState();
+  const [rules, setRules] = useState([]);
 
   const handleRuleTypeChange = (value) => {
     setSelectedType(value);
@@ -40,10 +40,14 @@ function RuleMaster() {
 
     return (
       <Select
+        allowClear
+        autoClearSearchValue
+        showSearch
         mode="multiple"
         value={selectedValues}
         onChange={setSelectedValues}
         placeholder={`Select ${selectedType} values`}
+        filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
       >
         {options}
       </Select>
@@ -52,17 +56,30 @@ function RuleMaster() {
 
   const handleSubmit = () => {
     // Handle form submission logic here
-    console.log('Post Rule Data to API :', { ruleName, selectedType, selectedValues });
+
+    const formData = { ruleName, selectedType, selectedValues };
+    // console.log('Post Rule Data to API :', { ruleName, selectedType, selectedValues });
+
+    const keys = Object.values(formData);
+
+    console.log('Form Data ', keys);
+
+    console.log('Post Rule Data to API :', rules);
+    setRules([]);
   };
 
   const handleAddValue = () => {
-    setArray({ ruleName, selectedType, selectedValues });
+    if (!ruleName || !selectedType || selectedValues.length === 0) {
+      // Optional: Show a warning message to fill all fields
+      return;
+    }
 
-    console.log('Rule Name : ', ruleName);
-    console.log('Selected Type : ', selectedType);
-    console.log('selected Values for type :', selectedValues);
+    const newRule = { ruleName, selectedType, selectedValues };
+    setRules([...rules, newRule]);
+    setRuleName('');
+    setSelectedType('');
+    setSelectedValues([]);
   };
-
   return (
     <>
       <PageHeader className="ninjadash-page-header-main ninjadash-pageheader-with-back" routes={PageRoutes} />
@@ -90,7 +107,15 @@ function RuleMaster() {
                     label="Select Rule Type"
                     rules={[{ required: true, message: 'Please select rule type' }]}
                   >
-                    <Select size="default" placeholder="Select Rule Type" onChange={handleRuleTypeChange}>
+                    <Select
+                      allowClear={true}
+                      autoClearSearchValue
+                      showSearch
+                      size="default"
+                      placeholder="Select Rule Type"
+                      onChange={handleRuleTypeChange}
+                      filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                    >
                       <Option value="Group">Group</Option>
                       <Option value="SubGroup">Sub-Group</Option>
                       <Option value="Category">Category</Option>
@@ -100,6 +125,7 @@ function RuleMaster() {
                   <Form.Item
                     name="rulevalue"
                     label={`Select ${selectedType} values`}
+                    size="large"
                     rules={[{ required: true, message: `Please select ${selectedType} values` }]}
                   >
                     {renderSelectOptions()}

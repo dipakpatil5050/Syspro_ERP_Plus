@@ -224,7 +224,7 @@ function MenuItems({ toggleCollapsed }) {
         null,
       ),
       getItem(
-        <NavLink onClick={toggleCollapsed} to={`${path}/components/assigntouser`}>
+        <NavLink onClick={toggleCollapsed} to={`${path}/configuration/ruleassign`}>
           {t('User-Rule Assign')}
         </NavLink>,
         'assigntouser',
