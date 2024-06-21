@@ -24,6 +24,8 @@ function RuleMaster() {
   const [filters, setFilters] = useState(data.filters);
   const [rules, setRules] = useState([]);
 
+  const [form] = Form.useForm();
+
   const handleRuleTypeChange = (value) => {
     setSelectedType(value);
     setSelectedValues([]);
@@ -55,14 +57,7 @@ function RuleMaster() {
   };
 
   const handleSubmit = () => {
-    // Handle form submission logic here
-
-    const formData = { ruleName, selectedType, selectedValues };
     // console.log('Post Rule Data to API :', { ruleName, selectedType, selectedValues });
-
-    const keys = Object.values(formData);
-
-    console.log('Form Data ', keys);
 
     console.log('Post Rule Data to API :', rules);
     setRules([]);
@@ -70,7 +65,6 @@ function RuleMaster() {
 
   const handleAddValue = () => {
     if (!ruleName || !selectedType || selectedValues.length === 0) {
-      // Optional: Show a warning message to fill all fields
       return;
     }
 
@@ -150,10 +144,22 @@ function RuleMaster() {
                   </Row>
                 </Form>
               </BasicFormWrapper>
+              {rules.length > 0 && (
+                <div>
+                  <h3>Added Rules:</h3>
+                  <ul>
+                    {rules.map((rule, index) => (
+                      <li key={index}>
+                        {rule.ruleName} - {rule.selectedType}: {rule.selectedValues.join(', ')}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </Cards>
           </Col>
         </Row>
-        <RuleCollection />
+        {/* <RuleCollection /> */}
       </Main>
     </>
   );

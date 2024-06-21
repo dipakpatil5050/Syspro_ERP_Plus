@@ -52,15 +52,15 @@ function RuleAssignment() {
                     rules={[{ required: true, message: 'Please select  values' }]}
                   >
                     <Select size="default" placeholder="Select Rule Type">
-                      <Option value="user1">Rule 1</Option>
-                      <Option value="user2">Rule 2</Option>
-                      <Option value="user3">Rule 3</Option>
-                      <Option value="user4">Rule 4</Option>
-                      <Option value="user4">Rule 5</Option>
-                      <Option value="user4">Rule 6</Option>
-                      <Option value="user4">Rule 7</Option>
-                      <Option value="user4">Rule 8</Option>
-                      <Option value="user4">Rule 9</Option>
+                      <Option value="rule1">Rule 1</Option>
+                      <Option value="rule2">Rule 2</Option>
+                      <Option value="rule3">Rule 3</Option>
+                      <Option value="rule4">Rule 4</Option>
+                      <Option value="rule5">Rule 5</Option>
+                      <Option value="rule6">Rule 6</Option>
+                      <Option value="rule7">Rule 7</Option>
+                      <Option value="rule8">Rule 8</Option>
+                      <Option value="rule9">Rule 9</Option>
                     </Select>
                   </Form.Item>
                   {/* {renderSelectOptions()} */}

@@ -134,7 +134,6 @@ function Orders() {
               to="#"
               shape="circle"
             >
-              {/* <UilDocumentInfo color="black" size="large" /> */}
               Invoice
             </Button>
           </div>
@@ -150,7 +149,7 @@ function Orders() {
                 <th>Quantity</th>
                 <th>Rate</th>
                 <th>Amount</th>
-                <th>File Path</th>
+                <th>Item Image</th>
               </tr>
             </thead>
 
@@ -165,9 +164,19 @@ function Orders() {
                   <td>{Data.Saleprice1}</td>
                   <td>{Data.Total}</td>
                   <td style={{ textAlign: 'end' }}>
-                    <Link to={Data.Filepath} target="_blank">
-                      Item Image
-                    </Link>
+                    <div className="" style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
+                      <Button
+                        title="Item Image"
+                        href={Data.Filepath}
+                        target="_blank"
+                        className=""
+                        type="info"
+                        to="#"
+                        shape="circle"
+                      >
+                        View
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
