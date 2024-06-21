@@ -123,7 +123,7 @@ function ProductCards({ product }) {
           </Heading>
 
           <p className="product-single-price">
-            <span className="product-single-price__new">${price} </span>
+            <span className="product-single-price__new">₹ {price} </span>
           </p>
           {isMobile ? (
             <div className="" style={{ textAlign: 'end', position: 'absolute', bottom: 36, right: 16 }}>
