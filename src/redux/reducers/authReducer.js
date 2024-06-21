@@ -241,12 +241,6 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       });
-    // .addCase(cartGetData.fulfilled, (state, action) => {
-    //   state.subtotal = action.payload;
-    // })
-    // .addCase(cartGetData.rejected, (state, action) => {
-    //   state.error = action.error.message;
-    // });
   },
 });
 

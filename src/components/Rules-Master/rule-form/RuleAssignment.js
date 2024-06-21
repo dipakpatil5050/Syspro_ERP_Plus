@@ -40,10 +40,16 @@ function RuleAssignment() {
                     rules={[{ required: true, message: 'Please select rule type' }]}
                   >
                     <Select size="default" placeholder="Select Rule Type">
-                      <Option value="Group">User 1</Option>
-                      <Option value="SubGroup">User 2</Option>
-                      <Option value="Category">User 3</Option>
-                      <Option value="Brand">User 4</Option>
+                      <Option value="user1">User 1</Option>
+                      <Option value="user2">User 2</Option>
+                      <Option value="user3">User 3</Option>
+                      <Option value="user4">User 4</Option>
+                      <Option value="user5">User 5</Option>
+                      <Option value="user6">User 6</Option>
+                      <Option value="user7">User 7</Option>
+                      <Option value="user8">User 8</Option>
+                      <Option value="user9">User 9</Option>
+                      <Option value="user10">User 10</Option>
                     </Select>
                   </Form.Item>
                   <Form.Item
