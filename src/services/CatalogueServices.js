@@ -1,4 +1,4 @@
-import { http, whatsapp } from '../API-Interceptor';
+import { http } from '../API-Interceptor';
 
 class CatalogueServices {
   fetchSingleProductDetailById(itemId) {

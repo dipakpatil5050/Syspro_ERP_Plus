@@ -16,7 +16,7 @@ import { orderHistory } from '../../Actions/Catalogue/OrderActions';
 
 function RuleCollection() {
   const orderData = useSelector((state) => state.cart.orderHistory);
-  const loading = useSelector((state) => state.cart.isLoading);
+  const loading = useSelector((state) => state.config.loading);
 
   const dispatch = useDispatch();
 

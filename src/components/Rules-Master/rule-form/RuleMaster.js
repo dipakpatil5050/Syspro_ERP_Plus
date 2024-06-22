@@ -31,6 +31,8 @@ function RuleMaster() {
     setSelectedValues([]);
   };
 
+  // const filters  =  API calls will be added here for Rule Type Data
+
   const renderSelectOptions = () => {
     if (!selectedType) return null;
 
@@ -58,9 +60,16 @@ function RuleMaster() {
 
   const handleSubmit = () => {
     // console.log('Post Rule Data to API :', { ruleName, selectedType, selectedValues });
-
-    console.log('Post Rule Data to API :', rules);
+    console.log('Post Rule Data to API : Rules :', rules);
     setRules([]);
+
+    form.resetFields();
+
+    // newly added values in handle submit as follow
+    setRuleName('');
+    setSelectedType('');
+    setSelectedValues([]);
+    alert('Rule Create SuccessFully... ');
   };
 
   const handleAddValue = () => {
@@ -70,10 +79,18 @@ function RuleMaster() {
 
     const newRule = { ruleName, selectedType, selectedValues };
     setRules([...rules, newRule]);
-    setRuleName('');
+    // setRuleName('');  // do not reset to allow new rule type addition
     setSelectedType('');
     setSelectedValues([]);
   };
+
+  const getSelectedValueNames = (type, values) => {
+    return values.map((valueId) => {
+      const filter = filters[type].find((filter) => filter.Id === valueId);
+      return filter ? filter.Name : valueId;
+    });
+  };
+
   return (
     <>
       <PageHeader className="ninjadash-page-header-main ninjadash-pageheader-with-back" routes={PageRoutes} />
@@ -82,7 +99,7 @@ function RuleMaster() {
           <Col xxl={{ span: 12, offset: 6 }} xl={{ span: 16, offset: 4 }} lg={16} xs={24}>
             <Cards title="Rule Master">
               <BasicFormWrapper className="mb-25">
-                <Form name="ninjadash-vertical-form" layout="vertical" onFinish={handleSubmit}>
+                <Form form={form} name="ninjadash-vertical-form" layout="vertical" onFinish={handleSubmit}>
                   <Form.Item
                     name="name"
                     label="Rule Name"
@@ -146,11 +163,12 @@ function RuleMaster() {
               </BasicFormWrapper>
               {rules.length > 0 && (
                 <div>
-                  <h3>Added Rules:</h3>
+                  <h3>Added Rule:</h3>
                   <ul>
                     {rules.map((rule, index) => (
                       <li key={index}>
-                        {rule.ruleName} - {rule.selectedType}: {rule.selectedValues.join(', ')}
+                        <b>{rule.ruleName}</b> - <b> {rule.selectedType} </b> :
+                        {getSelectedValueNames(rule.selectedType, rule.selectedValues).join(', ')}
                       </li>
                     ))}
                   </ul>
@@ -159,7 +177,7 @@ function RuleMaster() {
             </Cards>
           </Col>
         </Row>
-        {/* <RuleCollection /> */}
+        <RuleCollection />
       </Main>
     </>
   );
