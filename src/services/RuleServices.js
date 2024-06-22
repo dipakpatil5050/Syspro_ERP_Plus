@@ -1,7 +1,13 @@
 import { http } from '../API-Interceptor';
 class RuleServices {
-  updateCartItem(body) {
+  getAllUsers(body) {
     return http.post('api/CommonAPI/Cart_Item_Update', body);
+  }
+  getAllRules(body) {
+    return http.post('api/CommonAPI/AllRules', body);
+  }
+  deleteRule(body) {
+    return http.post('api/CommonAPI/DeleteRule', body);
   }
 }
 

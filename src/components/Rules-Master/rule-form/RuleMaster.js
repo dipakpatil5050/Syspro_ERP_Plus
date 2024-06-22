@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Col, Row, Form, Input, Button, Select } from 'antd';
+import toast from 'react-hot-toast';
 import data from './data.json';
 import { PageHeader } from '../../page-headers/page-headers';
 import { Cards } from '../../cards/frame/cards-frame';
@@ -23,6 +24,7 @@ function RuleMaster() {
   const [selectedValues, setSelectedValues] = useState([]);
   const [filters, setFilters] = useState(data.filters);
   const [rules, setRules] = useState([]);
+  const [selectedRuleTypes, setSelectedRuleTypes] = useState([]);
 
   const [form] = Form.useForm();
 
@@ -30,8 +32,6 @@ function RuleMaster() {
     setSelectedType(value);
     setSelectedValues([]);
   };
-
-  // const filters  =  API calls will be added here for Rule Type Data
 
   const renderSelectOptions = () => {
     if (!selectedType) return null;
@@ -59,29 +59,33 @@ function RuleMaster() {
   };
 
   const handleSubmit = () => {
-    // console.log('Post Rule Data to API :', { ruleName, selectedType, selectedValues });
     console.log('Post Rule Data to API : Rules :', rules);
+
     setRules([]);
-
     form.resetFields();
-
-    // newly added values in handle submit as follow
     setRuleName('');
     setSelectedType('');
     setSelectedValues([]);
-    alert('Rule Create SuccessFully... ');
+    setSelectedRuleTypes([]);
+    toast.success('Rule Created Successfully!');
   };
 
   const handleAddValue = () => {
     if (!ruleName || !selectedType || selectedValues.length === 0) {
+      alert('Please fill all fields before adding a rule type.');
       return;
     }
 
     const newRule = { ruleName, selectedType, selectedValues };
     setRules([...rules, newRule]);
-    // setRuleName('');  // do not reset to allow new rule type addition
+    setSelectedRuleTypes([...selectedRuleTypes, selectedType]);
+
     setSelectedType('');
     setSelectedValues([]);
+    form.setFieldsValue({
+      ruletype: '',
+      rulevalue: [],
+    });
   };
 
   const getSelectedValueNames = (type, values) => {
@@ -90,6 +94,10 @@ function RuleMaster() {
       return filter ? filter.Name : valueId;
     });
   };
+
+  const ruleTypeOptions = ['Group', 'SubGroup', 'Category', 'Brand'].filter(
+    (type) => !selectedRuleTypes.includes(type),
+  );
 
   return (
     <>
@@ -113,13 +121,9 @@ function RuleMaster() {
                       placeholder="e.g. Rule 1"
                     />
                   </Form.Item>
-                  <Form.Item
-                    name="ruletype"
-                    label="Select Rule Type"
-                    rules={[{ required: true, message: 'Please select rule type' }]}
-                  >
+                  <Form.Item name="ruletype" label="Select Rule Type">
                     <Select
-                      allowClear={true}
+                      allowClear
                       autoClearSearchValue
                       showSearch
                       size="default"
@@ -127,20 +131,19 @@ function RuleMaster() {
                       onChange={handleRuleTypeChange}
                       filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
                     >
-                      <Option value="Group">Group</Option>
-                      <Option value="SubGroup">Sub-Group</Option>
-                      <Option value="Category">Category</Option>
-                      <Option value="Brand">Brand</Option>
+                      {ruleTypeOptions.map((type) => (
+                        <Option key={type} value={type}>
+                          {type}
+                        </Option>
+                      ))}
                     </Select>
                   </Form.Item>
-                  <Form.Item
-                    name="rulevalue"
-                    label={`Select ${selectedType} values`}
-                    size="large"
-                    rules={[{ required: true, message: `Please select ${selectedType} values` }]}
-                  >
-                    {renderSelectOptions()}
-                  </Form.Item>
+
+                  {selectedType && (
+                    <Form.Item name="rulevalue" label={`Select ${selectedType} values`} size="large">
+                      {renderSelectOptions()}
+                    </Form.Item>
+                  )}
                   <Row>
                     <Col lg={{ span: 16, offset: 5 }} md={{ span: 15, offset: 9 }} xs={{ span: 24, offset: 0 }}>
                       <div className="ninjadash-form-action">
@@ -151,7 +154,7 @@ function RuleMaster() {
                           size="large"
                           htmlType="button"
                         >
-                          + Add Rule Type
+                          + Add to Rule
                         </Button>
                         <Button className="btn-signin" type="primary" size="large" htmlType="submit">
                           Create Rule
@@ -165,9 +168,11 @@ function RuleMaster() {
                 <div>
                   <h3>Added Rule:</h3>
                   <ul>
+                    <b style={{ color: 'green' }}>Rule Name : </b>
+                    {rules[0].ruleName}
                     {rules.map((rule, index) => (
                       <li key={index}>
-                        <b>{rule.ruleName}</b> - <b> {rule.selectedType} </b> :
+                        <b>{rule.selectedType}</b>:{' '}
                         {getSelectedValueNames(rule.selectedType, rule.selectedValues).join(', ')}
                       </li>
                     ))}

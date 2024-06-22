@@ -16,14 +16,21 @@ const PageRoutes = [
 ];
 
 function RuleAssignment() {
-  const [user, setUser] = useState('');
-  const [rule, setRule] = useState('');
+  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedRules, setSelectedRules] = useState('');
 
   const handleRuleAssignSubmit = () => {};
 
-  const handleRuleChange = () => {
+  const handleRuleChange = (value) => {
+    setSelectedRules(value);
     console.log('Handle Rule Change');
   };
+
+  const handleUserChange = (value) => {
+    setSelectedUser(value);
+  };
+
+  console.log('Selected Rule values : ', selectedRules);
 
   return (
     <>
@@ -57,7 +64,7 @@ function RuleAssignment() {
                     label="Select Rule to Assign"
                     rules={[{ required: true, message: 'Please select  values' }]}
                   >
-                    <Select size="default" placeholder="Select Rule Type">
+                    <Select size="default" placeholder="Select Rule Type" onChange={handleRuleChange}>
                       <Option value="rule1">Rule 1</Option>
                       <Option value="rule2">Rule 2</Option>
                       <Option value="rule3">Rule 3</Option>
