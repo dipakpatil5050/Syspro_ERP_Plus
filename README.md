@@ -1,4 +1,4 @@
-## B2B : Enterprice b2b E-commerce Web Application.
+## B2B : Enterprise b2b E-commerce Web Application.
 
 ## Getting Started with Create React App
 
