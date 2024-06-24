@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Table, Spin } from 'antd';
-import UilDocumentInfo from '@iconscout/react-unicons/icons/uil-document-info';
+import { Row, Col, Table, Spin, Button } from 'antd';
 import { Link } from 'react-router-dom';
-import UilPlus from '@iconscout/react-unicons/icons/uil-plus';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import UilEye from '@iconscout/react-unicons/icons/uil-eye';
-import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import { TopToolBox } from './Style';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main, TableWrapper } from '../styled';
-import { Button } from '../../components/buttons/buttons';
 import { Cards } from '../../components/cards/frame/cards-frame';
 import { orderHistory } from '../../Actions/Catalogue/OrderActions';
 
@@ -40,11 +36,11 @@ function RuleCollection() {
         date: <span className="ordered-date">{Indent_Dt}</span>,
         action: (
           <div className="table-actions">
+            <Button className="btn-icon" type="primary" to="#" shape="circle">
+              <UilEye />
+            </Button>
             <Button className="btn-icon" type="info" to="#" shape="circle">
               <UilEdit />
-            </Button>
-            <Button className="btn-icon" type="danger" to="#" shape="circle">
-              <UilTrashAlt />
             </Button>
           </div>
         ),
@@ -53,32 +49,19 @@ function RuleCollection() {
 
   const columns = [
     {
-      title: 'Rule Id',
-      dataIndex: 'id',
-      key: 'id',
-      style: {
-        width: '50px',
-      },
-    },
-    {
       title: 'Rule Name ',
       dataIndex: 'rule',
       key: 'rule',
     },
     {
-      title: 'Rule Type',
-      dataIndex: 'ruletype',
-      key: 'ruletype',
-    },
-    {
-      title: 'Rule value',
-      dataIndex: 'rulevalue',
-      key: 'rulevalue',
-    },
-    {
       title: 'Date',
       dataIndex: 'date',
       key: 'date',
+    },
+    {
+      title: 'Remark',
+      dataIndex: 'remark',
+      key: 'remark',
     },
     {
       title: 'Action',
@@ -90,7 +73,14 @@ function RuleCollection() {
   return (
     <>
       <Main>
-        <Cards title="Rule Collection">
+        <Cards titleless headless>
+          <div className="ninjadash-form-action">
+            <Link to="createrule">
+              <Button className="btn-signin" type="primary">
+                + Create Rule
+              </Button>
+            </Link>
+          </div>
           <Row gutter={15}>
             <Col xs={24}>
               <TopToolBox>
