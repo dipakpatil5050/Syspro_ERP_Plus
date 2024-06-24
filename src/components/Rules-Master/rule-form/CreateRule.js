@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Col, Row, Form, Input, Button, Select } from 'antd';
+import { Col, Row, Form, Input, Button, Select, Modal } from 'antd';
 import toast from 'react-hot-toast';
+import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
+import UilPaperclip from '@iconscout/react-unicons/icons/uil-paperclip';
+import { Link } from 'react-router-dom';
 import data from './data.json';
 import { PageHeader } from '../../page-headers/page-headers';
 import { Cards } from '../../cards/frame/cards-frame';
 import { Main, BasicFormWrapper } from '../../styled';
-import RuleCollection from '../../../container/Rule-collection-table/RuleCollection';
+import TempRuleTable from '../../../container/Rule-collection-table/TempRuleTable';
 
 const { Option } = Select;
 
@@ -14,21 +17,24 @@ const PageRoutes = [
     breadcrumbName: 'Configuration',
   },
   {
-    breadcrumbName: 'Rule master',
-  },
-  {
-    breadcrumbName: 'Rule Collection',
+    breadcrumbName: 'Create Rule',
   },
 ];
 
-function RuleMaster() {
+function CreateRule() {
   const [ruleName, setRuleName] = useState('');
+  const [remark, setRemark] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
   const [filters, setFilters] = useState(data.filters);
   const [rules, setRules] = useState([]);
   const [selectedRuleTypes, setSelectedRuleTypes] = useState([]);
   const [isRuleNameDisabled, setIsRuleNameDisabled] = useState(false);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => setIsModalVisible(true);
+  const handleCancel = () => setIsModalVisible(false);
 
   const [form] = Form.useForm();
 
@@ -75,26 +81,26 @@ function RuleMaster() {
     toast.success('Rule Created Successfully!');
   };
 
-  const handleAddValue = () => {
-    if (!ruleName || !selectedType || selectedValues.length === 0) {
-      alert('Please fill all fields before adding a rule type.');
-      return;
-    }
+  //   const handleAddValue = () => {
+  //     if (!ruleName || !selectedType || selectedValues.length === 0) {
+  //       alert('Please fill all fields before adding a rule type.');
+  //       return;
+  //     }
 
-    const newRule = { ruleName, selectedType, selectedValues };
-    setRules([...rules, newRule]);
-    setSelectedRuleTypes([...selectedRuleTypes, selectedType]);
-    setIsRuleNameDisabled(true);
+  //     const newRule = { ruleName, selectedType, selectedValues };
+  //     setRules([...rules, newRule]);
+  //     setSelectedRuleTypes([...selectedRuleTypes, selectedType]);
+  //     setIsRuleNameDisabled(true);
 
-    setSelectedType('');
-    setSelectedValues([]);
-    form.setFieldsValue({
-      ruletype: '',
-      rulevalue: [],
-    });
-    console.log('Added Rule : ', rules);
-    console.log('Selected Rule Types :', selectedRuleTypes);
-  };
+  //     setSelectedType('');
+  //     setSelectedValues([]);
+  //     form.setFieldsValue({
+  //       ruletype: '',
+  //       rulevalue: [],
+  //     });
+  //     console.log('Added Rule : ', rules);
+  //     console.log('Selected Rule Types :', selectedRuleTypes);
+  //   };
 
   const getSelectedValueNames = (type, values) => {
     return values.map((valueId) => {
@@ -109,9 +115,30 @@ function RuleMaster() {
 
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main ninjadash-pageheader-with-back" routes={PageRoutes} />
+      <PageHeader
+        className="ninjadash-page-header-main ninjadash-pageheader-with-back"
+        title={
+          <>
+            <h4>Create Rule</h4>
+            <span className="back-link">
+              <Link
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.history.back();
+                }}
+                to="#"
+              >
+                <UilArrowLeft />
+                Go back
+              </Link>
+            </span>
+          </>
+        }
+        routes={PageRoutes}
+      />
+
       <Main>
-        {/* <Row gutter={15}>
+        <Row gutter={15}>
           <Col xxl={{ span: 12, offset: 6 }} xl={{ span: 16, offset: 4 }} lg={16} xs={24}>
             <Cards title="Rule Master">
               <BasicFormWrapper className="mb-25">
@@ -130,71 +157,44 @@ function RuleMaster() {
                       placeholder="e.g. Rule 1"
                     />
                   </Form.Item>
-                  <Form.Item name="ruletype" label="Select Rule Type">
-                    <Select
-                      allowClear
-                      autoClearSearchValue
-                      showSearch
-                      size="default"
-                      placeholder="Select Rule Type"
-                      onChange={handleRuleTypeChange}
-                      filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-                    >
-                      {ruleTypeOptions.map((type) => (
-                        <Option key={type} value={type}>
-                          {type}
-                        </Option>
-                      ))}
-                    </Select>
+                  <Form.Item name="remark" label="Remark">
+                    <Input
+                      type="text"
+                      value={remark}
+                      onChange={(e) => setRemark(e.target.value)}
+                      size="large"
+                      placeholder="write remark"
+                    />
                   </Form.Item>
 
-                  {selectedType && (
-                    <Form.Item name="rulevalue" label={`Select ${selectedType} values`} size="large">
-                      {renderSelectOptions()}
-                    </Form.Item>
-                  )}
-                  <Row>
-                    <Col lg={{ span: 16, offset: 6 }} md={{ span: 15, offset: 9 }} xs={{ span: 24, offset: 0 }}>
+                  <Row justify="end">
+                    <Col Row="end">
                       <div className="ninjadash-form-action">
                         <Button
-                          onClick={handleAddValue}
+                          onClick={showModal}
                           className="btn-signin"
-                          type="secondary"
+                          type="primary"
                           size="large"
                           htmlType="button"
                         >
-                          + Add to Rule
-                        </Button>
-                        <Button className="btn-signin" type="primary" size="large" htmlType="submit">
-                          Create Rule
+                          + Add Rule
                         </Button>
                       </div>
                     </Col>
                   </Row>
                 </Form>
               </BasicFormWrapper>
-              {rules.length > 0 && (
-                <div>
-                  <h3>Added Rule:</h3>
-                  <ul>
-                    <b style={{ color: 'green' }}>Rule Name : </b>
-                    {rules[0].ruleName}
-                    {rules.map((rule, index) => (
-                      <li key={index}>
-                        <b>{rule.selectedType}</b>:{' '}
-                        {getSelectedValueNames(rule.selectedType, rule.selectedValues).join(', ')}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </Cards>
+            <Modal open={isModalVisible} onCancel={handleCancel} footer={null}>
+              {/* <InquiryForm handleCancel={handleCancel} /> */}
+              <h1>Modal inputs </h1>
+            </Modal>
           </Col>
-        </Row> */}
-        <RuleCollection />
+        </Row>
+        <TempRuleTable />
       </Main>
     </>
   );
 }
 
-export default RuleMaster;
+export default CreateRule;
