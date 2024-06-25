@@ -18,6 +18,7 @@ function RuleCollection() {
 
   const currentPage = 0;
   const pageSize = 10;
+
   useEffect(() => {
     dispatch(orderHistory(currentPage, pageSize));
   }, [dispatch, currentPage, pageSize]);
@@ -54,9 +55,10 @@ function RuleCollection() {
       key: 'rule',
     },
     {
-      title: 'Date',
+      title: 'Created Date',
       dataIndex: 'date',
       key: 'date',
+      width: '10%',
     },
     {
       title: 'Remark',
@@ -67,6 +69,7 @@ function RuleCollection() {
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
+      width: '5%',
     },
   ];
 
@@ -76,8 +79,8 @@ function RuleCollection() {
         <Cards titleless headless>
           <div className="ninjadash-form-action">
             <Link to="createrule">
-              <Button className="btn-signin" type="primary">
-                + Create Rule
+              <Button title="Click here to Create new rule" className="btn-signin" type="primary">
+                + Create New Rule
               </Button>
             </Link>
           </div>

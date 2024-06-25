@@ -6,35 +6,49 @@ import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import UilEye from '@iconscout/react-unicons/icons/uil-eye';
 import { TopToolBox } from './Style';
+import './table.css';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main, TableWrapper } from '../styled';
+import data from '../forms/overview/data.json';
 import { Cards } from '../../components/cards/frame/cards-frame';
 import { orderHistory } from '../../Actions/Catalogue/OrderActions';
 
 function TempRuleTable() {
   const orderData = useSelector((state) => state.cart.orderHistory);
+  const [filters, setFilters] = useState(data.filters);
+  const tempData = useSelector((state) => state.config.tempRuleData);
   const loading = useSelector((state) => state.config.loading);
+
+  console.log('Temp Data in redux Store : ', tempData);
 
   const dispatch = useDispatch();
 
   const currentPage = 0;
   const pageSize = 10;
-  useEffect(() => {
-    dispatch(orderHistory(currentPage, pageSize));
-  }, [dispatch, currentPage, pageSize]);
 
   // table-actions
 
+  const getSelectedValueNames = (type, values) => {
+    return values.map((valueId) => {
+      const filter = filters[type].find((filter) => filter.Id === valueId);
+      return filter ? filter.Name : valueId;
+    });
+  };
+
   const dataSource =
-    orderData?.products?.map((item, key) => {
-      const { Indent_Id, Account_Name, Indent_Dt, Amount, Qty } = item;
+    tempData?.map((item, key) => {
+      const { selectedType, selectedValues } = item;
+      console.log('selectedType : ', selectedType);
+      console.log('selectedValues : ', selectedValues);
       return {
         key: key + 1,
-        id: <span className="order-id">{Indent_Id}</span>,
-        rule: <span className="customer-name">{Account_Name}</span>,
-        quantity: <span className="ordered-amount">{Qty}</span>,
-        amount: <span className="ordered-amount">{Amount}</span>,
-        date: <span className="ordered-date">{Indent_Dt}</span>,
+        id: <span className="order-id">{key + 1}</span>,
+        ruleon: <span className="customer-name">{item.selectedType}</span>,
+        description: (
+          <span className="ordered-amount">
+            {getSelectedValueNames(item.selectedType, item.selectedValues).join(', ').split()}
+          </span>
+        ),
         action: (
           <div className="table-actions">
             <Button className="btn-icon" type="info" to="#" shape="circle">
@@ -53,21 +67,26 @@ function TempRuleTable() {
       title: 'Row Id',
       dataIndex: 'id',
       key: 'id',
+      wdith: '5%',
     },
     {
-      title: 'Rule Type',
-      dataIndex: 'ruletype',
-      key: 'ruletype',
+      title: 'Rule on',
+      dataIndex: 'ruleon',
+      key: 'ruleon',
+      width: '20%',
     },
     {
-      title: 'Rule Value',
-      dataIndex: 'rulevalue',
-      key: 'rulevalue',
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+      width: '70%',
+      className: 'wrap-text',
     },
     {
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
+      width: '5%',
     },
   ];
 
