@@ -37,9 +37,17 @@ export const configSlice = createSlice({
     setTempRuleData: (state, action) => {
       state.tempRuleData.push(action.payload);
     },
+    updateTempRuleData: (state, action) => {
+      const { index, updatedRule } = action.payload;
+      state.tempRuleData[index] = updatedRule;
+    },
+    deleteTempRuleData: (state, action) => {
+      state.tempRuleData.splice(action.payload, 1);
+    },
   },
 });
 
-export const { setLoading, setRuleCollection, setTempRuleData } = configSlice.actions;
+export const { setLoading, setRuleCollection, setTempRuleData, updateTempRuleData, deleteTempRuleData } =
+  configSlice.actions;
 
 export default configSlice.reducer;

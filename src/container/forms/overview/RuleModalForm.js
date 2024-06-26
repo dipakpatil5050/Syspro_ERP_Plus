@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Select } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,14 +6,14 @@ import data from './data.json';
 import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
-import { setTempRuleData } from '../../../redux/reducers/configSlice';
+import { setTempRuleData, updateTempRuleData } from '../../../redux/reducers/configSlice';
 
 const { Option } = Select;
 
-function RuleModalForm({ handleCancel }) {
+function RuleModalForm({ handleCancel, editRule, editIndex }) {
   const [form] = Form.useForm();
-  const [ruleType, setRuleType] = useState('');
-  const [ruleValue, setRuleValue] = useState([]);
+  const [ruleType, setRuleType] = useState(editRule ? editRule.selectedType : '');
+  const [ruleValue, setRuleValue] = useState(editRule ? editRule.selectedValues : []);
 
   const [filters, setFilters] = useState(data.filters);
   const [rules, setRules] = useState([]);
@@ -21,6 +21,17 @@ function RuleModalForm({ handleCancel }) {
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
+
+  useEffect(() => {
+    if (editRule) {
+      form.setFieldsValue({
+        ruletype: editRule.selectedType,
+        rulevalue: editRule.selectedValues,
+      });
+      setRuleType(editRule.selectedType);
+      setRuleValue(editRule.selectedValues);
+    }
+  }, [editRule, form]);
 
   const handleRuleTypeChange = (value) => {
     setRuleType(value);
@@ -83,10 +94,32 @@ function RuleModalForm({ handleCancel }) {
     console.log('Selected Rule Types :', selectedRuleTypes);
   };
 
-  const getSelectedValueNames = (type, values) => {
-    return values.map((valueId) => {
-      const filter = filters[type].find((filter) => filter.Id === valueId);
-      return filter ? filter.Name : valueId;
+  const handleAddOrUpdate = () => {
+    form.validateFields().then(() => {
+      if (!ruleType || ruleValue.length === 0) {
+        alert('Please fill all fields before adding or updating a rule.');
+        return;
+      }
+
+      const newRule = {
+        selectedType: ruleType,
+        selectedValues: ruleValue,
+      };
+
+      if (editRule) {
+        dispatch(updateTempRuleData({ index: editIndex, updatedRule: newRule }));
+      } else {
+        dispatch(setTempRuleData(newRule));
+      }
+
+      setRuleType('');
+      setRuleValue([]);
+      form.resetFields();
+      form.setFieldsValue({
+        ruletype: '',
+        rulevalue: [],
+      });
+      handleCancel();
     });
   };
 
@@ -112,12 +145,13 @@ function RuleModalForm({ handleCancel }) {
       )}
       <BasicFormWrapper>
         <VerticalFormStyleWrap>
-          <Cards title="Add Rule">
-            <Form form={form} onSubmit={handleAdd} name="inquiry-form" layout="vertical">
+          <Cards headless>
+            <Form form={form} name="ruleModal-form" layout="vertical">
               <Form.Item
                 name="ruletype"
                 label="Select Rule Type"
                 rules={[{ required: true, message: 'Please enter rule type' }]}
+                initialValue={ruleType}
               >
                 <Select
                   allowClear
@@ -137,7 +171,7 @@ function RuleModalForm({ handleCancel }) {
               </Form.Item>
 
               {ruleType && (
-                <Form.Item name="rulevalue" label={`Select ${ruleType} values`} size="large">
+                <Form.Item name="rulevalue" label={`Select ${ruleType} values`} size="large" initialValue={ruleValue}>
                   {renderSelectOptions()}
                 </Form.Item>
               )}
@@ -148,10 +182,10 @@ function RuleModalForm({ handleCancel }) {
                   htmlType="submit"
                   className="btn-signin"
                   type="primary"
-                  onClick={handleAdd}
+                  onClick={handleAddOrUpdate}
                   size="large"
                 >
-                  + Add
+                  {editRule ? 'Update' : 'Add'}
                 </Button>
               </div>
             </Form>
@@ -164,6 +198,8 @@ function RuleModalForm({ handleCancel }) {
 
 RuleModalForm.propTypes = {
   handleCancel: PropTypes.func,
+  editRule: PropTypes.object,
+  editIndex: PropTypes.number,
 };
 
 export default RuleModalForm;

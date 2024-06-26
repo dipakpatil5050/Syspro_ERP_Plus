@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Table, Spin, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Row, Col, Table, Spin, Button, Modal } from 'antd';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import UilEye from '@iconscout/react-unicons/icons/uil-eye';
@@ -12,10 +11,15 @@ import { Main, TableWrapper } from '../styled';
 import data from '../forms/overview/data.json';
 import { Cards } from '../../components/cards/frame/cards-frame';
 import { orderHistory } from '../../Actions/Catalogue/OrderActions';
+import { deleteTempRuleData } from '../../redux/reducers/configSlice';
+import RuleModalForm from '../forms/overview/RuleModalForm';
 
 function TempRuleTable() {
-  const orderData = useSelector((state) => state.cart.orderHistory);
   const [filters, setFilters] = useState(data.filters);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editRule, setEditRule] = useState(null);
+  const [editIndex, setEditIndex] = useState(null);
+
   const tempData = useSelector((state) => state.config.tempRuleData);
   const loading = useSelector((state) => state.config.loading);
 
@@ -23,8 +27,21 @@ function TempRuleTable() {
 
   const dispatch = useDispatch();
 
-  const currentPage = 0;
-  const pageSize = 10;
+  const handleEdit = (index) => {
+    setEditRule(tempData[index]);
+    setEditIndex(index);
+    setIsModalVisible(true);
+  };
+
+  const handleDelete = (index) => {
+    dispatch(deleteTempRuleData(index));
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setEditRule(null);
+    setEditIndex(null);
+  };
 
   // table-actions
 
@@ -38,23 +55,27 @@ function TempRuleTable() {
   const dataSource =
     tempData?.map((item, key) => {
       const { selectedType, selectedValues } = item;
-      console.log('selectedType : ', selectedType);
-      console.log('selectedValues : ', selectedValues);
+      const selectedNames = getSelectedValueNames(selectedType, selectedValues);
+
       return {
         key: key + 1,
         id: <span className="order-id">{key + 1}</span>,
-        ruleon: <span className="customer-name">{item.selectedType}</span>,
+        ruleon: <span className="customer-name">{selectedType}</span>,
         description: (
-          <span className="ordered-amount">
-            {getSelectedValueNames(item.selectedType, item.selectedValues).join(', ').split()}
-          </span>
+          <ul className="ordered-amount-list">
+            {selectedNames.length > 0 ? (
+              selectedNames.map((name, index) => <li key={index}>{name},</li>)
+            ) : (
+              <li key="no-items">No items selected</li>
+            )}
+          </ul>
         ),
         action: (
           <div className="table-actions">
-            <Button className="btn-icon" type="info" to="#" shape="circle">
+            <Button className="btn-icon edit" type="info" shape="circle" onClick={() => handleEdit(key)}>
               <UilEdit />
             </Button>
-            <Button className="btn-icon" type="danger" to="#" shape="circle">
+            <Button className="btn-icon delete" type="danger" shape="circle" onClick={() => handleDelete(key)}>
               <UilTrashAlt />
             </Button>
           </div>
@@ -80,7 +101,6 @@ function TempRuleTable() {
       dataIndex: 'description',
       key: 'description',
       width: '70%',
-      className: 'wrap-text',
     },
     {
       title: 'Action',
@@ -91,39 +111,60 @@ function TempRuleTable() {
   ];
 
   return (
-    <>
-      <Main>
-        <Cards titleless headless>
-          <Row gutter={15}>
-            <Col xs={24}>
-              <TopToolBox>
-                <Row gutter={15} className="justify-content-center" />
-              </TopToolBox>
-            </Col>
-          </Row>
-          <Row gutter={15}>
-            <Col md={24}>
-              <TableWrapper className="table-order table-responsive">
-                {loading && (
-                  <div
-                    className="table-loading"
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      zIndex: 99999,
-                    }}
-                  >
-                    <Spin size="large" />
-                  </div>
-                )}
-                <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
-              </TableWrapper>
-            </Col>
-          </Row>
-        </Cards>
-      </Main>
-    </>
+    <Main>
+      <Cards titleless headless>
+        <div className="ninjadash-form-action">
+          {/* <Link to="createrule">
+            <Button title="Click here to Create new rule" className="btn-signin" type="primary">
+              + Create New Rule
+            </Button>
+          </Link> */}
+        </div>
+        <Row gutter={15}>
+          <Col xs={24}>
+            <TopToolBox>
+              <Row gutter={15} className="justify-content-center" />
+            </TopToolBox>
+          </Col>
+        </Row>
+        <Row gutter={15}>
+          <Col md={24}>
+            <TableWrapper className="table-order table-responsive">
+              {loading && (
+                <div
+                  className="table-loading"
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    zIndex: 99999,
+                  }}
+                >
+                  <Spin size="large" />
+                </div>
+              )}
+              <Table
+                bordered
+                dataSource={dataSource}
+                columns={columns}
+                pagination={false}
+                loading={loading}
+                rowKey={(record) => record.key}
+              />
+            </TableWrapper>
+            <Modal
+              title={editRule ? 'Update Rule' : 'Add Rule'}
+              open={isModalVisible}
+              onCancel={handleCancel}
+              footer={null}
+              destroyOnClose
+            >
+              <RuleModalForm handleCancel={handleCancel} editRule={editRule} editIndex={editIndex} />
+            </Modal>
+          </Col>
+        </Row>
+      </Cards>
+    </Main>
   );
 }
 

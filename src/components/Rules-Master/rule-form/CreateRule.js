@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Row, Form, Input, Button, Select, Modal } from 'antd';
+import { Col, Row, Form, Input, Button, Modal } from 'antd';
 import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
 import { Link } from 'react-router-dom';
 import RuleModalForm from '../../../container/forms/overview/RuleModalForm';
@@ -7,8 +7,6 @@ import { PageHeader } from '../../page-headers/page-headers';
 import { Cards } from '../../cards/frame/cards-frame';
 import { Main, BasicFormWrapper } from '../../styled';
 import TempRuleTable from '../../../container/Rule-collection-table/TempRuleTable';
-
-const { Option } = Select;
 
 const PageRoutes = [
   {
@@ -98,8 +96,12 @@ function CreateRule() {
                   </Row>
                 </Form>
                 <TempRuleTable />
-                <Modal open={isModalVisible} onCancel={handleCancel} footer={null}>
-                  {/* <InquiryForm handleCancel={handleCancel} /> */}
+                <div className="ninjadash-form-action">
+                  <Button className="btn-signin" type="primary" size="large" htmlType="submit">
+                    Submit
+                  </Button>
+                </div>
+                <Modal title="Add Rule" open={isModalVisible} onCancel={handleCancel} destroyOnClose footer={null}>
                   <RuleModalForm handleCancel={handleCancel} />
                 </Modal>
               </BasicFormWrapper>
