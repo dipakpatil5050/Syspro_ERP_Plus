@@ -46,7 +46,7 @@ function TempRuleTable() {
   // table-actions
 
   const getSelectedValueNames = (type, values) => {
-    return values.map((valueId) => {
+    return values?.map((valueId) => {
       const filter = filters[type].find((filter) => filter.Id === valueId);
       return filter ? filter.Name : valueId;
     });
@@ -63,8 +63,8 @@ function TempRuleTable() {
         ruleon: <span className="customer-name">{selectedType}</span>,
         description: (
           <ul className="ordered-amount-list">
-            {selectedNames.length > 0 ? (
-              selectedNames.map((name, index) => <li key={index}>{name},</li>)
+            {selectedNames?.length > 0 ? (
+              selectedNames?.map((name, index) => <li key={index}>{name},</li>)
             ) : (
               <li key="no-items">No items selected</li>
             )}

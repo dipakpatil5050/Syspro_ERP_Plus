@@ -7,23 +7,6 @@ const initialState = {
   error: null,
 };
 
-// {
-//   selectedType: 'Group',
-//   selectedValues: [3, 4, 5],
-// },
-// {
-//   selectedType: 'SubGroup',
-//   selectedValues: [1, 2],
-// },
-// {
-//   selectedType: 'Category',
-//   selectedValues: [4, 2],
-// },
-// {
-//   selectedType: 'Brand',
-//   selectedValues: [2],
-// },
-
 export const configSlice = createSlice({
   name: 'config',
   initialState,
@@ -44,10 +27,19 @@ export const configSlice = createSlice({
     deleteTempRuleData: (state, action) => {
       state.tempRuleData.splice(action.payload, 1);
     },
+    clearTempRuleData: (state) => {
+      state.tempRuleData = [];
+    },
   },
 });
 
-export const { setLoading, setRuleCollection, setTempRuleData, updateTempRuleData, deleteTempRuleData } =
-  configSlice.actions;
+export const {
+  setLoading,
+  setRuleCollection,
+  setTempRuleData,
+  updateTempRuleData,
+  deleteTempRuleData,
+  clearTempRuleData,
+} = configSlice.actions;
 
 export default configSlice.reducer;

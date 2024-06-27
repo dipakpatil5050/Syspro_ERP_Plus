@@ -16,7 +16,6 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
   const [ruleValue, setRuleValue] = useState(editRule ? editRule.selectedValues : []);
 
   const [filters, setFilters] = useState(data.filters);
-  const [rules, setRules] = useState([]);
   const [selectedRuleTypes, setSelectedRuleTypes] = useState([]);
   const tempData = useSelector((state) => state.config.tempRuleData);
 
@@ -32,7 +31,7 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
         rulevalue: editRule.selectedValues,
       });
     }
-    const existingRuleTypes = tempData.map((rule) => rule.selectedType);
+    const existingRuleTypes = tempData?.map((rule) => rule.selectedType);
     setSelectedRuleTypes(existingRuleTypes);
   }, [editRule, tempData, form]);
 
@@ -45,7 +44,7 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
   const renderSelectOptions = () => {
     if (!ruleType) return null;
 
-    const options = filters[ruleType].map((item) => (
+    const options = filters[ruleType]?.map((item) => (
       <Option key={item.Id} value={item.Id}>
         {item.Name}
       </Option>
@@ -135,9 +134,10 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
                   size="default"
                   placeholder="Select Rule Type"
                   onChange={handleRuleTypeChange}
+                  disabled={!!editRule}
                   filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
                 >
-                  {ruleTypeOptions.map((type) => (
+                  {ruleTypeOptions?.map((type) => (
                     <Option key={type} value={type}>
                       {type}
                     </Option>
