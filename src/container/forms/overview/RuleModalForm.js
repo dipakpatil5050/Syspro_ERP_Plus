@@ -18,24 +18,28 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
   const [filters, setFilters] = useState(data.filters);
   const [rules, setRules] = useState([]);
   const [selectedRuleTypes, setSelectedRuleTypes] = useState([]);
+  const tempData = useSelector((state) => state.config.tempRuleData);
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
 
   useEffect(() => {
     if (editRule) {
+      setRuleType(editRule.selectedType);
+      setRuleValue(editRule.selectedValues);
       form.setFieldsValue({
         ruletype: editRule.selectedType,
         rulevalue: editRule.selectedValues,
       });
-      setRuleType(editRule.selectedType);
-      setRuleValue(editRule.selectedValues);
     }
-  }, [editRule, form]);
+    const existingRuleTypes = tempData.map((rule) => rule.selectedType);
+    setSelectedRuleTypes(existingRuleTypes);
+  }, [editRule, tempData, form]);
 
   const handleRuleTypeChange = (value) => {
     setRuleType(value);
     setRuleValue([]);
+    form.setFieldsValue({ rulevalue: [] });
   };
 
   const renderSelectOptions = () => {
@@ -63,37 +67,6 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
     );
   };
 
-  const handleAdd = () => {
-    if (!ruleType || ruleValue.length === 0) {
-      alert('Please fill all fields before adding a rule type.');
-      return;
-    }
-
-    const newRule = {
-      selectedType: ruleType,
-      selectedValues: ruleValue,
-    };
-
-    setRules([...rules, newRule]);
-    setSelectedRuleTypes([...selectedRuleTypes, ruleType]);
-    dispatch(
-      setTempRuleData({
-        selectedType: ruleType,
-        selectedValues: ruleValue,
-      }),
-    );
-
-    setRuleType('');
-    setRuleValue([]);
-    form.setFieldsValue({
-      ruletype: '',
-      rulevalue: [],
-    });
-    handleCancel();
-    console.log('Added Rule : ', rules);
-    console.log('Selected Rule Types :', selectedRuleTypes);
-  };
-
   const handleAddOrUpdate = () => {
     form.validateFields().then(() => {
       if (!ruleType || ruleValue.length === 0) {
@@ -112,13 +85,15 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
         dispatch(setTempRuleData(newRule));
       }
 
+      setSelectedRuleTypes([...selectedRuleTypes, ruleType]);
+
       setRuleType('');
       setRuleValue([]);
       form.resetFields();
-      form.setFieldsValue({
-        ruletype: '',
-        rulevalue: [],
-      });
+      // form.setFieldsValue({
+      //   ruletype: '',
+      //   rulevalue: [],
+      // });
       handleCancel();
     });
   };

@@ -111,60 +111,53 @@ function TempRuleTable() {
   ];
 
   return (
-    <Main>
-      <Cards titleless headless>
-        <div className="ninjadash-form-action">
-          {/* <Link to="createrule">
-            <Button title="Click here to Create new rule" className="btn-signin" type="primary">
-              + Create New Rule
-            </Button>
-          </Link> */}
-        </div>
-        <Row gutter={15}>
-          <Col xs={24}>
-            <TopToolBox>
-              <Row gutter={15} className="justify-content-center" />
-            </TopToolBox>
-          </Col>
-        </Row>
-        <Row gutter={15}>
-          <Col md={24}>
-            <TableWrapper className="table-order table-responsive">
-              {loading && (
-                <div
-                  className="table-loading"
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    zIndex: 99999,
-                  }}
-                >
-                  <Spin size="large" />
-                </div>
-              )}
-              <Table
-                bordered
-                dataSource={dataSource}
-                columns={columns}
-                pagination={false}
-                loading={loading}
-                rowKey={(record) => record.key}
-              />
-            </TableWrapper>
-            <Modal
-              title={editRule ? 'Update Rule' : 'Add Rule'}
-              open={isModalVisible}
-              onCancel={handleCancel}
-              footer={null}
-              destroyOnClose
-            >
-              <RuleModalForm handleCancel={handleCancel} editRule={editRule} editIndex={editIndex} />
-            </Modal>
-          </Col>
-        </Row>
-      </Cards>
-    </Main>
+    // <Cards titleless headless>
+    <>
+      <Row gutter={15}>
+        <Col xs={24}>
+          <TopToolBox>
+            <Row gutter={15} className="justify-content-center" />
+          </TopToolBox>
+        </Col>
+      </Row>
+      <Row gutter={15}>
+        <Col md={24}>
+          <TableWrapper className="table-order table-responsive">
+            {loading && (
+              <div
+                className="table-loading"
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  zIndex: 99999,
+                }}
+              >
+                <Spin size="large" />
+              </div>
+            )}
+            <Table
+              bordered
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}
+              loading={loading}
+              rowKey={(record) => record.key}
+            />
+          </TableWrapper>
+          <Modal
+            title={editRule ? 'Update Rule' : 'Add Rule'}
+            open={isModalVisible}
+            onCancel={handleCancel}
+            footer={null}
+            destroyOnClose
+          >
+            <RuleModalForm handleCancel={handleCancel} editRule={editRule} editIndex={editIndex} />
+          </Modal>
+        </Col>
+      </Row>
+      {/* </Cards> */}
+    </>
   );
 }
 

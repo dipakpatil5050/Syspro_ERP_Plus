@@ -49,6 +49,11 @@ function CreateRule() {
         }
         routes={PageRoutes}
       />
+      {/* .gzVMmV{
+            padding: 0px 30px 20px;
+            min-height: 715px;
+            background-color: transparent;
+      } */}
 
       <Main>
         <Row gutter={15}>
@@ -94,13 +99,18 @@ function CreateRule() {
                       </div>
                     </Col>
                   </Row>
+                  <TempRuleTable />
+                  <Row justify="center">
+                    <Col>
+                      <div className="ninjadash-form-action" style={{ marginTop: '30px' }}>
+                        <Button className="btn-signin" type="primary" size="large" htmlType="submit">
+                          Submit
+                        </Button>
+                      </div>
+                    </Col>
+                  </Row>
                 </Form>
-                <TempRuleTable />
-                <div className="ninjadash-form-action">
-                  <Button className="btn-signin" type="primary" size="large" htmlType="submit">
-                    Submit
-                  </Button>
-                </div>
+
                 <Modal title="Add Rule" open={isModalVisible} onCancel={handleCancel} destroyOnClose footer={null}>
                   <RuleModalForm handleCancel={handleCancel} />
                 </Modal>
