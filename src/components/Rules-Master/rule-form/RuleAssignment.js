@@ -19,7 +19,9 @@ function RuleAssignment() {
   const [selectedUser, setSelectedUser] = useState('');
   const [selectedRules, setSelectedRules] = useState([]);
 
-  const handleRuleAssignSubmit = () => {};
+  const handleRuleAssignSubmit = () => {
+    console.log('Handle Rule Assign Submit');
+  };
 
   const handleRuleChange = (value) => {
     setSelectedRules(value);

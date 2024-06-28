@@ -40,6 +40,8 @@ function CreateRule() {
 
     dispatch(clearTempRuleData());
     form.resetFields();
+    setRuleName('');
+    setRemark('');
     toast.success('Rule Created Successfully !');
   };
 
@@ -105,6 +107,7 @@ function CreateRule() {
                           type="primary"
                           size="large"
                           htmlType="button"
+                          disabled={!ruleName}
                         >
                           + Add Rule
                         </Button>
@@ -121,6 +124,7 @@ function CreateRule() {
                           type="primary"
                           size="large"
                           htmlType="submit"
+                          disabled={!ruleName}
                         >
                           Submit
                         </Button>

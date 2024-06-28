@@ -103,7 +103,7 @@ function RuleMaster() {
     });
   };
 
-  const ruleTypeOptions = ['Group', 'SubGroup', 'Category', 'Brand'].filter(
+  const ruleTypeOptions = ['Group', 'SubGroup', 'Category', 'Brand', 'Design', 'Catalogue', 'Colour', 'Size'].filter(
     (type) => !selectedRuleTypes.includes(type),
   );
 

@@ -112,7 +112,6 @@ export const authSlice = createSlice({
     //       state.catalogueData.push(product);
     //     }
     //   });
-    //   // localStorage.setItem('catalogueData', JSON.stringify(state.catalogueData));
     // },
 
     setError: (state, action) => {
@@ -163,7 +162,6 @@ export const authSlice = createSlice({
     setLoadedItems: (state, action) => {
       state.loadedItems = action.payload;
     },
-
     selectItem: (state, action) => {
       const { itemId, isChecked } = action.payload;
       // state.selectedItems = action.payload

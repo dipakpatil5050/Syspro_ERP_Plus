@@ -7,6 +7,7 @@ import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
 import { setTempRuleData, updateTempRuleData } from '../../../redux/reducers/configSlice';
+import { getRuleFilters } from '../../../Actions/Configuration/RuleAction';
 
 const { Option } = Select;
 
@@ -17,10 +18,18 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
 
   const [filters, setFilters] = useState(data.filters);
   const [selectedRuleTypes, setSelectedRuleTypes] = useState([]);
+
   const tempData = useSelector((state) => state.config.tempRuleData);
+
+  const filterData = useSelector((state) => state.config.ruleFilterData);
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
+
+  // useEffect(() => {
+  //   dispatch(getRuleFilters());
+  //   // setFilters(filterData);
+  // }, []);
 
   useEffect(() => {
     if (editRule) {
@@ -43,6 +52,8 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
 
   const renderSelectOptions = () => {
     if (!ruleType) return null;
+
+    // option for rule value
 
     const options = filters[ruleType]?.map((item) => (
       <Option key={item.Id} value={item.Id}>
@@ -97,7 +108,7 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
     });
   };
 
-  const ruleTypeOptions = ['Group', 'SubGroup', 'Category', 'Brand'].filter(
+  const ruleTypeOptions = ['Group', 'SubGroup', 'Category', 'Brand', 'Design', 'Catalogue', 'Colour', 'Size'].filter(
     (type) => !selectedRuleTypes.includes(type),
   );
 
@@ -142,6 +153,16 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
                       {type}
                     </Option>
                   ))}
+
+                  {/* {filterData &&
+                    filterData?.Table?.map((item, index) => {
+                      // console.log('Filter Data for loop : ', item[0].Name);
+                      return (
+                        <Option key={index} value="Group">
+                          {item.Name}
+                        </Option>
+                      );
+                    })} */}
                 </Select>
               </Form.Item>
 
