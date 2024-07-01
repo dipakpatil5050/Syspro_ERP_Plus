@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Col, Row, Form, Input, Button, Modal } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Col, Row, Form, Input, Button, Modal, Spin } from 'antd';
 import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,6 +10,7 @@ import { Cards } from '../../cards/frame/cards-frame';
 import { Main, BasicFormWrapper } from '../../styled';
 import TempRuleTable from '../../../container/Rule-collection-table/TempRuleTable';
 import { clearTempRuleData } from '../../../redux/reducers/configSlice';
+import { getRuleFilters } from '../../../Actions/Configuration/RuleAction';
 
 const PageRoutes = [
   {
@@ -33,17 +34,21 @@ function CreateRule() {
 
   const RuleData = useSelector((state) => state.config.tempRuleData);
 
-  const handleRuleSubmit = (e) => {
+  const loading = useSelector((state) => state.config.loading);
+
+  const handleRuleSubmit = async (e) => {
     e.preventDefault();
     const Data = { ruleName, remark, RuleData };
     console.log('Rule Submit Post Data : ', Data);
-
     dispatch(clearTempRuleData());
-    form.resetFields();
+    form.resetFields(); 
     setRuleName('');
     setRemark('');
-    toast.success('Rule Created Successfully !');
   };
+
+  useEffect(() => {
+    dispatch(getRuleFilters());
+  }, []);
 
   return (
     <>
@@ -70,6 +75,20 @@ function CreateRule() {
       />
 
       <Main>
+        {/* {loading && (
+          <>
+            <Spin
+              size="large"
+              style={{
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                zIndex: 99999,
+                padding: '10px',
+              }}
+            />
+          </>
+        )} */}
         <Row gutter={15}>
           <Col xs={24}>
             <Cards title="Rule Master">
@@ -85,7 +104,7 @@ function CreateRule() {
                       value={ruleName}
                       onChange={(e) => setRuleName(e.target.value)}
                       size="large"
-                      placeholder="Enter rule name : eg. Saree - (Silk)"
+                      placeholder="Enter rule name : eg.Net Saree"
                     />
                   </Form.Item>
                   <Form.Item name="remark" label="Remark">
@@ -132,8 +151,14 @@ function CreateRule() {
                     </Col>
                   </Row>
                 </Form>
-
-                <Modal title="Add Rule" open={isModalVisible} onCancel={handleCancel} destroyOnClose footer={null}>
+                <Modal
+                  loading={loading}
+                  title="Add Rule"
+                  open={isModalVisible}
+                  onCancel={handleCancel}
+                  destroyOnClose
+                  footer={null}
+                >
                   <RuleModalForm handleCancel={handleCancel} />
                 </Modal>
               </BasicFormWrapper>

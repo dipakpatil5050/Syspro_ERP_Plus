@@ -1,20 +1,28 @@
 import { http } from '../API-Interceptor';
 
 class RuleServices {
-  getAllUsers(body) {
-    return http.post('api/CommonAPI/Cart_Item_Update', body);
+  filterRuleCollection(body) {
+    return http.post('api/B2B/FillRuleCollection', body);
+  }
+
+  getRuleDataById(body) {
+    return http.get('api/B2B/', body);
   }
 
   getAllRules(body) {
-    return http.post('api/CommonAPI/AllRules', body);
+    return http.post('api/B2B/', body);
+  }
+
+  saveRuletoCollection(body) {
+    return http.post('api/B2B/', body);
+  }
+
+  getAllUsers(body) {
+    return http.post('api/', body);
   }
 
   deleteRule(body) {
-    return http.post('api/CommonAPI/DeleteRule', body);
-  }
-
-  filterRuleCollection(body) {
-    return http.post('api/CommonAPI/FillRuleCollectio', body);
+    return http.post('api/', body);
   }
 }
 

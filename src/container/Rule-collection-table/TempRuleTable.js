@@ -123,25 +123,12 @@ function TempRuleTable() {
       <Row gutter={15}>
         <Col md={24}>
           <TableWrapper className="table-order table-responsive">
-            {loading && (
-              <div
-                className="table-loading"
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  zIndex: 99999,
-                }}
-              >
-                <Spin size="large" />
-              </div>
-            )}
             <Table
               bordered
               dataSource={dataSource}
               columns={columns}
               pagination={false}
-              loading={loading}
+              // loading={loading}
               rowKey={(record) => record.key}
             />
           </TableWrapper>
@@ -151,6 +138,7 @@ function TempRuleTable() {
             onCancel={handleCancel}
             footer={null}
             destroyOnClose
+            loading={loading}
           >
             <RuleModalForm handleCancel={handleCancel} editRule={editRule} editIndex={editIndex} />
           </Modal>

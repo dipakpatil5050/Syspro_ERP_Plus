@@ -2,34 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Select } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import data from './data.json';
 import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
 import { setTempRuleData, updateTempRuleData } from '../../../redux/reducers/configSlice';
-import { getRuleFilters } from '../../../Actions/Configuration/RuleAction';
 
 const { Option } = Select;
 
 function RuleModalForm({ handleCancel, editRule, editIndex }) {
   const [form] = Form.useForm();
+
   const [ruleType, setRuleType] = useState(editRule ? editRule.selectedType : '');
   const [ruleValue, setRuleValue] = useState(editRule ? editRule.selectedValues : []);
-
-  const [filters, setFilters] = useState(data.filters);
   const [selectedRuleTypes, setSelectedRuleTypes] = useState([]);
 
   const tempData = useSelector((state) => state.config.tempRuleData);
-
-  const filterData = useSelector((state) => state.config.ruleFilterData);
+  const filters = useSelector((state) => state.config.ruleFilterData);
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
 
-  // useEffect(() => {
-  //   dispatch(getRuleFilters());
-  //   // setFilters(filterData);
-  // }, []);
+  console.log('Filters Data in variable  : ', filters);
 
   useEffect(() => {
     if (editRule) {
@@ -108,13 +101,12 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
     });
   };
 
-  const ruleTypeOptions = ['Group', 'SubGroup', 'Category', 'Brand', 'Design', 'Catalogue', 'Colour', 'Size'].filter(
-    (type) => !selectedRuleTypes.includes(type),
-  );
+  const filterList = Object.keys(filters);
+  const ruleTypeOptions = filterList?.filter((type) => !selectedRuleTypes.includes(type));
 
   return (
     <>
-      {loading && (
+      {/* {loading && (
         <>
           <Spin
             size="large"
@@ -127,7 +119,7 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
             }}
           />
         </>
-      )}
+      )} */}
       <BasicFormWrapper>
         <VerticalFormStyleWrap>
           <Cards headless>
@@ -153,16 +145,6 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
                       {type}
                     </Option>
                   ))}
-
-                  {/* {filterData &&
-                    filterData?.Table?.map((item, index) => {
-                      // console.log('Filter Data for loop : ', item[0].Name);
-                      return (
-                        <Option key={index} value="Group">
-                          {item.Name}
-                        </Option>
-                      );
-                    })} */}
                 </Select>
               </Form.Item>
 
@@ -174,7 +156,7 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
 
               <div className="ninjadash-form-action">
                 <Button
-                  loading={loading}
+                  // loading={loading}
                   htmlType="submit"
                   className="btn-signin"
                   type="primary"

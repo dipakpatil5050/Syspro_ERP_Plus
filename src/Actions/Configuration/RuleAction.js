@@ -1,17 +1,21 @@
 import toast from 'react-hot-toast';
 import RuleServices from '../../services/RuleServices';
-import { setLoading } from '../../redux/reducers/authReducer';
-import { setRuleFilterData } from '../../redux/reducers/configSlice';
+import { setRuleFilterData, setLoading } from '../../redux/reducers/configSlice';
 
-export const getAllUsers = () => async (dispatch) => {
-  const body = {};
+export const getRuleFilters = () => async (dispatch) => {
+  const body = {
+    FilterString: '',
+  };
 
   try {
     dispatch(setLoading(true));
-    const response = await RuleServices.getAllRules(body);
+    const filterRes = await RuleServices.filterRuleCollection(body);
+    console.log('Filter API data for Rule Configuration :', filterRes.data?.Data);
+    dispatch(setRuleFilterData(filterRes?.data?.Data?.filters));
     dispatch(setLoading(false));
   } catch (error) {
-    console.error('Error while fetching rule configuration:', error);
+    console.log(error);
+    console.error('Error while Data fetching from API', error);
     dispatch(setLoading(false));
   }
 };
@@ -29,35 +33,40 @@ export const getAllRules = () => async (dispatch) => {
   }
 };
 
-export const deleteRule = () => async (dispatch) => {
+export const getRuleDataById = () => async (dispatch) => {
   const body = {};
 
   try {
     dispatch(setLoading(true));
-    const deleteRes = await RuleServices.deleteRule(body);
+    const ruleIdResponse = await RuleServices.getRuleDataById(body);
     dispatch(setLoading(false));
   } catch (error) {
-    console.error('Error while fetching rule configuration: ', error);
+    console.error('Error while fetching rule configuration:', error);
     dispatch(setLoading(false));
   }
 };
 
-export const getRuleFilters = () => async (dispatch) => {
-  const body = {
-    SYSKey: 1,
-    Access_Type: '',
-    Access_Key: '',
-  };
+export const saveRuletoCollection = () => async (dispatch) => {
+  try {
+    dispatch(setLoading(true));
+    const saveRuleRes = await RuleServices.saveRuletoCollection(body);
+    dispatch(setLoading(false));
+  } catch (error) {
+    console.log(error);
+    console.error('Error while saving rule to Collection', error);
+    dispatch(setLoading(false));
+  }
+};
+
+export const getAllUsers = () => async (dispatch) => {
+  const body = {};
 
   try {
     dispatch(setLoading(true));
-    const filterRes = await RuleServices.filterRuleCollection(body);
-    console.log('Filter API data for Rule Configuration :', filterRes.data?.Data);
-    dispatch(setRuleFilterData(filterRes?.data?.Data));
+    const response = await RuleServices.getAllRules(body);
     dispatch(setLoading(false));
-  } catch {
-    console.log(error);
-    console.error('Error while Data fetching from API', error);
+  } catch (error) {
+    console.error('Error while fetching rule configuration:', error);
     dispatch(setLoading(false));
   }
 };
