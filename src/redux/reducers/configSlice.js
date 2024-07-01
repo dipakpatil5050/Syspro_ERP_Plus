@@ -15,8 +15,8 @@ export const configSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
-    setRuleCollection: (state, { payload }) => {
-      state.ruleCollection = payload;
+    setRuleCollection: (state, action) => {
+      state.ruleCollection = action.payload;
     },
     setTempRuleData: (state, action) => {
       state.tempRuleData.push(action.payload);

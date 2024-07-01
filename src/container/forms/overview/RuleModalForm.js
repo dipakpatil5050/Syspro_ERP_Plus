@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Select } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
 import { setTempRuleData, updateTempRuleData } from '../../../redux/reducers/configSlice';
+import { getRuleFilters } from '../../../Actions/Configuration/RuleAction';
 
 const { Option } = Select;
 
@@ -20,7 +22,7 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
   const filters = useSelector((state) => state.config.ruleFilterData);
 
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.auth.loading);
+  const loading = useSelector((state) => state.config.loading);
 
   console.log('Filters Data in variable  : ', filters);
 
@@ -53,6 +55,10 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
         {item.Name}
       </Option>
     ));
+
+    useEffect(() => {
+      dispatch(getRuleFilters());
+    }, []);
 
     return (
       <Select
@@ -104,69 +110,65 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
   const filterList = Object.keys(filters);
   const ruleTypeOptions = filterList?.filter((type) => !selectedRuleTypes.includes(type));
 
+  const CenteredSpin = styled(Spin)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  `;
+
   return (
     <>
-      {/* {loading && (
-        <>
-          <Spin
-            size="large"
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              zIndex: 99999,
-              padding: '10px',
-            }}
-          />
-        </>
-      )} */}
       <BasicFormWrapper>
         <VerticalFormStyleWrap>
           <Cards headless>
-            <Form form={form} name="ruleModal-form" layout="vertical">
-              <Form.Item
-                name="ruletype"
-                label="Select Rule Type"
-                rules={[{ required: true, message: 'Please enter rule type' }]}
-                initialValue={ruleType}
-              >
-                <Select
-                  allowClear
-                  autoClearSearchValue
-                  showSearch
-                  size="default"
-                  placeholder="Select Rule Type"
-                  onChange={handleRuleTypeChange}
-                  disabled={!!editRule}
-                  filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+            {loading ? (
+              <CenteredSpin size="large" />
+            ) : (
+              <Form form={form} name="ruleModal-form" layout="vertical">
+                <Form.Item
+                  name="ruletype"
+                  label="Select Rule Type"
+                  rules={[{ required: true, message: 'Please enter rule type' }]}
+                  initialValue={ruleType}
                 >
-                  {ruleTypeOptions?.map((type) => (
-                    <Option key={type} value={type}>
-                      {type}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              {ruleType && (
-                <Form.Item name="rulevalue" label={`Select ${ruleType} values`} size="large" initialValue={ruleValue}>
-                  {renderSelectOptions()}
+                  <Select
+                    allowClear
+                    autoClearSearchValue
+                    showSearch
+                    size="default"
+                    placeholder="Select Rule Type"
+                    onChange={handleRuleTypeChange}
+                    disabled={!!editRule}
+                    filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                  >
+                    {ruleTypeOptions?.map((type) => (
+                      <Option key={type} value={type}>
+                        {type}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
-              )}
 
-              <div className="ninjadash-form-action">
-                <Button
-                  // loading={loading}
-                  htmlType="submit"
-                  className="btn-signin"
-                  type="primary"
-                  onClick={handleAddOrUpdate}
-                  size="large"
-                >
-                  {editRule ? 'Update' : 'Add'}
-                </Button>
-              </div>
-            </Form>
+                {ruleType && (
+                  <Form.Item name="rulevalue" label={`Select ${ruleType} values`} size="large" initialValue={ruleValue}>
+                    {renderSelectOptions()}
+                  </Form.Item>
+                )}
+
+                <div className="ninjadash-form-action">
+                  <Button
+                    htmlType="submit"
+                    className="btn-signin"
+                    type="primary"
+                    onClick={handleAddOrUpdate}
+                    size="large"
+                  >
+                    {editRule ? 'Update' : 'Add'}
+                  </Button>
+                </div>
+              </Form>
+            )}
           </Cards>
         </VerticalFormStyleWrap>
       </BasicFormWrapper>

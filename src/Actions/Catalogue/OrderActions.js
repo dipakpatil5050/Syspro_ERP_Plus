@@ -38,8 +38,8 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     const pdfPath = res.data?.Data?.ReportPath;
     const token = 'cltjual8g0gyf2sfyrd2bxrsb'; // whats app token it will be dynamic later here
 
-    const whatsappresponse = await OrderServices.whatsAppFile(token, mobile, pdfPath, remark);
-    console.log('Order Invoice shared to whats App : ', whatsappresponse?.data?.status);
+    const whatsAppResponse = await OrderServices.whatsAppFile(token, mobile, pdfPath, remark);
+    console.log('Order Invoice shared to whats App : ', whatsAppResponse?.data?.status);
 
     setTimeout(() => {
       window.open(pdfPath, '_blank');

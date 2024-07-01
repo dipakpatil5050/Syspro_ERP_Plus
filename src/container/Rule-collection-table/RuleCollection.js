@@ -5,36 +5,46 @@ import { Link } from 'react-router-dom';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import UilEye from '@iconscout/react-unicons/icons/uil-eye';
 import { TopToolBox } from './Style';
-import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main, TableWrapper } from '../styled';
 import { Cards } from '../../components/cards/frame/cards-frame';
-import { orderHistory } from '../../Actions/Catalogue/OrderActions';
+import { getAllRules } from '../../Actions/Configuration/RuleAction';
 
 function RuleCollection() {
-  const orderData = useSelector((state) => state.cart.orderHistory);
+  const ruleList = useSelector((state) => state.config.ruleCollection);
+
   const loading = useSelector((state) => state.config.loading);
 
   const dispatch = useDispatch();
 
-  const currentPage = 0;
-  const pageSize = 10;
+  const [state, setState] = useState({
+    item: ruleList,
+    currentPage: 1,
+    pageSize: 10,
+  });
+
+  const handlePageChange = (current, size) => {
+    setState((prevState) => ({
+      ...prevState,
+      currentPage: current,
+      pageSize: size,
+    }));
+  };
 
   useEffect(() => {
-    dispatch(orderHistory(currentPage, pageSize));
-  }, [dispatch, currentPage, pageSize]);
+    dispatch(getAllRules(state.currentPage - 1, state.pageSize));
+  }, [dispatch, state.currentPage, state.pageSize]);
 
+  console.log('Rule data', ruleList);
   // table-actions
 
   const dataSource =
-    orderData?.products?.map((item, key) => {
-      const { Indent_Id, Account_Name, Indent_Dt, Amount, Qty } = item;
+    ruleList?.Rulelist?.map((item, key) => {
+      const { rule_name, entrydatetime, remark } = item;
       return {
         key: key + 1,
-        id: <span className="order-id">{Indent_Id}</span>,
-        rule: <span className="customer-name">{Account_Name}</span>,
-        quantity: <span className="ordered-amount">{Qty}</span>,
-        amount: <span className="ordered-amount">{Amount}</span>,
-        date: <span className="ordered-date">{Indent_Dt}</span>,
+        rule: <span className="customer-name">{rule_name}</span>,
+        date: <span className="ordered-date">{entrydatetime}</span>,
+        remark: <span className="ordered-amount">{remark}</span>,
         action: (
           <div className="table-actions">
             <Button className="btn-icon" type="primary" to="#" shape="circle">
@@ -107,7 +117,20 @@ function RuleCollection() {
                     <Spin size="large" />
                   </div>
                 )}
-                <Table bordered dataSource={dataSource} columns={columns} pagination={false} />
+                <Table
+                  bordered
+                  dataSource={dataSource}
+                  columns={columns}
+                  pagination={{
+                    showSizeChanger: true,
+                    current: state.currentPage,
+                    pageSize: state.pageSize,
+                    total: ruleList?.FilterTotalCount,
+                    loading: loading,
+                    onChange: handlePageChange,
+                    onShowSizeChange: handlePageChange,
+                  }}
+                />
               </TableWrapper>
             </Col>
           </Row>
