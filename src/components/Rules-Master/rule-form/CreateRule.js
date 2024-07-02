@@ -10,7 +10,7 @@ import { Cards } from '../../cards/frame/cards-frame';
 import { Main, BasicFormWrapper } from '../../styled';
 import TempRuleTable from '../../../container/Rule-collection-table/TempRuleTable';
 import { clearTempRuleData } from '../../../redux/reducers/configSlice';
-import { getRuleFilters } from '../../../Actions/Configuration/RuleAction';
+import { getRuleFilters, insertRuleToCollection } from '../../../Actions/Configuration/RuleAction';
 
 const PageRoutes = [
   {
@@ -33,6 +33,10 @@ function CreateRule() {
   const handleCancel = () => setIsModalVisible(false);
 
   const RuleData = useSelector((state) => state.config.tempRuleData);
+  const userData = useSelector((state) => state.auth.userData);
+
+  const companyId = userData?.Data.CompanyID;
+  const userId = userData?.Data.UserID;
 
   const loading = useSelector((state) => state.config.loading);
 
@@ -40,8 +44,10 @@ function CreateRule() {
     e.preventDefault();
     const Data = { ruleName, remark, RuleData };
     console.log('Rule Submit Post Data : ', Data);
+
+    dispatch(insertRuleToCollection(ruleName, remark, companyId, userId, RuleData));
     dispatch(clearTempRuleData());
-    form.resetFields(); 
+    form.resetFields();
     setRuleName('');
     setRemark('');
   };

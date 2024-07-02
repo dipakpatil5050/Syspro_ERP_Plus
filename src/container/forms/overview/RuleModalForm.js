@@ -7,7 +7,6 @@ import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
 import { setTempRuleData, updateTempRuleData } from '../../../redux/reducers/configSlice';
-import { getRuleFilters } from '../../../Actions/Configuration/RuleAction';
 
 const { Option } = Select;
 
@@ -23,8 +22,6 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.config.loading);
-
-  console.log('Filters Data in variable  : ', filters);
 
   useEffect(() => {
     if (editRule) {
@@ -55,10 +52,6 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
         {item.Name}
       </Option>
     ));
-
-    useEffect(() => {
-      dispatch(getRuleFilters());
-    }, []);
 
     return (
       <Select
