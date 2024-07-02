@@ -53,13 +53,12 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, Rule
     row_id: index + 1,
     rule_type: item.selectedType,
     rulevalue: item.selectedValues.join(','),
-    rulestring: '',
+    rulestring: item.FilterId,
     remark: remark,
     remark1: '',
   }));
 
   // And  In (3,6,5) And  In (1,3,22,17) And  In (1) And  In (2)
-
   // AND Group_Id IN (3,6,5) AND SubGroup_Id IN (1,3,22,17) AND Brand_ID IN (1) AND Cat_Id IN (2)
 
   const body = {
@@ -92,7 +91,7 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, Rule
   try {
     dispatch(setLoading(true));
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
-    console.log('insert rule to collection response : ' + JSON.stringify(saveRuleRes.data.Data));
+    console.log('insert rule to collection response : ' + saveRuleRes.data.Data);
     dispatch(setLoading(false));
   } catch (error) {
     console.log(error);

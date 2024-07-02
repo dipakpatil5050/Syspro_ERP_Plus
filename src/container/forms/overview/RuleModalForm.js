@@ -76,10 +76,14 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
         return;
       }
 
+      const filterId = filters[ruleType]?.[0]?.FilterId;
+
       const newRule = {
         selectedType: ruleType,
         selectedValues: ruleValue,
+        FilterId: filterId,
       };
+      console.log('New Rule with filter_id for string builder:', newRule); // For debugging
 
       if (editRule) {
         dispatch(updateTempRuleData({ index: editIndex, updatedRule: newRule }));
