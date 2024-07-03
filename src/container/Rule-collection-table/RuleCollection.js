@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table, Spin, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import UilEye from '@iconscout/react-unicons/icons/uil-eye';
 import { TopToolBox } from './Style';
@@ -15,6 +15,7 @@ function RuleCollection() {
   const singleRuleData = useSelector((state) => state.config.singleRuleData);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [state, setState] = useState({
     currentPage: 1,
@@ -29,8 +30,22 @@ function RuleCollection() {
     }));
   };
 
+  // const handleRuleEdit = (ruleId) => {
+  //   dispatch(getRuleDataById(ruleId));
+
+  // window.open(`createrule?mode=edit&ruleId=${ruleId}`);
+  // };
+
   const handleRuleEdit = (ruleId) => {
-    dispatch(getRuleDataById(ruleId));
+    dispatch(getRuleDataById(ruleId)).then(() => {
+      navigate(`/admin/configuration/rulemaster/createrule/edit/${ruleId}`);
+    });
+  };
+
+  const handleRuleView = (ruleId) => {
+    dispatch(getRuleDataById(ruleId)).then(() => {
+      navigate(`/admin/configuration/rulemaster/createrule/view/${ruleId}`);
+    });
   };
 
   console.log('Single Rule data from API : ', singleRuleData);
@@ -52,7 +67,13 @@ function RuleCollection() {
           remark: <span className="ordered-amount">{remark}</span>,
           action: (
             <div className="table-actions">
-              <Button className="btn-icon view" type="primary" to="#" shape="circle">
+              <Button
+                className="btn-icon view"
+                onChange={() => handleRuleView(rule_id)}
+                type="primary"
+                to="#"
+                shape="circle"
+              >
                 <UilEye />
               </Button>
               <Button

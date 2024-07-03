@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Form, Input, Button, Modal } from 'antd';
-import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
 import { Link, useParams } from 'react-router-dom';
+import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
 import { useSelector, useDispatch } from 'react-redux';
 import RuleModalForm from '../../../container/forms/overview/RuleModalForm';
 import { PageHeader } from '../../page-headers/page-headers';
@@ -9,7 +9,12 @@ import { Cards } from '../../cards/frame/cards-frame';
 import { Main, BasicFormWrapper } from '../../styled';
 import TempRuleTable from '../../../container/Rule-collection-table/TempRuleTable';
 import { clearTempRuleData } from '../../../redux/reducers/configSlice';
-import { getRuleFilters, insertRuleToCollection } from '../../../Actions/Configuration/RuleAction';
+import {
+  getRuleDataById,
+  getRuleFilters,
+  insertRuleToCollection,
+  updateRuleToCollection,
+} from '../../../Actions/Configuration/RuleAction';
 
 const PageRoutes = [
   {
@@ -27,30 +32,61 @@ function CreateRule() {
   const [form] = Form.useForm();
 
   const dispatch = useDispatch();
+  const { mode, ruleId } = useParams();
 
   const showModal = () => setIsModalVisible(true);
   const handleCancel = () => setIsModalVisible(false);
+  // tempData
 
-  const RuleData = useSelector((state) => state.config.tempRuleData);
+  const tempData = useSelector((state) => state.config.tempRuleData);
+  const ruleData = useSelector((state) => state.config.singleRuleData);
+
   const userData = useSelector((state) => state.auth.userData);
+  console.log('Single Rule data : ', ruleData);
 
   const companyId = userData?.Data.CompanyID;
   const userId = userData?.Data.UserID;
 
   const loading = useSelector((state) => state.config.loading);
 
-  const handleRuleSubmit = async (e) => {
-    e.preventDefault();
-    dispatch(insertRuleToCollection(ruleName, remark, companyId, userId, RuleData));
-    dispatch(clearTempRuleData());
-    form.resetFields();
-    setRuleName('');
-    setRemark('');
-  };
+  useEffect(() => {
+    if (ruleData.Table && ruleData.Table.length > 0) {
+      const rule = ruleData.Table[0];
+      setRuleName(rule.Rule_Name);
+      setRemark(rule.Remark);
+      form.setFieldsValue({
+        rulename: rule.Rule_Name,
+        remark: rule.Remark,
+      });
+    }
+  }, [ruleData, form]);
 
   useEffect(() => {
     dispatch(getRuleFilters());
   }, []);
+
+  // const handleRuleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   dispatch(insertRuleToCollection(ruleName, remark, companyId, userId, tempData));
+  //   dispatch(clearTempRuleData());
+  //   form.resetFields();
+  //   setRuleName('');
+  //   setRemark('');
+  // };
+
+  const handleRuleSubmit = (values) => {
+    if (mode === 'edit' && ruleId) {
+      dispatch(updateRuleToCollection(ruleId, ruleName, remark, companyId, userId, ruleData));
+    } else {
+      dispatch(insertRuleToCollection(ruleName, remark, companyId, userId, tempData)).then(() => {
+        dispatch(clearTempRuleData());
+        form.resetFields();
+        setRuleName('');
+        setRemark('');
+        // navigate('/rule-collection');
+      });
+    }
+  };
 
   return (
     <>
@@ -58,7 +94,7 @@ function CreateRule() {
         className="ninjadash-page-header-main ninjadash-pageheader-with-back"
         title={
           <>
-            <h4>Create Rule</h4>
+            <h4>{mode === 'edit' ? 'Edit Rule' : 'Create Rule'}</h4>
             <span className="back-link">
               <Link
                 onClick={(e) => {
@@ -93,6 +129,7 @@ function CreateRule() {
                       onChange={(e) => setRuleName(e.target.value)}
                       size="large"
                       placeholder="Enter rule name : eg.Net Saree"
+                      disabled={mode === 'view'}
                     />
                   </Form.Item>
                   <Form.Item name="remark" label="Remark">
@@ -102,6 +139,7 @@ function CreateRule() {
                       onChange={(e) => setRemark(e.target.value)}
                       size="large"
                       placeholder="write remark"
+                      disabled={mode === 'view'}
                     />
                   </Form.Item>
 
@@ -114,7 +152,7 @@ function CreateRule() {
                           type="primary"
                           size="large"
                           htmlType="button"
-                          disabled={!ruleName}
+                          disabled={!ruleName || mode === 'view'}
                         >
                           + Add Rule
                         </Button>
@@ -131,7 +169,7 @@ function CreateRule() {
                           type="primary"
                           size="large"
                           htmlType="submit"
-                          disabled={!ruleName}
+                          disabled={!ruleName || mode === 'view'}
                         >
                           Submit
                         </Button>

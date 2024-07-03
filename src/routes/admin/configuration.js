@@ -16,6 +16,7 @@ function ConfigurationRoute() {
       <Route path="*" element={<NotFound />} />
       <Route path="/rulemaster" element={<RuleMaster />} />
       <Route path="/rulemaster/createrule" element={<CreateRule />} />
+      <Route path="/rulemaster/createrule/:mode/:ruleId?" element={<CreateRule />} />
       <Route path="/ruleassign" element={<RuleAssignment />} />
       <Route path="/assigntouser" element={<AssignRuleToUser />} />
     </Routes>

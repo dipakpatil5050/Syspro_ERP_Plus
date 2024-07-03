@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table, Spin, Button, Modal } from 'antd';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
+import { useParams } from 'react-router-dom';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import { TopToolBox } from './Style';
 import './table.css';
@@ -14,11 +15,15 @@ function TempRuleTable() {
   const [editRule, setEditRule] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
 
+  const { mode, ruleId } = useParams();
+
   const tempData = useSelector((state) => state.config.tempRuleData);
+  const ruleData = useSelector((state) => state.config.singleRuleData);
   const loading = useSelector((state) => state.config.loading);
   const filters = useSelector((state) => state.config.ruleFilterData);
 
   console.log('Temp Data in redux Store : ', tempData);
+  console.log('rule Data in redux Store from single data res from API : ', ruleData);
 
   const dispatch = useDispatch();
 

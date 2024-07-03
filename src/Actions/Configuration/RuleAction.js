@@ -42,15 +42,15 @@ export const getRuleDataById = (ruleId) => async (dispatch) => {
     dispatch(setSingleRuleData(ruleIdResponse.data.Data));
     dispatch(setLoading(false));
   } catch (error) {
-    console.error('Error while fetching rule configuration:', error);
+    console.error('Error while fetching Single Rule Data from API:', error);
     dispatch(setLoading(false));
   } finally {
     dispatch(setLoading(false));
   }
 };
 
-export const insertRuleToCollection = (ruleName, remark, companyId, userId, RuleData) => async (dispatch) => {
-  const ruleDetails = RuleData?.map((item, index) => ({
+export const insertRuleToCollection = (ruleName, remark, companyId, userId, tempData) => async (dispatch) => {
+  const ruleDetails = tempData?.map((item, index) => ({
     company_id: companyId,
     rule_id: 0,
     row_id: index + 1,
@@ -60,9 +60,6 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, Rule
     remark: remark,
     remark1: '',
   }));
-
-  // And  In (3,6,5) And  In (1,3,22,17) And  In (1) And  In (2)
-  // AND Group_Id IN (3,6,5) AND SubGroup_Id IN (1,3,22,17) AND Brand_ID IN (1) AND Cat_Id IN (2)
 
   const body = {
     RuleCollection: {
@@ -94,9 +91,9 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, Rule
   try {
     dispatch(setLoading(true));
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
-    console.log('insert rule to collection response : ' + saveRuleRes.data.Data);
+    console.log('insert rule to collection response : ' + saveRuleRes.data);
     toast.success('Rule Created successfully!');
-    window.history.back();
+    // window.history.back();
     dispatch(setLoading(false));
   } catch (error) {
     console.log(error);
@@ -138,7 +135,7 @@ export const updateRuleToCollection = (ruleName, remark, companyId, userId, Rule
     dispatch(setLoading(true));
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
     console.log('Update rule to collection response:', saveRuleRes.data.Data);
-    toast.success('Rule updated successfully!');
+    // toast.success('Rule updated successfully!');
     dispatch(setLoading(false));
   } catch (error) {
     console.log(error);
