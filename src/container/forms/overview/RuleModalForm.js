@@ -10,6 +10,13 @@ import { setTempRuleData, updateTempRuleData } from '../../../redux/reducers/con
 
 const { Option } = Select;
 
+const CenteredSpin = styled(Spin)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
 function RuleModalForm({ handleCancel, editRule, editIndex }) {
   const [form] = Form.useForm();
 
@@ -106,13 +113,6 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
 
   const filterList = Object.keys(filters);
   const ruleTypeOptions = filterList?.filter((type) => !selectedRuleTypes.includes(type));
-
-  const CenteredSpin = styled(Spin)`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  `;
 
   return (
     <>

@@ -44,7 +44,6 @@ function CreateRule() {
     e.preventDefault();
     const Data = { ruleName, remark, RuleData };
     console.log('Rule Submit Post Data : ', Data);
-
     dispatch(insertRuleToCollection(ruleName, remark, companyId, userId, RuleData));
     dispatch(clearTempRuleData());
     form.resetFields();

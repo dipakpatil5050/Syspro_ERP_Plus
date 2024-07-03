@@ -7,12 +7,12 @@ import UilEye from '@iconscout/react-unicons/icons/uil-eye';
 import { TopToolBox } from './Style';
 import { Main, TableWrapper } from '../styled';
 import { Cards } from '../../components/cards/frame/cards-frame';
-import { getAllRules } from '../../Actions/Configuration/RuleAction';
+import { getAllRules, getRuleDataById } from '../../Actions/Configuration/RuleAction';
 
 function RuleCollection() {
   const ruleList = useSelector((state) => state.config.ruleCollection);
-
   const loading = useSelector((state) => state.config.loading);
+  const singleRuleData = useSelector((state) => state.config.singleRuleData);
 
   const dispatch = useDispatch();
 
@@ -30,16 +30,21 @@ function RuleCollection() {
     }));
   };
 
+  const handleRuleEdit = (ruleId) => {
+    dispatch(getRuleDataById(ruleId));
+  };
+
+  console.log('Single Rule data from API : ', singleRuleData);
+
   useEffect(() => {
     dispatch(getAllRules(state.currentPage - 1, state.pageSize));
   }, [dispatch, state.currentPage, state.pageSize]);
 
-  console.log('Rule data', ruleList);
   // table-actions
 
   const dataSource =
     ruleList?.Rulelist?.map((item, key) => {
-      const { rule_name, entrydatetime, remark } = item;
+      const { rule_id, rule_name, entrydatetime, remark } = item;
       return {
         key: key + 1,
         rule: <span className="customer-name">{rule_name}</span>,
@@ -47,10 +52,16 @@ function RuleCollection() {
         remark: <span className="ordered-amount">{remark}</span>,
         action: (
           <div className="table-actions">
-            <Button className="btn-icon" type="primary" to="#" shape="circle">
+            <Button className="btn-icon view" type="primary" to="#" shape="circle">
               <UilEye />
             </Button>
-            <Button className="btn-icon" type="info" to="#" shape="circle">
+            <Button
+              className="btn-icon Edit update"
+              onClick={() => handleRuleEdit(rule_id)}
+              type="info"
+              to="#"
+              shape="circle"
+            >
               <UilEdit />
             </Button>
           </div>

@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   error: null,
   ruleFilterData: [],
+  singleRuleData: [],
 };
 
 export const configSlice = createSlice({
@@ -34,6 +35,9 @@ export const configSlice = createSlice({
     setRuleFilterData: (state, action) => {
       state.ruleFilterData = action.payload;
     },
+    setSingleRuleData: (state, action) => {
+      state.singleRuleData = action.payload;
+    },
   },
 });
 
@@ -45,6 +49,7 @@ export const {
   deleteTempRuleData,
   clearTempRuleData,
   setRuleFilterData,
+  setSingleRuleData,
 } = configSlice.actions;
 
 export default configSlice.reducer;
