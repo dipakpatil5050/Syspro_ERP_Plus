@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Row, Form, Input, Button, Modal, Spin } from 'antd';
+import { Col, Row, Form, Input, Button, Modal } from 'antd';
 import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import toast from 'react-hot-toast';
 import RuleModalForm from '../../../container/forms/overview/RuleModalForm';
 import { PageHeader } from '../../page-headers/page-headers';
 import { Cards } from '../../cards/frame/cards-frame';
@@ -42,8 +41,6 @@ function CreateRule() {
 
   const handleRuleSubmit = async (e) => {
     e.preventDefault();
-    const Data = { ruleName, remark, RuleData };
-    console.log('Rule Submit Post Data : ', Data);
     dispatch(insertRuleToCollection(ruleName, remark, companyId, userId, RuleData));
     dispatch(clearTempRuleData());
     form.resetFields();
@@ -80,20 +77,6 @@ function CreateRule() {
       />
 
       <Main>
-        {/* {loading && (
-          <>
-            <Spin
-              size="large"
-              style={{
-                position: 'fixed',
-                top: '50%',
-                left: '50%',
-                zIndex: 99999,
-                padding: '10px',
-              }}
-            />
-          </>
-        )} */}
         <Row gutter={15}>
           <Col xs={24}>
             <Cards title="Rule Master">

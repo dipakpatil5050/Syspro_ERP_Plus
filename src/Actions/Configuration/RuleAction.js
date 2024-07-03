@@ -44,6 +44,8 @@ export const getRuleDataById = (ruleId) => async (dispatch) => {
   } catch (error) {
     console.error('Error while fetching rule configuration:', error);
     dispatch(setLoading(false));
+  } finally {
+    dispatch(setLoading(false));
   }
 };
 
@@ -81,13 +83,13 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, Rule
 
   // And  In (1,2,3,4,5,0) And  In (1,2,3,4,5,0) And  In (1,2,3,4,5,0)
 
-  // Entry Mode Data into body =
+  // Entry Mode Data into body should be  =
   // { 1 for  insert and
   //  2 for update the Data }
 
   // Rule Id into body   =
-  // while insert: pass 0
-  // while update: pass Rule Id from data object
+  // while insert rule to collection : pass 0
+  // while update rule to collection : pass Rule Id from data object
 
   try {
     dispatch(setLoading(true));
@@ -132,24 +134,18 @@ export const updateRuleToCollection = (ruleName, remark, companyId, userId, Rule
     RuleCollectionDetail: ruleDetails,
   };
 
-  // And  In (1,2,3,4,5,0) And  In (1,2,3,4,5,0) And  In (1,2,3,4,5,0)
-
-  // Entry Mode Data into body =
-  // { 1 for  insert and
-  //   2 for update the Data }
-
-  // Rule Id into body   =
-  // while insert: pass 0
-  // while update: pass Rule Id from data object
-
   try {
     dispatch(setLoading(true));
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
-    console.log('insert rule to collection response : ' + saveRuleRes.data.Data);
+    console.log('Update rule to collection response:', saveRuleRes.data.Data);
+    toast.success('Rule updated successfully!');
     dispatch(setLoading(false));
   } catch (error) {
     console.log(error);
     console.error('Error while saving rule to Collection', error);
+    dispatch(setLoading(false));
+    toast.error('Failed to update rule in collection.');
+  } finally {
     dispatch(setLoading(false));
   }
 };

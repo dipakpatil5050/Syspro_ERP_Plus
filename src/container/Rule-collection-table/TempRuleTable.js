@@ -3,25 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table, Spin, Button, Modal } from 'antd';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
-import UilEye from '@iconscout/react-unicons/icons/uil-eye';
 import { TopToolBox } from './Style';
 import './table.css';
-import { PageHeader } from '../../components/page-headers/page-headers';
-import { Main, TableWrapper } from '../styled';
-import data from '../forms/overview/data.json';
-import { Cards } from '../../components/cards/frame/cards-frame';
-import { orderHistory } from '../../Actions/Catalogue/OrderActions';
+import { TableWrapper } from '../styled';
 import { deleteTempRuleData } from '../../redux/reducers/configSlice';
 import RuleModalForm from '../forms/overview/RuleModalForm';
 
 function TempRuleTable() {
-  const [filters, setFilters] = useState(data.filters);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editRule, setEditRule] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
 
   const tempData = useSelector((state) => state.config.tempRuleData);
   const loading = useSelector((state) => state.config.loading);
+  const filters = useSelector((state) => state.config.ruleFilterData);
 
   console.log('Temp Data in redux Store : ', tempData);
 
@@ -128,7 +123,6 @@ function TempRuleTable() {
               dataSource={dataSource}
               columns={columns}
               pagination={false}
-              // loading={loading}
               rowKey={(record) => record.key}
             />
           </TableWrapper>

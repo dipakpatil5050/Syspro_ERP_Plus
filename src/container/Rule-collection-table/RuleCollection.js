@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table, Spin, Button } from 'antd';
 import { Link } from 'react-router-dom';
@@ -17,7 +17,6 @@ function RuleCollection() {
   const dispatch = useDispatch();
 
   const [state, setState] = useState({
-    item: ruleList,
     currentPage: 1,
     pageSize: 10,
   });
@@ -42,57 +41,63 @@ function RuleCollection() {
 
   // table-actions
 
-  const dataSource =
-    ruleList?.Rulelist?.map((item, key) => {
-      const { rule_id, rule_name, entrydatetime, remark } = item;
-      return {
-        key: key + 1,
-        rule: <span className="customer-name">{rule_name}</span>,
-        date: <span className="ordered-date">{entrydatetime}</span>,
-        remark: <span className="ordered-amount">{remark}</span>,
-        action: (
-          <div className="table-actions">
-            <Button className="btn-icon view" type="primary" to="#" shape="circle">
-              <UilEye />
-            </Button>
-            <Button
-              className="btn-icon Edit update"
-              onClick={() => handleRuleEdit(rule_id)}
-              type="info"
-              to="#"
-              shape="circle"
-            >
-              <UilEdit />
-            </Button>
-          </div>
-        ),
-      };
-    }) || [];
+  const dataSource = useMemo(
+    () =>
+      ruleList?.Rulelist?.map((item, key) => {
+        const { rule_id, rule_name, entrydatetime, remark } = item;
+        return {
+          key: key + 1,
+          rule: <span className="customer-name">{rule_name}</span>,
+          date: <span className="ordered-date">{entrydatetime}</span>,
+          remark: <span className="ordered-amount">{remark}</span>,
+          action: (
+            <div className="table-actions">
+              <Button className="btn-icon view" type="primary" to="#" shape="circle">
+                <UilEye />
+              </Button>
+              <Button
+                className="btn-icon Edit update"
+                onClick={() => handleRuleEdit(rule_id)}
+                type="info"
+                to="#"
+                shape="circle"
+              >
+                <UilEdit />
+              </Button>
+            </div>
+          ),
+        };
+      }) || [],
+    [ruleList],
+  );
 
-  const columns = [
-    {
-      title: 'Rule Name ',
-      dataIndex: 'rule',
-      key: 'rule',
-    },
-    {
-      title: 'Created Date',
-      dataIndex: 'date',
-      key: 'date',
-      width: '10%',
-    },
-    {
-      title: 'Remark',
-      dataIndex: 'remark',
-      key: 'remark',
-    },
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
-      width: '5%',
-    },
-  ];
+  const columns = useMemo(
+    () => [
+      {
+        title: 'Rule Name',
+        dataIndex: 'rule',
+        key: 'rule',
+      },
+      {
+        title: 'Created Date',
+        dataIndex: 'date',
+        key: 'date',
+        width: '10%',
+      },
+      {
+        title: 'Remark',
+        dataIndex: 'remark',
+        key: 'remark',
+      },
+      {
+        title: 'Action',
+        dataIndex: 'action',
+        key: 'action',
+        width: '5%',
+      },
+    ],
+    [],
+  );
 
   return (
     <>
