@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Form, Input, Button, Modal } from 'antd';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
 import { useSelector, useDispatch } from 'react-redux';
 import RuleModalForm from '../../../container/forms/overview/RuleModalForm';
@@ -36,18 +36,14 @@ function CreateRule() {
 
   const showModal = () => setIsModalVisible(true);
   const handleCancel = () => setIsModalVisible(false);
-  // tempData
 
   const tempData = useSelector((state) => state.config.tempRuleData);
   const ruleData = useSelector((state) => state.config.singleRuleData);
-
   const userData = useSelector((state) => state.auth.userData);
-  console.log('Single Rule data : ', ruleData);
+  const loading = useSelector((state) => state.config.loading);
 
   const companyId = userData?.Data.CompanyID;
   const userId = userData?.Data.UserID;
-
-  const loading = useSelector((state) => state.config.loading);
 
   useEffect(() => {
     if (ruleData.Table && ruleData.Table.length > 0) {
@@ -65,26 +61,24 @@ function CreateRule() {
     dispatch(getRuleFilters());
   }, []);
 
-  // const handleRuleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   dispatch(insertRuleToCollection(ruleName, remark, companyId, userId, tempData));
-  //   dispatch(clearTempRuleData());
-  //   form.resetFields();
-  //   setRuleName('');
-  //   setRemark('');
-  // };
+  const resetForm = () => {
+    dispatch(clearTempRuleData());
+    form.resetFields();
+    setRuleName('');
+    setRemark('');
+  };
 
-  const handleRuleSubmit = (values) => {
-    if (mode === 'edit' && ruleId) {
-      dispatch(updateRuleToCollection(ruleId, ruleName, remark, companyId, userId, ruleData));
-    } else {
-      dispatch(insertRuleToCollection(ruleName, remark, companyId, userId, tempData)).then(() => {
-        dispatch(clearTempRuleData());
-        form.resetFields();
-        setRuleName('');
-        setRemark('');
-        // navigate('/rule-collection');
-      });
+  const handleRuleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (mode === 'edit') {
+        await dispatch(updateRuleToCollection(ruleId, ruleName, remark, companyId, userId, tempData));
+      } else {
+        await dispatch(insertRuleToCollection(ruleName, remark, companyId, userId, tempData));
+      }
+      resetForm();
+    } catch (error) {
+      console.error('Error handleling in rule submit : ', error);
     }
   };
 
@@ -94,12 +88,16 @@ function CreateRule() {
         className="ninjadash-page-header-main ninjadash-pageheader-with-back"
         title={
           <>
-            <h4>{mode === 'edit' ? 'Edit Rule' : 'Create Rule'}</h4>
+            <h4>{mode === 'edit' ? 'Edit Rule' : mode === 'view' ? 'View Rule' : 'Create Rule'}</h4>
             <span className="back-link">
               <Link
                 onClick={(e) => {
                   e.preventDefault();
                   window.history.back();
+                  dispatch(clearTempRuleData());
+                  form.resetFields();
+                  setRuleName('');
+                  setRemark('');
                 }}
                 to="#"
               >
@@ -159,7 +157,7 @@ function CreateRule() {
                       </div>
                     </Col>
                   </Row>
-                  <TempRuleTable />
+                  <TempRuleTable mode={mode} />
                   <Row justify="center">
                     <Col>
                       <div className="ninjadash-form-action" style={{ marginTop: '30px' }}>
@@ -171,7 +169,7 @@ function CreateRule() {
                           htmlType="submit"
                           disabled={!ruleName || mode === 'view'}
                         >
-                          Submit
+                          {mode === 'edit' ? 'Update' : 'Submit'}
                         </Button>
                       </div>
                     </Col>

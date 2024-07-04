@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Spin, Select } from 'antd';
+import { Form, Button, Spin, Select, Col, Row } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -123,6 +123,22 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
               <CenteredSpin size="large" />
             ) : (
               <Form form={form} name="ruleModal-form" layout="vertical">
+                <Row justify="end">
+                  <Col>
+                    <div className="ninjadash-form-action">
+                      <Button
+                        htmlType="submit"
+                        className="btn-signin"
+                        type="primary"
+                        onClick={handleAddOrUpdate}
+                        size="large"
+                      >
+                        {editRule ? 'Update' : 'Add'}
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+
                 <Form.Item
                   name="ruletype"
                   label="Select Rule Type"
@@ -152,18 +168,6 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
                     {renderSelectOptions()}
                   </Form.Item>
                 )}
-
-                <div className="ninjadash-form-action">
-                  <Button
-                    htmlType="submit"
-                    className="btn-signin"
-                    type="primary"
-                    onClick={handleAddOrUpdate}
-                    size="large"
-                  >
-                    {editRule ? 'Update' : 'Add'}
-                  </Button>
-                </div>
               </Form>
             )}
           </Cards>

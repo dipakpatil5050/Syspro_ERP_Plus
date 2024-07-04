@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table, Spin, Button, Modal } from 'antd';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
+import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import { TopToolBox } from './Style';
@@ -10,20 +11,17 @@ import { TableWrapper } from '../styled';
 import { deleteTempRuleData } from '../../redux/reducers/configSlice';
 import RuleModalForm from '../forms/overview/RuleModalForm';
 
-function TempRuleTable() {
+function TempRuleTable({ mode }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editRule, setEditRule] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
 
-  const { mode, ruleId } = useParams();
+  // const { mode, ruleId } = useParams();
 
   const tempData = useSelector((state) => state.config.tempRuleData);
-  const ruleData = useSelector((state) => state.config.singleRuleData);
+  const singleRuleData = useSelector((state) => state.config.singleRuleData);
   const loading = useSelector((state) => state.config.loading);
   const filters = useSelector((state) => state.config.ruleFilterData);
-
-  console.log('Temp Data in redux Store : ', tempData);
-  console.log('rule Data in redux Store from single data res from API : ', ruleData);
 
   const dispatch = useDispatch();
 
@@ -47,8 +45,8 @@ function TempRuleTable() {
 
   const getSelectedValueNames = (type, values) => {
     return values?.map((valueId) => {
-      const filter = filters[type].find((filter) => filter.Id === valueId);
-      return filter ? filter.Name : valueId;
+      const filter1 = filters[type]?.find((filter) => filter.Id === valueId);
+      return filter1 ? filter1.Name : valueId;
     });
   };
 
@@ -72,10 +70,22 @@ function TempRuleTable() {
         ),
         action: (
           <div className="table-actions">
-            <Button className="btn-icon edit" type="info" shape="circle" onClick={() => handleEdit(key)}>
+            <Button
+              disabled={mode === 'view'}
+              className="btn-icon edit"
+              type="info"
+              shape="circle"
+              onClick={() => handleEdit(key)}
+            >
               <UilEdit />
             </Button>
-            <Button className="btn-icon delete" type="danger" shape="circle" onClick={() => handleDelete(key)}>
+            <Button
+              disabled={mode === 'view'}
+              className="btn-icon delete"
+              type="danger"
+              shape="circle"
+              onClick={() => handleDelete(key)}
+            >
               <UilTrashAlt />
             </Button>
           </div>
@@ -147,5 +157,9 @@ function TempRuleTable() {
     </>
   );
 }
+
+TempRuleTable.propTypes = {
+  mode: PropTypes.string,
+};
 
 export default TempRuleTable;

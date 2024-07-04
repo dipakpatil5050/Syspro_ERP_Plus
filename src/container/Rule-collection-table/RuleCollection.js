@@ -7,12 +7,11 @@ import UilEye from '@iconscout/react-unicons/icons/uil-eye';
 import { TopToolBox } from './Style';
 import { Main, TableWrapper } from '../styled';
 import { Cards } from '../../components/cards/frame/cards-frame';
-import { getAllRules, getRuleDataById } from '../../Actions/Configuration/RuleAction';
+import { getAllRules, getRuleDataById, getRuleFilters } from '../../Actions/Configuration/RuleAction';
 
 function RuleCollection() {
   const ruleList = useSelector((state) => state.config.ruleCollection);
   const loading = useSelector((state) => state.config.loading);
-  const singleRuleData = useSelector((state) => state.config.singleRuleData);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,6 +21,10 @@ function RuleCollection() {
     pageSize: 10,
   });
 
+  useEffect(() => {
+    dispatch(getRuleFilters());
+  }, []);
+
   const handlePageChange = (current, size) => {
     setState((prevState) => ({
       ...prevState,
@@ -29,12 +32,6 @@ function RuleCollection() {
       pageSize: size,
     }));
   };
-
-  // const handleRuleEdit = (ruleId) => {
-  //   dispatch(getRuleDataById(ruleId));
-
-  // window.open(`createrule?mode=edit&ruleId=${ruleId}`);
-  // };
 
   const handleRuleEdit = (ruleId) => {
     dispatch(getRuleDataById(ruleId)).then(() => {
@@ -47,8 +44,6 @@ function RuleCollection() {
       navigate(`/admin/configuration/rulemaster/createrule/view/${ruleId}`);
     });
   };
-
-  console.log('Single Rule data from API : ', singleRuleData);
 
   useEffect(() => {
     dispatch(getAllRules(state.currentPage - 1, state.pageSize));
@@ -69,7 +64,7 @@ function RuleCollection() {
             <div className="table-actions">
               <Button
                 className="btn-icon view"
-                onChange={() => handleRuleView(rule_id)}
+                onClick={() => handleRuleView(rule_id)}
                 type="primary"
                 to="#"
                 shape="circle"

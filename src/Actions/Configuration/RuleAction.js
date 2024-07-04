@@ -93,7 +93,7 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, temp
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
     console.log('insert rule to collection response : ' + saveRuleRes.data);
     toast.success('Rule Created successfully!');
-    // window.history.back();
+    window.history.back();
     dispatch(setLoading(false));
   } catch (error) {
     console.log(error);
@@ -102,10 +102,10 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, temp
   }
 };
 
-export const updateRuleToCollection = (ruleName, remark, companyId, userId, RuleData) => async (dispatch) => {
-  const ruleDetails = RuleData?.map((item, index) => ({
+export const updateRuleToCollection = (ruleId, ruleName, remark, companyId, userId, tempData) => async (dispatch) => {
+  const ruleDetails = tempData?.map((item, index) => ({
     company_id: companyId,
-    rule_id: 0,
+    rule_id: ruleId,
     row_id: index + 1,
     rule_type: item.selectedType,
     rulevalue: item.selectedValues.join(','),
@@ -117,7 +117,7 @@ export const updateRuleToCollection = (ruleName, remark, companyId, userId, Rule
   const body = {
     RuleCollection: {
       company_id: companyId,
-      rule_id: 0,
+      rule_id: ruleId,
       rule_name: ruleName,
       rulefilterstring: '',
       remark: remark,
@@ -135,7 +135,8 @@ export const updateRuleToCollection = (ruleName, remark, companyId, userId, Rule
     dispatch(setLoading(true));
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
     console.log('Update rule to collection response:', saveRuleRes.data.Data);
-    // toast.success('Rule updated successfully!');
+    toast.success('Rule updated successfully!');
+    window.history.back();
     dispatch(setLoading(false));
   } catch (error) {
     console.log(error);

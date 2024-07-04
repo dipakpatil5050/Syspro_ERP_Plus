@@ -37,6 +37,11 @@ export const configSlice = createSlice({
     },
     setSingleRuleData: (state, action) => {
       state.singleRuleData = action.payload;
+      state.tempRuleData = action.payload?.Table1?.map((item) => ({
+        selectedType: item.Rule_Type,
+        selectedValues: item.RuleValue.split(',').map(Number),
+        // FilterId: item.
+      }));
     },
   },
 });
