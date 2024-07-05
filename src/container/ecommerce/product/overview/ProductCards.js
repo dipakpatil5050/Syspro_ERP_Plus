@@ -25,35 +25,14 @@ function ProductCards({ product }) {
 
   const cartId = useSelector((state) => state.cart.cartId);
 
-  // const { paramId } = useParams();
-
   const [imageError, setImageError] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const { Item_Id: id, Item_Name: name, SalePrice1: price, Gallary: gallery } = product;
 
-  // const docsIds = gallery[0].Document_Id;
-
-  // console.log('Products IDs : ', id);
-
-  // const selectedItemsCount = useSelector((state) => state.auth.selectedItems.length);
-
-  // const catalogueData = useSelector((state) => state.auth.catalogueData);
-
   const handleImageError = () => {
     setImageError(true);
   };
-
-  // localStorage functionality for Selected Card Items
-  // useEffect(() => {
-  //   const selectedItemsFromStorage = JSON.parse(localStorage.getItem('selectedItems')) || [];
-  //   setIsChecked(selectedItemsFromStorage.includes(product.Item_Id));
-  // }, [product.Item_Id]);
-
-  // const handleCheckboxChange = (event) => {
-  //   setIsChecked(event.target.checked);
-  //   dispatch(selectItem({ itemId: product.Item_Id, isChecked: event.target.checked }));
-  // };
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
   const productImage = !imageError && gallery?.length > 0 ? gallery[0]?.Filepath : null;

@@ -60,6 +60,8 @@ const Filters = React.memo(() => {
   const Userid = userheaderdata?.UserID;
   const AccessValue = userheaderdata?.Access_Value;
 
+  // const AccessValue = '';
+
   const buildFilterString = (groupIds, subGroupIds, categoryIds, brandIds) => {
     // dispatch(setCatalogueData([]));
     let filterString = '';
@@ -95,6 +97,7 @@ const Filters = React.memo(() => {
   const fetchCatalogueDataFiltered = async (filterString) => {
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
+    console.log('AccessValue ', AccessValue + filterString);
     const body = {
       ReportId: 0,
       FromDate: '',
@@ -201,6 +204,7 @@ const Filters = React.memo(() => {
 
   const fetchCatalogueData = async (filterString) => {
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
+
     console.log('AccessValue + FilterString in catalogue : ', AccessValue + filterString);
     const body = {
       ReportId: 0,

@@ -101,6 +101,13 @@ export const authSlice = createSlice({
     setCatalogueData: (state, action) => {
       const allData = action.payload;
       state.catalogueData.push(...allData);
+
+      const hasCatalogueData = action.payload;
+      console.log('hasCatalogueData : ', hasCatalogueData);
+      if (hasCatalogueData === undefined || hasCatalogueData.length == 0) {
+        state.hasMoreData = false;
+      }
+
       // localStorage.setItem('catalogueData', JSON.stringify(state.catalogueData.push(...allData)));
     },
 
@@ -135,7 +142,7 @@ export const authSlice = createSlice({
       state.totalCataloguePages = action.payload;
       const totalPages = action.payload;
       if (state.offsetValue === totalPages) {
-        state.hasMoreData = false;
+        state.hasMoreData = false; // hasMoreData Should be False when All data fetch
       }
     },
 
