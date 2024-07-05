@@ -57,6 +57,7 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, temp
     rule_type: item.selectedType,
     rulevalue: item.selectedValues.join(','),
     rulestring: item.FilterId,
+    rulefilterid: item.FilterId,
     remark: remark,
     remark1: '',
   }));
@@ -78,16 +79,6 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, temp
     RuleCollectionDetail: ruleDetails,
   };
 
-  // And  In (1,2,3,4,5,0) And  In (1,2,3,4,5,0) And  In (1,2,3,4,5,0)
-
-  // Entry Mode Data into body should be  =
-  // { 1 for  insert and
-  //  2 for update the Data }
-
-  // Rule Id into body   =
-  // while insert rule to collection : pass 0
-  // while update rule to collection : pass Rule Id from data object
-
   try {
     dispatch(setLoading(true));
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
@@ -96,8 +87,8 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, temp
     window.history.back();
     dispatch(setLoading(false));
   } catch (error) {
-    console.log(error);
     console.error('Error while saving rule to Collection', error);
+    toast.error('Failed in save rule to Collection');
     dispatch(setLoading(false));
   }
 };
@@ -110,6 +101,7 @@ export const updateRuleToCollection = (ruleId, ruleName, remark, companyId, user
     rule_type: item.selectedType,
     rulevalue: item.selectedValues.join(','),
     rulestring: item.FilterId,
+    rulefilterid: item.FilterId,
     remark: remark,
     remark1: '',
   }));
@@ -134,7 +126,6 @@ export const updateRuleToCollection = (ruleId, ruleName, remark, companyId, user
   try {
     dispatch(setLoading(true));
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
-    console.log('Update rule to collection response:', saveRuleRes.data.Data);
     toast.success('Rule updated successfully!');
     window.history.back();
     dispatch(setLoading(false));

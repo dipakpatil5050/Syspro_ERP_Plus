@@ -40,7 +40,7 @@ export const configSlice = createSlice({
       state.tempRuleData = action.payload?.Table1?.map((item) => ({
         selectedType: item.Rule_Type,
         selectedValues: item.RuleValue.split(',').map(Number),
-        // FilterId: item.
+        FilterId: item.RuleFilterId,
       }));
     },
   },

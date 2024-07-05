@@ -431,13 +431,13 @@ function MenuItems({ toggleCollapsed }) {
         'orders',
         null,
       ),
-      getItem(
-        <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/add-product`}>
-          {t('Catalogue')} {t('Upload')}
-        </NavLink>,
-        'add-product',
-        null,
-      ),
+      // getItem(
+      //   <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/add-product`}>
+      //     {t('Catalogue')} {t('Upload')}
+      //   </NavLink>,
+      //   'add-product',
+      //   null,
+      // ),
     ]),
 
     getItem(
