@@ -58,6 +58,7 @@ const Filters = React.memo(() => {
   const Premiseid = userheaderdata?.PremiseID;
   const Departmentid = userheaderdata?.DepartmentID;
   const Userid = userheaderdata?.UserID;
+  const AccessValue = userheaderdata?.Access_Value;
 
   const buildFilterString = (groupIds, subGroupIds, categoryIds, brandIds) => {
     // dispatch(setCatalogueData([]));
@@ -98,7 +99,7 @@ const Filters = React.memo(() => {
       ReportId: 0,
       FromDate: '',
       UptoDate: '',
-      FilterString: filterString,
+      FilterString: AccessValue + filterString,
       OffsetValue: 0, // 0
       PageSize: 100000,
       OrderByColumn: 'i.Item_id Desc',
@@ -194,21 +195,18 @@ const Filters = React.memo(() => {
     fetchCatalogueDataFiltered(filterString);
   };
 
-  // const pageSize = () => {
-
-  // };
-
   // Catalogue API Calling :
 
   // const isMounted = useRef(false);
+
   const fetchCatalogueData = async (filterString) => {
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
-
+    console.log('AccessValue + FilterString in catalogue : ', AccessValue + filterString);
     const body = {
       ReportId: 0,
       FromDate: '',
       UptoDate: '',
-      FilterString: filterString,
+      FilterString: AccessValue,
       OffsetValue: offsetValue,
       PageSize: 100,
       OrderByColumn: 'i.Item_id Desc',
@@ -240,7 +238,7 @@ const Filters = React.memo(() => {
       // dispatch(setLoading(false));
     } catch (error) {
       console.error('Error in Catalogue data fetching:', error);
-      toast.error('Error in fetching catalogue report data from API Server.');
+      toast.error('Error in fetching catalogue data from Server.');
     } finally {
       // dispatch(setLoading(false));
     }
@@ -249,54 +247,6 @@ const Filters = React.memo(() => {
   useEffect(() => {
     fetchCatalogueData();
   }, [offsetValue]);
-
-  // useEffect(() => {
-  //   if (!filterData) {
-  //     fetchCatalogueData();
-  //   }
-  // }, [filterData]);
-
-  // useEffect(() => {
-  //   const oldPageOffset = offsetValue;
-  //   if (!filterData || offsetValue !== oldPageOffset) {
-  //     fetchCatalogueData();
-  //   }
-  // }, [filterData, offsetValue]);
-
-  // useEffect(() => {
-  //   if (CatalogueData.length === 0) {
-  //     fetchCatalogueData();
-  //   }
-  // }, []);
-
-  // console.log(Math.random());
-
-  // useEffect(() => {
-  //   // if (hasMoreData) {
-  //   fetchCatalogueData();
-  //   // }
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log('objects loaded from API Server', Math.random());
-  // }, []);
-
-  // handle Clear filter button
-
-  // const handleClearFilters = () => {
-  //   setSelectedGroupIds([]);
-  //   setSelectedSubGroupIds([]);
-
-  //   setSelectedCategoryIds([]);
-  //   setSelectedBrandIds([]);
-
-  //   // dispatch(setCatalogueData([]));
-  //   dispatch(setClearFilter());
-  //   dispatch(setFilterData([]));
-  //   fetchCatalogueData('');
-  //   dispatch(setOffsetValue(0));
-  //   // fetchCatalogueDataFiltered('');
-  // };
 
   function capitalizeFirstLetter(str) {
     return str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
@@ -314,7 +264,7 @@ const Filters = React.memo(() => {
   //     min: value[0],
   //     max: value[1],
   //   });
-  //   // dispatch(filterByPriceRange(value));
+  //  dispatch(filterByPriceRange(value));
   // };
 
   return (

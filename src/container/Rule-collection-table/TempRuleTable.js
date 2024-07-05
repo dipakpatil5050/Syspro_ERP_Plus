@@ -16,10 +16,7 @@ function TempRuleTable({ mode }) {
   const [editRule, setEditRule] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
 
-  // const { mode, ruleId } = useParams();
-
   const tempData = useSelector((state) => state.config.tempRuleData);
-  const singleRuleData = useSelector((state) => state.config.singleRuleData);
   const loading = useSelector((state) => state.config.loading);
   const filters = useSelector((state) => state.config.ruleFilterData);
 
