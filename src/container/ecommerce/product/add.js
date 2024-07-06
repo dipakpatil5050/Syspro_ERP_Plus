@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Form, Select, Upload, message, Progress } from 'antd';
+import { Row, Col, Form, Select, Upload, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import UilCloudUpload from '@iconscout/react-unicons/icons/uil-cloud-upload';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
@@ -27,11 +27,10 @@ function AddProduct() {
 
   const [form] = Form.useForm();
   const [state, setState] = useState({
-    fileList: [],
+    file: null,
+    list: [],
     itemId: '',
   });
-  const [uploading, setUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const dispatch = useDispatch();
   const ItemNameList = useSelector((state1) => state1.auth.itemList);
@@ -40,30 +39,18 @@ function AddProduct() {
     dispatch(getItemList());
   }, [dispatch]);
 
-  const customRequest = async ({ file, onSuccess, onError, onProgress }) => {
+  const customRequest = async ({ file, onSuccess, onError }) => {
     if (file.size / 1024 / 1024 > 2) {
       message.error('File size must be less than 2MB.');
       onError(new Error('File size must be less than 2MB.'));
       return;
     }
 
-    setUploading(true);
-    const fakeUpload = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(fakeUpload);
-          onSuccess(null, file);
-          setUploading(false);
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 200);
-
     setState((prevState) => ({
       ...prevState,
-      fileList: [...prevState.fileList, file],
+      file,
     }));
+    onSuccess(null, file);
   };
 
   const fileUploadProps = {
@@ -75,12 +62,12 @@ function AddProduct() {
       if (status !== 'uploading') {
         setState((prevState) => ({
           ...prevState,
-          fileList: info.fileList.filter((file) => file.status !== 'error'),
+          list: info.fileList.filter((file) => file.status !== 'error'),
         }));
       }
     },
     listType: 'picture',
-    defaultFileList: state.fileList,
+    defaultFileList: state.list,
     showUploadList: {
       showRemoveIcon: true,
       removeIcon: <UilTrashAlt />,
@@ -88,13 +75,10 @@ function AddProduct() {
   };
 
   const handleSubmit = async () => {
-    if (state.fileList.length > 0 && state.itemId) {
+    if (state.file && state.itemId) {
       try {
-        const uploadPromises = state.fileList.map((file) => dispatch(uploadItem(file, state.itemId)));
-        await Promise.all(uploadPromises);
+        await dispatch(uploadItem(state.file, state.itemId));
         message.success('Product uploaded successfully!');
-        setState({ fileList: [], itemId: '' });
-        setProgress(0);
       } catch (error) {
         message.error('Product upload failed!');
       }
@@ -148,7 +132,6 @@ function AddProduct() {
                                     <p className="ant-upload-hint">
                                       or <span>Browse</span> to choose a file
                                     </p>
-                                    {uploading && <Progress percent={progress} />}
                                   </Dragger>
                                 </Cards>
                               </div>
@@ -162,8 +145,7 @@ function AddProduct() {
                               size="large"
                               onClick={() => {
                                 form.resetFields();
-                                setState({ fileList: [], itemId: '' });
-                                setProgress(0);
+                                setState({ file: null, list: [], itemId: '' });
                               }}
                             >
                               Cancel
@@ -187,3 +169,5 @@ function AddProduct() {
 }
 
 export default AddProduct;
+
+// working code for backup

@@ -1,4 +1,4 @@
-import { http } from '../API-Interceptor';
+import { http, httpFormData } from '../API-Interceptor';
 
 class CatalogueServices {
   fetchSingleProductDetailById(itemId) {
@@ -19,6 +19,14 @@ class CatalogueServices {
 
   updateCartItem(body) {
     return http.post('api/CommonAPI/Cart_Item_Update', body);
+  }
+
+  uploadItem(formData) {
+    return httpFormData.post('api/CatalogueSync/CatalogueUpload', formData);
+  }
+
+  itemList(body) {
+    return http.post('api/CommonAPI/ItemList', body);
   }
 }
 

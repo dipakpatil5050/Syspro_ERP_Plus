@@ -84,6 +84,7 @@ export const authSlice = createSlice({
     catalogueTotalDataCount: 0,
     totalCataloguePages: 0,
     singleProduct: [],
+    itemList: [],
     // subtotal: 0,
     // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
     // JSON.parse(localStorage.getItem('catalogueData')) || null,
@@ -151,6 +152,7 @@ export const authSlice = createSlice({
       // if (state.catalogueTotalDataCount  state.catalogueData.length) {
       // }
     },
+
     setSingleProduct: (state, action) => {
       state.singleProduct = action.payload;
     },
@@ -215,6 +217,10 @@ export const authSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+
+    setItemList: (state, { payload }) => {
+      state.itemList = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -274,5 +280,6 @@ export const {
   logoutBegin,
   logoutSuccess,
   logoutErr,
+  setItemList,
 } = authSlice.actions;
 export default authSlice.reducer;

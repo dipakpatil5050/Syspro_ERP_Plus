@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import CatalogueServices from '../../services/CatalogueServices';
 
-import { setLoading, setSingleProduct } from '../../redux/reducers/authReducer';
+import { setItemList, setLoading, setSingleProduct } from '../../redux/reducers/authReducer';
 import { setCartItems, setCartId } from '../../redux/reducers/cartSlice';
 
 export const fetchSingleProductDetailById = (itemId) => async (dispatch) => {
@@ -81,5 +81,33 @@ export const updateCartItem = (itemID, cartId, quantity, remark) => async (dispa
   } catch (error) {
     console.error('Error adding to cart:', error);
     toast.error(error.message);
+  }
+};
+
+export const uploadItem = (file, itemId) => async (dispatch) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('itemID', itemId);
+
+  try {
+    const uploadRes = await CatalogueServices.uploadItem(formData);
+    console.log(uploadRes?.data?.Data);
+    // toast.success('Item Upload Successfully !');
+  } catch (error) {
+    console.error('Image uploading Error , ', error);
+    // toast.error('Item Upload Failed !');
+  }
+};
+
+export const getItemList = () => async (dispatch) => {
+  const body = {};
+
+  try {
+    const itemRes = await CatalogueServices.itemList(body);
+    console.log('Item List : ', itemRes?.data?.Data);
+    dispatch(setItemList(itemRes?.data?.Data?.Table));
+  } catch (error) {
+    console.error('Item List Fetching Error', error);
+    toast.error('Item List Fetching Error');
   }
 };

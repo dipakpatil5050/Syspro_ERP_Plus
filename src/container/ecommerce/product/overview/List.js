@@ -66,7 +66,7 @@ function List() {
               //     <Spin />
               //   </div>
               // )
-              <Heading as="h1">No more products to load</Heading>
+              <Heading as="h5">No more products to load</Heading>
             )}
           </NotFoundWrapper>
         }
