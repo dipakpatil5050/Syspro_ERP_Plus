@@ -86,12 +86,13 @@ export const updateCartItem = (itemID, cartId, quantity, remark) => async (dispa
 
 export const uploadItem = (file, itemId) => async (dispatch) => {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('file', file.originFileObj);
   formData.append('itemID', itemId);
 
   try {
     const uploadRes = await CatalogueServices.uploadItem(formData);
     console.log(uploadRes?.data?.Data);
+    return uploadRes.data?.Data;
     // toast.success('Item Upload Successfully !');
   } catch (error) {
     console.error('Image uploading Error , ', error);
