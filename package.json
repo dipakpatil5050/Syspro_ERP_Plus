@@ -53,6 +53,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.1.0",
+    "react-dropzone": "^14.2.3",
     "react-fontawesome": "^1.7.1",
     "react-google-charts": "^4.0.0",
     "react-hot-toast": "^2.4.1",
