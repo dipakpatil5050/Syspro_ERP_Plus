@@ -21,12 +21,12 @@ class CatalogueServices {
     return http.post('api/CommonAPI/Cart_Item_Update', body);
   }
 
-  uploadItem(formData) {
-    return httpFormData.post('api/CatalogueSync/CatalogueUpload', formData);
+  uploadItem(body) {
+    return httpFormData.post('api/CatalogueSync/CatalogueUpload', body);
   }
 
   itemList(body) {
-    return http.post('api/CommonAPI/ItemList', body);
+    return http.post('api/CommonAPI/ProductImageCatalogueReport', body);
   }
 }
 

@@ -142,13 +142,14 @@ httpFormData.interceptors.request.use(
 httpFormData.interceptors.response.use(
   (response) => {
     // Handle successful response here
+
     return response;
   },
   async (error) => {
     // Handle error response
     if (error.response && error.response.status === 401) {
       // Unauthorized access - maybe token expired
-      Cookies.remove('access_token');
+      // Cookies.remove('access_token');
       toast.error('Session expired', 'Please log in again.');
     }
     // Alert.alert("Error", error.response?.data?.message || "An error occurred");

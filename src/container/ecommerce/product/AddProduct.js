@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Row, Col, Form, Select, Upload, message, Progress } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import UilCloudUpload from '@iconscout/react-unicons/icons/uil-cloud-upload';
@@ -25,16 +25,16 @@ function AddProduct() {
     },
   ];
 
+  const draggerRef = useRef();
   const [form] = Form.useForm();
-  const [state, setState] = useState({
-    fileList: [],
-    itemId: '',
-  });
+  const [fileList, setFileList] = useState([]);
+  const [itemId, setItemId] = useState('');
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const dispatch = useDispatch();
-  const ItemNameList = useSelector((state1) => state1.auth.itemList);
+  const ItemNameList = useSelector((state) => state.auth.itemList);
+  const loading = useSelector((state) => state.auth.loading);
 
   useEffect(() => {
     dispatch(getItemList());
@@ -60,46 +60,51 @@ function AddProduct() {
       });
     }, 200);
 
-    setState((prevState) => ({
-      ...prevState,
-      fileList: [...prevState.fileList, file],
-    }));
+    setFileList((prevList) => [...prevList, file]);
   };
 
   const fileUploadProps = {
     name: 'file',
     multiple: true,
+    accept: '.jpg,.png,.gif',
     customRequest,
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
-        setState((prevState) => ({
-          ...prevState,
-          fileList: info.fileList.filter((file) => file.status !== 'error'),
-        }));
+        setFileList(info.fileList.filter((file) => file.status !== 'error'));
       }
     },
     listType: 'picture',
-    defaultFileList: state.fileList,
+    fileList,
     showUploadList: {
       showRemoveIcon: true,
       removeIcon: <UilTrashAlt />,
     },
   };
 
+  const handleClearFiles = () => {
+    setFileList([]);
+    if (draggerRef.current) {
+      draggerRef.current.upload.uploader.reset();
+    }
+  };
+
   const handleSubmit = async () => {
-    if (state.fileList.length > 0 && state.itemId) {
-      try {
-        const uploadPromises = state.fileList.map((file) => dispatch(uploadItem(file, state.itemId)));
-        await Promise.all(uploadPromises);
-        message.success('Product uploaded successfully!');
-        setState({ fileList: [], itemId: '' });
-        setProgress(0);
-      } catch (error) {
-        message.error('Product upload failed!');
-      }
+    if (fileList.length > 0 && itemId) {
+      const formData = new FormData();
+      fileList.forEach((file) => {
+        formData.append('file', file.originFileObj);
+      });
+      formData.append('itemID', itemId);
+
+      await dispatch(uploadItem(formData));
+      setFileList([]);
+      setItemId('');
+      setProgress(0);
+      form.resetFields();
+      handleClearFiles();
     } else {
-      message.error('Please select an item and upload a file.');
+      message.error('Please upload a file first.');
     }
   };
 
@@ -126,19 +131,26 @@ function AddProduct() {
                                     rules={[{ required: true, message: 'Please select an item name' }]}
                                   >
                                     <Select
-                                      value={state.itemId}
+                                      placeholder="Select Item"
+                                      allowClear
+                                      autoClearSearchValue
+                                      showSearch
+                                      value={itemId}
                                       style={{ width: '100%' }}
-                                      onChange={(value) => setState((prevState) => ({ ...prevState, itemId: value }))}
+                                      onChange={setItemId}
+                                      filterOption={(input, option) =>
+                                        option.children.toLowerCase().includes(input.toLowerCase())
+                                      }
                                     >
                                       {ItemNameList &&
                                         ItemNameList.map((item) => (
-                                          <Option key={item.Item_Id} value={item.Item_Id}>
+                                          <Option key={item.Item_ID} value={item.Item_ID}>
                                             {item.Item_Name}
                                           </Option>
                                         ))}
                                     </Select>
                                   </Form.Item>
-                                  <Dragger {...fileUploadProps}>
+                                  <Dragger ref={draggerRef} {...fileUploadProps}>
                                     <p className="ant-upload-drag-icon">
                                       <UilCloudUpload />
                                     </p>
@@ -162,14 +174,15 @@ function AddProduct() {
                               size="large"
                               onClick={() => {
                                 form.resetFields();
-                                setState({ fileList: [], itemId: '' });
+                                setFileList([]);
+                                setItemId('');
                                 setProgress(0);
                               }}
                             >
                               Cancel
                             </Button>
-                            <Button size="large" htmlType="submit" type="primary" raised>
-                              Save Product
+                            <Button loading={loading} size="large" htmlType="submit" type="primary" raised>
+                              {loading ? 'uploading' : 'Save Product'}
                             </Button>
                           </Form.Item>
                         </div>

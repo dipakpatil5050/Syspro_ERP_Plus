@@ -84,28 +84,37 @@ export const updateCartItem = (itemID, cartId, quantity, remark) => async (dispa
   }
 };
 
-export const uploadItem = (file, itemId) => async (dispatch) => {
-  const formData = new FormData();
-  formData.append('file', file.originFileObj);
-  formData.append('itemID', itemId);
-
+export const uploadItem = (formData) => async (dispatch) => {
   try {
+    dispatch(setLoading(true));
     const uploadRes = await CatalogueServices.uploadItem(formData);
-    console.log(uploadRes?.data?.Data);
-    return uploadRes.data?.Data;
-    // toast.success('Item Upload Successfully !');
+    toast.success('Item Upload Successfully !');
+    // setInterval(() => {
+    //   location.reload();
+    // }, 300);
+    dispatch(setLoading(false));
   } catch (error) {
-    console.error('Image uploading Error , ', error);
-    // toast.error('Item Upload Failed !');
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.Message);
+    } else {
+      toast.error('Unexpected error adding to product.');
+      dispatch(setLoading(false));
+    }
+    console.error('Unexpected error:', error);
+    dispatch(setLoading(false));
   }
 };
 
 export const getItemList = () => async (dispatch) => {
-  const body = {};
+  const body = {
+    SYSKey: 2,
+    Access_Type: '',
+    Access_Key: '',
+    Access_From: '',
+  };
 
   try {
     const itemRes = await CatalogueServices.itemList(body);
-    console.log('Item List : ', itemRes?.data?.Data);
     dispatch(setItemList(itemRes?.data?.Data?.Table));
   } catch (error) {
     console.error('Item List Fetching Error', error);
