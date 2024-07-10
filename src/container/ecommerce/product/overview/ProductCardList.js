@@ -38,9 +38,9 @@ const ProductCardsList = React.memo(({ product }) => {
   //   dispatch(selectItem({ itemId: product.Item_Id, isChecked: event.target.checked }));
   // };
 
-  const handleProductClick = (itemid) => {
-    window.open(`/admin/ecommerce/productDetails/${itemid}`, '_blank');
-  };
+  // const handleProductClick = (itemid) => {
+  //   window.open(`/admin/ecommerce/productDetails/${itemid}`, '_blank');
+  // };
 
   /* eslint-disable-next-line no-unsafe-optional-chaining */
   const productImage = !imageError && gallery.length > 0 ? gallery[0].Filepath : null;
@@ -54,7 +54,7 @@ const ProductCardsList = React.memo(({ product }) => {
         // border: isChecked ? '2px solid #007bff' : 'none',
         boxShadow: '0px 3px 2px rgba(0, 0, 0, 0.24)',
       }}
-      onClick={() => handleProductClick(product.Item_Id)}
+      // onClick={() => handleProductClick(product.Item_Id)}
     >
       <div className="product-list">
         <Row gutter={15}>
@@ -79,7 +79,9 @@ const ProductCardsList = React.memo(({ product }) => {
           <Col md={12} xs={24}>
             <div className="product-single-description">
               <Heading className="product-single-title" as="h5">
-                <Link onClick={() => handleProductClick(id)}>{name}</Link>
+                <Link to={`/admin/ecommerce/productDetails/${id}`} target="_blank">
+                  {name}
+                </Link>
               </Heading>
               <ul>
                 <li>
