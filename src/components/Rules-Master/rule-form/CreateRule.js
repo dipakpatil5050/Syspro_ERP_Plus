@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Form, Input, Button, Modal } from 'antd';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
 import { useSelector, useDispatch } from 'react-redux';
 import RuleModalForm from '../../../container/forms/overview/RuleModalForm';
@@ -46,14 +46,16 @@ function CreateRule() {
   const userId = userData?.Data.UserID;
 
   useEffect(() => {
-    if (ruleData.Table && ruleData.Table.length > 0) {
-      const rule = ruleData.Table[0];
-      setRuleName(rule.Rule_Name);
-      setRemark(rule.Remark);
-      form.setFieldsValue({
-        rulename: rule.Rule_Name,
-        remark: rule.Remark,
-      });
+    if (mode === 'edit' || mode === 'view') {
+      if (ruleData.Table && ruleData.Table.length > 0) {
+        const rule = ruleData.Table[0];
+        setRuleName(rule.Rule_Name);
+        setRemark(rule.Remark);
+        form.setFieldsValue({
+          rulename: rule.Rule_Name,
+          remark: rule.Remark,
+        });
+      }
     }
   }, [ruleData, form]);
 
