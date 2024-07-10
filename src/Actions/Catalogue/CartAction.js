@@ -89,9 +89,7 @@ export const uploadItem = (formData) => async (dispatch) => {
     dispatch(setLoading(true));
     const uploadRes = await CatalogueServices.uploadItem(formData);
     toast.success('Item Upload Successfully !');
-    // setInterval(() => {
-    //   location.reload();
-    // }, 300);
+
     dispatch(setLoading(false));
   } catch (error) {
     if (error.response && error.response.data && error.response.data.ErrorMessage) {

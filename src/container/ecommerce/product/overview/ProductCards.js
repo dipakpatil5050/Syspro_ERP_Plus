@@ -98,7 +98,9 @@ function ProductCards({ product }) {
         </label>
         <figcaption>
           <Heading className="product-single-title" as="h5">
-            <Link to={`/admin/ecommerce/productDetails/${id}`}>{name}</Link>
+            <Link to={`/admin/ecommerce/productDetails/${id}`} target="_blank">
+              {name}
+            </Link>
           </Heading>
 
           <p className="product-single-price">
