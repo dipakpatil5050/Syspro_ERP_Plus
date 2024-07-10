@@ -121,7 +121,7 @@ function Orders() {
         id: <span className="order-id">{Indent_Id}</span>,
         party: <span className="customer-name">{Account_Name}</span>,
         quantity: <span className="ordered-amount">{Qty}</span>,
-        amount: <span className="ordered-amount">{Amount}</span>,
+        amount: <span className="ordered-amount">₹ {Amount}</span>,
         date: <span className="ordered-date">{Indent_Dt}</span>,
         remark: <span className="ordered-date">{Remark}</span>,
         document: (
@@ -161,8 +161,8 @@ function Orders() {
                   <td>{Data.Item_Name}</td>
                   <td>{Data.Document_ID}</td>
                   <td>{Data.Qty}</td>
-                  <td>{Data.Saleprice1}</td>
-                  <td>{Data.Total}</td>
+                  <td>₹ {Data.Saleprice1}</td>
+                  <td>₹ {Data.Total}</td>
                   <td style={{ textAlign: 'end' }}>
                     <div className="" style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
                       <Button

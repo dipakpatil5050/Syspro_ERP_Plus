@@ -49,7 +49,7 @@ function ClientMpin() {
   // First API of B2B Application , that's the Reason of hard code Static API at below in Mpin data calls
 
   const fetchMPinData = async () => {
-    const mpinapi = `http://103.67.238.230:1385/SysMpin/authenticateSysmpin?mPin=${mPin}`;
+    const mpinapi = `http://103.67.238.230:1996/SysMpin/authenticateSysmpin?mPin=${mPin}`;
     const headers = {
       'Content-Type': 'application/json',
       Authorization: 'Bearer your_token_here',

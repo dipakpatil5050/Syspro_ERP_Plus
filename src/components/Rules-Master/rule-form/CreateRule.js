@@ -21,6 +21,13 @@ const PageRoutes = [
     breadcrumbName: 'Configuration',
   },
   {
+    breadcrumbName: 'Rule Master',
+  },
+  {
+    path: '/admin/configuration/rulemaster',
+    breadcrumbName: 'Rule Collection',
+  },
+  {
     breadcrumbName: 'Create Rule',
   },
 ];

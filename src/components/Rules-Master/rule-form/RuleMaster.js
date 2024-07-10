@@ -18,7 +18,15 @@ const PageRoutes = [
 function RuleMaster() {
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main ninjadash-pageheader-with-back" routes={PageRoutes} />
+      <PageHeader
+        className="ninjadash-page-header-main ninjadash-pageheader-with-back"
+        routes={PageRoutes}
+        title={
+          <>
+            <h4>Rule Collection</h4>
+          </>
+        }
+      />
       <Main>
         <RuleCollection />
       </Main>

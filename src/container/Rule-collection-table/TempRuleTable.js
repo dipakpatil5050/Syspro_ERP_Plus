@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import { TopToolBox } from './Style';
-import './table.css';
 import { TableWrapper } from '../styled';
 import { deleteTempRuleData } from '../../redux/reducers/configSlice';
 import RuleModalForm from '../forms/overview/RuleModalForm';

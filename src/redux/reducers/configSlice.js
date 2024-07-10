@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   ruleCollection: [],
   tempRuleData: [],
+  draftRuleAssign: [],
   loading: false,
   error: null,
   ruleFilterData: [],
@@ -43,6 +44,16 @@ export const configSlice = createSlice({
         FilterId: item.RuleFilterId,
       }));
     },
+    setDraftRuleAssign: (state, action) => {
+      state.draftRuleAssign = action.payload;
+    },
+    clearDraftRuleAssign: (state) => {
+      state.draftRuleAssign = [];
+    },
+
+    deleteDraftRuleAssign: (state, { payload }) => {
+      state.draftRuleAssign.splice(payload, 1);
+    },
   },
 });
 
@@ -55,6 +66,9 @@ export const {
   clearTempRuleData,
   setRuleFilterData,
   setSingleRuleData,
+  setDraftRuleAssign,
+  clearDraftRuleAssign,
+  deleteDraftRuleAssign,
 } = configSlice.actions;
 
 export default configSlice.reducer;

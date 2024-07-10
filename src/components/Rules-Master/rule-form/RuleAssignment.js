@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Row, Form, Input, Button, Select } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
 import { PageHeader } from '../../page-headers/page-headers';
 import { Cards } from '../../cards/frame/cards-frame';
 import { Main, BasicFormWrapper } from '../../styled';
-
-const { Option } = Select;
+import { clearTempRuleData, setDraftRuleAssign } from '../../../redux/reducers/configSlice';
+import TempRuleTable from '../../../container/Rule-collection-table/TempRuleTable';
+import DraftRuleAssignTable from '../../../container/Rule-Assignment-table/DraftRuleAssignTable';
 
 const PageRoutes = [
   {
@@ -15,40 +17,67 @@ const PageRoutes = [
   },
 ];
 
+const { Option } = Select;
+
 function RuleAssignment() {
-  const [selectedUser, setSelectedUser] = useState('');
-  const [selectedRules, setSelectedRules] = useState([]);
+  const [form] = Form.useForm();
 
-  const handleRuleAssignSubmit = () => {
-    console.log('Handle Rule Assign Submit');
+  const [user, setUser] = useState('');
+  const [rule, setRule] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const resetForm = () => {
+    dispatch(clearTempRuleData());
+    form.resetFields();
+    setUser('');
+    setRule('');
   };
 
-  const handleRuleChange = (value) => {
-    setSelectedRules(value);
-    console.log('Handle Rule Change');
+  const handleAdd = () => {
+    console.log('Add');
+
+    const AssignRule = {
+      user: user,
+      rule: rule,
+    };
+    dispatch(setDraftRuleAssign(AssignRule));
   };
 
-  const handleUserChange = (value) => {
-    setSelectedUser(value);
+  const handleRuleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Selected User from the List :', rule);
+    console.log('Selected Rules from the list :', user);
   };
-
-  console.log('Selected Rule values : ', selectedRules);
 
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main ninjadash-pageheader-with-back" routes={PageRoutes} />
+      <PageHeader
+        className="ninjadash-page-header-main ninjadash-pageheader-with-back"
+        title={
+          <>
+            <h4>Rule Assignment</h4>
+          </>
+        }
+        routes={PageRoutes}
+      />
+
       <Main>
         <Row gutter={15}>
-          <Col xxl={{ span: 12, offset: 6 }} xl={{ span: 16, offset: 4 }} lg={16} xs={24}>
-            <Cards title="Rule Assignment to User">
+          <Col xs={24}>
+            <Cards tielless headless>
               <BasicFormWrapper className="mb-25">
-                <Form name="ninjadash-vertical-form" layout="vertical" onFinish={handleRuleAssignSubmit}>
-                  <Form.Item
-                    name="ruletype"
-                    label="Select User"
-                    rules={[{ required: true, message: 'Please select rule type' }]}
-                  >
-                    <Select size="default" placeholder="Select Rule Type">
+                <Form form={form} onFinish={handleRuleSubmit} name="ninjadash-vertical-form" layout="vertical">
+                  <Form.Item name="user" label="User Name" rules={[{ required: true, message: 'Please select user' }]}>
+                    <Select
+                      allowClear
+                      showSearch
+                      autoClearSearchValue
+                      size="default"
+                      onChange={(value) => setUser(value)}
+                      placeholder="Select user from list "
+                      filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                    >
                       <Option value="user1">User 1</Option>
                       <Option value="user2">User 2</Option>
                       <Option value="user3">User 3</Option>
@@ -62,11 +91,20 @@ function RuleAssignment() {
                     </Select>
                   </Form.Item>
                   <Form.Item
-                    name="rulevalue"
-                    label="Select Rule to Assign"
-                    rules={[{ required: true, message: 'Please select  values' }]}
+                    name="rule"
+                    label="Rules"
+                    rules={[{ required: true, message: 'Please select rules to assign' }]}
                   >
-                    <Select mode="multiple" size="default" placeholder="Select Rule Type" onChange={handleRuleChange}>
+                    <Select
+                      mode="multiple"
+                      allowClear
+                      showSearch
+                      autoClearSearchValue
+                      size="large"
+                      onChange={(value) => setRule(value)}
+                      placeholder="Select Rules from list "
+                      filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                    >
                       <Option value="rule1">Rule 1</Option>
                       <Option value="rule2">Rule 2</Option>
                       <Option value="rule3">Rule 3</Option>
@@ -78,12 +116,36 @@ function RuleAssignment() {
                       <Option value="rule9">Rule 9</Option>
                     </Select>
                   </Form.Item>
-                  {/* {renderSelectOptions()} */}
-                  <Row>
-                    <Col lg={{ span: 16, offset: 9 }} md={{ span: 15, offset: 9 }} xs={{ span: 24, offset: 0 }}>
+
+                  <Row justify="end">
+                    <Col Row="end">
                       <div className="ninjadash-form-action">
-                        <Button className="btn-signin" type="primary" size="large" htmlType="submit">
-                          Apply Rule
+                        <Button
+                          // onClick={showModal}
+                          onClick={handleAdd}
+                          className="btn-signin"
+                          type="primary"
+                          size="large"
+                          htmlType="button"
+                        >
+                          + Assign
+                        </Button>
+                      </div>
+                    </Col>
+                  </Row>
+                  {/* <TempRuleTable mode={mode} /> */}
+                  <DraftRuleAssignTable />
+                  <Row justify="center">
+                    <Col>
+                      <div className="ninjadash-form-action" style={{ marginTop: '30px' }}>
+                        <Button
+                          onClick={handleRuleSubmit}
+                          className="btn-signin"
+                          type="primary"
+                          size="large"
+                          htmlType="submit"
+                        >
+                          Submit
                         </Button>
                       </div>
                     </Col>
