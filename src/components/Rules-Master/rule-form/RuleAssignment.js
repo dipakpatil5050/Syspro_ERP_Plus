@@ -5,7 +5,7 @@ import { PageHeader } from '../../page-headers/page-headers';
 import { Cards } from '../../cards/frame/cards-frame';
 import { Main, BasicFormWrapper } from '../../styled';
 import DraftRuleAssignTable from '../../../container/Rule-Assignment-table/DraftRuleAssignTable';
-import { getAllUsers, getRules } from '../../../Actions/Configuration/RuleAction';
+import { assignRuleInsert, getAllUsers, getRules } from '../../../Actions/Configuration/RuleAction';
 
 const PageRoutes = [
   {
@@ -47,10 +47,14 @@ function RuleAssignment() {
 
   const handleRuleSubmit = async () => {
     // e.preventDefault();
-    console.log('Selected User from the List :', user);
-    console.log('Selected Rules from the list :', selectedRules);
+    const selectedRuleDetails = rulesList.filter((rule) => selectedRules.includes(rule.Rule_id));
 
-    dispatch();
+    const ruleFilterStrings = selectedRuleDetails.map((rule) => rule.RuleFilterString);
+
+    console.log('Rule filter String : ', ruleFilterStrings);
+
+    await dispatch(assignRuleInsert(user, selectedRules, ruleFilterStrings));
+
     form.resetFields();
     setUser('');
     setSelectedRules([]);
@@ -106,7 +110,6 @@ function RuleAssignment() {
                       autoClearSearchValue
                       size="large"
                       onChange={handleRuleChange}
-                      // onChange={(value) => setSelectedRules(value)}
                       placeholder="Select Rules from list "
                       filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
                     >
@@ -140,7 +143,7 @@ function RuleAssignment() {
                     <Col>
                       <div className="ninjadash-form-action" style={{ marginTop: '30px' }}>
                         <Button
-                          onClick={form.submit}
+                          // onClick={form.submit}
                           className="btn-signin"
                           type="primary"
                           size="large"

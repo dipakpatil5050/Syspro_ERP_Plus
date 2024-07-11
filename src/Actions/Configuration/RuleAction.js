@@ -177,11 +177,11 @@ export const getRules = () => async (dispatch) => {
   }
 };
 
-export const assignRuleInsert = () => async (dispatch) => {
+export const assignRuleInsert = (user, selectedRules, ruleFilterStrings) => async (dispatch) => {
   const body = {
-    Rule_key: '5,4,8,3',
-    Access_value: 'And group_id In (5,4,8,9)',
-    User_Id: 'user id ',
+    Access_Value: ruleFilterStrings.toString(),
+    Rule_key: selectedRules.toString(),
+    UserID: user,
   };
 
   try {

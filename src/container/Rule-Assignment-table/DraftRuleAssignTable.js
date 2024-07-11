@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Table, Spin, Button, Modal } from 'antd';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import PropTypes from 'prop-types';
 import UilEye from '@iconscout/react-unicons/icons/uil-eye';
+import RuleDetailModal from './RuleDetailModal';
 import { TopToolBox } from '../Rule-collection-table/Style';
 import { TableWrapper } from '../styled';
 
 function DraftRuleAssignTable({ draftRules }) {
-  const handleView = () => {};
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleView = (key) => {
+    console.log('View Rule ID : ', key);
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const dataSource =
     draftRules?.map((item, key) => {
@@ -18,9 +28,7 @@ function DraftRuleAssignTable({ draftRules }) {
         remark: <span className="ordered-amount-list">{item.Remark}</span>,
         action: (
           <div className="table-actions">
-            <Button className="btn-icon edit" type="info" shape="circle" onClick={() => handleView(key)}>
-              {/* <UilEdit /> */}
-
+            <Button className="btn-icon edit" type="info" shape="circle" onClick={() => handleView(item.Rule_id)}>
               <UilEye />
             </Button>
             {/* <Button className="btn-icon delete" type="danger" shape="circle" onClick={() => handleDelete(key)}>
@@ -79,6 +87,18 @@ function DraftRuleAssignTable({ draftRules }) {
               rowKey={(record) => record.key}
             />
           </TableWrapper>
+          {/* loading={loading} */}
+          <Modal
+            centered
+            width={1000}
+            title="Rule Details"
+            open={isModalVisible}
+            onCancel={handleCancel}
+            footer={null}
+            destroyOnClose
+          >
+            <RuleDetailModal handleCancel={handleCancel} />
+          </Modal>
         </Col>
       </Row>
     </>

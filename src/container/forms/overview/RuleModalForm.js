@@ -90,7 +90,6 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
         selectedValues: ruleValue,
         FilterId: filterId,
       };
-      console.log('New Rule with filter_id for string builder:', newRule); // For debugging
 
       if (editRule) {
         dispatch(updateTempRuleData({ index: editIndex, updatedRule: newRule }));
