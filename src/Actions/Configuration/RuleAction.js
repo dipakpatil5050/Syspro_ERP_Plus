@@ -1,6 +1,12 @@
 import toast from 'react-hot-toast';
 import RuleServices from '../../services/RuleServices';
-import { setRuleFilterData, setLoading, setRuleCollection, setSingleRuleData } from '../../redux/reducers/configSlice';
+import {
+  setRuleFilterData,
+  setLoading,
+  setRuleCollection,
+  setSingleRuleData,
+  setAllUsers,
+} from '../../redux/reducers/configSlice';
 
 export const getRuleFilters = () => async (dispatch) => {
   const body = {
@@ -144,10 +150,28 @@ export const getAllUsers = () => async (dispatch) => {
 
   try {
     dispatch(setLoading(true));
-    const response = await RuleServices.getAllRules(body);
+    const response = await RuleServices.getAllUsers(body);
+    dispatch(setAllUsers(response?.data?.Data?.Table));
     dispatch(setLoading(false));
   } catch (error) {
     console.error('Error while fetching rule configuration:', error);
     dispatch(setLoading(false));
+  }
+};
+
+export const getRules = () => async (dispatch) => {
+  const body = {};
+
+  try {
+    dispatch(setLoading(true));
+    const response = await RuleServices.getRules(body);
+    if (response.data.IsSuccess && response.data.StatusCode === 200) {
+      dispatch(setRuleCollection(response?.data?.Data?.Table));
+    } else {
+      console.error('Failed to fetch rules:', response.data);
+    }
+    dispatch(setLoading(false));
+  } catch (error) {
+    console.error(error);
   }
 };

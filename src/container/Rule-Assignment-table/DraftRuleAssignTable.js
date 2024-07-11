@@ -1,65 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { Row, Col, Table, Spin, Button, Modal } from 'antd';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
-import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
+import PropTypes from 'prop-types';
+import UilEye from '@iconscout/react-unicons/icons/uil-eye';
 import { TopToolBox } from '../Rule-collection-table/Style';
 import { TableWrapper } from '../styled';
-import { deleteTempRuleData } from '../../redux/reducers/configSlice';
 
-function DraftRuleAssignTable() {
-  //   const tempData = useSelector((state) => state.config.tempRuleData);
-  const draftData = useSelector((state) => state.config.draftRuleAssign);
-  //   const loading = useSelector((state) => state.config.loading);
-  //   const filters = useSelector((state) => state.config.ruleFilterData);
-
-  const dispatch = useDispatch();
-
-  const handleEdit = (index) => {
-    // setEditRule(tempData[index]);
-    // setEditIndex(index);
-    // setIsModalVisible(true);
-  };
-
-  const handleDelete = (index) => {
-    // dispatch(deleteTempRuleData(index));
-  };
-
-  // table-actions
-
-  //   const getSelectedValueNames = (type, values) => {
-  //     return values?.map((valueId) => {
-  //       const filter1 = filters[type]?.find((filter) => filter.Id === valueId);
-  //       return filter1 ? filter1.Name : valueId;
-  //     });
-  //   };
+function DraftRuleAssignTable({ draftRules }) {
+  const handleView = () => {};
 
   const dataSource =
-    draftData?.rule?.map((item, key) => {
-      //   const { rule } = item;
-      //   const selectedNames = getSelectedValueNames(selectedType, selectedValues);
-
+    draftRules?.map((item, key) => {
       return {
         key: key + 1,
         id: <span className="order-id">{key + 1}</span>,
-        rule: <span className="customer-name">{item}</span>,
-        description: (
-          <ul className="ordered-amount-list">
-            {/* {selectedNames?.length > 0 ? (
-              selectedNames?.map((name, index) => <li key={index}>{name},</li>)
-            ) : (
-              <li key="no-items">No items selected</li>
-            )} */}
-          </ul>
-        ),
+        rule: <span className="customer-name">{item.Rule_Name}</span>,
+        remark: <span className="ordered-amount-list">{item.Remark}</span>,
         action: (
           <div className="table-actions">
-            <Button className="btn-icon edit" type="info" shape="circle" onClick={() => handleEdit(key)}>
-              <UilEdit />
+            <Button className="btn-icon edit" type="info" shape="circle" onClick={() => handleView(key)}>
+              {/* <UilEdit /> */}
+              <UilEye />
             </Button>
-            <Button className="btn-icon delete" type="danger" shape="circle" onClick={() => handleDelete(key)}>
+            {/* <Button className="btn-icon delete" type="danger" shape="circle" onClick={() => handleDelete(key)}>
               <UilTrashAlt />
-            </Button>
+            </Button> */}
           </div>
         ),
       };
@@ -79,9 +44,9 @@ function DraftRuleAssignTable() {
       width: '20%',
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
+      title: 'Remark',
+      dataIndex: 'remark',
+      key: 'remark',
       width: '70%',
     },
     {
@@ -93,7 +58,6 @@ function DraftRuleAssignTable() {
   ];
 
   return (
-    // <Cards titleless headless>
     <>
       <Row gutter={15}>
         <Col xs={24}>
@@ -115,9 +79,18 @@ function DraftRuleAssignTable() {
           </TableWrapper>
         </Col>
       </Row>
-      {/* </Cards> */}
     </>
   );
 }
+
+DraftRuleAssignTable.propTypes = {
+  draftRules: PropTypes.arrayOf(
+    PropTypes.shape({
+      Rule_id: PropTypes.number.isRequired,
+      Rule_Name: PropTypes.string.isRequired,
+      Remark: PropTypes.string,
+    }),
+  ).isRequired,
+};
 
 export default DraftRuleAssignTable;

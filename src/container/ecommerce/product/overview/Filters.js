@@ -17,6 +17,7 @@ import {
   setCatalogueTotalDataCount,
   // setClearFilter,
   setFilterData,
+  setHasmoreData,
   setLoading,
   // setOffsetValue,
   setTotalCataloguePages,
@@ -243,6 +244,7 @@ const Filters = React.memo(() => {
     } catch (error) {
       console.error('Error in Catalogue data fetching:', error);
       toast.error('Error in fetching catalogue data from Server.');
+      dispatch(setHasmoreData(false));
     } finally {
       // dispatch(setLoading(false));
     }

@@ -195,6 +195,10 @@ export const authSlice = createSlice({
       state.offsetValue = action.payload;
     },
 
+    setHasmoreData: (state, action) => {
+      state.hasMoreData = action.payload;
+    },
+
     loginBegin: (state) => {
       state.loading = true;
     },
@@ -273,6 +277,7 @@ export const {
   deselectItem,
   setError,
   // setPageSize,
+  setHasmoreData,
   setOffsetValue,
   loginBegin,
   loginSuccess,

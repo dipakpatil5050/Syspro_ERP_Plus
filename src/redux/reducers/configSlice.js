@@ -8,6 +8,7 @@ const initialState = {
   error: null,
   ruleFilterData: [],
   singleRuleData: [],
+  allUsers: [],
 };
 
 export const configSlice = createSlice({
@@ -51,8 +52,8 @@ export const configSlice = createSlice({
       state.draftRuleAssign = [];
     },
 
-    deleteDraftRuleAssign: (state, { payload }) => {
-      state.draftRuleAssign.splice(payload, 1);
+    setAllUsers: (state, action) => {
+      state.allUsers = action.payload;
     },
   },
 });
@@ -69,6 +70,7 @@ export const {
   setDraftRuleAssign,
   clearDraftRuleAssign,
   deleteDraftRuleAssign,
+  setAllUsers,
 } = configSlice.actions;
 
 export default configSlice.reducer;

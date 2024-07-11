@@ -18,11 +18,11 @@ class RuleServices {
   }
 
   getAllUsers(body) {
-    return http.post('api/', body);
+    return http.get('api/B2B/GetUser', body);
   }
 
-  deleteRule(body) {
-    return http.post('api/', body);
+  getRules(body) {
+    return http.get('api/B2B/GetRuleCollection', body);
   }
 }
 
