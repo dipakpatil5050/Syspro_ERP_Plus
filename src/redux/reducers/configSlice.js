@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   ruleCollection: [],
   tempRuleData: [],
-  draftRuleAssign: [],
   loading: false,
   error: null,
   ruleFilterData: [],
   singleRuleData: [],
   allUsers: [],
+  allRules: [],
 };
 
 export const configSlice = createSlice({
@@ -45,15 +45,12 @@ export const configSlice = createSlice({
         FilterId: item.RuleFilterId,
       }));
     },
-    setDraftRuleAssign: (state, action) => {
-      state.draftRuleAssign = action.payload;
-    },
-    clearDraftRuleAssign: (state) => {
-      state.draftRuleAssign = [];
-    },
 
     setAllUsers: (state, action) => {
       state.allUsers = action.payload;
+    },
+    setAllRules: (state, action) => {
+      state.allRules = action.payload;
     },
   },
 });
@@ -67,10 +64,8 @@ export const {
   clearTempRuleData,
   setRuleFilterData,
   setSingleRuleData,
-  setDraftRuleAssign,
-  clearDraftRuleAssign,
-  deleteDraftRuleAssign,
   setAllUsers,
+  setAllRules,
 } = configSlice.actions;
 
 export default configSlice.reducer;

@@ -24,6 +24,10 @@ class RuleServices {
   getRules(body) {
     return http.get('api/B2B/GetRuleCollection', body);
   }
+
+  AssignRule(body) {
+    return http.post('api/B2B/SaveUserRule', body);
+  }
 }
 
 export default new RuleServices();

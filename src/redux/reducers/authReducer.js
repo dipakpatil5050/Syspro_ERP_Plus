@@ -77,17 +77,12 @@ export const authSlice = createSlice({
     loading: false,
     error: null,
     loadedItems: 50,
-    // pageSize: 100,
-    selectedItems: JSON.parse(localStorage.getItem('selectedItems')) || [],
     offsetValue: 0,
     hasMoreData: true,
     catalogueTotalDataCount: 0,
     totalCataloguePages: 0,
     singleProduct: [],
     itemList: [],
-    // subtotal: 0,
-    // isLoggedIn: !!JSON.parse(sessionStorage.getItem('userData')),
-    // JSON.parse(localStorage.getItem('catalogueData')) || null,
   },
   reducers: {
     setUserData: (state, action) => {
@@ -171,26 +166,7 @@ export const authSlice = createSlice({
     setLoadedItems: (state, action) => {
       state.loadedItems = action.payload;
     },
-    selectItem: (state, action) => {
-      const { itemId, isChecked } = action.payload;
-      // state.selectedItems = action.payload
-      const updatedSelectedItems = isChecked
-        ? [...state.selectedItems, itemId]
-        : state.selectedItems.filter((id) => id !== itemId);
-      state.selectedItems = updatedSelectedItems;
-      localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
-    },
 
-    deselectItem: (state, action) => {
-      const { itemId } = action.payload;
-      const updatedSelectedItems = state.selectedItems.filter((id) => id !== itemId);
-      state.selectedItems = updatedSelectedItems;
-      localStorage.setItem('selectedItems', JSON.stringify(updatedSelectedItems));
-    },
-
-    // setPageSize: (state, action) => {
-    //   state.pageSize = action.payload;
-    // },
     setOffsetValue: (state, action) => {
       state.offsetValue = action.payload;
     },
@@ -202,21 +178,26 @@ export const authSlice = createSlice({
     loginBegin: (state) => {
       state.loading = true;
     },
+
     loginSuccess: (state, action) => {
       state.login = action.payload;
       state.loading = false;
     },
+
     loginErr: (state, action) => {
       state.error = action.payload;
       state.loading = false;
     },
+
     logoutBegin: (state) => {
       state.loading = true;
     },
+
     logoutSuccess: (state, action) => {
       state.login = action.payload;
       state.loading = false;
     },
+
     logoutErr: (state, action) => {
       state.error = action.payload;
       state.loading = false;
@@ -273,8 +254,6 @@ export const {
   setSaleReport,
   setLoading,
   setLoadedItems,
-  selectItem,
-  deselectItem,
   setError,
   // setPageSize,
   setHasmoreData,

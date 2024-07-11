@@ -20,6 +20,7 @@ function DraftRuleAssignTable({ draftRules }) {
           <div className="table-actions">
             <Button className="btn-icon edit" type="info" shape="circle" onClick={() => handleView(key)}>
               {/* <UilEdit /> */}
+
               <UilEye />
             </Button>
             {/* <Button className="btn-icon delete" type="danger" shape="circle" onClick={() => handleDelete(key)}>
@@ -71,6 +72,7 @@ function DraftRuleAssignTable({ draftRules }) {
           <TableWrapper className="table-order table-responsive">
             <Table
               bordered
+              title={() => <h1>Rules Review : </h1>}
               dataSource={dataSource}
               columns={columns}
               pagination={false}

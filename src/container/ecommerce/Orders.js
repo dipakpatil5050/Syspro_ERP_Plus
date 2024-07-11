@@ -271,21 +271,9 @@ function Orders() {
           <Row gutter={15}>
             <Col md={24}>
               <TableWrapper className="table-order table-responsive">
-                {loading && (
-                  <div
-                    className="table-loading"
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      zIndex: 99999,
-                    }}
-                  >
-                    <Spin size="large" />
-                  </div>
-                )}
                 <Table
                   bordered
+                  loading={loading}
                   dataSource={dataSource}
                   columns={columns}
                   pagination={{

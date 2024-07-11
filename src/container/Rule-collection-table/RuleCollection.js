@@ -136,7 +136,7 @@ function RuleCollection() {
           <Row gutter={15}>
             <Col md={24}>
               <TableWrapper className="table-order table-responsive">
-                {loading && (
+                {/* {loading && (
                   <div
                     className="table-loading"
                     style={{
@@ -148,9 +148,10 @@ function RuleCollection() {
                   >
                     <Spin size="large" />
                   </div>
-                )}
+                )} */}
                 <Table
                   bordered
+                  loading={loading}
                   dataSource={dataSource}
                   columns={columns}
                   pagination={{

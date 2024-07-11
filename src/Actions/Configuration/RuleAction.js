@@ -6,6 +6,7 @@ import {
   setRuleCollection,
   setSingleRuleData,
   setAllUsers,
+  setAllRules,
 } from '../../redux/reducers/configSlice';
 
 export const getRuleFilters = () => async (dispatch) => {
@@ -166,12 +167,29 @@ export const getRules = () => async (dispatch) => {
     dispatch(setLoading(true));
     const response = await RuleServices.getRules(body);
     if (response.data.IsSuccess && response.data.StatusCode === 200) {
-      dispatch(setRuleCollection(response?.data?.Data?.Table));
+      dispatch(setAllRules(response?.data?.Data?.Table));
     } else {
       console.error('Failed to fetch rules:', response.data);
     }
     dispatch(setLoading(false));
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const assignRuleInsert = () => async (dispatch) => {
+  const body = {
+    Rule_key: '5,4,8,3',
+    Access_value: 'And group_id In (5,4,8,9)',
+    User_Id: 'user id ',
+  };
+
+  try {
+    const response = await RuleServices.AssignRule(body);
+    console.log(response?.data);
+    toast.success('Rule Assign Successfully..!');
+  } catch (error) {
+    console.error(error);
+    toast.error('Rule Assign Failed..!');
   }
 };

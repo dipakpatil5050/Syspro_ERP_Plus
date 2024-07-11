@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { PageHeader } from '../../page-headers/page-headers';
 import { Cards } from '../../cards/frame/cards-frame';
 import { Main, BasicFormWrapper } from '../../styled';
-import { setDraftRuleAssign } from '../../../redux/reducers/configSlice';
 import DraftRuleAssignTable from '../../../container/Rule-Assignment-table/DraftRuleAssignTable';
 import { getAllUsers, getRules } from '../../../Actions/Configuration/RuleAction';
 
@@ -28,30 +27,34 @@ function RuleAssignment() {
   const [draftRules, setDraftRules] = useState([]);
 
   const userList = useSelector((state) => state.config.allUsers);
-  const rulesList = useSelector((state) => state.config.ruleCollection);
+  const rulesList = useSelector((state) => state.config.allRules);
 
   useEffect(() => {
     dispatch(getAllUsers());
     dispatch(getRules());
   }, [dispatch]);
 
-  const resetForm = () => {
+  const handleRuleChange = (value) => {
+    setSelectedRules(value);
+    const selectedRuleDetails = rulesList.filter((rule) => value.includes(rule.Rule_id));
+    setDraftRules(selectedRuleDetails);
+  };
+
+  // const handleAdd = () => {
+  //   const selectedRuleDetails = rulesList.filter((rule) => selectedRules.includes(rule.Rule_id));
+  //   setDraftRules(selectedRuleDetails);
+  // };
+
+  const handleRuleSubmit = async () => {
+    // e.preventDefault();
+    console.log('Selected User from the List :', user);
+    console.log('Selected Rules from the list :', selectedRules);
+
+    dispatch();
     form.resetFields();
     setUser('');
     setSelectedRules([]);
     setDraftRules([]);
-  };
-
-  const handleAdd = () => {
-    const selectedRuleDetails = rulesList.filter((rule) => selectedRules.includes(rule.Rule_id));
-    setDraftRules(selectedRuleDetails);
-    // dispatch(setDraftRuleAssign(selectedRuleDetails));
-  };
-
-  const handleRuleSubmit = async (e) => {
-    e.preventDefault();
-    console.log('Selected User from the List :', user);
-    console.log('Selected Rules from the list :', rules);
   };
 
   return (
@@ -83,6 +86,7 @@ function RuleAssignment() {
                       filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
                     >
                       {userList &&
+                        userList.length > 0 &&
                         userList?.map((users) => (
                           <Option key={users.UserID} value={user.UserID}>
                             {users.UserName}
@@ -101,7 +105,8 @@ function RuleAssignment() {
                       showSearch
                       autoClearSearchValue
                       size="large"
-                      onChange={(value) => setSelectedRules(value)}
+                      onChange={handleRuleChange}
+                      // onChange={(value) => setSelectedRules(value)}
                       placeholder="Select Rules from list "
                       filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
                     >
@@ -114,7 +119,7 @@ function RuleAssignment() {
                     </Select>
                   </Form.Item>
 
-                  <Row justify="end">
+                  {/* <Row justify="end">
                     <Col Row="end">
                       <div className="ninjadash-form-action">
                         <Button
@@ -128,7 +133,8 @@ function RuleAssignment() {
                         </Button>
                       </div>
                     </Col>
-                  </Row>
+                  </Row> */}
+
                   <DraftRuleAssignTable draftRules={draftRules} />
                   <Row justify="center">
                     <Col>
