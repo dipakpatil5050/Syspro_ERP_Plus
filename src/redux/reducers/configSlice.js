@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   ruleCollection: [],
+  userRuleCollection: [],
   tempRuleData: [],
   loading: false,
   error: null,
@@ -52,6 +53,10 @@ export const configSlice = createSlice({
     setAllRules: (state, action) => {
       state.allRules = action.payload;
     },
+
+    setUserRules: (state, action) => {
+      state.userRuleCollection = action.payload;
+    },
   },
 });
 
@@ -66,6 +71,7 @@ export const {
   setSingleRuleData,
   setAllUsers,
   setAllRules,
+  setUserRules,
 } = configSlice.actions;
 
 export default configSlice.reducer;

@@ -7,6 +7,7 @@ import {
   setSingleRuleData,
   setAllUsers,
   setAllRules,
+  setUserRules,
 } from '../../redux/reducers/configSlice';
 
 export const getRuleFilters = () => async (dispatch) => {
@@ -191,5 +192,19 @@ export const assignRuleInsert = (user, selectedRules, ruleFilterStrings) => asyn
   } catch (error) {
     console.error(error);
     toast.error('Rule Assign Failed..!');
+  }
+};
+
+export const getListofUserRule = () => async (dispatch) => {
+  const body = {};
+
+  try {
+    dispatch(setLoading(true));
+    const response = await RuleServices.getListofUserRule(body);
+    dispatch(setUserRules(response?.data?.Data?.Table));
+    dispatch(setLoading(false));
+  } catch (error) {
+    console.error(error);
+    dispatch(setLoading(false));
   }
 };

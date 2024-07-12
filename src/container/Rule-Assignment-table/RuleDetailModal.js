@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table, Spin, Button } from 'antd';
-import PropTypes from 'prop-types';
+
 import { TopToolBox } from '../Rule-collection-table/Style';
 import { TableWrapper } from '../styled';
 
-function RuleDetailModal({ handleCancel }) {
+function RuleDetailModal() {
   const tempData = useSelector((state) => state.config.tempRuleData);
+  const singleRuleData = useSelector((state) => state.config.singleRuleData);
   const loading = useSelector((state) => state.config.loading);
   const filters = useSelector((state) => state.config.ruleFilterData);
 
@@ -63,19 +64,26 @@ function RuleDetailModal({ handleCancel }) {
   ];
 
   return (
-    // <Cards titleless headless>
     <>
-      <Row gutter={15}>
+      {/* <Row gutter={15}>
         <Col xs={24}>
           <TopToolBox>
             <Row gutter={15} className="justify-content-center" />
+            {loading ? (
+              'Rule Name : Loading ..'
+            ) : (
+              <>
+                <strong> Rule Name :</strong> {singleRuleData?.Table[0]?.Rule_Name}
+              </>
+            )}
           </TopToolBox>
         </Col>
-      </Row>
+      </Row> */}
       <Row gutter={15}>
         <Col md={24}>
           <TableWrapper className="table-order table-responsive">
             <Table
+              loading={loading}
               bordered
               dataSource={dataSource}
               columns={columns}
@@ -85,12 +93,8 @@ function RuleDetailModal({ handleCancel }) {
           </TableWrapper>
         </Col>
       </Row>
-      {/* </Cards> */}
     </>
   );
 }
-RuleDetailModal.propTypes = {
-  handleCancel: PropTypes.func,
-};
 
 export default RuleDetailModal;

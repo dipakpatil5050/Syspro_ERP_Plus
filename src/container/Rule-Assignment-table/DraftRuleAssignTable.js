@@ -2,16 +2,21 @@ import React, { useState } from 'react';
 import { Row, Col, Table, Spin, Button, Modal } from 'antd';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import UilEye from '@iconscout/react-unicons/icons/uil-eye';
 import RuleDetailModal from './RuleDetailModal';
 import { TopToolBox } from '../Rule-collection-table/Style';
 import { TableWrapper } from '../styled';
+import { getRuleDataById } from '../../Actions/Configuration/RuleAction';
 
 function DraftRuleAssignTable({ draftRules }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleView = (key) => {
-    console.log('View Rule ID : ', key);
+  const dispatch = useDispatch();
+
+  const handleView = (id) => {
+    console.log('View Rule ID : ', id);
+    dispatch(getRuleDataById(id));
     setIsModalVisible(true);
   };
 
@@ -88,8 +93,8 @@ function DraftRuleAssignTable({ draftRules }) {
             />
           </TableWrapper>
           {/* loading={loading} */}
+          {/* centered */}
           <Modal
-            centered
             width={1000}
             title="Rule Details"
             open={isModalVisible}
@@ -97,7 +102,7 @@ function DraftRuleAssignTable({ draftRules }) {
             footer={null}
             destroyOnClose
           >
-            <RuleDetailModal handleCancel={handleCancel} />
+            <RuleDetailModal />
           </Modal>
         </Col>
       </Row>
