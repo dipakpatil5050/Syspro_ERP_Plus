@@ -100,7 +100,7 @@ export const authSlice = createSlice({
 
       const hasCatalogueData = action.payload;
       console.log('hasCatalogueData : ', hasCatalogueData);
-      if (hasCatalogueData === undefined || hasCatalogueData.length == 0) {
+      if (hasCatalogueData === undefined || hasCatalogueData.length === 0) {
         state.hasMoreData = false;
       }
 

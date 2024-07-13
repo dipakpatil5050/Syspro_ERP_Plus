@@ -62,13 +62,13 @@ function RuleAssignment() {
       setUser(userDataList?.UserID);
       setSelectedRules(userDataList?.Rule_Key);
 
-      const ruleids = parseInt(userDataList?.Rule_Key.split(','));
-
+      // const ruleids = parseInt(userDataList?.Rule_Key.split(','));
+      const ruleIds = userDataList?.Rule_Key.split(',').map(Number);
       form.setFieldsValue({
         user: userDataList?.UserID,
-        rules: ruleids,
+        rules: ruleIds,
       });
-      const selectedRuleDetails = rulesList.filter((rule) => userDataList?.Rule_Key.includes(rule.Rule_id));
+      const selectedRuleDetails = rulesList.filter((rule) => ruleIds.includes(rule.Rule_id));
       setDraftRules(selectedRuleDetails);
     }
   }, [singleUserData, mode, rulesList, form]);

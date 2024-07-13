@@ -91,7 +91,6 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, temp
   try {
     dispatch(setLoading(true));
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
-    console.log('insert rule to collection response : ' + saveRuleRes.data);
     toast.success('Rule Created successfully!');
     window.history.back();
     dispatch(setLoading(false));
