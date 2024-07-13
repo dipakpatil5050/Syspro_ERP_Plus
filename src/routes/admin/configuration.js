@@ -13,11 +13,14 @@ function ConfigurationRoute() {
     <Routes>
       <Route exact path="base" element={<DashboardBase />} />
       <Route path="*" element={<NotFound />} />
+
       <Route path="/rulemaster" element={<RuleMaster />} />
       <Route path="/rulemaster/createrule" element={<CreateRule />} />
       <Route path="/rulemaster/createrule/:mode/:ruleId?" element={<CreateRule />} />
+
       <Route path="/ruleassign" element={<RuleAssignMaster />} />
       <Route path="/ruleassign/assign-new-rule" element={<RuleAssignment />} />
+      <Route path="/ruleassign/assign-new-rule/:mode/:userId?" element={<RuleAssignment />} />
     </Routes>
   );
 }

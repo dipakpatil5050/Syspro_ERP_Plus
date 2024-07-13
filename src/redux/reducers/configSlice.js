@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  loading: false,
+  error: null,
   ruleCollection: [],
   userRuleCollection: [],
   tempRuleData: [],
-  loading: false,
-  error: null,
   ruleFilterData: [],
   singleRuleData: [],
+  singleUserData: [],
   allUsers: [],
   allRules: [],
 };
@@ -47,6 +48,10 @@ export const configSlice = createSlice({
       }));
     },
 
+    setSingleUserData: (state, action) => {
+      state.singleUserData = action.payload;
+    },
+
     setAllUsers: (state, action) => {
       state.allUsers = action.payload;
     },
@@ -69,6 +74,7 @@ export const {
   clearTempRuleData,
   setRuleFilterData,
   setSingleRuleData,
+  setSingleUserData,
   setAllUsers,
   setAllRules,
   setUserRules,

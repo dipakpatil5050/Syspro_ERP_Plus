@@ -15,7 +15,7 @@ function Orders() {
   const PageRoutes = [
     {
       path: '/admin',
-      breadcrumbName: 'Dashboard',
+      breadcrumbName: 'Catalogue',
     },
     {
       path: '',

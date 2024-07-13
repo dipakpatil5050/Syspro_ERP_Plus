@@ -8,6 +8,7 @@ import {
   setAllUsers,
   setAllRules,
   setUserRules,
+  setSingleUserData,
 } from '../../redux/reducers/configSlice';
 
 export const getRuleFilters = () => async (dispatch) => {
@@ -203,6 +204,20 @@ export const getListofUserRule = () => async (dispatch) => {
     const response = await RuleServices.getListofUserRule(body);
     dispatch(setUserRules(response?.data?.Data?.Table));
     dispatch(setLoading(false));
+  } catch (error) {
+    console.error(error);
+    dispatch(setLoading(false));
+  }
+};
+
+export const getUserDataById = (userId) => async (dispatch) => {
+  try {
+    dispatch(setLoading(true));
+    const response = await RuleServices.getUserDataById(userId);
+    if (response.data.IsSuccess && response.data.StatusCode === 200) {
+      dispatch(setSingleUserData(response?.data?.Data?.Table));
+      dispatch(setLoading(false));
+    }
   } catch (error) {
     console.error(error);
     dispatch(setLoading(false));

@@ -9,13 +9,18 @@ import { Main, TableWrapper } from '../styled';
 import { Cards } from '../../components/cards/frame/cards-frame';
 import {
   getAllRules,
+  getAllUsers,
   getListofUserRule,
   getRuleDataById,
   getRuleFilters,
+  getRules,
+  getUserDataById,
 } from '../../Actions/Configuration/RuleAction';
 
 function UserRuleCollection() {
   const ruleList = useSelector((state) => state.config.ruleCollection);
+
+  const allRules = useSelector((state) => state.config.allRules);
 
   const userRuleList = useSelector((state) => state.config.userRuleCollection);
   const loading = useSelector((state) => state.config.loading);
@@ -28,9 +33,10 @@ function UserRuleCollection() {
     pageSize: 10,
   });
 
-  useEffect(() => {
-    dispatch(getRuleFilters());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getRuleFilters());
+  //   dispatch(getRules());
+  // }, []);
 
   const handlePageChange = (current, size) => {
     setState((prevState) => ({
@@ -40,36 +46,59 @@ function UserRuleCollection() {
     }));
   };
 
-  const handleRuleEdit = (ruleId) => {
-    // dispatch(getRuleDataById(ruleId)).then(() => {
-    //   navigate(`/admin/configuration/rulemaster/createrule/edit/${ruleId}`);
-    // });
+  const handleRuleEdit = (userId) => {
+    dispatch(getUserDataById(userId)).then(() => {
+      navigate(`/admin/configuration/ruleassign/assign-new-rule/edit/${userId}`);
+    });
   };
 
-  const handleRuleView = (ruleId) => {
-    // dispatch(getRuleDataById(ruleId)).then(() => {
-    //   navigate(`/admin/configuration/rulemaster/createrule/view/${ruleId}`);
-    // });
+  const handleRuleView = (userId) => {
+    dispatch(getUserDataById(userId)).then(() => {
+      navigate(`/admin/configuration/ruleassign/assign-new-rule/view/${userId}`);
+    });
   };
 
   useEffect(() => {
+    dispatch(getRuleFilters()); // fileRuleCollection
+    dispatch(getRules());
     dispatch(getListofUserRule());
   }, [dispatch]);
+
+  const ruleNameMap = useMemo(() => {
+    const map = {};
+    if (allRules) {
+      allRules?.forEach((rule) => {
+        map[rule.Rule_id] = rule.Rule_Name;
+      });
+    }
+    return map;
+  }, [allRules]);
 
   const dataSource = useMemo(
     () =>
       userRuleList?.map((item, key) => {
-        const { UserName, Rule_Key } = item;
+        const { UserName, Rule_Key, UserID } = item;
 
-        // , UserID
+        const ruleKeyArray = Rule_Key.split(',');
+        const ruleNames = ruleKeyArray.map((key1) => ruleNameMap[key1] || key1);
+
         return {
           key: key + 1,
+          sr: <span className="customer-name">{key + 1}</span>,
           user: <span className="customer-name">{UserName}</span>,
-          rule: <span className="customer-name">{Rule_Key}</span>,
-          //   remark: <span className="ordered-amount">{remark}</span>,
+          rule: (
+            <ul className="rule-list">
+              {ruleNames.map((ruleName) => (
+                <li key={ruleName}>&#10687; {ruleName}</li>
+              ))}
+            </ul>
+          ),
+
+          // &#10687; for list Dot &#x2022
+          // rule: <span className="customer-name">{Rule_Key}</span>,
           action: (
             <div className="table-actions">
-              {/* <Button
+              <Button
                 className="btn-icon view"
                 onClick={() => handleRuleView(UserID)}
                 type="primary"
@@ -86,7 +115,7 @@ function UserRuleCollection() {
                 shape="circle"
               >
                 <UilEdit />
-              </Button> */}
+              </Button>
             </div>
           ),
         };
@@ -96,6 +125,12 @@ function UserRuleCollection() {
 
   const columns = useMemo(
     () => [
+      {
+        title: 'Sr. No.',
+        dataIndex: 'sr',
+        key: 'sr',
+        width: '2%',
+      },
       {
         title: 'User Name',
         dataIndex: 'user',
@@ -147,15 +182,16 @@ function UserRuleCollection() {
                   loading={loading}
                   dataSource={dataSource}
                   columns={columns}
-                  pagination={{
-                    showSizeChanger: true,
-                    current: state.currentPage,
-                    pageSize: state.pageSize,
-                    total: ruleList?.FilterTotalCount,
-                    loading: loading,
-                    onChange: handlePageChange,
-                    onShowSizeChange: handlePageChange,
-                  }}
+                  // pagination={{
+                  //   showSizeChanger: true,
+                  //   current: state.currentPage,
+                  //   pageSize: state.pageSize,
+                  //   // total: ?.FilterTotalCount,
+                  //   loading: loading,
+                  //   onChange: handlePageChange,
+                  //   onShowSizeChange: handlePageChange,
+                  // }}
+                  pagination={false}
                 />
               </TableWrapper>
             </Col>

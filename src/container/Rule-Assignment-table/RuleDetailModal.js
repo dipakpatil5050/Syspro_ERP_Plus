@@ -65,7 +65,7 @@ function RuleDetailModal() {
 
   return (
     <>
-      {/* <Row gutter={15}>
+      <Row gutter={15}>
         <Col xs={24}>
           <TopToolBox>
             <Row gutter={15} className="justify-content-center" />
@@ -73,12 +73,12 @@ function RuleDetailModal() {
               'Rule Name : Loading ..'
             ) : (
               <>
-                <strong> Rule Name :</strong> {singleRuleData?.Table[0]?.Rule_Name}
+                <strong> Rule Name :</strong> {singleRuleData && singleRuleData?.Table[0]?.Rule_Name}
               </>
             )}
           </TopToolBox>
         </Col>
-      </Row> */}
+      </Row>
       <Row gutter={15}>
         <Col md={24}>
           <TableWrapper className="table-order table-responsive">

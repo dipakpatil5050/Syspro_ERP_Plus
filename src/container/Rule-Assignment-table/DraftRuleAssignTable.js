@@ -49,7 +49,7 @@ function DraftRuleAssignTable({ draftRules }) {
       title: 'Sr. No.',
       dataIndex: 'id',
       key: 'id',
-      wdith: '5%',
+      width: '5%',
     },
     {
       title: 'Rule Name',

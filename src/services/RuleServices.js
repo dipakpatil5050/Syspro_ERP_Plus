@@ -32,6 +32,10 @@ class RuleServices {
   getListofUserRule(body) {
     return http.get('api/B2B/GetListUSer', body);
   }
+
+  getUserDataById(userId) {
+    return http.get(`api/B2B/GetUserbyID?UserID=${userId}`);
+  }
 }
 
 export default new RuleServices();

@@ -58,7 +58,7 @@ function TempRuleTable({ mode }) {
         description: (
           <ul className="ordered-amount-list">
             {selectedNames?.length > 0 ? (
-              selectedNames?.map((name, index) => <li key={index}>{name},</li>)
+              selectedNames?.map((name, index) => <li key={index}>&#10687; {name}</li>)
             ) : (
               <li key="no-items">No items selected</li>
             )}
