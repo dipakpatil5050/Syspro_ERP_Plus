@@ -7,7 +7,7 @@ import { OverviewDataStyleWrap } from '../../Style';
 import OverviewData from '../../../../demoData/overviewData.json';
 
 const OverviewDataList = React.memo(({ column }) => {
-  const OverviewDataSorted = OverviewData.slice(0, 4);
+  const OverviewDataSorted = OverviewData.slice(0, 2);
 
   return (
     <OverviewDataStyleWrap>

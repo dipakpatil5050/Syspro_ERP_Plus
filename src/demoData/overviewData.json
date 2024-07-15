@@ -1,6 +1,34 @@
 [
   {
     "id": 1,
+    "type": "info",
+    "icon": "shopping-cart.svg",
+    "label": "Total Orders",
+    "total": "30825",
+    "suffix": "",
+    "prefix": "₹",
+    "status": "growth",
+    "statusRate": "25.36",
+    "decimels": 0,
+    "separator": ",",
+    "dataPeriod": "Since last month"
+  },
+  {
+    "id": 2,
+    "type": "secondary",
+    "icon": "dollar-circle.svg",
+    "label": "Total Sales",
+    "total": "308250",
+    "suffix": "",
+    "prefix": "₹",
+    "status": "growth",
+    "statusRate": "25.36",
+    "decimels": 0,
+    "separator": ",",
+    "dataPeriod": "Since last month"
+  },
+  {
+    "id": 3,
     "type": "primary",
     "icon": "briefcase.svg",
     "label": "Total Products",
@@ -10,34 +38,6 @@
     "status": "growth",
     "statusRate": "25.36",
     "decimel": 0,
-    "dataPeriod": "Since last month"
-  },
-  {
-    "id": 2,
-    "type": "info",
-    "icon": "shopping-cart.svg",
-    "label": "Total Orders",
-    "total": "30825",
-    "suffix": "",
-    "prefix": "",
-    "status": "growth",
-    "statusRate": "25.36",
-    "decimels": 0,
-    "separator": ",",
-    "dataPeriod": "Since last month"
-  },
-  {
-    "id": 3,
-    "type": "secondary",
-    "icon": "dollar-circle.svg",
-    "label": "Total Sales",
-    "total": "30825",
-    "suffix": "",
-    "prefix": "$",
-    "status": "down",
-    "statusRate": "25.36",
-    "decimels": 0,
-    "separator": ",",
     "dataPeriod": "Since last month"
   },
   {

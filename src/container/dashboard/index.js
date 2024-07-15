@@ -8,6 +8,7 @@ import useDocumentTitle from '../../components/dynamic-Page-Title/useDocumentTit
 const OverviewDataList = lazy(() => import('./overview/index/OverviewDataList'));
 const SalesReport = lazy(() => import('./overview/index/SalesReport'));
 const SalesGrowth = lazy(() => import('./overview/index/SalesGrowth'));
+
 // const SalesByLocation = lazy(() => import('./overview/index/SalesByLocation'));
 // const TopSellingProduct = lazy(() => import('./overview/index/TopSellingProducts'));
 // const BrowserState = lazy(() => import('./overview/index/BrowserState'));
@@ -49,7 +50,7 @@ function Dashboard() {
                 </Cards>
               }
             >
-              <SalesReport />
+              <SalesGrowth />
             </Suspense>
           </Col>
           <Col xxl={8} xs={24}>
@@ -60,7 +61,7 @@ function Dashboard() {
                 </Cards>
               }
             >
-              <SalesGrowth />
+              <SalesReport />
             </Suspense>
           </Col>
           <Col xxl={16} xs={24}>

@@ -201,12 +201,9 @@ const Filters = React.memo(() => {
 
   // Catalogue API Calling :
 
-  // const isMounted = useRef(false);
-
-  const fetchCatalogueData = async (filterString) => {
+  const fetchCatalogueData = async () => {
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
-    console.log('AccessValue + FilterString in catalogue : ', AccessValue + filterString);
     const body = {
       ReportId: 0,
       FromDate: '',

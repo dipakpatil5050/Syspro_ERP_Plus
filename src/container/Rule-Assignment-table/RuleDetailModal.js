@@ -32,7 +32,7 @@ function RuleDetailModal() {
         description: (
           <ul style={{ textAlign: 'end' }} className="ordered-amount-list">
             {selectedNames?.length > 0 ? (
-              selectedNames?.map((name, index) => <li key={index}>{name},</li>)
+              selectedNames?.map((name, index) => <li key={index}>&#10687; {name}</li>)
             ) : (
               <li key="no-items">No items selected</li>
             )}
@@ -46,20 +46,19 @@ function RuleDetailModal() {
       title: 'Row Id',
       dataIndex: 'id',
       key: 'id',
-      //   wdith: '5%',
+      wdith: '5%',
     },
     {
       title: 'Rule on',
       dataIndex: 'ruleon',
       key: 'ruleon',
-      //   width: '20%',
+      width: '45%',
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
-      style: { textAlign: 'center', color: 'red' },
-      //   width: '75%',
+      width: '50%',
     },
   ];
 

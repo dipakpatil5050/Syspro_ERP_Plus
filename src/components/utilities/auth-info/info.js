@@ -121,8 +121,8 @@ const AuthInfo = React.memo(() => {
   return (
     <InfoWraper>
       {/* <Search /> */}
-      <Message />
-      <Notification />
+      {/* <Message /> */}
+      {/* <Notification /> */}
       <ShoppingCart />
       <Settings />
       {/* <div className="ninjadash-nav-actions__item ninjadash-nav-actions__language">

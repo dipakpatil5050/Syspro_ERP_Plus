@@ -62,7 +62,6 @@ function RuleAssignment() {
       setUser(userDataList?.UserID);
       setSelectedRules(userDataList?.Rule_Key);
 
-      // const ruleids = parseInt(userDataList?.Rule_Key.split(','));
       const ruleIds = userDataList?.Rule_Key.split(',').map(Number);
       form.setFieldsValue({
         user: userDataList?.UserID,

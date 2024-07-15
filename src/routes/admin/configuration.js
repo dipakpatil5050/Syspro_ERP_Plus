@@ -4,11 +4,13 @@ import RuleMaster from '../../components/Rules-Master/rule-form/RuleMaster';
 import RuleAssignment from '../../components/Rules-Master/rule-form/RuleAssignment';
 import CreateRule from '../../components/Rules-Master/rule-form/CreateRule';
 import RuleAssignMaster from '../../components/Rules-Master/rule-form/RuleAssignMaster';
+import useDocumentTitle from '../../components/dynamic-Page-Title/useDocumentTitle';
 
 const DashboardBase = lazy(() => import('../../container/dashboard/DashboardBase'));
 const NotFound = lazy(() => import('../../container/pages/404'));
 
 function ConfigurationRoute() {
+  useDocumentTitle('Configuration');
   return (
     <Routes>
       <Route exact path="base" element={<DashboardBase />} />

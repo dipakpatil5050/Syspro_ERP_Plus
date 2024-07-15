@@ -18,8 +18,6 @@ import {
 } from '../../Actions/Configuration/RuleAction';
 
 function UserRuleCollection() {
-  const ruleList = useSelector((state) => state.config.ruleCollection);
-
   const allRules = useSelector((state) => state.config.allRules);
 
   const userRuleList = useSelector((state) => state.config.userRuleCollection);
@@ -30,7 +28,7 @@ function UserRuleCollection() {
 
   const [state, setState] = useState({
     currentPage: 1,
-    pageSize: 10,
+    pageSize: 100,
   });
 
   // useEffect(() => {
@@ -129,28 +127,25 @@ function UserRuleCollection() {
         title: 'Sr. No.',
         dataIndex: 'sr',
         key: 'sr',
-        width: '2%',
+        width: '5%',
       },
       {
         title: 'User Name',
         dataIndex: 'user',
         key: 'user',
+        width: '20%',
       },
       {
         title: 'Rule Name',
         dataIndex: 'rule',
         key: 'rule',
+        width: '40%',
       },
-      //   {
-      //     title: 'Remark',
-      //     dataIndex: 'remark',
-      //     key: 'remark',
-      //   },
       {
         title: 'Action',
         dataIndex: 'action',
         key: 'action',
-        width: '5%',
+        width: '35%',
       },
     ],
     [],
