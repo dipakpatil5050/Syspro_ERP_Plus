@@ -117,7 +117,7 @@ function RuleModalForm({ handleCancel, editRule, editIndex }) {
     <>
       <BasicFormWrapper>
         <VerticalFormStyleWrap>
-          <Cards headless>
+          <Cards titless headless>
             {loading ? (
               <CenteredSpin size="large" />
             ) : (

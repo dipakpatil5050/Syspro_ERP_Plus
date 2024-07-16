@@ -31,7 +31,7 @@ function Dashboard() {
 
       <Main>
         <Row gutter={25}>
-          <Col xxl={12} xs={24}>
+          <Col style={{ width: '100%' }}>
             <Suspense
               fallback={
                 <Cards headless>
@@ -42,7 +42,7 @@ function Dashboard() {
               <OverviewDataList />
             </Suspense>
           </Col>
-          <Col xxl={12} xs={24}>
+          <Col style={{ width: '100%' }}>
             <Suspense
               fallback={
                 <Cards headless>
@@ -53,7 +53,7 @@ function Dashboard() {
               <SalesGrowth />
             </Suspense>
           </Col>
-          <Col xxl={8} xs={24}>
+          <Col style={{ width: '100%' }}>
             <Suspense
               fallback={
                 <Cards headless>

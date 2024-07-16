@@ -82,19 +82,19 @@
     }
   },
   "closedDeals": {
-    "week": {      
+    "week": {
       "labels": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       "won": [100, 500, 150, 1000, 1400, 2400, 2000],
       "amount": [80, 350, 100, 900, 1000, 1400, 1500],
       "percent": 25
     },
-    "month": {      
+    "month": {
       "labels": ["1-5", "6-10", "11-15", "16-20", "21-25", "26-31"],
       "won": [2500, 5000, 1500, 1500, 4000, 2400],
       "amount": [2000, 4000, 1200, 1300, 3000, 2200],
       "percent": 50
     },
-    "year": {      
+    "year": {
       "labels": ["Jan", "Feb", "Mar", "App", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Oct", "Dec"],
       "won": [9500, 5500, 1900, 5500, 9000, 24000, 9500, 5500, 1900, 5500, 9000, 24000],
       "amount": [9000, 5000, 2000, 5000, 8000, 30000, 9000, 5500, 2300, 5000, 8000, 20000],
@@ -577,7 +577,7 @@
       "labels": ["2(h)", "4(h)", "6(h)", "8(h)", "10(h)", "12(h)", "14(h)", "16(h)", "18(h)", "20(h)", "22(h)", "24(h)"]
     },
     "week": {
-      "users": [40,30,35,20,25,40,35],
+      "users": [40, 30, 35, 20, 25, 40, 35],
       "labels": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     },
     "month": {
@@ -1352,7 +1352,7 @@
       }
     ]
   },
-  "profitGrowth":{
+  "profitGrowth": {
     "title": "Profit Growth",
     "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
     "orders": [10, 55, 42, 30, 42, 80, 35, 10, 53, 62],
@@ -1361,8 +1361,8 @@
     "growthRate": "25.36",
     "growthStatus": "down"
   },
-  "salesGrowth":{
-    "today":{
+  "salesGrowth": {
+    "today": {
       "title": "Sales Growth",
       "labels": ["6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM"],
       "orders": [50, 15, 10, 30, 60, 20, 35, 60, 53, 62],
@@ -1373,7 +1373,7 @@
       "salesRate": "25.36",
       "salesStatus": "down"
     },
-    "week":{
+    "week": {
       "title": "Sales Growth",
       "labels": ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
       "orders": [10, 55, 42, 30, 42, 80, 35, 10, 53, 62],
@@ -1384,7 +1384,7 @@
       "salesRate": "25.36",
       "salesStatus": "down"
     },
-    "month":{
+    "month": {
       "title": "Sales Growth",
       "labels": ["1-5", "6-10", "11-15", "16-20", "21-25", "26-30"],
       "orders": [10, 55, 42, 30, 42, 80, 35, 10, 53, 62],
@@ -1398,7 +1398,18 @@
   },
   "userOverviewData": {
     "today": {
-      "labels": ["6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM"],
+      "labels": [
+        "6:00 AM",
+        "7:00 AM",
+        "8:00 AM",
+        "9:00 AM",
+        "10:00 AM",
+        "11:00 AM",
+        "12:00 PM",
+        "1:00 PM",
+        "2:00 PM",
+        "3:00 PM"
+      ],
       "target": [10, 55, 42, 30, 42, 80, 35, 10, 53, 62],
       "gained": [30, 30, 35, 10, 5, 60, 8, 42, 30, 70],
       "targetedSale": "8550",

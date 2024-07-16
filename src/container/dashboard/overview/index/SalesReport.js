@@ -161,18 +161,25 @@ const SalesReport = React.memo(({ title }) => {
                       },
                     },
                   }}
-                  tooltip={{
-                    custom: customTooltips,
-                    callbacks: {
-                      title() {
-                        return `Total Revenue`;
-                      },
-                      label(t) {
-                        const { formattedValue, dataset } = t;
-                        return `${dataset.label}: ${formattedValue}k`;
+                  option={{
+                    plugins: {
+                      tooltip: {
+                        enabled: true,
                       },
                     },
                   }}
+                  // tooltip={{
+                  //   custom: customTooltips,
+                  //   callbacks: {
+                  //     title() {
+                  //       return `Total Revenue`;
+                  //     },
+                  //     label(t) {
+                  //       const { formattedValue, dataset } = t;
+                  //       return `${dataset.label}: ${formattedValue}k`;
+                  //     },
+                  //   },
+                  // }}
                   height={window.innerWidth <= 575 ? 175 : 100}
                 />
               </div>

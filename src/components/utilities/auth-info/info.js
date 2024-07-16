@@ -6,8 +6,8 @@ import UilSignout from '@iconscout/react-unicons/icons/uil-signout';
 import UilUser from '@iconscout/react-unicons/icons/uil-user';
 import UilUsersAlt from '@iconscout/react-unicons/icons/uil-users-alt';
 // import UilShoppingCart from '@iconscout/react-unicons/icons/uil-shopping-cart';
-import { Avatar } from 'antd';
-import React from 'react';
+import { Avatar, Modal } from 'antd';
+import React, { useState } from 'react';
 // import { useState } from 'react';
 // import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,14 +19,16 @@ import Notification from './Notification';
 import ShoppingCart from './ShoppingCart';
 // import Search from './Search';
 import Settings from './settings';
-
 import { logOut, setUserData, setuserMpinData, setCatalogueData } from '../../../redux/reducers/authReducer';
 
 // import { Dropdown } from '../../dropdown/dropdown';
 import Heading from '../../heading/heading';
 import { Popover } from '../../popup/popup';
+import CompanyConfiguration from '../../../config/CompanyConfiguration';
 
 const AuthInfo = React.memo(() => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
   const CompanyName = userData?.Data?.CompanyName;
@@ -44,6 +46,14 @@ const AuthInfo = React.memo(() => {
     dispatch(setuserMpinData(null));
     dispatch(setCatalogueData([]));
     localStorage.clear();
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
   };
 
   const userContent = (
@@ -68,7 +78,7 @@ const AuthInfo = React.memo(() => {
               <UilDollarSign /> My Orders
             </Link>
           </li>
-          <li>
+          <li onClick={() => setIsModalVisible(true)}>
             <Link to="#">
               <UilSetting /> Settings
             </Link>
@@ -119,29 +129,43 @@ const AuthInfo = React.memo(() => {
   // );
 
   return (
-    <InfoWraper>
-      {/* <Search /> */}
-      {/* <Message /> */}
-      {/* <Notification /> */}
-      <ShoppingCart />
-      <Settings />
-      {/* <div className="ninjadash-nav-actions__item ninjadash-nav-actions__language">
+    <>
+      <InfoWraper>
+        {/* <Search /> */}
+        {/* <Message /> */}
+        {/* <Notification /> */}
+        <ShoppingCart />
+        <Settings />
+        {/* <div className="ninjadash-nav-actions__item ninjadash-nav-actions__language">
         <Dropdown placement="bottomRight" content={country} trigger="click">
           <Link to="#" className="ninjadash-nav-action-link">
             <img src={require(`../../../static/img/flag/${flag}.png`)} alt="" />
           </Link>
         </Dropdown>
       </div> */}
-      <div className="ninjadash-nav-actions__item ninjadash-nav-actions__author">
-        <Popover placement="bottomRight" content={userContent} action="click">
-          <Link to="#" className="ninjadash-nav-action-link">
-            <Avatar src={profile} />
-            <span className="ninjadash-nav-actions__author--name">{CompanyName}</span>
-            <UilAngleDown />
-          </Link>
-        </Popover>
-      </div>
-    </InfoWraper>
+        <div className="ninjadash-nav-actions__item ninjadash-nav-actions__author">
+          <Popover placement="bottomRight" content={userContent} action="click">
+            <Link to="#" className="ninjadash-nav-action-link">
+              <Avatar src={profile} />
+              <span className="ninjadash-nav-actions__author--name">{CompanyName}</span>
+              <UilAngleDown />
+            </Link>
+          </Popover>
+        </div>
+      </InfoWraper>
+
+      <Modal
+        title="Company Configuration Setting"
+        onCancel={handleCancel}
+        open={isModalVisible}
+        footer={null}
+        destroyOnClose
+        // loading={loading}
+        bodyStyle={{ padding: 0 }}
+      >
+        <CompanyConfiguration handleCancel={handleCancel} />
+      </Modal>
+    </>
   );
 });
 

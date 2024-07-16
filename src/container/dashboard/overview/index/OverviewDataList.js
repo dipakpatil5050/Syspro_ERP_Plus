@@ -14,7 +14,7 @@ const OverviewDataList = React.memo(({ column }) => {
       <Row gutter={25}>
         {OverviewDataSorted.map((item, i) => {
           return (
-            <Col xxl={column === '2' ? null : 6} md={12} xs={24} key={i}>
+            <Col xxl={column === '2' ? null : 6} span={24} md={12} xs={24} key={i} lg={32}>
               <OverviewCard data={item} contentFirst />
             </Col>
           );

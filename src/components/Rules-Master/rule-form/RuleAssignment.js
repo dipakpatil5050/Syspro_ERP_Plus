@@ -67,19 +67,19 @@ function RuleAssignment() {
         user: userDataList?.UserID,
         rules: ruleIds,
       });
-      const selectedRuleDetails = rulesList.filter((rule) => ruleIds.includes(rule.Rule_id));
+      const selectedRuleDetails = rulesList.filter((rule) => ruleIds?.includes(rule.Rule_id));
       setDraftRules(selectedRuleDetails);
     }
   }, [singleUserData, mode, rulesList, form]);
 
   const handleRuleChange = (value) => {
     setSelectedRules(value);
-    const selectedRuleDetails = rulesList.filter((rule) => value.includes(rule.Rule_id));
+    const selectedRuleDetails = rulesList.filter((rule) => value?.includes(rule.Rule_id));
     setDraftRules(selectedRuleDetails);
   };
 
   const handleRuleSubmit = async () => {
-    const selectedRuleDetails = rulesList.filter((rule) => selectedRules.includes(rule.Rule_id));
+    const selectedRuleDetails = rulesList.filter((rule) => selectedRules?.includes(rule.Rule_id));
     const ruleFilterStrings = selectedRuleDetails.map((rule) => rule.RuleFilterString);
 
     await dispatch(assignRuleInsert(user, selectedRules, ruleFilterStrings));
@@ -136,7 +136,7 @@ function RuleAssignment() {
                       size="default"
                       onChange={(value) => setUser(value)}
                       placeholder="Select user from list "
-                      filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                      filterOption={(input, option) => option.children.toLowerCase()?.includes(input.toLowerCase())}
                     >
                       {userList &&
                         userList.length > 0 &&
@@ -161,7 +161,7 @@ function RuleAssignment() {
                       size="large"
                       onChange={handleRuleChange}
                       placeholder="Select Rules from list "
-                      filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                      filterOption={(input, option) => option.children.toLowerCase()?.includes(input.toLowerCase())}
                     >
                       {rulesList &&
                         rulesList?.map((rule) => (

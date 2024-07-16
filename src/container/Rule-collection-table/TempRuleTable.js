@@ -144,6 +144,7 @@ function TempRuleTable({ mode }) {
             footer={null}
             destroyOnClose
             loading={loading}
+            bodyStyle={{ padding: 0 }}
           >
             <RuleModalForm handleCancel={handleCancel} editRule={editRule} editIndex={editIndex} />
           </Modal>

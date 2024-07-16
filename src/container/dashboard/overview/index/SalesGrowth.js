@@ -14,7 +14,7 @@ const SalesGrowth = React.memo(() => {
   const salesGrowthData = chartData.salesGrowth;
 
   const [state, setState] = useState({
-    sellingTab: 'today',
+    sellingTab: 'month',
   });
 
   /* State destructuring */
@@ -56,7 +56,7 @@ const SalesGrowth = React.memo(() => {
         isbutton={
           <div className="ninjadash-card-nav">
             <ul>
-              <li className={sellingTab === 'today' ? 'ninjadash-active' : 'ninjadash-today'}>
+              {/* <li className={sellingTab === 'today' ? 'ninjadash-active' : 'ninjadash-today'}>
                 <Link onClick={(e) => handleChangePeriod('today', e)} to="#">
                   Today
                 </Link>
@@ -65,7 +65,7 @@ const SalesGrowth = React.memo(() => {
                 <Link onClick={(e) => handleChangePeriod('week', e)} to="#">
                   Week
                 </Link>
-              </li>
+              </li> */}
               <li className={sellingTab === 'month' ? 'ninjadash-active' : 'ninjadash-month'}>
                 <Link onClick={(e) => handleChangePeriod('month', e)} to="#">
                   Month

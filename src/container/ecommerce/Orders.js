@@ -14,7 +14,7 @@ import { getCartItem } from '../../Actions/Catalogue/CartAction';
 function Orders() {
   const PageRoutes = [
     {
-      path: '/admin',
+      // path: '/admin',
       breadcrumbName: 'Catalogue',
     },
     {
