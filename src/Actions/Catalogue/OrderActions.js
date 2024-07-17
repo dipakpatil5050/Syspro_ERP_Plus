@@ -11,6 +11,8 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     GST_No: gst,
     email: email,
     Remark: remark,
+    Remark2: '',
+    Remark3: '',
     Row_id: item.Id,
     Rate: item.Saleprice1,
     Qty: item.Qty,
@@ -58,12 +60,17 @@ export const invoicePrint = (indentId) => async (dispatch) => {
   const bodydata = {
     Indent_Id: indentId,
   };
-  dispatch(setIsLoading(true));
-  const InvoiceRes = await OrderServices.orderPrint(bodydata);
-  dispatch(setOrderPdf(InvoiceRes.data?.Data?.ReportPath));
-  dispatch(setIsLoading(false));
-  const pdfPath = InvoiceRes.data?.Data?.ReportPath;
-  window.open(pdfPath, '_blank');
+
+  try {
+    dispatch(setIsLoading(true));
+    const InvoiceRes = await OrderServices.orderPrint(bodydata);
+    dispatch(setOrderPdf(InvoiceRes.data?.Data?.ReportPath));
+    dispatch(setIsLoading(false));
+    const pdfPath = InvoiceRes.data?.Data?.ReportPath;
+    window.open(pdfPath, '_blank');
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const orderHistory = (offsetValue, pagesize) => async (dispatch) => {

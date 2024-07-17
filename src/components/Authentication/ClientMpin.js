@@ -120,7 +120,7 @@ function ClientMpin() {
                   ref={mPinInputRef}
                   onChange={handleInputChange}
                   name="mPin"
-                  autoComplete="current-password"
+                  // autoComplete="current-password"
                 />
               </Form.Item>
 

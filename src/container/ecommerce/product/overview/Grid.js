@@ -23,11 +23,6 @@ const Grid = React.memo(() => {
     dispatch(getCartItem(cartId));
   }, []);
 
-  // for debugging console
-  console.log('total items : ', totalItems);
-  console.log('has more data: ', hasMoreData);
-  console.log('Offset value Count : ', offsetValue);
-
   useEffect(() => {
     const handleScroll = () => {
       if (window.pageYOffset > 300) {

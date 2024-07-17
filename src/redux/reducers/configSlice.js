@@ -11,6 +11,10 @@ const initialState = {
   singleUserData: [],
   allUsers: [],
   allRules: [],
+  company: [],
+  yearDuration: [],
+  premise: [],
+  location: [],
 };
 
 export const configSlice = createSlice({
@@ -62,6 +66,22 @@ export const configSlice = createSlice({
     setUserRules: (state, action) => {
       state.userRuleCollection = action.payload;
     },
+
+    setCompany: (state, action) => {
+      state.company = action.payload;
+    },
+
+    setYearDuration: (state, action) => {
+      state.yearDuration = action.payload;
+    },
+
+    setPremise: (state, action) => {
+      state.premise = action.payload;
+    },
+
+    setLocation: (state, action) => {
+      state.location = action.payload;
+    },
   },
 });
 
@@ -78,6 +98,10 @@ export const {
   setAllUsers,
   setAllRules,
   setUserRules,
+  setCompany,
+  setPremise,
+  setYearDuration,
+  setLocation,
 } = configSlice.actions;
 
 export default configSlice.reducer;

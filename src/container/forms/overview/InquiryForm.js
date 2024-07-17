@@ -128,7 +128,7 @@ function InquiryForm({ handleCancel }) {
                   onClick={handleInquirySubmit}
                   size="large"
                 >
-                  {loading ? 'Inquiry Sending...' : 'Submit'}
+                  {loading ? 'Sending...' : 'Submit'}
                 </Button>
               </div>
             </Form>

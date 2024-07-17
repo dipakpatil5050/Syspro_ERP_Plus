@@ -6,6 +6,13 @@ import PropTypes from 'prop-types';
 import { VerticalFormStyleWrap } from './Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
 import { BasicFormWrapper } from '../../styled';
+import {
+  getCompany,
+  getLocation,
+  getPremise,
+  getYearDuration,
+  saveCompanyConfig,
+} from '../../../Actions/Configuration/CompanyAction';
 
 const { Option } = Select;
 
@@ -26,11 +33,35 @@ function CompnayConfigurationForm({ handleCancel }) {
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.config.loading);
+  const companyList = useSelector((state) => state.config.company);
+  const yearDurationList = useSelector((state) => state.config.yearDuration);
+  const premiseList = useSelector((state) => state.config.premise);
+  const locationList = useSelector((state) => state.config.location);
+
+  useEffect(() => {
+    dispatch(getCompany());
+    dispatch(getYearDuration());
+    dispatch(getPremise());
+    dispatch(getLocation());
+  }, []);
 
   const handleConfigSubmit = () => {
-    form.validateFields().then(() => {
-      handleCancel();
-    });
+    // form.validateFields().then(() => {
+    //   handleCancel();
+    // });
+    console.log('Company : ', company);
+    console.log('year duration : ', duration);
+    console.log('premise : ', premise);
+    console.log('location : ', location);
+
+    dispatch(saveCompanyConfig());
+
+    form.resetFields();
+    setCompany('');
+    setPremise('');
+    setDuration('');
+    setLocation('');
+    handleCancel();
   };
 
   return (
@@ -56,13 +87,13 @@ function CompnayConfigurationForm({ handleCancel }) {
                     placeholder="Select Company from list "
                     filterOption={(input, option) => option.children.toLowerCase()?.includes(input.toLowerCase())}
                   >
-                    {/* {userList &&
-                      userList.length > 0 &&
-                      userList?.map((users) => (
-                        <Option key={users.UserID} value={users.UserID}>
-                          {users.UserName}
+                    {companyList &&
+                      companyList.length > 0 &&
+                      companyList?.map((users) => (
+                        <Option key={users.Company_ID} value={users.Company_ID}>
+                          {users.Company_name}
                         </Option>
-                      ))} */}
+                      ))}
                   </Select>
                 </Form.Item>
 
@@ -80,13 +111,13 @@ function CompnayConfigurationForm({ handleCancel }) {
                     placeholder="Select Duration from list "
                     filterOption={(input, option) => option.children.toLowerCase()?.includes(input.toLowerCase())}
                   >
-                    {/* {userList &&
-                      userList.length > 0 &&
-                      userList?.map((users) => (
-                        <Option key={users.UserID} value={users.UserID}>
-                          {users.UserName}
+                    {yearDurationList &&
+                      yearDurationList.length > 0 &&
+                      yearDurationList?.map((users) => (
+                        <Option key={users.Year_ID} value={users.Year_ID}>
+                          {users.Year}
                         </Option>
-                      ))} */}
+                      ))}
                   </Select>
                 </Form.Item>
 
@@ -104,13 +135,13 @@ function CompnayConfigurationForm({ handleCancel }) {
                     placeholder="Select Premise from list "
                     filterOption={(input, option) => option.children.toLowerCase()?.includes(input.toLowerCase())}
                   >
-                    {/* {userList &&
-                      userList.length > 0 &&
-                      userList?.map((users) => (
-                        <Option key={users.UserID} value={users.UserID}>
-                          {users.UserName}
+                    {premiseList &&
+                      premiseList.length > 0 &&
+                      premiseList?.map((users) => (
+                        <Option key={users.Premise_Id} value={users.Premise_Id}>
+                          {users.Premise_Name}
                         </Option>
-                      ))} */}
+                      ))}
                   </Select>
                 </Form.Item>
 
@@ -128,19 +159,19 @@ function CompnayConfigurationForm({ handleCancel }) {
                     placeholder="Select Company Location"
                     filterOption={(input, option) => option.children.toLowerCase()?.includes(input.toLowerCase())}
                   >
-                    {/* {userList &&
-                      userList.length > 0 &&
-                      userList?.map((users) => (
-                        <Option key={users.UserID} value={users.UserID}>
-                          {users.UserName}
+                    {locationList &&
+                      locationList.length > 0 &&
+                      locationList?.map((users) => (
+                        <Option key={users.dept_id} value={users.dept_id}>
+                          {users.dept_name}
                         </Option>
-                      ))} */}
+                      ))}
                   </Select>
                 </Form.Item>
                 <Row justify="center">
                   <Col>
                     <div className="ninjadash-form-action">
-                      <Button className="btn-signin" type="primary" htmlType="submit" size="large">
+                      <Button disabled={!company} className="btn-signin" type="primary" htmlType="submit" size="large">
                         Submit
                       </Button>
                     </div>

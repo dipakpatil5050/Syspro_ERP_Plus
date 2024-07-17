@@ -49,8 +49,8 @@ export const getCartItem = (cartId) => async (dispatch) => {
     const response = await CatalogueServices.getCartItem(body);
     dispatch(setCartItems(response?.data?.Data));
   } catch (error) {
-    console.error('Error adding to cart:', error);
-    toast.error(error.message, 'Please Refresh the Page');
+    console.error('Error to get cart items:', error);
+    toast.error(`${error.message} in AllCartItemDetails API`);
   }
 };
 
