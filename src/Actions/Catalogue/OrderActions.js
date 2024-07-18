@@ -50,8 +50,11 @@ export const sendInquiry = (name, email, mobile, address, gst, remark, cartId, c
     dispatch(setCartItems([]));
     dispatch(setLoading(false));
   } catch (error) {
-    console.error('Inquiry sending Error:', error);
-    toast.error(error.message);
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected error in sending Inquiry.');
+    }
     dispatch(setLoading(false));
   }
 };
@@ -86,7 +89,11 @@ export const orderHistory = (offsetValue, pagesize) => async (dispatch) => {
     dispatch(setOrderHistory(historyRes.data?.Data));
     dispatch(setIsLoading(false));
   } catch (error) {
-    console.error('Error while fetching order history:', error);
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected error to fetch order History data.');
+    }
     dispatch(setIsLoading(false));
   }
 };

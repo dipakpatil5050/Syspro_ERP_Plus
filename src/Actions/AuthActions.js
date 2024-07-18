@@ -14,3 +14,12 @@ export const addMPin = (mPin) => async (dispatch) => {
     dispatch(setLoading(false));
   }
 };
+
+export const loginAPI = () => async (dispatch) => {
+  const body = {};
+  try {
+    const response = await authService.handleLogin(body);
+  } catch (error) {
+    console.error(error);
+  }
+};

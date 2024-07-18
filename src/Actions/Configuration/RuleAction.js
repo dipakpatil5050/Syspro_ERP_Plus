@@ -22,6 +22,11 @@ export const getRuleFilters = () => async (dispatch) => {
     dispatch(setRuleFilterData(filterRes?.data?.Data?.filters));
     dispatch(setLoading(false));
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected Error while fetching for rule filters Data from API.');
+    }
     console.error('Error while Data fetching for rule filters from API', error);
     dispatch(setLoading(false));
   }
@@ -39,6 +44,11 @@ export const getAllRules = (currentPage, pageSize) => async (dispatch) => {
     dispatch(setRuleCollection(ruleResponse?.data?.Data));
     dispatch(setLoading(false));
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected Error while fetching rule Data from API.');
+    }
     console.error('Error while fetching rule configuration:', error);
     dispatch(setLoading(false));
   }
@@ -51,6 +61,11 @@ export const getRuleDataById = (ruleId) => async (dispatch) => {
     dispatch(setSingleRuleData(ruleIdResponse.data.Data));
     dispatch(setLoading(false));
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected Error while fetching Single Rule Data from API.');
+    }
     console.error('Error while fetching Single Rule Data from API:', error);
     dispatch(setLoading(false));
   } finally {
@@ -81,13 +96,13 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, temp
       remark1: '',
       remark2: '',
       status: 0,
-      entrydatetime: new Date().toLocaleDateString(),
+      entrydatetime: '',
       tranuserid: userId,
       EntMode: 1,
     },
     RuleCollectionDetail: ruleDetails,
   };
-
+  // new Date().toLocaleDateString()
   try {
     dispatch(setLoading(true));
     const saveRuleRes = await RuleServices.saveRuleToCollection(body);
@@ -95,6 +110,11 @@ export const insertRuleToCollection = (ruleName, remark, companyId, userId, temp
     window.history.back();
     dispatch(setLoading(false));
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected Error while insertRuleToCollection.');
+    }
     console.error('Error while saving rule to Collection', error);
     toast.error('Failed in save rule to Collection');
     dispatch(setLoading(false));
@@ -138,10 +158,13 @@ export const updateRuleToCollection = (ruleId, ruleName, remark, companyId, user
     window.history.back();
     dispatch(setLoading(false));
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected Error while updateRuleToCollection.');
+    }
     console.error('Error while saving rule to Collection', error);
     dispatch(setLoading(false));
-    toast.error('Failed to update rule in collection.');
   } finally {
     dispatch(setLoading(false));
   }
@@ -156,6 +179,11 @@ export const getAllUsers = () => async (dispatch) => {
     dispatch(setAllUsers(response?.data?.Data?.Table));
     dispatch(setLoading(false));
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected Error while fetching rule configuration data.');
+    }
     console.error('Error while fetching rule configuration:', error);
     dispatch(setLoading(false));
   }
@@ -169,12 +197,15 @@ export const getRules = () => async (dispatch) => {
     const response = await RuleServices.getRules(body);
     if (response.data.IsSuccess && response.data.StatusCode === 200) {
       dispatch(setAllRules(response?.data?.Data?.Table));
-    } else {
-      console.error('Failed to fetch rules:', response.data);
+      dispatch(setLoading(false));
     }
-    dispatch(setLoading(false));
   } catch (error) {
-    console.error(error);
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected Error while GetRuleCollection.');
+    }
+    console.error('Error while fetching rule configuration:', error);
   }
 };
 
@@ -204,6 +235,11 @@ export const getListofUserRule = () => async (dispatch) => {
     dispatch(setUserRules(response?.data?.Data?.Table));
     dispatch(setLoading(false));
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected Error while fetching getListofUserRule.');
+    }
     console.error(error);
     dispatch(setLoading(false));
   }
@@ -218,7 +254,12 @@ export const getUserDataById = (userId) => async (dispatch) => {
       dispatch(setLoading(false));
     }
   } catch (error) {
-    console.error(error);
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected Error while fetching getUserDataById.');
+    }
+    console.error(error.message);
     dispatch(setLoading(false));
   }
 };

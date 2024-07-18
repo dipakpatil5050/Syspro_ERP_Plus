@@ -77,8 +77,8 @@ function UserRuleCollection() {
       userRuleList?.map((item, key) => {
         const { UserName, Rule_Key, UserID } = item;
 
-        const ruleKeyArray = Rule_Key.split(',');
-        const ruleNames = ruleKeyArray.map((key1) => ruleNameMap[key1] || key1);
+        const ruleKeyArray = Rule_Key?.split(',');
+        const ruleNames = ruleKeyArray?.map((key1) => ruleNameMap[key1] || key1);
 
         return {
           key: key + 1,
@@ -86,7 +86,7 @@ function UserRuleCollection() {
           user: <span className="customer-name">{UserName}</span>,
           rule: (
             <ul className="rule-list">
-              {ruleNames.map((ruleName) => (
+              {ruleNames?.map((ruleName) => (
                 <li key={ruleName}>&#10687; {ruleName}</li>
               ))}
             </ul>

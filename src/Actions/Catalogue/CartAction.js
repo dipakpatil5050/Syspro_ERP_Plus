@@ -10,6 +10,11 @@ export const fetchSingleProductDetailById = (itemId) => async (dispatch) => {
     const response = await CatalogueServices.fetchSingleProductDetailById(itemId);
     dispatch(setSingleProduct(response.data?.Data?.products));
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected error.');
+    }
     console.error('Error fetching data:', error);
   } finally {
     dispatch(setLoading(false));
@@ -49,8 +54,12 @@ export const getCartItem = (cartId) => async (dispatch) => {
     const response = await CatalogueServices.getCartItem(body);
     dispatch(setCartItems(response?.data?.Data));
   } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error(`${error.message} in AllCartItemDetails API`);
+    }
     console.error('Error to get cart items:', error);
-    toast.error(`${error.message} in AllCartItemDetails API`);
   }
 };
 
@@ -64,8 +73,11 @@ export const removeFromCart = (itemID, cartId) => async (dispatch) => {
     const response = await CatalogueServices.removeFromCart(body);
     toast.success(response.data?.Message);
   } catch (error) {
-    console.error('Error while remove from cart:', error);
-    toast.error(error.message);
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected error.');
+    }
   }
 };
 
@@ -96,7 +108,6 @@ export const uploadItem = (formData) => async (dispatch) => {
       toast.error(error.response.data.Message);
     } else {
       toast.error('Unexpected error adding to product.');
-      dispatch(setLoading(false));
     }
     console.error('Unexpected error:', error);
     dispatch(setLoading(false));
@@ -115,7 +126,10 @@ export const getItemList = () => async (dispatch) => {
     const itemRes = await CatalogueServices.itemList(body);
     dispatch(setItemList(itemRes?.data?.Data?.Table));
   } catch (error) {
-    console.error('Item List Fetching Error', error);
-    toast.error('Item List Fetching Error');
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected error in getItemList API .');
+    }
   }
 };

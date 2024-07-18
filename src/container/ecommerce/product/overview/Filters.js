@@ -15,6 +15,7 @@ import {
   setCatalogueData,
   setCatalogueDataFiltered,
   setCatalogueTotalDataCount,
+  setClearFilter,
   // setClearFilter,
   setFilterData,
   setHasmoreData,
@@ -201,14 +202,14 @@ const Filters = React.memo(() => {
 
   // Catalogue API Calling :
 
-  const fetchCatalogueData = async () => {
+  const fetchCatalogueData = async (filterString) => {
     const CatalogueAPI = `${ServerBaseUrl}api/CommonAPI/FilterProducts`;
 
     const body = {
       ReportId: 0,
       FromDate: '',
       UptoDate: '',
-      FilterString: AccessValue,
+      FilterString: AccessValue + filterString,
       OffsetValue: offsetValue,
       PageSize: 100,
       OrderByColumn: 'i.Item_id Desc',
@@ -233,6 +234,7 @@ const Filters = React.memo(() => {
       const filteredData = CatalogueDataFromAPI?.filters;
       const FilterTotalCount = CatalogueDataFromAPI?.FilterTotalCount;
       const TotalPages = CatalogueDataFromAPI?.TotalPages;
+
       dispatch(setCatalogueData(productsData));
       dispatch(setFilterData(filteredData));
       dispatch(setTotalCataloguePages(TotalPages));

@@ -16,6 +16,10 @@ class ConfigService {
   getDepartmentByUser(body) {
     return http.post('api/HomeApi/GetDepartmentByUser', body);
   }
+
+  saveCompanyConfig(body) {
+    return http.post('', body);
+  }
 }
 
 export default new ConfigService();

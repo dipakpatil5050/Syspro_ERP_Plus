@@ -20,6 +20,7 @@ export const login = createAsyncThunk(
       'Content-Type': 'application/json',
       'x-api-key': mPin,
     };
+
     try {
       const response = await axios.post(loginUrl, body, { headers });
       const userData = response.data;
@@ -53,16 +54,6 @@ export const logOut = createAsyncThunk('auth/logout', async () => {
   }
 });
 
-// cartGetData functionality
-// export const cartGetData = createAsyncThunk('auth/cartGetData', async (_, { getState }) => {
-//   const { cartItems } = getState().auth;
-//   const subtotal = cartItems.reduce((total, item) => {
-//     return total + item.price * item.quantity;
-//   }, 0);
-//   return subtotal;
-// });
-
-// Slice definition
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -137,14 +128,12 @@ export const authSlice = createSlice({
       state.totalCataloguePages = action.payload;
       const totalPages = action.payload;
       if (state.offsetValue === totalPages) {
-        state.hasMoreData = false; // hasMoreData Should be False when All data fetch
+        state.hasMoreData = false;
       }
     },
 
     setCatalogueTotalDataCount: (state, action) => {
       state.catalogueTotalDataCount = action.payload;
-      // if (state.catalogueTotalDataCount  state.catalogueData.length) {
-      // }
     },
 
     setSingleProduct: (state, action) => {
@@ -161,9 +150,6 @@ export const authSlice = createSlice({
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
-    },
-    setLoadedItems: (state, action) => {
-      state.loadedItems = action.payload;
     },
 
     setOffsetValue: (state, action) => {
@@ -252,7 +238,6 @@ export const {
   setLedgerReport,
   setSaleReport,
   setLoading,
-  setLoadedItems,
   setError,
   // setPageSize,
   setHasmoreData,
