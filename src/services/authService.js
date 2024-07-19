@@ -9,6 +9,10 @@ class authService {
   handleLogin(body) {
     return http.post('api/Static/UserLogin', body);
   }
+
+  handleLogout(body) {
+    return http.post('api/Static/UserLogout', body);
+  }
 }
 
 export default new authService();

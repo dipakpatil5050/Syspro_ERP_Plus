@@ -25,6 +25,7 @@ import { logOut, setUserData, setuserMpinData, setCatalogueData } from '../../..
 import Heading from '../../heading/heading';
 import { Popover } from '../../popup/popup';
 import CompanyConfiguration from '../../../config/CompanyConfiguration';
+import { handleLogout } from '../../../Actions/AuthActions';
 
 const AuthInfo = React.memo(() => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,15 +37,17 @@ const AuthInfo = React.memo(() => {
   // const PremiseName = userData?.Data?.PremiseName; // surat
   const AccessType = userData?.Data?.Access_Type;
   const profile = userData?.Data?.ProfileImg;
+  const userId = userData?.Data?.UserID;
 
   const navigate = useNavigate();
 
-  const SignOut = (e) => {
+  const SignOut = async (e) => {
     e.preventDefault();
-    dispatch(logOut(() => navigate('/')));
-    dispatch(setUserData(null));
-    dispatch(setuserMpinData(null));
-    dispatch(setCatalogueData([]));
+    await dispatch(handleLogout(userId));
+    await dispatch(logOut(() => navigate('/')));
+    await dispatch(setUserData(null));
+    await dispatch(setuserMpinData(null));
+    await dispatch(setCatalogueData([]));
     localStorage.clear();
   };
 
