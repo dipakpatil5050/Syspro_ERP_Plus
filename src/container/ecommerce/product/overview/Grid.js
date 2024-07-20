@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin, Pagination } from 'antd';
 import { UilArrowUp } from '@iconscout/react-unicons';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
 import { setOffsetValue } from '../../../../redux/reducers/authReducer';
-import { getCartItem } from '../../../../Actions/Catalogue/CartAction';
+import { getAllProducts, getCartItem } from '../../../../Actions/Catalogue/CartAction';
 
 const Grid = React.memo(() => {
   const dispatch = useDispatch();
   const cartId = useSelector((state) => state.cart.cartId);
   const { catalogueData, loading, hasMoreData } = useSelector((state) => state.auth);
+  const userData = useSelector((state) => state.auth.userData);
+  const AccessValue = userData?.data?.Data?.Access_Value || '';
+
+  const TotalProducts = useSelector((state) => state.auth.catalogueTotalDataCount);
 
   const [showTopButton, setShowTopButton] = useState(false);
-  const offsetValue = useSelector((state) => state.auth.offsetValue);
-
-  const totalItems = catalogueData?.length || 0;
+  const [state, setState] = useState({
+    currentPage: 1,
+    pageSize: 100,
+  });
 
   useEffect(() => {
     dispatch(getCartItem(cartId));
-  }, []);
+  }, [dispatch, cartId]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,8 +43,21 @@ const Grid = React.memo(() => {
     };
   }, []);
 
-  const fetchMoreData = () => {
-    dispatch(setOffsetValue(offsetValue + 1));
+  const fetchProducts = (page, size) => {
+    dispatch(setOffsetValue(page));
+    // dispatch(getAllProducts(AccessValue, page, size));
+  };
+
+  useEffect(() => {
+    fetchProducts(state.currentPage - 1, state.pageSize);
+  }, [dispatch, AccessValue, state.currentPage, state.pageSize]);
+
+  const handlePageChange = (page, size) => {
+    setState((prevState) => ({
+      ...prevState,
+      currentPage: page,
+      pageSize: size,
+    }));
   };
 
   const scrollToTop = () => {
@@ -52,25 +69,31 @@ const Grid = React.memo(() => {
 
   return (
     <>
-      <InfiniteScroll
-        dataLength={totalItems}
-        next={fetchMoreData}
-        hasMore={hasMoreData}
-        loader={<Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />}
-        style={{ overflow: 'hidden' }}
-        endMessage={
-          <NotFoundWrapper>{!loading && <Heading as="h5">No more products to load</Heading>}</NotFoundWrapper>
-        }
-      >
-        <Row gutter={30}>
-          {catalogueData &&
-            catalogueData.map((product) => (
-              <Col xxl={6} lg={12} xs={24} key={product.Item_Id}>
-                <ProductCards product={product} />
-              </Col>
-            ))}
-        </Row>
-      </InfiniteScroll>
+      <Row gutter={30}>
+        {catalogueData &&
+          catalogueData.map((product) => (
+            <Col xxl={6} lg={12} xs={24} key={product.Item_Id}>
+              <ProductCards product={product} />
+            </Col>
+          ))}
+      </Row>
+      {/* {loading && <Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 20 }} />} */}
+      {!loading && catalogueData?.length === 0 && (
+        <div style={{ position: 'relative', bottom: '10px', right: '20px', zIndex: 1000 }}>
+          <NotFoundWrapper>
+            <Heading as="h5">No more products to load</Heading>
+          </NotFoundWrapper>
+        </div>
+      )}
+      <Pagination
+        current={state.currentPage}
+        pageSize={state.pageSize}
+        showSizeChanger={false}
+        total={200}
+        onChange={handlePageChange}
+        style={{ marginTop: 20, textAlign: 'center' }}
+        hideOnSinglePage
+      />
       {showTopButton && (
         <Button
           type="primary"

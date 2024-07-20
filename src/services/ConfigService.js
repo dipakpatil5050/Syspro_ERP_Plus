@@ -18,7 +18,7 @@ class ConfigService {
   }
 
   saveCompanyConfig(body) {
-    return http.post('', body);
+    return http.post('api/Static/UpdateUserSession', body);
   }
 }
 

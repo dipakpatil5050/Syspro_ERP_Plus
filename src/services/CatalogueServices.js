@@ -1,6 +1,10 @@
 import { http, httpFormData } from '../API-Interceptor';
 
 class CatalogueServices {
+  AllproductsData(body) {
+    return http.post('api/CommonAPI/FilterProducts', body);
+  }
+
   fetchSingleProductDetailById(itemId) {
     return http.get(`api/CommonAPI/GetProductByID?Item_ID=${itemId}`);
   }

@@ -37,6 +37,7 @@ function CompnayConfigurationForm({ handleCancel }) {
   const yearDurationList = useSelector((state) => state.config.yearDuration);
   const premiseList = useSelector((state) => state.config.premise);
   const locationList = useSelector((state) => state.config.location);
+  const userData = useSelector((state) => state.auth.userData.Data);
 
   useEffect(() => {
     dispatch(getCompany());
@@ -46,16 +47,7 @@ function CompnayConfigurationForm({ handleCancel }) {
   }, []);
 
   const handleConfigSubmit = () => {
-    // form.validateFields().then(() => {
-    //   handleCancel();
-    // });
-    console.log('Company : ', company);
-    console.log('year duration : ', duration);
-    console.log('premise : ', premise);
-    console.log('location : ', location);
-
-    dispatch(saveCompanyConfig());
-
+    dispatch(saveCompanyConfig(userData, company, duration, premise, location));
     form.resetFields();
     setCompany('');
     setPremise('');

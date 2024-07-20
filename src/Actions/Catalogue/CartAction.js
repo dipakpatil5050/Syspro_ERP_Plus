@@ -1,8 +1,95 @@
 import toast from 'react-hot-toast';
 import CatalogueServices from '../../services/CatalogueServices';
 
-import { setItemList, setLoading, setSingleProduct } from '../../redux/reducers/authReducer';
+import {
+  setCatalogueData,
+  setCatalogueDataFiltered,
+  setCatalogueTotalDataCount,
+  setFilterData,
+  setHasmoreData,
+  setItemList,
+  setLoading,
+  setSingleProduct,
+  setTotalCataloguePages,
+} from '../../redux/reducers/authReducer';
+
 import { setCartItems, setCartId } from '../../redux/reducers/cartSlice';
+
+export const getAllProducts = (AccessValue, offsetValue) => async (dispatch) => {
+  const body = {
+    ReportId: 0,
+    FromDate: '',
+    UptoDate: '',
+    FilterString: AccessValue,
+    OffsetValue: offsetValue,
+    PageSize: 100,
+    OrderByColumn: 'i.Item_id Desc',
+    LinkId: 0,
+  };
+
+  try {
+    dispatch(setLoading(true));
+    const response = await CatalogueServices.AllproductsData(body);
+    const CatalogueDataFromAPI = response?.data?.Data;
+    const productsData = CatalogueDataFromAPI?.products;
+    const filteredData = CatalogueDataFromAPI?.filters;
+    const FilterTotalCount = CatalogueDataFromAPI?.FilterTotalCount;
+    const TotalPages = CatalogueDataFromAPI?.TotalPages;
+
+    dispatch(setCatalogueData(productsData));
+    dispatch(setFilterData(filteredData));
+    dispatch(setTotalCataloguePages(TotalPages));
+    dispatch(setCatalogueTotalDataCount(FilterTotalCount));
+    dispatch(setLoading(false));
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected error in catalogue, please Refresh Page.');
+    }
+    console.error('Error fetching data:', error);
+    dispatch(setHasmoreData(false));
+    dispatch(setLoading(false));
+  }
+};
+
+export const getFilterProducts = (AccessValue, filterString, offsetValue) => async (dispatch) => {
+  const body = {
+    ReportId: 0,
+    FromDate: '',
+    UptoDate: '',
+    FilterString: AccessValue + filterString,
+    OffsetValue: offsetValue,
+    PageSize: 100,
+    OrderByColumn: 'i.Item_id Desc',
+    LinkId: 0,
+  };
+
+  try {
+    dispatch(setLoading(true));
+    const response = await CatalogueServices.AllproductsData(body);
+
+    const CatalogueDataFromAPI = response?.data?.Data;
+    const productsData = CatalogueDataFromAPI?.products;
+    const filteredData = CatalogueDataFromAPI?.filters;
+    const FilterTotalCount = CatalogueDataFromAPI?.FilterTotalCount;
+    const TotalPages = CatalogueDataFromAPI?.TotalPages;
+
+    dispatch(setCatalogueDataFiltered(productsData));
+    dispatch(setFilterData(filteredData));
+    dispatch(setTotalCataloguePages(TotalPages));
+    dispatch(setCatalogueTotalDataCount(FilterTotalCount));
+    dispatch(setLoading(false));
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.ErrorMessage) {
+      toast.error(error.response.data.ErrorMessage);
+    } else {
+      toast.error('Unexpected error in catalogue, please Refresh Page.');
+    }
+    console.error('Error fetching data:', error);
+    dispatch(setLoading(false));
+  }
+};
 
 export const fetchSingleProductDetailById = (itemId) => async (dispatch) => {
   try {

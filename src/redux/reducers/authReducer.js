@@ -13,7 +13,7 @@ export const login = createAsyncThunk(
       UserName: username,
       Password: password,
       IsRemeber: true,
-      DeviceId: '',
+      DeviceId: 'B2BBrowser',
     };
 
     const headers = {
@@ -34,7 +34,6 @@ export const login = createAsyncThunk(
       return true;
     } catch (error) {
       const errorMessage = error.response?.data?.Message || 'An error occurred while logging in.';
-      // eslint-disable-next-line
       console.error('Error logging in:', error);
       toast.error(errorMessage);
       throw error;
@@ -43,7 +42,6 @@ export const login = createAsyncThunk(
 );
 
 // Thunk for logout action
-
 export const logOut = createAsyncThunk('auth/logout', async () => {
   try {
     Cookies.remove('logedIn');
@@ -59,8 +57,7 @@ export const authSlice = createSlice({
   initialState: {
     userData: JSON.parse(localStorage.getItem('userData')) || null,
     userMpinData: JSON.parse(localStorage.getItem('userMpinData')) || null,
-    catalogueData: [], // JSON.parse(localStorage.getItem('catalogueData')) ||
-    // filteredCatalogueData: [],
+    catalogueData: [],
     filterData: [],
     LedgerReport: null,
     SaleReport: null,
@@ -87,25 +84,18 @@ export const authSlice = createSlice({
     },
     setCatalogueData: (state, action) => {
       const allData = action.payload;
-      state.catalogueData.push(...allData);
+      // state.catalogueData.push(...allData);
+      state.catalogueData = action.payload;
+
+      if (state.catalogueTotalDataCount === state.catalogueData.length) {
+        state.hasMoreData = false;
+      }
 
       const hasCatalogueData = action.payload;
       if (hasCatalogueData === undefined || hasCatalogueData.length === 0) {
         state.hasMoreData = false;
       }
-
-      // localStorage.setItem('catalogueData', JSON.stringify(state.catalogueData.push(...allData)));
     },
-
-    // setCatalogueData: (state, action) => {
-    //   const allData = action.payload;
-    //   allData.forEach((product) => {
-    //     const productExists = state.catalogueData.find((item) => item.Item_Id === product.id);
-    //     if (!productExists) {
-    //       state.catalogueData.push(product);
-    //     }
-    //   });
-    // },
 
     setError: (state, action) => {
       state.error = action.payload;
@@ -116,8 +106,8 @@ export const authSlice = createSlice({
 
     setCatalogueDataFiltered: (state, action) => {
       state.catalogueData = action.payload;
-      // localStorage.setItem('catalogueData', JSON.stringify(action.payload));
     },
+
     filterByPriceRange(state, action) {
       const [minPrice, maxPrice] = action.payload;
       state.catalogueData = state.catalogueData.filter(
@@ -158,6 +148,10 @@ export const authSlice = createSlice({
 
     setHasmoreData: (state, action) => {
       state.hasMoreData = action.payload;
+    },
+
+    resetOffsetValue: (state) => {
+      state.offsetValue = 0;
     },
 
     loginBegin: (state) => {
@@ -242,6 +236,7 @@ export const {
   // setPageSize,
   setHasmoreData,
   setOffsetValue,
+  resetOffsetValue,
   loginBegin,
   loginSuccess,
   loginErr,

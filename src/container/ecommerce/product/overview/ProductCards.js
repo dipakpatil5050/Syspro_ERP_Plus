@@ -73,7 +73,7 @@ function ProductCards({ product }) {
             {/* onClick={() => handleProductClick(product.Item_Id)} */}
 
             <Carousel showThumbs={false} showStatus={false} swipeable onChange={(index) => setActiveImageIndex(index)}>
-              {gallery.map((image, index) => (
+              {gallery?.map((image, index) => (
                 <img
                   key={index}
                   src={image.Filepath || defaultImage}
