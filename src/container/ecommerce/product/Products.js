@@ -21,16 +21,8 @@ const List = lazy(() => import('./overview/List'));
 
 const Product = React.memo(() => {
   useDocumentTitle('Catalogue');
-  const dispatch = useDispatch();
+
   const loading = useSelector((state) => state.auth.loading);
-
-  const { catalogueData } = useSelector((state) => state.auth);
-
-  // useEffect(() => {
-  //   if (getCartItem) {
-  //     dispatch(getCartItem());
-  //   }
-  // }, [dispatch]);
 
   const PageRoutes = [
     {

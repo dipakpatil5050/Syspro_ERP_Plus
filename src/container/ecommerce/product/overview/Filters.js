@@ -1,18 +1,29 @@
 import UilSlidersV from '@iconscout/react-unicons/icons/uil-sliders-v';
-import React, { useEffect, useState } from 'react';
-import { Checkbox } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Checkbox, Input } from 'antd';
+import { IoIosSearch } from 'react-icons/io';
 import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
 import { useSelector, useDispatch } from 'react-redux';
 import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
 import { getFilterProducts } from '../../../../Actions/Catalogue/CartAction';
+import { setOffsetValue } from '../../../../redux/reducers/authReducer';
 
 const Filters = React.memo(() => {
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
   const [selectedSubGroupIds, setSelectedSubGroupIds] = useState([]);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   const [selectedBrandIds, setSelectedBrandIds] = useState([]);
+  const [selectedCatalogueIds, setSelectedCatalogueIds] = useState([]);
+  const [selectedColIds, setSelectedColIds] = useState([]);
+  const [selectedSizeIds, setSelectedSizeIds] = useState([]);
+
+  const [catalogueSearchQuery, setCatalogueSearchQuery] = useState('');
+
+  const handleCatalogueSearch = (e) => {
+    setCatalogueSearchQuery(e.target.value);
+  };
 
   // Catalogue API variables
 
@@ -24,21 +35,30 @@ const Filters = React.memo(() => {
 
   const AccessValue = AccessValueData || '';
 
-  const buildFilterString = (groupIds, subGroupIds, categoryIds, brandIds) => {
+  const buildFilterString = (groupIds, subGroupIds, categoryIds, brandIds, catalogueIds, colorIds, sizeIds) => {
     let filterString = '';
     const filterParts = [];
 
-    if (groupIds.length > 0) {
+    if (groupIds?.length > 0) {
       filterParts.push(`AND Group_Id IN (${groupIds.join(',')})`);
     }
-    if (subGroupIds.length > 0) {
+    if (subGroupIds?.length > 0) {
       filterParts.push(`AND SubGroup_Id IN (${subGroupIds.join(',')})`);
     }
-    if (categoryIds.length > 0) {
+    if (categoryIds?.length > 0) {
       filterParts.push(`AND Cat_Id IN (${categoryIds.join(',')})`);
     }
-    if (brandIds.length > 0) {
+    if (brandIds?.length > 0) {
       filterParts.push(`AND Brand_ID IN (${brandIds.join(',')})`);
+    }
+    if (catalogueIds?.length > 0) {
+      filterParts.push(`AND Item_Id IN (${catalogueIds.join(',')})`);
+    }
+    if (colorIds?.length > 0) {
+      filterParts.push(`AND Col_Id IN (${colorIds.join(',')})`);
+    }
+    if (sizeIds?.length > 0) {
+      filterParts.push(`AND Size_ID IN (${sizeIds.join(',')})`);
     }
 
     filterString = filterParts.join(' ');
@@ -65,6 +85,20 @@ const Filters = React.memo(() => {
         updatedSelection = isChecked ? [...selectedBrandIds, id] : selectedBrandIds.filter((item) => item !== id);
         setSelectedBrandIds(updatedSelection);
         break;
+      case 'catalogue':
+        updatedSelection = isChecked
+          ? [...selectedCatalogueIds, id]
+          : selectedCatalogueIds.filter((item) => item !== id);
+        setSelectedCatalogueIds(updatedSelection);
+        break;
+      case 'color':
+        updatedSelection = isChecked ? [...selectedColIds, id] : selectedColIds.filter((item) => item !== id);
+        setSelectedColIds(updatedSelection);
+        break;
+      case 'size':
+        updatedSelection = isChecked ? [...selectedSizeIds, id] : selectedSizeIds.filter((item) => item !== id);
+        setSelectedSizeIds(updatedSelection);
+        break;
       default:
         return;
     }
@@ -74,9 +108,13 @@ const Filters = React.memo(() => {
       type === 'subGroup' ? updatedSelection : selectedSubGroupIds,
       type === 'category' ? updatedSelection : selectedCategoryIds,
       type === 'brand' ? updatedSelection : selectedBrandIds,
+      type === 'catalogue' ? updatedSelection : selectedCatalogueIds,
+      type === 'color' ? updatedSelection : selectedColIds,
+      type === 'size' ? updatedSelection : selectedSizeIds,
     );
 
-    dispatch(getFilterProducts(AccessValue, filterString, offsetValue));
+    dispatch(setOffsetValue(0));
+    dispatch(getFilterProducts(AccessValue, filterString, 0));
   };
 
   const handleClearFilters = () => {
@@ -84,12 +122,61 @@ const Filters = React.memo(() => {
     setSelectedSubGroupIds([]);
     setSelectedCategoryIds([]);
     setSelectedBrandIds([]);
+    dispatch(setOffsetValue(0));
     dispatch(getFilterProducts(AccessValue, '', offsetValue));
   };
 
+  // useEffect to call all data initially with empty filterstring
+
+  // useEffect(() => {
+  //   dispatch(getFilterProducts(AccessValue, '', offsetValue));
+  // }, [offsetValue, AccessValue]);
+
+  // const initialFetch = useCallback(() => {
+  //   dispatch(getFilterProducts(AccessValue, '', offsetValue));
+  // }, [AccessValue, dispatch]);
+
+  // if OffsetValue put inside the Dependancies array then it will call API twice but pagination issue reolved on to call data to take on 1st page with 0 offset
+  // and if not include the offset value into dependancies then it will not allow to go on zero offset value API calls
+
+  // useEffect(() => {
+  //   initialFetch();
+  // }, [initialFetch]);
+
   useEffect(() => {
-    dispatch(getFilterProducts(AccessValue, '', offsetValue));
-  }, [offsetValue, AccessValue]);
+    // if (offsetValue !== 0) {
+    const buildFilterStringValue =
+      buildFilterString(selectedGroupIds, selectedSubGroupIds, selectedCategoryIds, selectedBrandIds) || '';
+    dispatch(getFilterProducts(AccessValue, buildFilterStringValue, offsetValue));
+  }, [
+    offsetValue,
+    AccessValue,
+    selectedGroupIds,
+    selectedSubGroupIds,
+    selectedCategoryIds,
+    selectedBrandIds,
+    dispatch,
+  ]);
+
+  // useEffect(() => {
+  //   if (offsetValue !== 0) {
+  //     dispatch(
+  //       getFilterProducts(
+  //         AccessValue,
+  //         buildFilterString(selectedGroupIds, selectedSubGroupIds, selectedCategoryIds, selectedBrandIds),
+  //         offsetValue,
+  //       ),
+  //     );
+  //   }
+  // }, [
+  //   offsetValue,
+  //   AccessValue,
+  //   selectedGroupIds,
+  //   selectedSubGroupIds,
+  //   selectedCategoryIds,
+  //   selectedBrandIds,
+  //   dispatch,
+  // ]);
 
   function capitalizeFirstLetter(str) {
     return str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
@@ -127,7 +214,7 @@ const Filters = React.memo(() => {
               {/* Category */}
               {filterData?.Category?.length > 0 && (
                 <>
-                  <SidebarSingle style={{ marginBottom: 32 }}>
+                  <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Category</Heading>
 
                     <Scrollbars autoHeight autoHide>
@@ -157,7 +244,7 @@ const Filters = React.memo(() => {
               {/* groups */}
               {filterData?.Group?.length > 0 && (
                 <>
-                  <SidebarSingle style={{ marginBottom: 32 }}>
+                  <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Group</Heading>
                     <Scrollbars autoHeight autoHide>
                       <Checkbox.Group className="ant-checkbox-group">
@@ -186,7 +273,7 @@ const Filters = React.memo(() => {
 
               {filterData?.SubGroup?.length > 0 && (
                 <>
-                  <SidebarSingle className="">
+                  <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Sub Group</Heading>
                     <Scrollbars autoHeight>
                       <Checkbox.Group className="ant-checkbox-group" style={{ paddingRight: 10 }}>
@@ -215,7 +302,7 @@ const Filters = React.memo(() => {
 
               {filterData?.Brand?.length > 0 && (
                 <>
-                  <SidebarSingle>
+                  <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Brand</Heading>
                     <Scrollbars autoHeight autoHide>
                       <Checkbox.Group className="ant-checkbox-group">
@@ -230,6 +317,99 @@ const Filters = React.memo(() => {
                               onChange={(e) => handleSelectionChange('brand', brandItem.Id, e.target.checked)}
                             >
                               {capitalizeFirstLetter(brandItem.Name)}
+                            </Checkbox>
+                          ))}
+                      </Checkbox.Group>
+                    </Scrollbars>
+                  </SidebarSingle>
+                </>
+              )}
+
+              {/* Catalogue */}
+
+              {filterData?.Catalogue?.length > 0 && (
+                <>
+                  <SidebarSingle style={{ marginBottom: 25 }}>
+                    <Heading as="h5">Catalogue</Heading>
+                    {/* <IoIosSearch /> */}
+
+                    {/* <Input
+                      style={{ height: 5, marginBottom: 20 }}
+                      type="text"
+                      placeholder="Search Items"
+                      value={catalogueSearchQuery}
+                      onChange={handleCatalogueSearch}
+                    /> */}
+
+                    <Scrollbars autoHeight autoHide>
+                      <Checkbox.Group className="ant-checkbox-group">
+                        {filterData &&
+                          filterData?.Catalogue?.filter((cataItem) =>
+                            cataItem.Name.toLowerCase().includes(catalogueSearchQuery.toLowerCase()),
+                          ).map((cataItem) => (
+                            <Checkbox
+                              className="ant-checkbox-group-item"
+                              id={cataItem.Id}
+                              key={cataItem.Id}
+                              value={cataItem.Name}
+                              checked={selectedCatalogueIds.includes(cataItem.Id)}
+                              onChange={(e) => handleSelectionChange('catalogue', cataItem.Id, e.target.checked)}
+                            >
+                              {capitalizeFirstLetter(cataItem.Name)}
+                            </Checkbox>
+                          ))}
+                      </Checkbox.Group>
+                    </Scrollbars>
+                  </SidebarSingle>
+                </>
+              )}
+
+              {/* color */}
+
+              {filterData?.color?.length > 0 && (
+                <>
+                  <SidebarSingle style={{ marginBottom: 25 }}>
+                    <Heading as="h5">Color</Heading>
+                    <Scrollbars autoHeight autoHide>
+                      <Checkbox.Group className="ant-checkbox-group">
+                        {filterData &&
+                          filterData?.color?.map((colorItem) => (
+                            <Checkbox
+                              className="ant-checkbox-group-item"
+                              id={colorItem.Id}
+                              key={colorItem.Id}
+                              value={colorItem.Name}
+                              checked={selectedColIds.includes(colorItem.Id)}
+                              onChange={(e) => handleSelectionChange('color', colorItem.Id, e.target.checked)}
+                            >
+                              {capitalizeFirstLetter(colorItem.Name)}
+                            </Checkbox>
+                          ))}
+                      </Checkbox.Group>
+                    </Scrollbars>
+                  </SidebarSingle>
+                </>
+              )}
+
+              {/* size */}
+
+              {filterData?.Size?.length > 0 && (
+                <>
+                  <SidebarSingle style={{ marginBottom: 25 }}>
+                    <Heading as="h5">Size</Heading>
+                    <Scrollbars autoHeight autoHide>
+                      <Checkbox.Group className="ant-checkbox-group">
+                        {filterData &&
+                          filterData?.Size?.map((Size) => (
+                            <Checkbox
+                              className="ant-checkbox-group-item"
+                              id={Size.Id}
+                              key={Size.Id}
+                              value={Size.Name}
+                              checked={selectedSizeIds.includes(Size.Id)}
+                              onChange={(e) => handleSelectionChange('color', Size.Id, e.target.checked)}
+                            >
+                              {capitalizeFirstLetter(Size.Name)}
                             </Checkbox>
                           ))}
                       </Checkbox.Group>

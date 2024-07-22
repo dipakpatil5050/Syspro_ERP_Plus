@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Spin, Button } from 'antd';
+import { Row, Col, Spin, Button, Pagination } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { UilArrowUp } from '@iconscout/react-unicons';
@@ -15,13 +15,20 @@ function List() {
   const cartId = useSelector((state) => state.cart.cartId);
   const { catalogueData, loading, offsetValue, hasMoreData } = useSelector((state) => state.auth);
 
-  const [showTopButton, setShowTopButton] = useState(false);
+  const userData = useSelector((state) => state.auth.userData);
+  const AccessValue = userData?.data?.Data?.Access_Value || '';
 
-  const totalItems = catalogueData?.length || 0;
+  const TotalProducts = useSelector((state) => state.auth.catalogueTotalDataCount);
+
+  const [showTopButton, setShowTopButton] = useState(false);
+  const [state, setState] = useState({
+    currentPage: 1,
+    pageSize: 100,
+  });
 
   useEffect(() => {
     dispatch(getCartItem(cartId));
-  }, []);
+  }, [dispatch, cartId]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,9 +46,14 @@ function List() {
     };
   }, []);
 
-  const fetchMoreData = () => {
-    dispatch(setOffsetValue(offsetValue + 1));
+  const fetchProducts = (page, size) => {
+    dispatch(setOffsetValue(page));
+    // dispatch(getAllProducts(AccessValue, page, size));
   };
+
+  useEffect(() => {
+    fetchProducts(state.currentPage - 1, state.pageSize);
+  }, [dispatch, AccessValue, state.currentPage, state.pageSize]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -50,38 +62,52 @@ function List() {
     });
   };
 
+  useEffect(() => {
+    if (state.currentPage >= 0) {
+      scrollToTop();
+    }
+  }, [state.currentPage]);
+
+  const handlePageChange = (page, size) => {
+    setState((prevState) => ({
+      ...prevState,
+      currentPage: page,
+      pageSize: size,
+    }));
+  };
+
   return (
     <>
-      <InfiniteScroll
-        dataLength={totalItems}
-        next={fetchMoreData}
-        hasMore={hasMoreData}
-        loader={<Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} />}
-        style={{ overflow: 'hidden' }}
-        endMessage={
+      <Row gutter={15}>
+        {catalogueData &&
+          catalogueData.map((product) => {
+            return (
+              <Col xs={24} key={product.Item_Id}>
+                <ProductCardsList product={product} />
+              </Col>
+            );
+          })}
+      </Row>
+
+      {!loading && catalogueData?.length === 0 && (
+        <div style={{ position: 'relative', bottom: '10px', right: '20px', zIndex: 1000 }}>
           <NotFoundWrapper>
-            {!loading && (
-              // (
-              //   <div className="spin">
-              //     <Spin />
-              //   </div>
-              // )
-              <Heading as="h5">No more products to load</Heading>
-            )}
+            <Heading as="h5">No more products to load</Heading>
           </NotFoundWrapper>
-        }
-      >
-        <Row gutter={15}>
-          {catalogueData &&
-            catalogueData.map((product) => {
-              return (
-                <Col xs={24} key={product.Item_Id}>
-                  <ProductCardsList product={product} />
-                </Col>
-              );
-            })}
-        </Row>
-      </InfiniteScroll>
+        </div>
+      )}
+
+      <Pagination
+        current={state.currentPage}
+        pageSize={state.pageSize}
+        showSizeChanger={false}
+        total={TotalProducts}
+        onChange={handlePageChange}
+        style={{ marginTop: 20, textAlign: 'center' }}
+        hideOnSinglePage
+        responsive
+      />
+
       {showTopButton && (
         <Button
           type="primary"

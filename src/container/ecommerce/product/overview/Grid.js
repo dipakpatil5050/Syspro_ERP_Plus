@@ -2,11 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, Button, Spin, Pagination } from 'antd';
 import { UilArrowUp } from '@iconscout/react-unicons';
+import styled from 'styled-components';
 import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
 import { NotFoundWrapper } from '../../Style';
 import { setOffsetValue } from '../../../../redux/reducers/authReducer';
 import { getAllProducts, getCartItem } from '../../../../Actions/Catalogue/CartAction';
+
+const CenteredSpin = styled(Spin)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
 
 const Grid = React.memo(() => {
   const dispatch = useDispatch();
@@ -52,19 +60,25 @@ const Grid = React.memo(() => {
     fetchProducts(state.currentPage - 1, state.pageSize);
   }, [dispatch, AccessValue, state.currentPage, state.pageSize]);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  useEffect(() => {
+    if (state.currentPage >= 0) {
+      scrollToTop();
+    }
+  }, [state.currentPage]);
+
   const handlePageChange = (page, size) => {
     setState((prevState) => ({
       ...prevState,
       currentPage: page,
       pageSize: size,
     }));
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
   };
 
   return (
@@ -77,7 +91,9 @@ const Grid = React.memo(() => {
             </Col>
           ))}
       </Row>
-      {/* {loading && <Spin style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 20 }} />} */}
+
+      {/* {loading && <CenteredSpin size="large" />} */}
+
       {!loading && catalogueData?.length === 0 && (
         <div style={{ position: 'relative', bottom: '10px', right: '20px', zIndex: 1000 }}>
           <NotFoundWrapper>
@@ -89,10 +105,11 @@ const Grid = React.memo(() => {
         current={state.currentPage}
         pageSize={state.pageSize}
         showSizeChanger={false}
-        total={200}
+        total={TotalProducts}
         onChange={handlePageChange}
         style={{ marginTop: 20, textAlign: 'center' }}
         hideOnSinglePage
+        responsive
       />
       {showTopButton && (
         <Button
