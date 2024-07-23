@@ -1,6 +1,6 @@
 import UilSlidersV from '@iconscout/react-unicons/icons/uil-sliders-v';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Checkbox, Input } from 'antd';
+import { Button, Checkbox, Input, Slider } from 'antd';
 import { IoIosSearch } from 'react-icons/io';
 import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,10 +19,22 @@ const Filters = React.memo(() => {
   const [selectedColIds, setSelectedColIds] = useState([]);
   const [selectedSizeIds, setSelectedSizeIds] = useState([]);
 
-  const [catalogueSearchQuery, setCatalogueSearchQuery] = useState('');
+  const [searchValues, setSearchValues] = useState({
+    category: '',
+    group: '',
+    subgroup: '',
+    catalogue: '',
+    brand: '',
+    color: '',
+    size: '',
+  });
 
-  const handleCatalogueSearch = (e) => {
-    setCatalogueSearchQuery(e.target.value);
+  const handleSearchChange = (e) => {
+    const { name, value } = e.target;
+    setSearchValues({
+      ...searchValues,
+      [name]: value,
+    });
   };
 
   // Catalogue API variables
@@ -32,8 +44,9 @@ const Filters = React.memo(() => {
   const offsetValue = useSelector((state) => state.auth.offsetValue);
   const filterData = useSelector((state) => state.auth.filterData);
   const AccessValueData = userData?.Data?.Access_Value;
-
   const AccessValue = AccessValueData || '';
+
+  // const AccessValue = ' ';
 
   const buildFilterString = (groupIds, subGroupIds, categoryIds, brandIds, catalogueIds, colorIds, sizeIds) => {
     let filterString = '';
@@ -52,7 +65,7 @@ const Filters = React.memo(() => {
       filterParts.push(`AND Brand_ID IN (${brandIds.join(',')})`);
     }
     if (catalogueIds?.length > 0) {
-      filterParts.push(`AND Item_Id IN (${catalogueIds.join(',')})`);
+      filterParts.push(`AND I.Item_Id IN (${catalogueIds.join(',')})`);
     }
     if (colorIds?.length > 0) {
       filterParts.push(`AND Col_Id IN (${colorIds.join(',')})`);
@@ -202,25 +215,53 @@ const Filters = React.memo(() => {
           {filterData && (
             <>
               {/* Price Range */}
+              {/* onChange={onPriceChangeHandler} */}
+              {/* defaultValues={[min, max]} */}
+              {/* max={50} max={50} */}
 
               {/* <SidebarSingle style={{ marginBottom: 32 }}>
                 <Heading as="h5">Price Range</Heading>
-                <Slider max={50} onChange={onPriceChangeHandler} range defaultValues={[min, max]} />
-                <p className="ninjadash-price-text">
-                  ₹ {min} - ₹ {max}
-                </p>
+                <Slider range />
+                <p className="ninjadash-price-text">max and min price range will be here </p>
               </SidebarSingle> */}
 
               {/* Category */}
+
               {filterData?.Category?.length > 0 && (
                 <>
                   <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Category</Heading>
 
+                    {filterData?.Category.length > 6 && (
+                      <div style={{ display: 'flex' }}>
+                        <Input
+                          name="category"
+                          style={{ height: 5, marginBottom: 20, borderRadius: 7 }}
+                          type="text"
+                          placeholder="Search for Category"
+                          value={searchValues.category}
+                          onChange={handleSearchChange}
+                        />
+
+                        <IoIosSearch
+                          size={30}
+                          style={{
+                            opacity: 10,
+                            backgroundColor: 'F5F5F5',
+                            borderRadius: '50%',
+                            padding: 3,
+                            marginLeft: 5,
+                          }}
+                        />
+                      </div>
+                    )}
+
                     <Scrollbars autoHeight autoHide>
                       <Checkbox.Group className="ant-checkbox-group">
                         {filterData &&
-                          filterData?.Category?.map((categoryItem) => (
+                          filterData?.Category?.filter((categoryItem) =>
+                            categoryItem.Name.toLowerCase().includes(searchValues.category.toLowerCase()),
+                          ).map((categoryItem) => (
                             <Checkbox
                               className="ant-checkbox-group-item"
                               id={categoryItem.Id}
@@ -240,16 +281,40 @@ const Filters = React.memo(() => {
                   </SidebarSingle>
                 </>
               )}
-
               {/* groups */}
               {filterData?.Group?.length > 0 && (
                 <>
                   <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Group</Heading>
+                    {filterData?.Group.length > 6 && (
+                      <div style={{ display: 'flex' }}>
+                        <Input
+                          name="group"
+                          style={{ height: 5, marginBottom: 20, borderRadius: 7 }}
+                          type="text"
+                          placeholder="Search for Group"
+                          value={searchValues.group}
+                          onChange={handleSearchChange}
+                        />
+
+                        <IoIosSearch
+                          size={30}
+                          style={{
+                            opacity: 10,
+                            backgroundColor: 'F5F5F5',
+                            borderRadius: '50%',
+                            padding: 3,
+                            marginLeft: 5,
+                          }}
+                        />
+                      </div>
+                    )}
                     <Scrollbars autoHeight autoHide>
                       <Checkbox.Group className="ant-checkbox-group">
                         {filterData &&
-                          filterData?.Group?.map((groupItem) => (
+                          filterData?.Group?.filter((groupItem) =>
+                            groupItem.Name.toLowerCase().includes(searchValues.group.toLowerCase()),
+                          ).map((groupItem) => (
                             <Checkbox
                               className="ant-checkbox-group-item"
                               id={groupItem.Id}
@@ -270,15 +335,40 @@ const Filters = React.memo(() => {
                 </>
               )}
               {/* subGroup */}
-
               {filterData?.SubGroup?.length > 0 && (
                 <>
                   <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Sub Group</Heading>
+
+                    {filterData?.SubGroup.length > 6 && (
+                      <div style={{ display: 'flex' }}>
+                        <Input
+                          name="subgroup"
+                          style={{ height: 5, marginBottom: 20, borderRadius: 7 }}
+                          type="text"
+                          placeholder="Search for SubGroup"
+                          value={searchValues.subgroup}
+                          onChange={handleSearchChange}
+                        />
+                        <IoIosSearch
+                          size={30}
+                          style={{
+                            opacity: 10,
+                            backgroundColor: 'F5F5F5',
+                            borderRadius: '50%',
+                            padding: 3,
+                            marginLeft: 5,
+                          }}
+                        />
+                      </div>
+                    )}
+
                     <Scrollbars autoHeight>
                       <Checkbox.Group className="ant-checkbox-group" style={{ paddingRight: 10 }}>
                         {filterData &&
-                          filterData?.SubGroup?.map((subgroupItem) => (
+                          filterData?.SubGroup?.filter((subgroupItem) =>
+                            subgroupItem.Name.toLowerCase().includes(searchValues.subgroup.toLowerCase()),
+                          )?.map((subgroupItem) => (
                             <Checkbox
                               className="ant-checkbox-group-item "
                               id={subgroupItem.Id}
@@ -299,15 +389,40 @@ const Filters = React.memo(() => {
                 </>
               )}
               {/* Brand */}
-
               {filterData?.Brand?.length > 0 && (
                 <>
                   <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Brand</Heading>
+
+                    {filterData?.Brand.length > 6 && (
+                      <div style={{ display: 'flex' }}>
+                        <Input
+                          name="brand"
+                          style={{ height: 5, marginBottom: 20, borderRadius: 7 }}
+                          type="text"
+                          placeholder="Search for Brand"
+                          value={searchValues.brand}
+                          onChange={handleSearchChange}
+                        />
+                        <IoIosSearch
+                          size={30}
+                          style={{
+                            opacity: 10,
+                            backgroundColor: 'F5F5F5',
+                            borderRadius: '50%',
+                            padding: 3,
+                            marginLeft: 5,
+                          }}
+                        />
+                      </div>
+                    )}
+
                     <Scrollbars autoHeight autoHide>
                       <Checkbox.Group className="ant-checkbox-group">
                         {filterData &&
-                          filterData?.Brand?.map((brandItem) => (
+                          filterData?.Brand.filter((brandItem) =>
+                            brandItem.Name.toLowerCase().includes(searchValues.brand.toLowerCase()),
+                          )?.map((brandItem) => (
                             <Checkbox
                               className="ant-checkbox-group-item"
                               id={brandItem.Id}
@@ -317,6 +432,9 @@ const Filters = React.memo(() => {
                               onChange={(e) => handleSelectionChange('brand', brandItem.Id, e.target.checked)}
                             >
                               {capitalizeFirstLetter(brandItem.Name)}
+                              <span className="ninjadash-category-count" style={{ fontSize: '12px' }}>
+                                {brandItem.Count}
+                              </span>
                             </Checkbox>
                           ))}
                       </Checkbox.Group>
@@ -331,22 +449,36 @@ const Filters = React.memo(() => {
                 <>
                   <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Catalogue</Heading>
-                    {/* <IoIosSearch /> */}
 
-                    {/* <Input
-                      style={{ height: 5, marginBottom: 20 }}
-                      type="text"
-                      placeholder="Search Items"
-                      value={catalogueSearchQuery}
-                      onChange={handleCatalogueSearch}
-                    /> */}
+                    {filterData?.Catalogue.length > 6 && (
+                      <div style={{ display: 'flex' }}>
+                        <Input
+                          name="catalogue"
+                          style={{ height: 5, marginBottom: 20, borderRadius: 7 }}
+                          type="text"
+                          placeholder="Search for Catalogue"
+                          value={searchValues.catalogue}
+                          onChange={handleSearchChange}
+                        />
+                        <IoIosSearch
+                          size={30}
+                          style={{
+                            opacity: 10,
+                            backgroundColor: 'F5F5F5',
+                            borderRadius: '50%',
+                            padding: 3,
+                            marginLeft: 5,
+                          }}
+                        />
+                      </div>
+                    )}
 
                     <Scrollbars autoHeight autoHide>
                       <Checkbox.Group className="ant-checkbox-group">
                         {filterData &&
                           filterData?.Catalogue?.filter((cataItem) =>
-                            cataItem.Name.toLowerCase().includes(catalogueSearchQuery.toLowerCase()),
-                          ).map((cataItem) => (
+                            cataItem.Name.toLowerCase().includes(searchValues.catalogue.toLowerCase()),
+                          )?.map((cataItem) => (
                             <Checkbox
                               className="ant-checkbox-group-item"
                               id={cataItem.Id}
@@ -356,6 +488,9 @@ const Filters = React.memo(() => {
                               onChange={(e) => handleSelectionChange('catalogue', cataItem.Id, e.target.checked)}
                             >
                               {capitalizeFirstLetter(cataItem.Name)}
+                              <span className="ninjadash-category-count" style={{ fontSize: '12px' }}>
+                                {cataItem.Count}
+                              </span>
                             </Checkbox>
                           ))}
                       </Checkbox.Group>
@@ -363,28 +498,57 @@ const Filters = React.memo(() => {
                   </SidebarSingle>
                 </>
               )}
-
               {/* color */}
-
               {filterData?.color?.length > 0 && (
                 <>
                   <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Color</Heading>
+
+                    {filterData?.color.length > 6 && (
+                      <div style={{ display: 'flex' }}>
+                        <Input
+                          name="color"
+                          style={{ height: 5, marginBottom: 20, borderRadius: 7 }}
+                          type="text"
+                          placeholder="Search for Color"
+                          value={searchValues.color}
+                          onChange={handleSearchChange}
+                        />
+                        <IoIosSearch
+                          size={30}
+                          style={{
+                            opacity: 10,
+                            backgroundColor: 'F5F5F5',
+                            borderRadius: '50%',
+                            padding: 3,
+                            marginLeft: 5,
+                          }}
+                        />
+                      </div>
+                    )}
+
                     <Scrollbars autoHeight autoHide>
                       <Checkbox.Group className="ant-checkbox-group">
                         {filterData &&
-                          filterData?.color?.map((colorItem) => (
-                            <Checkbox
-                              className="ant-checkbox-group-item"
-                              id={colorItem.Id}
-                              key={colorItem.Id}
-                              value={colorItem.Name}
-                              checked={selectedColIds.includes(colorItem.Id)}
-                              onChange={(e) => handleSelectionChange('color', colorItem.Id, e.target.checked)}
-                            >
-                              {capitalizeFirstLetter(colorItem.Name)}
-                            </Checkbox>
-                          ))}
+                          filterData?.color
+                            .filter((colorItem) =>
+                              colorItem.Name.toLowerCase().includes(searchValues.color.toLowerCase()),
+                            )
+                            ?.map((colorItem) => (
+                              <Checkbox
+                                className="ant-checkbox-group-item"
+                                id={colorItem.Id}
+                                key={colorItem.Id}
+                                value={colorItem.Name}
+                                checked={selectedColIds.includes(colorItem.Id)}
+                                onChange={(e) => handleSelectionChange('color', colorItem.Id, e.target.checked)}
+                              >
+                                {capitalizeFirstLetter(colorItem.Name)}
+                                <span className="ninjadash-category-count" style={{ fontSize: '12px' }}>
+                                  {colorItem.Count}
+                                </span>
+                              </Checkbox>
+                            ))}
                       </Checkbox.Group>
                     </Scrollbars>
                   </SidebarSingle>
@@ -397,10 +561,36 @@ const Filters = React.memo(() => {
                 <>
                   <SidebarSingle style={{ marginBottom: 25 }}>
                     <Heading as="h5">Size</Heading>
+
+                    {filterData?.Size.length > 6 && (
+                      <div style={{ display: 'flex' }}>
+                        <Input
+                          name="size"
+                          style={{ height: 5, marginBottom: 20, borderRadius: 7 }}
+                          type="text"
+                          placeholder="Search for Color"
+                          value={searchValues.size}
+                          onChange={handleSearchChange}
+                        />
+                        <IoIosSearch
+                          size={30}
+                          style={{
+                            opacity: 10,
+                            backgroundColor: 'F5F5F5',
+                            borderRadius: '50%',
+                            padding: 3,
+                            marginLeft: 5,
+                          }}
+                        />
+                      </div>
+                    )}
+
                     <Scrollbars autoHeight autoHide>
                       <Checkbox.Group className="ant-checkbox-group">
                         {filterData &&
-                          filterData?.Size?.map((Size) => (
+                          filterData?.Size.filter((sizeItem) =>
+                            sizeItem.Name.toLowerCase().includes(searchValues.size.toLowerCase()),
+                          )?.map((Size) => (
                             <Checkbox
                               className="ant-checkbox-group-item"
                               id={Size.Id}
@@ -410,6 +600,9 @@ const Filters = React.memo(() => {
                               onChange={(e) => handleSelectionChange('color', Size.Id, e.target.checked)}
                             >
                               {capitalizeFirstLetter(Size.Name)}
+                              <span className="ninjadash-category-count" style={{ fontSize: '12px' }}>
+                                {Size.Count}
+                              </span>
                             </Checkbox>
                           ))}
                       </Checkbox.Group>

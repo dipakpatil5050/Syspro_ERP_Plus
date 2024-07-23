@@ -105,7 +105,7 @@ const Grid = React.memo(() => {
         current={state.currentPage}
         pageSize={state.pageSize}
         showSizeChanger={false}
-        total={TotalProducts}
+        total={200} // TotalProducts
         onChange={handlePageChange}
         style={{ marginTop: 20, textAlign: 'center' }}
         hideOnSinglePage
