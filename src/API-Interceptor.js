@@ -15,7 +15,8 @@ export const whatsapp = axios.create({
 
 http.interceptors.request.use(
   async (config) => {
-    const token = Cookies.get('access_token');
+    // const token = Cookies.get('access_token');
+    const token = sessionStorage.getItem('access_token');
     const state = store.getState(); // Access Redux state
     const { userData, userMpinData } = state.auth;
     const mPin = userMpinData?.Data?.mPin;
@@ -56,7 +57,8 @@ http.interceptors.response.use(
     // Handle error response
     if (error.response && error.response.status === 401) {
       // Unauthorized access - maybe token expired
-      Cookies.remove('access_token');
+      // Cookies.remove('access_token');
+      sessionStorage.removeItem('access_token');
       toast.error('Session expired', 'Please log in again.');
     }
     // Alert.alert("Error", error.response?.data?.message || "An error occurred");

@@ -26,8 +26,12 @@ export const login = createAsyncThunk(
       const userData = response.data;
       const Token = userData?.Data?.Token;
 
-      Cookies.set('access_token', Token);
-      Cookies.set('logedIn', true);
+      // Cookies.set('access_token', Token);
+      // Cookies.set('logedIn', true);
+
+      sessionStorage.setItem('access_token', Token);
+      sessionStorage.setItem('logedIn', true);
+
       dispatch(setUserData(userData));
       navigate('/admin');
       toast.success('Login successful!');
@@ -44,8 +48,12 @@ export const login = createAsyncThunk(
 // Thunk for logout action
 export const logOut = createAsyncThunk('auth/logout', async () => {
   try {
-    Cookies.remove('logedIn');
-    Cookies.remove('access_token');
+    // Cookies.remove('logedIn');
+    // Cookies.remove('access_token');
+
+    sessionStorage.removeItem('logedIn');
+    sessionStorage.removeItem('access_token');
+
     return true;
   } catch (err) {
     return err.message;
@@ -61,7 +69,7 @@ export const authSlice = createSlice({
     filterData: [],
     LedgerReport: null,
     SaleReport: null,
-    login: Cookies.get('logedIn'),
+    login: sessionStorage.getItem('logedIn'), // Cookies.get('logedIn')
     loading: false,
     error: null,
     loadedItems: 50,
@@ -114,6 +122,7 @@ export const authSlice = createSlice({
         (product) => product.price >= minPrice && product.price <= maxPrice,
       );
     },
+
     setTotalCataloguePages: (state, action) => {
       state.totalCataloguePages = action.payload;
       const totalPages = action.payload;
