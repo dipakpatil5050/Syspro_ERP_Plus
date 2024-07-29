@@ -105,7 +105,8 @@ function ProductDetails() {
               <Link
                 onClick={(e) => {
                   e.preventDefault();
-                  window.history.back();
+                  // window.history.back();
+                  window.close();
                 }}
                 // to="#"
               >

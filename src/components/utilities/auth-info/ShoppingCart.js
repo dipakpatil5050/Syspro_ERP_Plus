@@ -107,7 +107,7 @@ const ShoppingCart = React.memo(() => {
           </ul>
         </Scrollbars>
       )}
-      <Link className="btn-seeAll" to="/admin/ecommerce/cart">
+      <Link style={{ backgroundColor: '#C5CAE9' }} className="btn-seeAll" to="/admin/ecommerce/cart">
         Proceed to Checkout
       </Link>
     </UserActionDropDown>

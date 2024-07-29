@@ -3,6 +3,7 @@ import { Row, Col, Table, Form, Spin, Modal, Input } from 'antd';
 import { UilTrashAlt, UilPlus, UilMinus } from '@iconscout/react-unicons';
 import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FigureCart, ProductTable } from '../Style';
 import Heading from '../../../components/heading/heading';
@@ -125,7 +126,11 @@ function CartTable() {
               <figcaption>
                 <div className="cart-single__info">
                   <b>
-                    <Heading as="h6">{product?.Item_Name}</Heading>
+                    <Heading as="h6">
+                      <Link to={`/admin/ecommerce/productDetails/${product.Item_Id}`} target="_blank">
+                        {product?.Item_Name}
+                      </Link>
+                    </Heading>
                   </b>
                   <ul className="info-list">
                     <li>
