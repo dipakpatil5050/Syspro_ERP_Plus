@@ -102,7 +102,6 @@ function ProductCards({ product }) {
               {name}
             </Link>
           </Heading>
-
           <p className="product-single-price">
             <span className="product-single-price__new">₹ {price} </span>
           </p>

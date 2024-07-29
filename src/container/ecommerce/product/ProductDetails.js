@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Row, Col, Skeleton, Spin, Checkbox, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
@@ -13,14 +13,12 @@ import {
 } from '@datobs/react-image-magnifiers';
 
 import UilShoppingBag from '@iconscout/react-unicons/icons/uil-shopping-bag';
+import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
 import useMobileView from './useMobileView';
 import { PageHeader } from '../../../components/page-headers/page-headers';
 import { Main } from '../../styled';
 import { ProductCard, ProductDetailsWrapper } from '../Style';
 import { Cards } from '../../../components/cards/frame/cards-frame';
-
-// import { setLoading, setSingleProduct } from '../../../redux/reducers/authReducer';
-
 import { fetchSingleProductDetailById, addToCart, getCartItem } from '../../../Actions/Catalogue/CartAction';
 
 // import useDocumentTitle from '../../../components/dynamic-Page-Title/useDocumentTitle';
@@ -98,7 +96,27 @@ function ProductDetails() {
   ];
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main" title="Product Details" routes={PageRoutes} />
+      <PageHeader
+        className="ninjadash-page-header-main ninjadash-pageheader-with-back"
+        title={
+          <>
+            <h4>Product Details</h4>
+            <span className="back-link">
+              <Link
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.history.back();
+                }}
+                // to="#"
+              >
+                <UilArrowLeft />
+                Go back
+              </Link>
+            </span>
+          </>
+        }
+        routes={PageRoutes}
+      />
 
       <Main>
         <Cards headless>

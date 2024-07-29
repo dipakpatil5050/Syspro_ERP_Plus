@@ -44,10 +44,10 @@ const AuthInfo = React.memo(() => {
   const SignOut = async (e) => {
     e.preventDefault();
     await dispatch(handleLogout(userId));
-    await dispatch(logOut(() => navigate('/')));
-    await dispatch(setUserData(null));
-    await dispatch(setuserMpinData(null));
-    await dispatch(setCatalogueData([]));
+    dispatch(logOut(() => navigate('/')));
+    dispatch(setUserData(null));
+    dispatch(setuserMpinData(null));
+    dispatch(setCatalogueData([]));
     localStorage.clear();
   };
 

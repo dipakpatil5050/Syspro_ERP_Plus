@@ -147,11 +147,8 @@ function RuleAssignment() {
                         ))}
                     </Select>
                   </Form.Item>
-                  <Form.Item
-                    name="rules"
-                    label="Rules"
-                    rules={[{ required: true, message: 'Please select rules to assign' }]}
-                  >
+                  {/* rules={[{ required: true, message: 'Please select rules to assign' }]} */}
+                  <Form.Item name="rules" label="Rules">
                     <Select
                       mode="multiple"
                       disabled={mode === 'view'}

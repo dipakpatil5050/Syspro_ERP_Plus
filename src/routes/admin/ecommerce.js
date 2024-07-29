@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 // import Product from '../../container/ecommerce/product/Products';
+// import ProductDetails from '../../container/ecommerce/product/ProductDetails';
 
 const Product = lazy(() => import('../../container/ecommerce/product/Products'));
 const ProductAdd = lazy(() => import('../../container/ecommerce/product/AddProduct'));
