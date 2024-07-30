@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Row, Col, Form, Select, Upload, message, Progress } from 'antd';
+import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import UilCloudUpload from '@iconscout/react-unicons/icons/uil-cloud-upload';
 import UilTrashAlt from '@iconscout/react-unicons/icons/uil-trash-alt';
@@ -110,7 +112,27 @@ function AddProduct() {
 
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main" title="Add Product" routes={PageRoutes} />
+      <PageHeader
+        className="ninjadash-page-header-main ninjadash-pageheader-with-back"
+        routes={PageRoutes}
+        title={
+          <>
+            <h4>Add Product</h4>
+            <span className="back-link">
+              <Link
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.history.back();
+                }}
+                // to="#"
+              >
+                <UilArrowLeft />
+                Go back
+              </Link>
+            </span>
+          </>
+        }
+      />
       <Main>
         <Row gutter={15}>
           <Col xs={24}>

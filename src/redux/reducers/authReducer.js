@@ -110,6 +110,10 @@ export const authSlice = createSlice({
       state.catalogueData = action.payload;
     },
 
+    updateFilteredCatalogueDataforPrice: (state, action) => {
+      state.catalogueData = action.payload;
+    },
+
     filterByPriceRange(state, action) {
       const [minPrice, maxPrice] = action.payload;
       state.catalogueData = state.catalogueData.filter(
@@ -227,6 +231,7 @@ export const {
   setUserData,
   setCatalogueData,
   setCatalogueDataFiltered,
+  updateFilteredCatalogueDataforPrice,
   setTotalCataloguePages,
   setCatalogueTotalDataCount,
   setSingleProduct,

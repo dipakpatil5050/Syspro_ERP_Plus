@@ -1,6 +1,6 @@
 import UilSlidersV from '@iconscout/react-unicons/icons/uil-sliders-v';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Checkbox, Input, Slider } from 'antd';
+import { Button, Checkbox, Col, Input, InputNumber, Row, Slider } from 'antd';
 import { IoIosSearch } from 'react-icons/io';
 import { Scrollbars } from '@pezhmanparsaee/react-custom-scrollbars';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,7 +8,7 @@ import { Sidebar, SidebarSingle } from '../../Style';
 import { Cards } from '../../../../components/cards/frame/cards-frame';
 import Heading from '../../../../components/heading/heading';
 import { getFilterProducts } from '../../../../Actions/Catalogue/CartAction';
-import { setOffsetValue } from '../../../../redux/reducers/authReducer';
+import { setOffsetValue, updateFilteredCatalogueDataforPrice } from '../../../../redux/reducers/authReducer';
 
 const Filters = React.memo(() => {
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
@@ -18,7 +18,6 @@ const Filters = React.memo(() => {
   const [selectedCatalogueIds, setSelectedCatalogueIds] = useState([]);
   const [selectedColIds, setSelectedColIds] = useState([]);
   const [selectedSizeIds, setSelectedSizeIds] = useState([]);
-
   const [searchValues, setSearchValues] = useState({
     category: '',
     group: '',
@@ -43,6 +42,7 @@ const Filters = React.memo(() => {
   const userData = useSelector((state) => state.auth.userData);
   const offsetValue = useSelector((state) => state.auth.offsetValue);
   const filterData = useSelector((state) => state.auth.filterData);
+  const catalogueData = useSelector((state) => state.auth.catalogueData);
   const AccessValueData = userData?.Data?.Access_Value;
   const AccessValue = AccessValueData || '';
 
@@ -195,6 +195,31 @@ const Filters = React.memo(() => {
     return str?.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
 
+  const [priceRange, setPriceRange] = useState([0, 25000]);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(25000);
+
+  // useEffect(() => {
+  //   const filteredData = catalogueData.filter((item) => item.price >= priceRange[0] && item.price <= priceRange[1]);
+  //   dispatch(updateFilteredCatalogueDataforPrice(filteredData));
+  // }, [priceRange, catalogueData, dispatch]);
+
+  const handleSliderChange = (value) => {
+    setPriceRange(value);
+    setMinPrice(value[0]);
+    setMaxPrice(value[1]);
+  };
+
+  const handleMinPriceChange = (value) => {
+    setMinPrice(value);
+    setPriceRange([value, maxPrice]);
+  };
+
+  const handleMaxPriceChange = (value) => {
+    setMaxPrice(value);
+    setPriceRange([minPrice, value]);
+  };
+
   return (
     <Sidebar>
       <Cards
@@ -219,10 +244,29 @@ const Filters = React.memo(() => {
               {/* defaultValues={[min, max]} */}
               {/* max={50} max={50} */}
 
-              {/* <SidebarSingle style={{ marginBottom: 32 }}>
+              {/* <SidebarSingle style={{ marginBottom: 20 }}>
                 <Heading as="h5">Price Range</Heading>
-                <Slider range />
-                <p className="ninjadash-price-text">max and min price range will be here </p>
+                <Slider range value={priceRange} onChange={handleSliderChange} />
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <InputNumber
+                      min={0}
+                      max={25000}
+                      value={minPrice}
+                      onChange={handleMinPriceChange}
+                      placeholder="Min Price"
+                    />
+                  </Col>
+                  <Col span={12}>
+                    <InputNumber
+                      min={0}
+                      max={25000}
+                      value={maxPrice}
+                      onChange={handleMaxPriceChange}
+                      placeholder="Max Price"
+                    />
+                  </Col>
+                </Row>
               </SidebarSingle> */}
 
               {/* Category */}

@@ -1,7 +1,8 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { Row, Col, Skeleton } from 'antd';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main } from '../styled';
 import { Cards } from '../../components/cards/frame/cards-frame';
@@ -36,7 +37,27 @@ function ShoppingCart() {
 
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main" routes={PageRoutes} />
+      <PageHeader
+        className="ninjadash-page-header-main ninjadash-pageheader-with-back"
+        routes={PageRoutes}
+        title={
+          <>
+            <h4>Shopping Cart</h4>
+            <span className="back-link">
+              <Link
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.history.back();
+                }}
+                // to="#"
+              >
+                <UilArrowLeft />
+                Go back
+              </Link>
+            </span>
+          </>
+        }
+      />
       <Main>
         <div className="cartWraper">
           <Row gutter={15}>

@@ -22,6 +22,7 @@ const Grid = React.memo(() => {
   const { catalogueData, loading, hasMoreData } = useSelector((state) => state.auth);
   const userData = useSelector((state) => state.auth.userData);
   const AccessValue = userData?.data?.Data?.Access_Value || '';
+
   const TotalProducts = useSelector((state) => state.auth.catalogueTotalDataCount);
 
   const [showTopButton, setShowTopButton] = useState(false);
@@ -105,7 +106,7 @@ const Grid = React.memo(() => {
           current={state.currentPage}
           pageSize={state.pageSize}
           showSizeChanger={false}
-          total={200} // TotalProducts
+          total={TotalProducts}
           onChange={handlePageChange}
           style={{ marginTop: 20, textAlign: 'center' }}
           hideOnSinglePage

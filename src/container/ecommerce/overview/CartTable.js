@@ -115,19 +115,26 @@ function CartTable() {
         product: (
           <div className="cart-single">
             <FigureCart>
-              <img
-                style={{ width: 80 }}
-                src={product?.Filepath}
-                alt="Product loading..."
-                onError={(e) => {
-                  e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
-                }}
-              />
+              <Link to={`/admin/ecommerce/productDetails/${product.Item_Id}`} target="_blank">
+                <img
+                  style={{ width: 80 }}
+                  src={product?.Filepath}
+                  alt="Product loading..."
+                  onError={(e) => {
+                    e.target.src = 'https://dummyimage.com/600x400/ffffff/000000.png&text=No+Preview';
+                  }}
+                />
+              </Link>
+
               <figcaption>
                 <div className="cart-single__info">
                   <b>
                     <Heading as="h6">
-                      <Link to={`/admin/ecommerce/productDetails/${product.Item_Id}`} target="_blank">
+                      <Link
+                        style={{ color: 'black', fontWeight: 800 }}
+                        to={`/admin/ecommerce/productDetails/${product.Item_Id}`}
+                        target="_blank"
+                      >
                         {product?.Item_Name}
                       </Link>
                     </Heading>

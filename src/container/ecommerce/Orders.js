@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Table, Spin } from 'antd';
 import UilDocumentInfo from '@iconscout/react-unicons/icons/uil-document-info';
 import { Link } from 'react-router-dom';
+import UilArrowLeft from '@iconscout/react-unicons/icons/uil-arrow-left';
 import { TopToolBox } from './Style';
 import { PageHeader } from '../../components/page-headers/page-headers';
 import { Main, TableWrapper } from '../styled';
@@ -226,7 +227,27 @@ function Orders() {
 
   return (
     <>
-      <PageHeader className="ninjadash-page-header-main" title="Orders" routes={PageRoutes} />
+      <PageHeader
+        className="ninjadash-page-header-main ninjadash-pageheader-with-back"
+        routes={PageRoutes}
+        title={
+          <>
+            <h4>Orders</h4>
+            <span className="back-link">
+              <Link
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.history.back();
+                }}
+                // to="#"
+              >
+                <UilArrowLeft />
+                Go back
+              </Link>
+            </span>
+          </>
+        }
+      />
       <Main>
         <Cards headless>
           <Row gutter={15}>
