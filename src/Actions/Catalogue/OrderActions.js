@@ -73,6 +73,7 @@ export const invoicePrint = (indentId) => async (dispatch) => {
     window.open(pdfPath, '_blank');
   } catch (error) {
     console.error(error);
+    toast.error('Invoice Printing Fail !');
     dispatch(setIsLoading(false));
   }
 };
